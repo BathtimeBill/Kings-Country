@@ -73,6 +73,17 @@ public class CameraController : GameBehaviour
             newRotation *= Quaternion.Euler(Vector3.up * (-difference.x / 5f));
 
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (_PC.mouseOverMap == true)
+            {
+                Ray ray = _PC.mapCam.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hitPoint;
+                if (Physics.Raycast(ray, out hitPoint))
+                    newPosition = hitPoint.point;
+            }
+        }
     }
 
     void HandleMovementInput()
