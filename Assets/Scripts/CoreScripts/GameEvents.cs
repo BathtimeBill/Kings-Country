@@ -8,6 +8,7 @@ public static class GameEvents
     public static event Action OnTreeDestroyed = null;
     public static event Action OnUnitMove = null;
     public static event Action OnUnitArrivedAtHorgr = null;
+    public static event Action OnTreeHit = null;
 
     public static event Action OnStormerPlaced = null;
 
@@ -28,6 +29,11 @@ public static class GameEvents
     public static event Action OnFertileSoilUpgrade = null;
 
 
+
+    public static void ReportOnTreeHit()
+    {
+        OnTreeHit?.Invoke();
+    }
     public static void ReportOnStormerPlaced()
     {
         OnStormerPlaced?.Invoke();

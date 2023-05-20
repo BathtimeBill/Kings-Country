@@ -21,6 +21,7 @@ public class UIManager : Singleton<UIManager>
     public GameObject settingsPanel;
     public GameObject winPanel;
     public GameObject eldyrButton;
+    public GameObject ObjectiveText;
 
     public GameObject treeToolSelectionBox;
     public GameObject runeToolSelectionBox;
@@ -56,6 +57,7 @@ public class UIManager : Singleton<UIManager>
     public TMP_Text wildlifeCostText;
 
     public AudioSource audioSource;
+    public AudioSource warningAudioSource;
 
     void Start()
     {
@@ -161,6 +163,7 @@ public class UIManager : Singleton<UIManager>
         if(_GM.maegen >= 5000 && _GM.wildlife >= 50)
         {
             eldyrButton.SetActive(true);
+            ObjectiveText.SetActive(false);
         }
     }
     public void CheckPopulousUI()
@@ -208,6 +211,14 @@ public class UIManager : Singleton<UIManager>
     public void SetErrorMessageTooManyTrees()
     {
         errorText.text = "There are too many trees in the forest";
+    }
+    public void SetErrorMessageYouAreUnderAttack()
+    {
+        errorText.text = "Your forest is under attack!";
+    }
+    public void SetErrorMessageYourWildlifeIsUnderAttack()
+    {
+        errorText.text = "Your wildlife is under attack!";
     }
     public void OnBeaconPlaced()
     {

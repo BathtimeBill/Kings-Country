@@ -27,6 +27,7 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip upgradeSound;
     public AudioClip openMenuSound;
     public AudioClip closeMenuSound;
+    public AudioClip warningSound;
     [Header("Wildlife Distress Sounds")]
     public AudioClip[] deerDistressSounds;
     public AudioClip[] boarDistressSounds;

@@ -19,6 +19,10 @@ public class Tooltip : GameBehaviour
     {
         _Tool.SetAndShowTooltip(message, title);
     }
+    public void OnButtonHoverTop()
+    {
+        StartCoroutine(TooltipDelayTop());
+    }
     public void OnButtonHoverPopulous()
     {
         _Tool.SetAndShowPopulousTooltip();
@@ -26,6 +30,11 @@ public class Tooltip : GameBehaviour
     public void OnButtonExit()
     {
         _Tool.HideTooltip();
+        StopAllCoroutines();
+    }
+    public void OnButtonExitTop()
+    {
+        _Tool.HideTooltipTop();
         StopAllCoroutines();
     }
     public void OnButtonDelay()
@@ -36,6 +45,11 @@ public class Tooltip : GameBehaviour
     {
         yield return new WaitForSeconds(1);
         _Tool.SetAndShowTooltip(message, title);
+    }
+    IEnumerator TooltipDelayTop()
+    {
+        yield return new WaitForSeconds(0.8f);
+        _Tool.SetAndShowTooltipTop(message, title);
     }
     private void Update()
     {

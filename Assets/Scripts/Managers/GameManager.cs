@@ -40,6 +40,11 @@ public class GameManager : Singleton<GameManager>
     [Header("Horgr")]
     public bool horgrClaimedByPlayer;
 
+    [Header("Alert")]
+    public float timeSinceAttack = 0f;
+    public float timeSinceWildlifeKilled = 0f;
+    public GameObject warningSprite;
+
     void Start()
     {
         Time.timeScale = 1;
@@ -55,7 +60,11 @@ public class GameManager : Singleton<GameManager>
         leshyDamage = 60;
     }
 
-
+    private void Update()
+    {
+        timeSinceAttack += Time.deltaTime;
+        timeSinceWildlifeKilled += Time.deltaTime;
+    }
 
     //The wave system is managed by two coroutines. The 'agro' wave lasts 1 minute, during which enemies are spawned in (EnemyManager) and then a break period of 4 mins. 
     IEnumerator ManageWaveAgro()
@@ -141,6 +150,29 @@ public class GameManager : Singleton<GameManager>
         _UI.CheckPopulousUI();
     }
 
+    public void OnTreeHit()
+    {
+        if(timeSinceAttack > 30)
+        {
+            _UI.SetErrorMessageYouAreUnderAttack();
+            _PC.Error();
+            _UI.warningAudioSource.clip = _SM.warningSound;
+            _UI.warningAudioSource.Play();
+        }
+        timeSinceAttack = 0;
+    }
+
+    public void OnWildlifeKilled()
+    {
+        if (timeSinceWildlifeKilled > 30)
+        {
+            _UI.SetErrorMessageYourWildlifeIsUnderAttack();
+            _PC.Error();
+            _UI.warningAudioSource.clip = _SM.warningSound;
+            _UI.warningAudioSource.Play();
+        }
+        timeSinceWildlifeKilled = 0;
+    }
     private void OnEnable()
     {
         GameEvents.OnTreePlaced += OnTreePlaced;
@@ -149,6 +181,8 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnRuneDestroyed += OnRuneDestroyed;
         GameEvents.OnBeaconDestroyed += OnBeaconDestroyed;
         GameEvents.OnPopulousUpgrade += OnPopulousUpgrade;
+        GameEvents.OnTreeHit += OnTreeHit;
+        GameEvents.OnWildlifeKilled += OnWildlifeKilled;
     }
 
     private void OnDisable()
@@ -159,5 +193,7 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnRuneDestroyed -= OnRuneDestroyed;
         GameEvents.OnBeaconDestroyed -= OnBeaconDestroyed;
         GameEvents.OnPopulousUpgrade -= OnPopulousUpgrade;
+        GameEvents.OnTreeHit -= OnTreeHit;
+        GameEvents.OnWildlifeKilled -= OnWildlifeKilled;
     }
 }

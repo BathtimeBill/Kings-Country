@@ -129,6 +129,13 @@ public class Tree : GameBehaviour
     {
         audioSource.clip = _SM.GetChopSounds();
         audioSource.Play();
+        if(_GM.timeSinceAttack >= 30)
+        {
+            Vector3 treeLocation = new Vector3(0, 50, 0);
+            GameObject ws = Instantiate(_GM.warningSprite, transform.position + treeLocation, Quaternion.Euler(90f, 0f, 0f));
+            Destroy(ws, 5);
+        }
+        GameEvents.ReportOnTreeHit();
     }
     
     private void Die()

@@ -33,12 +33,12 @@ public class HorgrManager : Singleton<HorgrManager>
     {
         if(playerOwns)
         {
-            _GM.maegen += 5;
+            _GM.maegen += 25;
             Instantiate(maegen5, horgrLocation, Quaternion.Euler(-90f, 0, 0));
         }
         if(enemyOwns)
         {
-            _GM.maegen -= 5;
+            _GM.maegen -= 25;
             Instantiate(maegenLoss, horgrLocation, Quaternion.Euler(-90f, 0, 0));
         }
 

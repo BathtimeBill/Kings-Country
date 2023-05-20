@@ -222,6 +222,12 @@ public class WildlifeAI : GameBehaviour
         GameObject go;
         go = Instantiate(deadPrefab, transform.position, transform.rotation);
         Destroy(go, 15);
+        if (_GM.timeSinceWildlifeKilled >= 30)
+        {
+            Vector3 wildlifeLocation = new Vector3(0, 50, 0);
+            GameObject ws = Instantiate(_GM.warningSprite, transform.position + wildlifeLocation, Quaternion.Euler(90f, 0f, 0f));
+            Destroy(ws, 5);
+        }
         GameEvents.ReportOnWildlifeKilled();
         Destroy(gameObject);
     }

@@ -8,16 +8,22 @@ public class TooltipManager : Singleton<TooltipManager>
     public TextMeshProUGUI textComponent;
     public TextMeshProUGUI titleComponent;
     public GameObject tooltipBox;
+    public GameObject tooltipBoxTop;
+    public TextMeshProUGUI textComponentTop;
+    public TextMeshProUGUI titleComponentTop;
 
     void Start()
     {
         Cursor.visible = true;
         tooltipBox.SetActive(false);
+        tooltipBoxTop.SetActive(false);
+
     }
 
     void Update()
     {
         tooltipBox.transform.position = Input.mousePosition;
+        tooltipBoxTop.transform.position = Input.mousePosition;
     }
 
     public void SetAndShowTooltip(string message, string title)
@@ -26,6 +32,13 @@ public class TooltipManager : Singleton<TooltipManager>
         textComponent.text = message;
         titleComponent.text = title;
     }
+    public void SetAndShowTooltipTop(string message, string title)
+    {
+        tooltipBoxTop.SetActive(true);
+        textComponentTop.text = message;
+        titleComponentTop.text = title;
+    }
+
     public void SetAndShowPopulousTooltip()
     {
         tooltipBox.SetActive(true);
@@ -41,5 +54,11 @@ public class TooltipManager : Singleton<TooltipManager>
         tooltipBox.SetActive(false);
         textComponent.text = string.Empty;
         titleComponent.text = string.Empty;
+    }
+    public void HideTooltipTop()
+    {
+        tooltipBoxTop.SetActive(false);
+        textComponentTop.text = string.Empty;
+        titleComponentTop.text = string.Empty;
     }
 }

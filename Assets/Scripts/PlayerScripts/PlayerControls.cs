@@ -146,6 +146,8 @@ public class PlayerControls : Singleton<PlayerControls>
         if (_GM.playmode != PlayMode.TreeMode)
         {
             SelectTreeMode();
+            _UI.audioSource.clip = _SM.buttonClickSound;
+            _UI.audioSource.Play();
         }
         else
         {
@@ -158,6 +160,8 @@ public class PlayerControls : Singleton<PlayerControls>
         if (_GM.playmode != PlayMode.RuneMode)
         {
             SelectRuneMode();
+            _UI.audioSource.clip = _SM.buttonClickSound;
+            _UI.audioSource.Play();
         }
         else
         {
@@ -170,6 +174,8 @@ public class PlayerControls : Singleton<PlayerControls>
         if (_GM.playmode != PlayMode.BeaconMode)
         {
             SelectBeaconMode();
+            _UI.audioSource.clip = _SM.buttonClickSound;
+            _UI.audioSource.Play();
         }
         else
         {
@@ -182,6 +188,8 @@ public class PlayerControls : Singleton<PlayerControls>
         if (_GM.playmode != PlayMode.StormerMode)
         {
             SelectStormerMode();
+            _UI.audioSource.clip = _SM.buttonClickSound;
+            _UI.audioSource.Play();
         }
         else
         {
