@@ -4937,6 +4937,51 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &954527314223567369
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3881609067542314898}
+  - component: {fileID: 7281084530513267306}
+  m_Layer: 0
+  m_Name: RaycastCollider
+  m_TagString: Horgr
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3881609067542314898
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954527314223567369}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 1.3, y: 7.7, z: 4.1}
+  m_LocalScale: {x: 1, y: 0.99999976, z: 0.99999976}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5369669543925639648}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &7281084530513267306
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954527314223567369}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 19.4
+  m_Center: {x: -0.9709892, y: -0.55634224, z: 6.94033}
 --- !u!1 &1453933700362403595
 GameObject:
   m_ObjectHideFlags: 0
@@ -15198,6 +15243,7 @@ Transform:
   - {fileID: 5799433384603538284}
   - {fileID: 4785122167260805407}
   - {fileID: 6359149934436272878}
+  - {fileID: 3881609067542314898}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
@@ -15283,6 +15329,8 @@ MonoBehaviour:
   playerHasControl: 0
   playerControlFX: {fileID: 17239266238521030}
   enemyControlFX: {fileID: 2911154980770579604}
+  spawnLocation: {fileID: 8117545453582892522}
+  skessa: {fileID: 1071894615449563641, guid: 6970be9935fbb8b45acfc703b41f4fba, type: 3}
   slider: {fileID: 2502583193198457557}
   fill: {fileID: 6490193275440297089}
   mapIcon: {fileID: 61580241154110606}

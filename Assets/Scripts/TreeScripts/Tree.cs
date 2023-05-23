@@ -34,23 +34,19 @@ public class Tree : GameBehaviour
     void Start()
     {
         DecideType();
-        int amount;
+        //int amount;
         health = 100;
         
         StartCoroutine(AddMaegen());
-        for (amount = 0; amount < amountOfDecor; amount++)
-        {
-            ForestDecorSpawn();
-        }
+        //for (amount = 0; amount < amountOfDecor; amount++)
+        //{
+        //    ForestDecorSpawn();
+        //}
         if(startingTree)
         {
             energyMultiplier = 1;
         }
-        else
-        {
-            //audioSource.Play();
-            //energyMultiplier = _TPlace.energyMultiplier;
-        }
+
         transform.rotation = Quaternion.Euler(0, RandomYAxisRotation(), 0);
         _UI.CheckTreeUI();
     }

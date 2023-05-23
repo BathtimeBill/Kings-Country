@@ -422,6 +422,26 @@ public class Unit : GameBehaviour
 
 
                 break;
+            case UnitType.VolvaUnit:
+                if (_UM.borkrskinn)
+                {
+                    health = 90;
+                    maxHealth = 90;
+                }
+                else
+                {
+                    health = 65;
+                    maxHealth = 65;
+                }
+                if (_UM.flugafotr)
+                {
+                    navAgent.speed = 50;
+                }
+                else
+                {
+                    navAgent.speed = 40;
+                }
+                break;
         }
 
     }

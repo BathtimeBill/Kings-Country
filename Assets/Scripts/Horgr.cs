@@ -13,6 +13,8 @@ public class Horgr : GameBehaviour
     public bool playerHasControl;
     public GameObject playerControlFX;
     public GameObject enemyControlFX;
+    public GameObject spawnLocation;
+    public GameObject skessa;
     public Slider slider;
     public Image fill;
     public SpriteRenderer mapIcon;
@@ -121,4 +123,27 @@ public class Horgr : GameBehaviour
         return enemyTimeLeft / enemyMaxTimeLeft;
     }
 
+    //public void SpawnSkessa()
+    //{
+    //    if(playerHasControl == true)
+    //    {
+    //        if (_GM.maegen >= 200)
+    //        {
+    //            Instantiate(skessa, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
+    //            _GM.maegen -= 200;
+    //            _UI.CheckPopulousUI();
+    //        }
+    //        else
+    //        {
+    //            _UI.SetErrorMessageInsufficientResources();
+    //            _PC.Error();
+
+    //        }
+    //    }
+    //    if (playerHasControl == false)
+    //    {
+    //        _UI.SetErrorMessageNeedToClaimHorgr();
+    //        _PC.Error();
+    //    }
+    //}
 }

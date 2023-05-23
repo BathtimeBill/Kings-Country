@@ -11,6 +11,7 @@ public class GameManager : Singleton<GameManager>
     public GameState gameState;
     public GameObject[] trees;
     public bool isPaused;
+    public int startingMaegen;
 
     [Header("Waves")]
     public int currentWave;
@@ -36,6 +37,7 @@ public class GameManager : Singleton<GameManager>
     public float satyrDamage;
     public float orcusDamage;
     public float leshyDamage;
+    public float skessaDamage;
 
     [Header("Horgr")]
     public bool horgrClaimedByPlayer;
@@ -48,7 +50,7 @@ public class GameManager : Singleton<GameManager>
     void Start()
     {
         Time.timeScale = 1;
-        maegen = 300;
+        maegen = startingMaegen;
         currentWave = 0;
         playmode = PlayMode.DefaultMode;
         gameState = GameState.Play;
@@ -58,6 +60,7 @@ public class GameManager : Singleton<GameManager>
         satyrDamage = 15;
         orcusDamage = 25;
         leshyDamage = 60;
+        skessaDamage = 40;
     }
 
     private void Update()
@@ -123,6 +126,7 @@ public class GameManager : Singleton<GameManager>
         satyrDamage += satyrDamage * 0.3f;
         orcusDamage += orcusDamage * 0.3f;
         leshyDamage += leshyDamage * 0.3f;
+        skessaDamage += skessaDamage * 0.3f;
     }
 
     //When a rune has been depleted, we wait until the end of the frame and update the rune count and UI.

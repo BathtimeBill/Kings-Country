@@ -265,6 +265,7 @@ public class PlayerControls : Singleton<PlayerControls>
                 beaconPlacement.SetActive(false);
                 treePercentageModifier.SetActive(false);
                 _UI.homeTreePanel.SetActive(true);
+                _UI.horgrPanel.SetActive(false);
                 _UI.maegenCost.SetActive(false);
                 _UI.wildlifeCost.SetActive(false);
                 _UI.runeToolSelectionBox.SetActive(false);
@@ -277,6 +278,7 @@ public class PlayerControls : Singleton<PlayerControls>
             else
             {
                 _UI.homeTreePanel.SetActive(false);
+                _UI.horgrPanel.SetActive(false);
                 _UI.audioSource.clip = _SM.closeMenuSound;
                 _UI.audioSource.Play();
             }
@@ -302,13 +304,7 @@ public class PlayerControls : Singleton<PlayerControls>
         }
         if (Input.GetMouseButtonDown(0))
         {
-            //if(mouseOverMap == true)
-            //{
-            //    Ray ray = mapCam.ScreenPointToRay(Input.mousePosition);
-            //    RaycastHit hitPoint;
-            //    if (Physics.Raycast(ray, out hitPoint))
-            //    transform.position = hitPoint.point;
-            //}
+
 
             if (_GM.playmode == PlayMode.TreeMode)
             {
@@ -510,11 +506,23 @@ public class PlayerControls : Singleton<PlayerControls>
         if (Physics.Raycast(ray, out hitPoint) && hitPoint.collider.tag == "Home Tree")
         {
             if (_GM.playmode == PlayMode.DefaultMode)
+            {
                 _UI.homeTreePanel.SetActive(true);
+                _UI.horgrPanel.SetActive(false);
+            }
+
             _UI.audioSource.clip = _SM.openMenuSound;
             _UI.audioSource.Play();
         }
-
+        if (Physics.Raycast(ray, out hitPoint) && hitPoint.collider.tag == "Horgr")
+        {
+            Debug.Log("Clicked on Horgr");
+            if (_GM.playmode == PlayMode.DefaultMode)
+                _UI.horgrPanel.SetActive(true);
+            _UI.homeTreePanel.SetActive(false);
+            _UI.audioSource.clip = _SM.openMenuSound;
+            _UI.audioSource.Play();
+        }
 
     }
 

@@ -139,7 +139,11 @@ public class Hunter : GameBehaviour
             else
             TakeDamage(_GM.leshyDamage);
         }
-        if(other.tag == "Beacon")
+        if (other.tag == "PlayerWeapon4")
+        {
+            TakeDamage(_GM.skessaDamage);
+        }
+        if (other.tag == "Beacon")
         {
             animator.SetTrigger("Cheer" + RandomCheerAnim());
             hasArrivedAtBeacon = true;

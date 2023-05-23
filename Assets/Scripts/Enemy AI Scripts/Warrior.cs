@@ -195,6 +195,10 @@ public class Warrior : GameBehaviour
         {
             TakeDamage(_GM.leshyDamage);
         }
+        if (other.tag == "PlayerWeapon4")
+        {
+            TakeDamage(_GM.skessaDamage);
+        }
         if (other.tag == "Beacon")
         {
             animator.SetTrigger("Cheer" + RandomCheerAnim());

@@ -16,6 +16,7 @@ public class UIManager : Singleton<UIManager>
     public GameObject homeTreePanel;
     public GameObject homeTreeUnitPanel;
     public GameObject homeTreeUpgradePanel;
+    public GameObject horgrPanel;
     public GameObject GameOverPanel;
     public GameObject pausePanel;
     public GameObject settingsPanel;
@@ -146,6 +147,12 @@ public class UIManager : Singleton<UIManager>
         audioSource.clip = _SM.closeMenuSound;
         audioSource.Play();
     }
+    public void CloseHorgrMenu()
+    {
+        horgrPanel.SetActive(false);
+        audioSource.clip = _SM.closeMenuSound;
+        audioSource.Play();
+    }
     public void OpenWinPanel()
     {
         winPanel.SetActive(true);
@@ -219,6 +226,10 @@ public class UIManager : Singleton<UIManager>
     public void SetErrorMessageYourWildlifeIsUnderAttack()
     {
         errorText.text = "Your wildlife is under attack!";
+    }
+    public void SetErrorMessageNeedToClaimHorgr()
+    {
+        errorText.text = "You need to claim the Horgr";
     }
     public void OnBeaconPlaced()
     {

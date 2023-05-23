@@ -162,7 +162,11 @@ public class Logger : GameBehaviour
         {
             Launch();
         }
-        if(other.tag == "Beacon")
+        if (other.tag == "PlayerWeapon4")
+        {
+            TakeDamage(_GM.skessaDamage);
+        }
+        if (other.tag == "Beacon")
         {
             if(woodcutterType != WoodcutterType.LogCutter)
             {
