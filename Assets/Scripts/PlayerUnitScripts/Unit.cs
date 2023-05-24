@@ -25,8 +25,6 @@ public class Unit : GameBehaviour
     public float distanceToClosestEnemy;
     public GameObject pointer;
     public bool hasStopped = false;
-
-
     [Header("Death Objects")]
     public GameObject deadSatyr;
     public GameObject bloodParticle1;
@@ -156,12 +154,27 @@ public class Unit : GameBehaviour
         {
             health = maxHealth;
         }
+        if(Input.GetKeyDown(KeyCode.T))
+        {
+            Vector3 offset = new Vector3(0, -1.5f, 0);
+            if (unitType == UnitType.HuldraUnit && isSelected)
+            {
+                Instantiate(towerPrefab, transform.position + offset, Quaternion.Euler(-90,0,0));
+                UnitSelection.Instance.DeselectAll();
+                UnitSelection.Instance.unitList.Remove(gameObject);
+                Destroy(gameObject);
+            }
 
+        }
     }
     
     public void PlayFootstepSound()
     {
         PlaySound(_SM.GetForestFootstepSound());
+    }
+    public void PlayFlapSound()
+    {
+        PlaySound(_SM.GetFlapSound());
     }
     public void PlayLeshyFootstepSound()
     {
@@ -442,6 +455,46 @@ public class Unit : GameBehaviour
                     navAgent.speed = 40;
                 }
                 break;
+            case UnitType.HuldraUnit:
+                if (_UM.borkrskinn)
+                {
+                    health = 65;
+                    maxHealth = 65;
+                }
+                else
+                {
+                    health = 40;
+                    maxHealth = 40;
+                }
+                if (_UM.flugafotr)
+                {
+                    navAgent.speed = 40;
+                }
+                else
+                {
+                    navAgent.speed = 30;
+                }
+                break;
+            case UnitType.Tower:
+                if (_UM.borkrskinn)
+                {
+                    health = 130;
+                    maxHealth = 130;
+                }
+                else
+                {
+                    health = 100;
+                    maxHealth = 100;
+                }
+                if (_UM.flugafotr)
+                {
+                    navAgent.speed = 0;
+                }
+                else
+                {
+                    navAgent.speed = 0;
+                }
+                break;
         }
 
     }
@@ -484,7 +537,7 @@ public class Unit : GameBehaviour
     {
         if (inCombat == false)
         {
-            animator.SetBool("isAttacking", false);
+            animator.SetBool("inCombat", false);
         }
         else
         {

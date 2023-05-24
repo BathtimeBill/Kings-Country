@@ -15,6 +15,7 @@ public class Horgr : GameBehaviour
     public GameObject enemyControlFX;
     public GameObject spawnLocation;
     public GameObject skessa;
+    public GameObject huldra;
     public Slider slider;
     public Image fill;
     public SpriteRenderer mapIcon;
@@ -23,10 +24,12 @@ public class Horgr : GameBehaviour
     public Color neutralColour = Color.white;
     public float radius;
     public Vector3 centre;
+    public AudioSource audioSource;
 
     void Start()
     {
         centre = transform.position;
+        audioSource = GetComponent<AudioSource>(); 
     }
 
     private void Update()

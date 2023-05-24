@@ -95,7 +95,11 @@ public class UnitDrag : GameBehaviour
         {
             if (selectionBox.Contains(myCam.WorldToScreenPoint(unit.transform.position)))
             {
-                UnitSelection.Instance.DragSelect(unit);
+                if (unit.gameObject.tag != "Tower")
+                {
+                    UnitSelection.Instance.DragSelect(unit);
+                }
+                
             }
         }
     }

@@ -6,9 +6,10 @@ public class TowerProjectile : GameBehaviour
 
 {
     public GameObject particleEffect;
+
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -18,7 +19,12 @@ public class TowerProjectile : GameBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        Instantiate(particleEffect, transform.position, transform.rotation);
-        Destroy(gameObject);
+        Debug.Log("Hit Something");
+        if(collision.collider.tag == "Ground")
+        {
+            Instantiate(particleEffect, transform.position, transform.rotation);
+            Destroy(gameObject);
+        }
+
     }
 }

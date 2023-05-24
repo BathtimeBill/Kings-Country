@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2081501898}
   - component: {fileID: 2081501901}
   - component: {fileID: 2081501900}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: SoundFXPool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2557,7 +2557,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 143
+  m_VersionIndex: 146
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2782,7 +2782,8 @@ MonoBehaviour:
   inCombat: 0
   SFXPool: {fileID: 2081501896}
   soundPoolCurrent: 0
-  soundPool: []
+  soundPool:
+  - {fileID: 2081501898}
   vocalSource: {fileID: 0}
   spellSource: {fileID: 0}
 --- !u!195 &1071894615449563646

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Tower : GameBehaviour
 {
@@ -9,16 +10,26 @@ public class Tower : GameBehaviour
     public Vector3 closestEnemy;
     public float projectileSpeed;
     public float distanceToClosestEnemy;
+    public Slider slider;
+
+    public float health;
+    public float maxHealth;
+
+    public GameObject woodParticle;
+    public GameObject explosionParticle;
+    public GameObject spawnParticleEffect;
 
     void Start()
     {
         StartCoroutine(ShootProjectile());
+        UnitSelection.Instance.unitList.Add(gameObject);
+        slider.value = CalculateHealth();
+        Instantiate(spawnParticleEffect, transform.position, transform.rotation);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
 
         if (_EM.enemies.Length != 0)
         {
@@ -27,7 +38,7 @@ public class Tower : GameBehaviour
             distanceToClosestEnemy = Vector3.Distance(closestEnemy, transform.position);
         }
         else
-            return;
+            distanceToClosestEnemy = 100;
 
     }
 
@@ -64,5 +75,67 @@ public class Tower : GameBehaviour
         }
         else
             return trans;
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Axe1")
+        {
+            TakeDamage(10);
+            other.enabled = false;
+        }
+        if (other.tag == "Axe2")
+        {
+            TakeDamage(20);
+            other.enabled = false;
+        }
+        if (other.tag == "Sword2")
+        {
+            TakeDamage(35);
+
+            other.enabled = false;
+        }
+        if (other.tag == "Sword3")
+        {
+            TakeDamage(50);
+            other.enabled = false;
+        }
+        if (other.tag == "Arrow")
+        {
+            TakeDamage(15);
+            Destroy(other.gameObject);
+        }
+        if (other.tag == "Arrow2")
+        {
+            TakeDamage(35);
+            Destroy(other.gameObject);
+        }
+    }
+    public void TakeDamage(float damage)
+    {
+        Instantiate(woodParticle, transform.position, transform.rotation);
+        health -= damage;
+        Die();
+        slider.value = slider.value = CalculateHealth();
+    }
+    private void Die()
+    {
+        if (health <= 0)
+        {
+            if (_HM.units.Contains(gameObject))
+            {
+                _HM.units.Remove(gameObject);
+            }
+            UnitSelection.Instance.DeselectAll();
+            UnitSelection.Instance.unitList.Remove(gameObject);
+            GameObject go;
+            go = Instantiate(explosionParticle, transform.position, transform.rotation);
+            Destroy(go, 15);
+            _UI.CheckPopulousUI();
+            Destroy(gameObject);
+        }
+    }
+    float CalculateHealth()
+    {
+        return health / maxHealth;
     }
 }

@@ -37,4 +37,8 @@ public class UnitWeapon : GameBehaviour
         Instantiate(stompParticle, rightFoot.transform.position, Quaternion.Euler(90, 0, 0));
         gameObject.GetComponentInParent<Unit>().PlayLeshyStompSound();
     }
+    public void Flap()
+    {
+        gameObject.GetComponentInParent<Unit>().PlayFlapSound();
+    }
 }

@@ -26,6 +26,7 @@ public class UnitSelection : MonoBehaviour
         {
             DeselectAll();
         }
+
     }
 
     public void ClickSelect(GameObject unitToAdd)

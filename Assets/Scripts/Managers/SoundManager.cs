@@ -21,6 +21,7 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip[] forestFootsteps;
     public AudioClip[] knightFootsteps;
     public AudioClip[] leshyFootsteps;
+    public AudioClip[] flapSounds;
     [Header("UI Sounds")]
     public AudioClip buttonClickSound;
     public AudioClip gameOverSound;
@@ -44,6 +45,10 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip GetLightningSound()
     {
         return lightningSounds[Random.Range(0, lightningSounds.Length)];
+    }
+    public AudioClip GetFlapSound()
+    {
+        return flapSounds[Random.Range(0, flapSounds.Length)];
     }
     public AudioClip GetTreeFallSound()
     {

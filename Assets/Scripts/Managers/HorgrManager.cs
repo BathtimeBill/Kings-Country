@@ -57,13 +57,14 @@ public class HorgrManager : Singleton<HorgrManager>
 
     public void SpawnSkessaManager()
     {
-        if (horgrObject.GetComponent<Horgr>().playerHasControl == true)
+        if (playerOwns)
         {
-            if (_GM.maegen >= 200)
+            if (_GM.maegen >= 200 && _GM.populous < _GM.maxPopulous)
             {
                 Instantiate(horgrObject.GetComponent<Horgr>().skessa, horgrObject.GetComponent<Horgr>().spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
                 _GM.maegen -= 200;
                 _UI.CheckPopulousUI();
+                horgrObject.GetComponent<Horgr>().audioSource.Play();
             }
             else
             {
@@ -72,7 +73,31 @@ public class HorgrManager : Singleton<HorgrManager>
 
             }
         }
-        if (horgrObject.GetComponent<Horgr>().playerHasControl == false)
+       else
+        {
+            _UI.SetErrorMessageNeedToClaimHorgr();
+            _PC.Error();
+        }
+    }
+    public void SpawnHuldraManager()
+    {
+        if (playerOwns)
+        {
+            if (_GM.maegen >= 500 && _GM.populous < _GM.maxPopulous)
+            {
+                Instantiate(horgrObject.GetComponent<Horgr>().huldra, horgrObject.GetComponent<Horgr>().spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
+                _GM.maegen -= 500;
+                _UI.CheckPopulousUI();
+                horgrObject.GetComponent<Horgr>().audioSource.Play();
+            }
+            else
+            {
+                _UI.SetErrorMessageInsufficientResources();
+                _PC.Error();
+
+            }
+        }
+        else
         {
             _UI.SetErrorMessageNeedToClaimHorgr();
             _PC.Error();

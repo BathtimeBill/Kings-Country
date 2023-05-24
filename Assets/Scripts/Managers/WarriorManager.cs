@@ -30,14 +30,12 @@ public class WarriorManager : GameBehaviour
         }
         if (_GM.currentWave >= 5 && _GM.currentWave < 7 && _GM.agroWave)
         {
-            Instantiate(dreng, spawnPoints[rndSpawn].position, transform.rotation);
             Instantiate(berserkr, spawnPoints[rndSpawn].position, transform.rotation);
             Instantiate(dreng, spawnPoints[rndSpawn].position, transform.rotation);
             Instantiate(berserkr, spawnPoints[rndSpawn].position, transform.rotation);
         }
         if (_GM.currentWave >= 7 && _GM.currentWave < 10 && _GM.agroWave)
         {
-            Instantiate(dreng, spawnPoints[rndSpawn].position, transform.rotation);
             Instantiate(knight, spawnPoints[rndSpawn].position, transform.rotation);
             Instantiate(berserkr, spawnPoints[rndSpawn].position, transform.rotation);
             Instantiate(dreng, spawnPoints[rndSpawn].position, transform.rotation);
@@ -47,8 +45,8 @@ public class WarriorManager : GameBehaviour
         }
         if (_GM.currentWave >= 10 && _GM.agroWave)
         {
-            Instantiate(dreng, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(berserkr, spawnPoints[rndSpawn].position, transform.rotation);
+
+
             Instantiate(berserkr, spawnPoints[rndSpawn].position, transform.rotation);
             Instantiate(knight, spawnPoints[rndSpawn].position, transform.rotation);
             Instantiate(dreng, spawnPoints[rndSpawn].position, transform.rotation);

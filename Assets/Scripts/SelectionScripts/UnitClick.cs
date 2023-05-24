@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class UnitClick : MonoBehaviour
+public class UnitClick : GameBehaviour
 {
     private Camera myCam;
 
@@ -37,6 +37,7 @@ public class UnitClick : MonoBehaviour
             {
                 if (!Input.GetKey(KeyCode.LeftShift))
                 {
+                    if(_PC.mouseOverMap == false)
                     UnitSelection.Instance.DeselectAll();
                 }
             }

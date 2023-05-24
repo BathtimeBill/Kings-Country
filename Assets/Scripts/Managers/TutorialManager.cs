@@ -23,7 +23,7 @@ public class TutorialManager : GameBehaviour
     public Sprite fourSprite;
     public Sprite fiveSprite;
     public Sprite sixSprite;
-
+    public Sprite sevenSprite;
 
 
     void Start()
@@ -92,7 +92,13 @@ public class TutorialManager : GameBehaviour
         {
             tutorialImage.sprite = sixSprite;
             tutTitle.text = "Horgr";
-            tutContextText.text = "This is a magical shrine that is valuable to both the humans and the forest. At the beginning of the game, a Horgr is placed randomly on the map and it belongs to no one. To claim one, the player or the enemy needs to have a unit close to it where a slider will slowly fill up, at which point the horgr is claimed. Once claimed, the player will recieve a regular income of Maegen. If the enemy claims it, they will leave some units there to defend it and all their units damage and health are buffed by 30%.";
+            tutContextText.text = "This is a magical shrine that is valuable to both the humans and the forest. At the beginning of the game, a Horgr is placed randomly on the map and it belongs to no one. To claim one, the player or the enemy needs to have a unit close to it where a slider will slowly fill up, at which point the horgr is claimed. Once claimed, the player will recieve a regular income of Maegen and the ability to spawn unique units. If the enemy claims it, they will leave some units there to defend it and all their units damage and health are buffed by 30%.";
+        }
+        if(tutorialCount == 7)
+        {
+            tutorialImage.sprite = sevenSprite;
+            tutTitle.text = "Pickups";
+            tutContextText.text = "Throughout the game, you may notice various glowing objects throughout your forest. These are the Maegen and Health pickups. By sending a unit to collect these, the player will wither recieve a winfall of Maegen or it will heal their unit.";
         }
     }
 

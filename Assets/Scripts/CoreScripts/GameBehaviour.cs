@@ -61,6 +61,7 @@ public enum UnitType
     LeshyUnit,
     HuldraUnit,
     VolvaUnit,
+    Tower,
 }
 public enum WildlifeType
 {
