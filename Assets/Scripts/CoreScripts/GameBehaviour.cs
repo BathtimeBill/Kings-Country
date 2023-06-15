@@ -6,6 +6,7 @@ public class GameBehaviour : MonoBehaviour
 {
     protected static GameManager _GM { get { return GameManager.instance; } }
     protected static HorgrManager _HM { get { return HorgrManager.instance; } }
+    protected static HutManager _HUTM { get { return HutManager.instance; } }
     protected static UpgradeManager _UM { get { return UpgradeManager.instance; } }
     protected static MusicManager _MM { get { return MusicManager.instance; } }
     protected static EnemyManager _EM { get { return EnemyManager.instance; } }

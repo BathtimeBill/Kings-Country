@@ -9,6 +9,7 @@ public class HomeTree : GameBehaviour
     public float maxHealth;
     public Slider slider;
     public GameObject hitParticle;
+    public GameObject spawnParticle;
     public GameObject particleSpawnPoint;
     public GameObject satyr;
     public GameObject orcus;
@@ -36,7 +37,7 @@ public class HomeTree : GameBehaviour
             {
                 _GM.maegen -= 75;
                 Instantiate(satyr, spawnLocation.transform.position, spawnLocation.transform.rotation);
-                SummonSound();
+                Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _UI.CheckPopulousUI();
             }
             else
@@ -60,7 +61,7 @@ public class HomeTree : GameBehaviour
             {
                 _GM.maegen -= 150;
                 Instantiate(orcus, spawnLocation.transform.position, spawnLocation.transform.rotation);
-                SummonSound();
+                Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _UI.CheckPopulousUI();
             }
             else
@@ -84,7 +85,7 @@ public class HomeTree : GameBehaviour
             {
                 _GM.maegen -= 1000;
                 Instantiate(leshy, spawnLocation.transform.position, spawnLocation.transform.rotation);
-                SummonSound();
+                Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _UI.CheckPopulousUI();
             }
             else

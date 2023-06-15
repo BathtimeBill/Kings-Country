@@ -69,11 +69,25 @@ public class GameManager : Singleton<GameManager>
         timeSinceWildlifeKilled += Time.deltaTime;
     }
 
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+    public void PlayGame()
+    {
+        Time.timeScale = 1;
+    }
+    public void SpeedGame()
+    {
+        Time.timeScale = 3;
+    }
+
     //The wave system is managed by two coroutines. The 'agro' wave lasts 1 minute, during which enemies are spawned in (EnemyManager) and then a break period of 4 mins. 
     IEnumerator ManageWaveAgro()
     {
         agroWave = true;
         currentWave++;
+        _UI.TriggerWaveTextAnimation();
         _UI.CheckWave();
         yield return new WaitForSeconds(agroWaveLength);
         StartCoroutine(ManageWaveBreak());
@@ -150,7 +164,7 @@ public class GameManager : Singleton<GameManager>
     }
     private void OnPopulousUpgrade()
     {
-        maxPopulous += 10;
+        maxPopulous += 5;
         _UI.CheckPopulousUI();
     }
 

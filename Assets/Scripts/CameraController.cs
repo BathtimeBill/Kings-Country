@@ -27,6 +27,9 @@ public class CameraController : GameBehaviour
     public float minY;
     public float maxY;
 
+    public bool hasReachMaxZ;
+    public bool hasReachMaxY;
+
     private void Start()
     {
         newPosition = transform.position;
@@ -45,7 +48,6 @@ public class CameraController : GameBehaviour
         {
             return;
         }
-
     }
 
     void HandleMouseInput()
@@ -54,6 +56,7 @@ public class CameraController : GameBehaviour
         {
             newZoom += Input.mouseScrollDelta.y * zoomAmount;
         }
+
 
         //newZoom.z = Mathf.Clamp(newZoom.z, minZ, maxZ);
         //newZoom.y = Mathf.Clamp(newZoom.y, minY, maxY);

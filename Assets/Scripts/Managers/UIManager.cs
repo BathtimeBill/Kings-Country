@@ -57,8 +57,12 @@ public class UIManager : Singleton<UIManager>
     public GameObject wildlifeCost;
     public TMP_Text wildlifeCostText;
 
+    public GameObject transformText;
+
     public AudioSource audioSource;
     public AudioSource warningAudioSource;
+
+    public Animator waveTextAnimator;
 
     void Start()
     {
@@ -101,6 +105,19 @@ public class UIManager : Singleton<UIManager>
                 stormerPlaced = false;
             }
         }
+
+    }
+    public void TriggerWaveTextAnimation()
+    {
+        waveTextAnimator.SetTrigger("newWave");
+    }
+    public void EnableTowerText()
+    {
+        transformText.SetActive(true);
+    }
+    public void DisableTowerText()
+    {
+        transformText.SetActive(false);
     }
     float CalculateTimeLeft()
     {

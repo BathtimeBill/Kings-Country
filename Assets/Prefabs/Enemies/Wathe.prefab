@@ -26,12 +26,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3610551259248252685}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 10.71, z: 0}
-  m_LocalScale: {x: 2.0532513, y: 0.6959067, z: 2.0532513}
+  m_LocalPosition: {x: 0, y: 7.2497115, z: 0}
+  m_LocalScale: {x: 1.3898675, y: 0.47106662, z: 1.3898675}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6651862902898196268}
-  m_RootOrder: 0
+  m_Father: {fileID: 114173542390561773}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7683675794807793802
 MeshFilter:
@@ -470,7 +470,6 @@ Transform:
   m_LocalScale: {x: 1.290407, y: 1.290407, z: 1.290407}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2147794135520337331}
   - {fileID: 114173542390561773}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -591,6 +590,9 @@ MonoBehaviour:
   distanceFromClosestWildlife: 0
   closestUnit: {fileID: 0}
   distanceFromClosestUnit: 0
+  horgr: {fileID: 0}
+  distanceFromClosestHorgr: 0
+  hasArrivedAtHorgr: 0
   SFXPool: {fileID: 5977132213885345927}
   soundPoolCurrent: 0
   soundPool: []
@@ -758,7 +760,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: a420ff61fffa87b49be9818f83aef375,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a420ff61fffa87b49be9818f83aef375,
         type: 3}
@@ -1023,6 +1025,7 @@ MonoBehaviour:
   distanceFromWildlife: 0
   audioSource: {fileID: 5270889503164640047}
   audioClip: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!4 &6639288339921897925 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6502182839619065283, guid: a420ff61fffa87b49be9818f83aef375,

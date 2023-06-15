@@ -10,17 +10,30 @@ public class HorgrManager : Singleton<HorgrManager>
     public GameObject[] spawnLocations;
     public GameObject horgr;
     public GameObject horgrObject;
+    public GameObject spawnParticle;
     public Vector3 horgrLocation;
+
+    public GameObject spawnLocation;
+
+    public GameObject skessa;
+    public GameObject huldra;
 
     public GameObject maegen5;
     public GameObject maegenLoss;
 
     public bool playerOwns;
     public bool enemyOwns;
+
+    private new void Awake()
+    {
+        //horgrLocation = go.transform.position;
+        //horgrObject = GameObject.FindGameObjectWithTag("Horgr");
+        //spawnLocation = horgrObject.GetComponent<Horgr>().spawnLocation;
+    }
+
     void Start()
     {
-        GameObject go =Instantiate(horgr, spawnLocations[RandomSpawnLocation()].transform.position, Quaternion.Euler(-90, 0, 0));
-        horgrLocation = go.transform.position;
+        GameObject go = Instantiate(horgr, spawnLocations[RandomSpawnLocation()].transform.position, Quaternion.Euler(-90, 0, 0));
         StartCoroutine(AddMaegen());
         StartCoroutine(WaitToReferenceHorgr());
     }
@@ -50,21 +63,25 @@ public class HorgrManager : Singleton<HorgrManager>
     }
     IEnumerator WaitToReferenceHorgr()
     {
-        yield return new WaitForEndOfFrame();
-        horgrObject = GameObject.FindGameObjectWithTag("Horgr");
+        yield return new WaitForSeconds(1);
+        Debug.Log("Attempting to assign Horgr object...");
+        //horgrObject = GameObject.FindGameObjectWithTag("Horgr");
+        //spawnLocation = horgrObject.GetComponent<Horgr>().spawnLocation;
+        //transform.position = spawnLocation.transform.position;
     }
 
 
     public void SpawnSkessaManager()
     {
+        horgrObject = GameObject.FindGameObjectWithTag("Horgr");
         if (playerOwns)
         {
             if (_GM.maegen >= 200 && _GM.populous < _GM.maxPopulous)
             {
-                Instantiate(horgrObject.GetComponent<Horgr>().skessa, horgrObject.GetComponent<Horgr>().spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
+                Instantiate(skessa, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
+                Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _GM.maegen -= 200;
                 _UI.CheckPopulousUI();
-                horgrObject.GetComponent<Horgr>().audioSource.Play();
             }
             else
             {
@@ -81,20 +98,20 @@ public class HorgrManager : Singleton<HorgrManager>
     }
     public void SpawnHuldraManager()
     {
+        horgrObject = GameObject.FindGameObjectWithTag("Horgr");
         if (playerOwns)
         {
             if (_GM.maegen >= 500 && _GM.populous < _GM.maxPopulous)
             {
-                Instantiate(horgrObject.GetComponent<Horgr>().huldra, horgrObject.GetComponent<Horgr>().spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
+                Instantiate(huldra, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
+                Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _GM.maegen -= 500;
                 _UI.CheckPopulousUI();
-                horgrObject.GetComponent<Horgr>().audioSource.Play();
             }
             else
             {
                 _UI.SetErrorMessageInsufficientResources();
                 _PC.Error();
-
             }
         }
         else

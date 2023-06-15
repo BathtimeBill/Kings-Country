@@ -2647,6 +2647,7 @@ GameObject:
   - component: {fileID: 1071894615449563644}
   - component: {fileID: 1071894615449563646}
   - component: {fileID: 966169468}
+  - component: {fileID: 1535513121471014108}
   m_Layer: 6
   m_Name: HuldraUnit
   m_TagString: Unit
@@ -2765,7 +2766,7 @@ MonoBehaviour:
   distanceToClosestEnemy: 0
   pointer: {fileID: 0}
   hasStopped: 0
-  deadSatyr: {fileID: 4706057043962962229, guid: 4ae3f37a2a3ec5f449a29af5defe4038,
+  deadSatyr: {fileID: 1071894615449563641, guid: 6f44dd28a5eae884daadfb97ba2b39eb,
     type: 3}
   bloodParticle1: {fileID: 4197850467115213477, guid: 4f3e906bea636e44fa28f67b2439a265,
     type: 3}
@@ -2825,6 +2826,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 1
+--- !u!114 &1535513121471014108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071894615449563641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 685b9296a12a7f746af599b081062486, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1071894615477605823
 GameObject:
   m_ObjectHideFlags: 0

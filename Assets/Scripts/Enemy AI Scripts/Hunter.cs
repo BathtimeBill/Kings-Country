@@ -30,6 +30,12 @@ public class Hunter : GameBehaviour
     public float distanceFromClosestWildlife;
     public Transform closestUnit;
     public float distanceFromClosestUnit;
+
+    [Header("Hut")]
+    public GameObject horgr;
+    public float distanceFromClosestHorgr;
+    public bool hasArrivedAtHorgr;
+
     [Header("Audio")]
     public GameObject SFXPool;
     public int soundPoolCurrent;
@@ -45,12 +51,19 @@ public class Hunter : GameBehaviour
         Setup();
     }
 
+    private void Start()
+    {
+        horgr = GameObject.FindGameObjectWithTag("HutRally");
+    }
+
     void Update()
     {
         //Tracks the closest animal and player unit.
         wildlife = GameObject.FindGameObjectsWithTag("Wildlife");
         closestUnit = GetClosestUnit();
         closestWildlife = GetClosestWildlife();
+        distanceFromClosestHorgr = Vector3.Distance(horgr.transform.position, transform.position);
+
 
         if (UnitSelection.Instance.unitList.Count != 0)
         {
@@ -89,7 +102,7 @@ public class Hunter : GameBehaviour
         {
             case EnemyState.Work:
                 Hunt();
-
+               
                 break;
 
             case EnemyState.Attack:
@@ -100,14 +113,42 @@ public class Hunter : GameBehaviour
                 }
                 Attack();
                 break;
+
             case EnemyState.Beacon:
                 navAgent.stoppingDistance = 0;
                 if (!hasArrivedAtBeacon)
                     navAgent.SetDestination(fyreBeacon.transform.position);
                 else
                     navAgent.SetDestination(transform.position);
-
                 break;
+
+            case EnemyState.Horgr:
+                if (!hasArrivedAtHorgr)
+                    navAgent.SetDestination(horgr.transform.position);
+                else
+                {
+                    if (_HUTM.units.Count > 0)
+                    {
+                        animator.SetBool("hasStoppedHorgr", false);
+                        state = EnemyState.Attack;
+                    }
+                    if (_HUTM.units.Count == 0)
+                    {
+                        animator.SetBool("hasStoppedHorgr", true);
+                        navAgent.SetDestination(transform.position);
+                    }
+
+                }
+                break;
+        }
+
+        if (distanceFromClosestHorgr > distanceFromClosestWildlife)
+        {
+            state = EnemyState.Work;
+        }
+        if (distanceFromClosestHorgr <= distanceFromClosestWildlife)
+        {
+            state = EnemyState.Horgr;
         }
 
         if (navAgent.velocity != Vector3.zero)
@@ -148,6 +189,14 @@ public class Hunter : GameBehaviour
             animator.SetTrigger("Cheer" + RandomCheerAnim());
             hasArrivedAtBeacon = true;
         }
+        if (other.tag == "Hut")
+        {
+            if (!_HUTM.enemies.Contains(gameObject))
+            {
+                _HUTM.enemies.Add(gameObject);
+                StartCoroutine(WaitForHorgr());
+            }
+        }
         if (other.tag == "Explosion")
         {
             Debug.Log("Explosion");
@@ -160,6 +209,21 @@ public class Hunter : GameBehaviour
         }
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Hut")
+        {
+            _HUTM.enemies.Remove(gameObject);
+            hasArrivedAtHorgr = false;
+        }
+    }
+    IEnumerator WaitForHorgr()
+    {
+        Debug.Log("Hut coroutine");
+        yield return new WaitForSeconds(0.5f);
+        animator.SetBool("hasStoppedHorgr", true);
+        hasArrivedAtHorgr = true;
+    }
     private int RandomCheerAnim()
     {
         int rnd = Random.Range(1, 3);
@@ -179,12 +243,17 @@ public class Hunter : GameBehaviour
     {
         if (health <= 0)
         {
+            if (_HUTM.enemies.Contains(gameObject))
+            {
+                _HUTM.enemies.Remove(gameObject);
+            }
             GameObject go;
             go = Instantiate(deathObject, transform.position, transform.rotation);
             Destroy(go, 15);
             Destroy(gameObject);
         }
     }
+
     public void Launch()
     {
         float thrust = 20000f;
@@ -309,15 +378,22 @@ public class Hunter : GameBehaviour
     {
         state = EnemyState.Work;
     }
+    private void OnArrivedAtHut()
+    {
+        state = EnemyState.Attack;
+    }
+
     private void OnEnable()
     {
         GameEvents.OnBeaconPlaced += OnBeaconPlaced;
         GameEvents.OnBeaconDestroyed += OnBeaconDestroyed;
+        GameEvents.OnUnitArrivedAtHut += OnArrivedAtHut;
     }
 
     private void OnDisable()
     {
         GameEvents.OnBeaconPlaced -= OnBeaconPlaced;
         GameEvents.OnBeaconDestroyed -= OnBeaconDestroyed;
+        GameEvents.OnUnitArrivedAtHut -= OnArrivedAtHut;
     }
 }

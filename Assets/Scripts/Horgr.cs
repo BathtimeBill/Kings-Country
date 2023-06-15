@@ -29,7 +29,9 @@ public class Horgr : GameBehaviour
     void Start()
     {
         centre = transform.position;
-        audioSource = GetComponent<AudioSource>(); 
+        audioSource = GetComponent<AudioSource>();
+        _HM.horgrObject = gameObject;
+        _HM.spawnLocation = spawnLocation;
     }
 
     private void Update()
@@ -126,27 +128,8 @@ public class Horgr : GameBehaviour
         return enemyTimeLeft / enemyMaxTimeLeft;
     }
 
-    //public void SpawnSkessa()
-    //{
-    //    if(playerHasControl == true)
-    //    {
-    //        if (_GM.maegen >= 200)
-    //        {
-    //            Instantiate(skessa, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
-    //            _GM.maegen -= 200;
-    //            _UI.CheckPopulousUI();
-    //        }
-    //        else
-    //        {
-    //            _UI.SetErrorMessageInsufficientResources();
-    //            _PC.Error();
-
-    //        }
-    //    }
-    //    if (playerHasControl == false)
-    //    {
-    //        _UI.SetErrorMessageNeedToClaimHorgr();
-    //        _PC.Error();
-    //    }
-    //}
+    public void SpawnSkessa()
+    {
+        Instantiate(skessa, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
+    }
 }

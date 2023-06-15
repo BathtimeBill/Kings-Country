@@ -268,12 +268,22 @@ public class Unit : GameBehaviour
                 _HM.units.Add(gameObject);
             GameEvents.ReportOnUnitArrivedAtHorgr();
         }
+        if (other.tag == "Hut")
+        {
+            if (!_HUTM.units.Contains(gameObject))
+                _HUTM.units.Add(gameObject);
+            GameEvents.ReportOnUnitArrivedAtHut();
+        }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Horgr")
         {
             _HM.units.Remove(gameObject);
+        }
+        if(other.tag == "Hut")
+        {
+            _HUTM.units.Remove(gameObject);
         }
     }
     private void OnTriggerStay(Collider other)
@@ -309,6 +319,10 @@ public class Unit : GameBehaviour
             if (_HM.units.Contains(gameObject))
             {
                 _HM.units.Remove(gameObject);
+            }
+            if(_HUTM.units.Contains(gameObject))
+            {
+                _HUTM.units.Remove(gameObject);
             }
             UnitSelection.Instance.DeselectAll();
             UnitSelection.Instance.unitList.Remove(gameObject);

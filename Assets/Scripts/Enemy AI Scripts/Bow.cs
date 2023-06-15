@@ -13,6 +13,13 @@ public class Bow : GameBehaviour
     [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip audioClip;
+    [Header("Animator")]
+    public Animator animator;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();    
+    }
 
     //This function spawns an arrow object from the left hand of the hunter enemy. It's triggered from the attack animation.
     public void SpawnArrow()
@@ -63,7 +70,19 @@ public class Bow : GameBehaviour
         Destroy(projectileInstance, 2);
         PlayBowReleaseSound();
     }
-
+    public void CheckForEnemies()
+    {
+        if (_HUTM.enemies.Contains(transform.parent.gameObject))
+        {
+            Debug.Log(name + " is in the enemy list");
+            if (_HUTM.units.Count == 0)
+                animator.SetBool("allWildlifeDead", true);
+        }
+        else
+        {
+            Debug.Log(name + " is NOT the enemy list");
+        }
+    }
 
     //Plays sounds and is triggered from animations.
     public void PlayBowDrawSound()

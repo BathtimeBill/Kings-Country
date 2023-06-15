@@ -98,7 +98,7 @@ public class TutorialManager : GameBehaviour
         {
             tutorialImage.sprite = sevenSprite;
             tutTitle.text = "Pickups";
-            tutContextText.text = "Throughout the game, you may notice various glowing objects throughout your forest. These are the Maegen and Health pickups. By sending a unit to collect these, the player will wither recieve a winfall of Maegen or it will heal their unit.";
+            tutContextText.text = "Throughout the game, you may notice various glowing objects throughout your forest. These are the Maegen and Health pickups. By sending a unit to collect these, the player will either recieve a winfall of Maegen or it will heal their unit.";
         }
     }
 
