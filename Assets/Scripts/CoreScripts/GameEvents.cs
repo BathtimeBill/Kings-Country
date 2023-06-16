@@ -20,6 +20,9 @@ public static class GameEvents
 
     public static event Action OnGameOver = null;
 
+    public static event Action OnWaveOver = null;
+    public static event Action OnContinueButton = null;
+    public static event Action OnStartNextRound = null;
 
     public static event Action OnBorkrskinnUpgrade = null;
     public static event Action OnJarnnefiUpgrade = null;
@@ -28,9 +31,51 @@ public static class GameEvents
     public static event Action OnPopulousUpgrade = null;
     public static event Action OnBeaconUpgrade = null;
     public static event Action OnFertileSoilUpgrade = null;
+    public static event Action OnTowerUpgrade = null;
+    public static event Action OnStormerUpgrade = null;
+    public static event Action OnTreeUpgrade = null;
+    public static event Action OnWinfallUpgrade = null;
+    public static event Action OnHomeTreeUpgrade = null;
+
+    public static event Action OnUpgradeSelected = null;
 
 
-
+    public static void ReportOnHomeTreeUpgrade()
+    {
+        OnHomeTreeUpgrade?.Invoke();
+    }
+    public static void ReportOnWinfallUpgrade()
+    {
+        OnWinfallUpgrade?.Invoke();
+    }
+    public static void ReportOnTreeUpgrade()
+    {
+        OnTreeUpgrade?.Invoke();
+    }
+    public static void ReportOnStormerUpgrade()
+    {
+        OnStormerUpgrade?.Invoke();
+    }
+    public static void ReportOnTowerUpgrade()
+    {
+        OnTowerUpgrade?.Invoke();
+    }
+    public static void ReportOnStartNextRound()
+    {
+        OnStartNextRound?.Invoke();
+    }
+    public static void ReportOnUpgradeSelected()
+    {
+        OnUpgradeSelected?.Invoke();
+    }
+    public static void ReportOnContinueButton()
+    {
+        OnContinueButton?.Invoke();
+    }
+    public static void ReportOnWaveOver()
+    {
+        OnWaveOver?.Invoke();
+    }
     public static void ReportOnTreeHit()
     {
         OnTreeHit?.Invoke();

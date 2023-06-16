@@ -57,7 +57,7 @@ public class Hut : GameBehaviour
                     enemyTimeLeft += 1 * Time.deltaTime;
                 }
             }
-            if (other.tag == "Unit")
+            if (other.tag == "Unit" || other.tag == "LeshyUnit")
             {
                 if (_HUTM.enemies.Count < _HUTM.units.Count)
                 {
@@ -74,7 +74,7 @@ public class Hut : GameBehaviour
                     enemyTimeLeft -= 1 * Time.deltaTime;
                 }
             }
-            if (other.tag == "Unit")
+            if (other.tag == "Unit" || other.tag == "LeshyUnit")
             {
                 if (_HUTM.enemies.Count < _HUTM.units.Count)
                 {

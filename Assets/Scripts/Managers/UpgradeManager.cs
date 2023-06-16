@@ -29,19 +29,18 @@ public class UpgradeManager : Singleton<UpgradeManager>
     public bool populous = false;
     public GameObject populousCheck;
     public Button populousButton;
+    public bool tower;
+    public bool tree;
+    public bool winfall;
+    public bool homeTree;
 
 
     public void BorkrskinnUpgrade()
     {
-        if(borkrskinn == false && _GM.maegen >599)
+        if(borkrskinn == false)
         {
-            _GM.maegen -= 600;
-            borkrskinnButton.interactable = false;
             borkrskinn = true;
             GameEvents.ReportOnBorkrskinnUpgrade();
-            borkrskinnCheck.SetActive(true);
-            _UI.audioSource.clip = _SM.upgradeSound;
-            _UI.audioSource.Play();
         }
         else
         {

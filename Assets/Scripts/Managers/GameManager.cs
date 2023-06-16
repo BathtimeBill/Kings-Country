@@ -18,6 +18,8 @@ public class GameManager : Singleton<GameManager>
     public int agroWaveLength;
     public int breakWaveLenth;
     public bool agroWave;
+    public bool canFinishWave;
+    public bool downTime;
 
 
     [Header("Player Resources")]
@@ -55,18 +57,23 @@ public class GameManager : Singleton<GameManager>
         playmode = PlayMode.DefaultMode;
         gameState = GameState.Play;
         trees = GameObject.FindGameObjectsWithTag("Tree");
-        StartCoroutine(ManageWaveAgro());
+        //StartCoroutine(ManageWaveAgro());
         _UI.CheckTreeUI();
         satyrDamage = 15;
         orcusDamage = 25;
         leshyDamage = 60;
         skessaDamage = 40;
+        downTime = true;
     }
 
     private void Update()
     {
         timeSinceAttack += Time.deltaTime;
         timeSinceWildlifeKilled += Time.deltaTime;
+        if(maegen < 0)
+        {
+            maegen = 0;
+        }
     }
 
     public void PauseGame()
@@ -85,18 +92,36 @@ public class GameManager : Singleton<GameManager>
     //The wave system is managed by two coroutines. The 'agro' wave lasts 1 minute, during which enemies are spawned in (EnemyManager) and then a break period of 4 mins. 
     IEnumerator ManageWaveAgro()
     {
+        Debug.Log("Starting next wave");
+        _UI.nextRoundButton.interactable = false;
+        _UI.treeToolImage.sprite = _UI.unusableTreeTool;
+        _GM.downTime = false;
         agroWave = true;
         currentWave++;
         _UI.TriggerWaveTextAnimation();
         _UI.CheckWave();
         yield return new WaitForSeconds(agroWaveLength);
-        StartCoroutine(ManageWaveBreak());
+        agroWave = false;
+        //StartCoroutine(ManageWaveBreak());
+    }
+    IEnumerator WaitForCanFinishWave()
+    {
+        yield return new WaitForSeconds(10);
+        canFinishWave = true;
     }
     IEnumerator ManageWaveBreak()
     {
         agroWave = false;
         yield return new WaitForSeconds(breakWaveLenth);
         StartCoroutine(ManageWaveAgro());
+    }
+
+    public void ContinueToNextRound()
+    {
+        StartCoroutine(ManageWaveAgro());
+        StartCoroutine(WaitForCanFinishWave());
+        GameEvents.ReportOnStartNextRound();
+        _SM.PlaySound(_SM.waveBeginSound);
     }
 
     //Checks the scene for how many Runes are present.
@@ -118,7 +143,7 @@ public class GameManager : Singleton<GameManager>
     private void OnTreePlaced()
     {
         trees = GameObject.FindGameObjectsWithTag("Tree");
-        maegen -= 16;
+        maegen -= 2;
         _UI.CheckTreeUI();
     }
 
@@ -191,6 +216,20 @@ public class GameManager : Singleton<GameManager>
         }
         timeSinceWildlifeKilled = 0;
     }
+
+    public void OnWaveOver()
+    {
+        canFinishWave = false;
+        agroWave = false;
+        gameState = GameState.Pause;
+        Time.timeScale = 0;
+        Debug.Log("Wave is over");
+    }
+    public void OnContinueButton()
+    {
+        gameState = GameState.Play;
+        Time.timeScale = 1;
+    }
     private void OnEnable()
     {
         GameEvents.OnTreePlaced += OnTreePlaced;
@@ -201,6 +240,8 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnPopulousUpgrade += OnPopulousUpgrade;
         GameEvents.OnTreeHit += OnTreeHit;
         GameEvents.OnWildlifeKilled += OnWildlifeKilled;
+        GameEvents.OnWaveOver += OnWaveOver;
+        GameEvents.OnContinueButton += OnContinueButton;
     }
 
     private void OnDisable()
@@ -213,5 +254,7 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnPopulousUpgrade -= OnPopulousUpgrade;
         GameEvents.OnTreeHit -= OnTreeHit;
         GameEvents.OnWildlifeKilled -= OnWildlifeKilled;
+        GameEvents.OnWaveOver -= OnWaveOver;
+        GameEvents.OnContinueButton -= OnContinueButton;
     }
 }

@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 3657180017089710214}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 16.454, z: -1.5841}
-  m_LocalScale: {x: 3.3411949, y: 1.1324285, z: 3.3411949}
+  m_LocalScale: {x: 1.6, y: 1.1324285, z: 1.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6651862902898196268}
@@ -234,12 +234,18 @@ MonoBehaviour:
   bloodParticle1: {fileID: 4197850467115213477, guid: 4f3e906bea636e44fa28f67b2439a265,
     type: 3}
   stoppingDistance: 0
+  maegenPickup: {fileID: 1244892433919609755, guid: f6c8136a3fd58064198b300f4c94f5a3,
+    type: 3}
+  maxRandomDropChance: 3
   animator: {fileID: 380876847726304453}
   wildlife: []
   closestWildlife: {fileID: 0}
   distanceFromClosestWildlife: 0
   closestUnit: {fileID: 0}
   distanceFromClosestUnit: 0
+  horgr: {fileID: 0}
+  distanceFromClosestHorgr: 0
+  hasArrivedAtHorgr: 0
   SFXPool: {fileID: 8878307506942366345}
   soundPoolCurrent: 0
   soundPool: []
@@ -987,6 +993,7 @@ MonoBehaviour:
   distanceFromWildlife: 0
   audioSource: {fileID: 2180991781159816443}
   audioClip: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!4 &722921399805050821 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5cfaaaf4858eeab4ca133369e60cb549,

@@ -4,6 +4,8 @@ using UnityEngine.AI;
 using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
+using UnityEngine.Analytics;
+
 public class Tree : GameBehaviour
 {
     public AudioSource audioSource;
@@ -12,6 +14,7 @@ public class Tree : GameBehaviour
     [Header("General")]
     public TreeType type;
     public float health;
+    public GameObject maegenWisp;
     public GameObject maegen1;
     public GameObject maegen5;
     public GameObject maegen8;
@@ -37,7 +40,7 @@ public class Tree : GameBehaviour
         //int amount;
         health = 100;
         
-        StartCoroutine(AddMaegen());
+        //StartCoroutine(AddMaegen());
         //for (amount = 0; amount < amountOfDecor; amount++)
         //{
         //    ForestDecorSpawn();
@@ -147,9 +150,7 @@ public class Tree : GameBehaviour
             fallTree = Instantiate(fallenTreeDesiduous, treeMesh.transform.position, transform.rotation);
             fallTree.transform.localScale = transform.localScale;
         }
-        
-        
-        
+
         GameEvents.ReportOnTreeDestroy();
         Destroy(gameObject);
     }
@@ -192,5 +193,34 @@ public class Tree : GameBehaviour
 
         Debug.Log(5 / energyMultiplier);
         StartCoroutine(AddMaegen());
+    }
+
+    private void OnContinueButton()
+    {
+         
+        if(_UM.tree == true)
+        {
+           StartCoroutine(WispSpawnDelay());
+        }
+        else
+        {
+            Instantiate(maegenWisp, transform.position, transform.rotation);
+        }
+    }
+    IEnumerator WispSpawnDelay()
+    {
+        Instantiate(maegenWisp, transform.position, transform.rotation);
+        yield return new WaitForSeconds(0.3f);
+        Instantiate(maegenWisp, transform.position, transform.rotation);
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnContinueButton += OnContinueButton;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnContinueButton -= OnContinueButton;
     }
 }

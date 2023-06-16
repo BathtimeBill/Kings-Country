@@ -36,6 +36,8 @@ public class Logger : GameBehaviour
     public GameObject bloodParticle1;
     public GameObject deadLogger;
     public GameObject deadLoggerFire;
+    public GameObject maegenPickup;
+    public int maxRandomDropChance;
 
     [Header("Audio")]
     public GameObject SFXPool;
@@ -251,14 +253,28 @@ public class Logger : GameBehaviour
     {
         if(health <= 0)
         {
+            DropMaegen();
             GameObject go;
             go = Instantiate(deadLogger, transform.position, transform.rotation);
             Destroy(go, 15);
             Destroy(gameObject);
         }
     }
+    private void DropMaegen()
+    {
+        int rnd = Random.Range(1, maxRandomDropChance);
+        if (rnd == 1)
+        {
+            Instantiate(maegenPickup, transform.position, transform.rotation);
+        }
+    }
     public void Launch()
     {
+        DropMaegen();
+        if (_HUTM.enemies.Contains(gameObject))
+        {
+            _HUTM.enemies.Remove(gameObject);
+        }
         float thrust = 20000f;
         GameObject go;
         go = Instantiate(deadLogger, transform.position, transform.rotation);

@@ -14,11 +14,11 @@ public class PickupManager : GameBehaviour
 
     IEnumerator SpawnPickups()
     {
-        if(_GM.agroWave == false)
+        if(_GM.downTime == false)
         {
             SpawnPickup();
         }
-        yield return new WaitForSeconds(Random.Range(30, 60));
+        yield return new WaitForSeconds(Random.Range(20, 50));
         StartCoroutine(SpawnPickups());
     }
 
@@ -31,6 +31,6 @@ public class PickupManager : GameBehaviour
         Vector3 finalPosition = hit.position;
         GameObject pickup;
         pickup = Instantiate(pickups[rndPickup], hit.position, transform.rotation);
-        Destroy(pickup, 60);
+        Destroy(pickup, 45);
     }
 }

@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class Tower : GameBehaviour
 {
     public GameObject firingPoint;
-    public GameObject projectile;
+    public GameObject projectile1;
+    public GameObject projectile2;
     public Vector3 closestEnemy;
     public float projectileSpeed;
     public float distanceToClosestEnemy;
@@ -19,11 +20,14 @@ public class Tower : GameBehaviour
     public GameObject explosionParticle;
     public GameObject spawnParticleEffect;
 
+    public bool towerUpgrade;
+
     void Start()
     {
         StartCoroutine(ShootProjectile());
         UnitSelection.Instance.unitList.Add(gameObject);
         slider.value = CalculateHealth();
+        Setup();
         Instantiate(spawnParticleEffect, transform.position, transform.rotation);
     }
 
@@ -46,8 +50,17 @@ public class Tower : GameBehaviour
     {
         if(distanceToClosestEnemy < 50)
         {
-            GameObject go = Instantiate(projectile, firingPoint.transform.position, firingPoint.transform.rotation);
-            go.GetComponent<Rigidbody>().AddForce(firingPoint.transform.forward * projectileSpeed);
+            if(_UM.tower)
+            {
+                GameObject go = Instantiate(projectile2, firingPoint.transform.position, firingPoint.transform.rotation);
+                go.GetComponent<Rigidbody>().AddForce(firingPoint.transform.forward * projectileSpeed);
+            }
+            else
+            {
+                GameObject go = Instantiate(projectile1, firingPoint.transform.position, firingPoint.transform.rotation);
+                go.GetComponent<Rigidbody>().AddForce(firingPoint.transform.forward * projectileSpeed);
+            }
+
         }
 
         yield return new WaitForSeconds(2);
@@ -134,8 +147,35 @@ public class Tower : GameBehaviour
             Destroy(gameObject);
         }
     }
+    private void Setup()
+    {
+        if(_UM.tower)
+        {
+            maxHealth = 300;
+        }
+        else
+        {
+            maxHealth = 200;
+        }
+        health = maxHealth;
+    }
     float CalculateHealth()
     {
         return health / maxHealth;
+    }
+    private void OnTowerUpgrade()
+    {
+        towerUpgrade = true;
+        Setup();
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnTowerUpgrade += OnTowerUpgrade;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnTowerUpgrade -= OnTowerUpgrade;
     }
 }

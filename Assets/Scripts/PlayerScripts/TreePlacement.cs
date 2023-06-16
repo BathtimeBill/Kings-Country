@@ -29,12 +29,12 @@ public class TreePlacement : Singleton<TreePlacement>
 
     void Update()
     {
-        percentagePanel.transform.position = Input.mousePosition;
-        resultNumber = 5 / energyMultiplier;
-        distanceFromTree = Vector3.Distance(GetClosestTree().transform.position, transform.position);
-        energyMultiplier = 1f / 100 * distanceFromTree;
-        percentageText.text = energyMultiplier.ToString("0.0" + "%");
-        resultText.text = "1 Maegen every " + resultNumber.ToString("0.0") + " seconds";
+        //percentagePanel.transform.position = Input.mousePosition;
+        //resultNumber = 5 / energyMultiplier;
+        //distanceFromTree = Vector3.Distance(GetClosestTree().transform.position, transform.position);
+        //energyMultiplier = 1f / 100 * distanceFromTree;
+        //percentageText.text = energyMultiplier.ToString("0.0" + "%");
+        //resultText.text = "1 Maegen every " + resultNumber.ToString("0.0") + " seconds";
 
         if (distanceFromTree >= 100 && tooFarAway == false)
         {
@@ -53,13 +53,13 @@ public class TreePlacement : Singleton<TreePlacement>
             }
         }
 
-        if(_GM.maegen <14 && insufficientMaegen == false)
+        if(_GM.maegen <1 && insufficientMaegen == false)
         {
             insufficientMaegen = true;
             canPlace = false;
             gameObject.GetComponent<Renderer>().material = cannotPlaceMat;
         }
-        if (_GM.maegen >= 15 && insufficientMaegen == true)
+        if (_GM.maegen >= 1 && insufficientMaegen == true)
         {
             insufficientMaegen = false;
             canPlace = true;

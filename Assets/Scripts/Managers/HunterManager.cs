@@ -38,7 +38,6 @@ public class HunterManager : GameBehaviour
             Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
             Instantiate(hunter, spawnPoints[rndSpawn].position, transform.rotation);
             Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(hunter, spawnPoints[rndSpawn].position, transform.rotation);
             Instantiate(bjornjeger, spawnPoints[rndSpawn].position, transform.rotation);
         }
         if (_GM.currentWave >= 10 && _GM.agroWave)
@@ -48,7 +47,7 @@ public class HunterManager : GameBehaviour
             Instantiate(hunter, spawnPoints[rndSpawn].position, transform.rotation);
             Instantiate(bjornjeger, spawnPoints[rndSpawn].position, transform.rotation);
             Instantiate(bjornjeger, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(bjornjeger, spawnPoints[rndSpawn].position, transform.rotation);
+
         }
         yield return new WaitForSeconds(Random.Range(15, 25));
         StartCoroutine(SpawnHunter());

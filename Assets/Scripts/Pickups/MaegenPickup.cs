@@ -4,15 +4,31 @@ using UnityEngine;
 
 public class MaegenPickup : GameBehaviour
 {
-    public GameObject maegenParticle;
+    public GameObject maegenWisp;
 
 
-    private void OnTriggerEnter(Collider other)
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.tag == "Unit" || other.tag == "LeshyUnit")
+    //    {
+    //        Instantiate(maegenParticle, transform.position, transform.rotation);
+    //        Destroy(gameObject);
+    //    }
+    //}
+
+    private void OnContinueButton()
     {
-        if (other.tag == "Unit" || other.tag == "LeshyUnit")
-        {
-            Instantiate(maegenParticle, transform.position, transform.rotation);
-            Destroy(gameObject);
-        }
+        Instantiate(maegenWisp, transform.position, transform.rotation);
+        Destroy(gameObject);
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnContinueButton += OnContinueButton;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnContinueButton -= OnContinueButton;
     }
 }

@@ -20,9 +20,25 @@ public class GameBehaviour : MonoBehaviour
 
     protected static ForestManager _FM { get { return ForestManager.instance; } }
     protected static TooltipManager _Tool { get { return TooltipManager.instance; } }
+    protected static WaveManager _WM { get { return WaveManager.instance; } }
 
 }
 
+public enum Upgrade
+{
+    BarkSkin,
+    FlyFoot,
+    Power,
+    Tower,
+    Rune,
+    Beacon,
+    Stormer,
+    Tree,
+    Fertile,
+    Populous,
+    Winfall,
+    HomeTree,
+}
 public enum TreeType
 {
     Pine,

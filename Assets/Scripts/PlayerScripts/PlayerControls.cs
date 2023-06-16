@@ -54,20 +54,28 @@ public class PlayerControls : Singleton<PlayerControls>
 
     private void SelectTreeMode()
     {
-        _GM.playmode = PlayMode.TreeMode;
-        runePlacement.SetActive(false);
-        stormerPlacement.SetActive(false);
-        treePlacement.SetActive(true);
-        beaconPlacement.SetActive(false);
-        treePercentageModifier.SetActive(true);
-        _UI.homeTreePanel.SetActive(false);
-        _UI.treeToolSelectionBox.SetActive(true);
-        _UI.runeToolSelectionBox.SetActive(false);
-        _UI.beaconToolSelectionBox.SetActive(false);
-        _UI.stormerToolSelectionBox.SetActive(false);
-        _UI.maegenCost.SetActive(true);
-        _UI.wildlifeCost.SetActive(false);
-        _UI.maegenCostText.text = "15";
+        if(_GM.downTime)
+        {
+            _GM.playmode = PlayMode.TreeMode;
+            runePlacement.SetActive(false);
+            stormerPlacement.SetActive(false);
+            treePlacement.SetActive(true);
+            beaconPlacement.SetActive(false);
+            //treePercentageModifier.SetActive(true);
+            _UI.homeTreePanel.SetActive(false);
+            _UI.treeToolSelectionBox.SetActive(true);
+            _UI.runeToolSelectionBox.SetActive(false);
+            _UI.beaconToolSelectionBox.SetActive(false);
+            _UI.stormerToolSelectionBox.SetActive(false);
+            _UI.maegenCost.SetActive(true);
+            _UI.wildlifeCost.SetActive(false);
+            _UI.maegenCostText.text = "2";
+        }
+        else
+        {
+            _UI.SetErrorMessageCantPlaceTrees();
+            Error();
+        }
     }
 
     private void SelectRuneMode()
@@ -102,8 +110,8 @@ public class PlayerControls : Singleton<PlayerControls>
         _UI.runeToolSelectionBox.SetActive(false);
         _UI.maegenCost.SetActive(true);
         _UI.wildlifeCost.SetActive(true);
-        _UI.wildlifeCostText.text = "15";
-        _UI.maegenCostText.text = "500";
+        _UI.wildlifeCostText.text = "2";
+        _UI.maegenCostText.text = "5";
     }    
 
     private void SelectStormerMode()
@@ -121,8 +129,8 @@ public class PlayerControls : Singleton<PlayerControls>
         _UI.runeToolSelectionBox.SetActive(false);
         _UI.maegenCost.SetActive(true);
         _UI.wildlifeCost.SetActive(true);
-        _UI.wildlifeCostText.text = "25";
-        _UI.maegenCostText.text = "1000";
+        _UI.wildlifeCostText.text = "5";
+        _UI.maegenCostText.text = "10";
     }
 
     private void DeslectAllModes()
@@ -265,6 +273,7 @@ public class PlayerControls : Singleton<PlayerControls>
                 beaconPlacement.SetActive(false);
                 treePercentageModifier.SetActive(false);
                 _UI.homeTreePanel.SetActive(true);
+                _UI.hutPanel.SetActive(false);
                 _UI.horgrPanel.SetActive(false);
                 _UI.maegenCost.SetActive(false);
                 _UI.wildlifeCost.SetActive(false);
@@ -279,6 +288,7 @@ public class PlayerControls : Singleton<PlayerControls>
             {
                 _UI.homeTreePanel.SetActive(false);
                 _UI.horgrPanel.SetActive(false);
+                _UI.hutPanel.SetActive(false);
                 _UI.audioSource.clip = _SM.closeMenuSound;
                 _UI.audioSource.Play();
             }
@@ -352,7 +362,7 @@ public class PlayerControls : Singleton<PlayerControls>
 
                     GameObject runeInstance;
                     runeInstance = Instantiate(runePrefab, runePlacement.transform.position, runePlacement.transform.rotation);
-                    _GM.maegen -= 150;
+                    _GM.maegen -= 2;
                     _GM.CheckRunes();
                 }
                 if (_RPlace.canPlace == false)
@@ -389,7 +399,7 @@ public class PlayerControls : Singleton<PlayerControls>
             {
                 if (_SPlace.canPlace == true)
                 {
-                    _GM.maegen -= 1000;
+                    _GM.maegen -= 10;
                     GameEvents.ReportOnStormerPlaced();
                 }
                 else
@@ -509,6 +519,7 @@ public class PlayerControls : Singleton<PlayerControls>
             {
                 _UI.homeTreePanel.SetActive(true);
                 _UI.horgrPanel.SetActive(false);
+                _UI.hutPanel.SetActive(false);
             }
 
             _UI.audioSource.clip = _SM.openMenuSound;
@@ -519,7 +530,18 @@ public class PlayerControls : Singleton<PlayerControls>
             Debug.Log("Clicked on Horgr");
             if (_GM.playmode == PlayMode.DefaultMode)
                 _UI.horgrPanel.SetActive(true);
+            _UI.hutPanel.SetActive(false);
             _UI.homeTreePanel.SetActive(false);
+            _UI.audioSource.clip = _SM.openMenuSound;
+            _UI.audioSource.Play();
+        }
+        if (Physics.Raycast(ray, out hitPoint) && hitPoint.collider.tag == "Hut")
+        {
+            Debug.Log("Clicked on Hut");
+            if (_GM.playmode == PlayMode.DefaultMode)
+                _UI.hutPanel.SetActive(true);
+            _UI.homeTreePanel.SetActive(false);
+            _UI.horgrPanel.SetActive(false);
             _UI.audioSource.clip = _SM.openMenuSound;
             _UI.audioSource.Play();
         }

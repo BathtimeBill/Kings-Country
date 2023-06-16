@@ -9,6 +9,8 @@ public class ForestManager : Singleton<ForestManager>
     public float rockPlacementRadius;
     public GameObject levelRocks;
     public int amountOfRocks;
+    public int totalTrees;
+    public float numberOfWildlifeToSpawn;
     [Header("Animals")]
     public GameObject rabbit;
     public GameObject deer;
@@ -26,8 +28,9 @@ public class ForestManager : Singleton<ForestManager>
     {
         int amount;
         spawnLocation = new Vector3(5, 0, 5);
-        CheckWildlife();
-        StartCoroutine(SpawnWildlife());
+        CheckTreesForWildlife();
+        WildlifeInstantiate();
+        _GM.wildlife = CheckWildlife();
         for (amount = 0; amount < amountOfRocks; amount++)
         {
             SpawnRocks();
@@ -44,25 +47,26 @@ public class ForestManager : Singleton<ForestManager>
     //This checks how many trees are in the scene and adjusts the spawn rate of the wildlife accordingly.
     public void CheckTreesForWildlife()
     {
-        if(_GM.trees.Length <= 15)
+        if (_GM.wildlife < 6)
         {
-            minSpawnRate = 60;
-            maxSpawnRate = 120;
+            if (spawnableAnimals.Count == 0)
+            {
+                spawnableAnimals.Add(rabbit);
+            }
         }
-        if(_GM.trees.Length >= 16 && _GM.trees.Length < 30)
+        if (_GM.wildlife >= 6 && _GM.wildlife < 15)
         {
-            minSpawnRate = 45;
-            maxSpawnRate = 80;
+            if (spawnableAnimals.Count == 1)
+            {
+                spawnableAnimals.Add(deer);
+            }
         }
-        if (_GM.trees.Length >= 30 && _GM.trees.Length < 60)
+        if (_GM.wildlife >= 15)
         {
-            minSpawnRate = 30;
-            maxSpawnRate = 60;
-        }
-        if (_GM.trees.Length >= 60)
-        {
-            minSpawnRate = 15;
-            maxSpawnRate = 45;
+            if (spawnableAnimals.Count == 2)
+            {
+                spawnableAnimals.Add(boar);
+            }
         }
     }
 
@@ -152,13 +156,43 @@ public class ForestManager : Singleton<ForestManager>
         _UI.CheckWildlifeUI();
     }
 
+
+    private void OnContinueButton()
+    {
+        for (int i = 0; i < numberOfWildlifeToSpawn; i++)
+        {
+            CheckTreesForWildlife();
+            WildlifeInstantiate();
+        }
+        _GM.wildlife = CheckWildlife();
+        StartCoroutine(WaitToCheckWildlife());
+    }
+    private void OnWaveOver()
+    {
+        totalTrees = _GM.trees.Length;
+        if (_UM.fertileSoil)
+        {
+            numberOfWildlifeToSpawn = totalTrees / 3f;
+        }
+        else
+        {
+            numberOfWildlifeToSpawn = totalTrees / 5f;
+        }
+        
+        numberOfWildlifeToSpawn = Mathf.Round(numberOfWildlifeToSpawn * 1) / 1;
+    }
+
     private void OnEnable()
     {
         GameEvents.OnWildlifeKilled += OnWildlifeKilled;
+        GameEvents.OnContinueButton += OnContinueButton;
+        GameEvents.OnWaveOver += OnWaveOver;
     }
 
     private void OnDisable()
     {
         GameEvents.OnWildlifeKilled -= OnWildlifeKilled;
+        GameEvents.OnContinueButton -= OnContinueButton;
+        GameEvents.OnWaveOver -= OnWaveOver;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Analytics;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -17,6 +18,7 @@ public class UIManager : Singleton<UIManager>
     public GameObject homeTreeUnitPanel;
     public GameObject homeTreeUpgradePanel;
     public GameObject horgrPanel;
+    public GameObject hutPanel;
     public GameObject GameOverPanel;
     public GameObject pausePanel;
     public GameObject settingsPanel;
@@ -29,10 +31,20 @@ public class UIManager : Singleton<UIManager>
     public GameObject beaconToolSelectionBox;
     public GameObject stormerToolSelectionBox;
 
+
+    public Sprite usableTreeTool;
+    public Sprite unusableTreeTool;
+    public Sprite usableRuneTool;
+    public Sprite unusableRuneTool;
     public Sprite usableBeaconTool;
     public Sprite unusableBeaconTool;
+    public Sprite usableStormerTool;
+    public Sprite unusableStormerTool;
 
+    public Image treeToolImage;
     public Image beaconToolImage;
+    public Image stormerToolImage;
+
 
     public Slider beaconCooldownSlider;
     public GameObject beaconCooldownSliderObject;
@@ -46,9 +58,9 @@ public class UIManager : Singleton<UIManager>
     public GameObject stormerCooldownSliderObject;
     public float stormerTimeLeft;
     public float stormerMaxTimeLeft;
-    public Image stormerToolImage;
-    public Sprite usableStormerTool;
-    public Sprite unusableStormerTool;
+
+
+
 
     public bool stormerPlaced;
 
@@ -62,7 +74,28 @@ public class UIManager : Singleton<UIManager>
     public AudioSource audioSource;
     public AudioSource warningAudioSource;
 
+    
+
+    [Header("Waves")]
     public Animator waveTextAnimator;
+    public Button nextRoundButton;
+    public GameObject waveOverPanel;
+    public Button treetoolButton;
+
+    [Header("Current Upgrade Panel")]
+    public GameObject barkSkin;
+    public GameObject flyFoot;
+    public GameObject power;
+    public GameObject tower;
+    public GameObject rune;
+    public GameObject beacon;
+    public GameObject stormer;
+    public GameObject tree;
+    public GameObject fertile;
+    public GameObject populous;
+    public GameObject windfall;
+    public GameObject homeTree;
+
 
     void Start()
     {
@@ -79,12 +112,13 @@ public class UIManager : Singleton<UIManager>
     {
         maegenText.text = _GM.maegen.ToString();
 
-        if(beaconPlaced)
+
+        if (beaconPlaced)
         {
             beaconTimeLeft += 1 * Time.deltaTime;
             beaconCooldownSlider.value = CalculateTimeLeft();
             beaconToolImage.sprite = unusableBeaconTool;
-            if(beaconTimeLeft >= beaconMaxTimeLeft)
+            if (beaconTimeLeft >= beaconMaxTimeLeft)
             {
                 beaconToolImage.sprite = usableBeaconTool;
                 beaconCooldownSliderObject.SetActive(false);
@@ -106,6 +140,11 @@ public class UIManager : Singleton<UIManager>
             }
         }
 
+    }
+    public void ContinueButton()
+    {
+        GameEvents.ReportOnContinueButton();
+        waveOverPanel.SetActive(false);
     }
     public void TriggerWaveTextAnimation()
     {
@@ -246,8 +285,14 @@ public class UIManager : Singleton<UIManager>
     }
     public void SetErrorMessageNeedToClaimHorgr()
     {
-        errorText.text = "You need to claim the Horgr";
+        errorText.text = "You need to claim this site";
     }
+    public void SetErrorMessageCantPlaceTrees()
+    {
+        errorText.text = "Can't place trees while the enemy is attacking";
+    }
+
+
     public void OnBeaconPlaced()
     {
         beaconCooldownSliderObject.SetActive(true);
@@ -259,12 +304,96 @@ public class UIManager : Singleton<UIManager>
         stormerCooldownSliderObject.SetActive(true);
         stormerPlaced = true;
     }
+    public void OnWaveOver()
+    {
+
+        waveOverPanel.SetActive(true);
+        
+    }
+    public void OnContinueButton()
+    {
+        waveOverPanel.SetActive(false);
+        treeToolImage.sprite = usableBeaconTool;
+    }
+    private void OnStartNextRound()
+    {
+        treeToolImage.sprite = unusableTreeTool;
+    }
+
+
+
+    private void OnBorkrskinnUpgrade()
+    {
+        barkSkin.SetActive(true);
+    }
+    private void OnFlugafotrUpgrade()
+    {
+        flyFoot.SetActive(true);
+    }
+    private void OnJarnnefiUpgrade()
+    {
+        power.SetActive(true);
+    }
+    private void OnTowerUpgrade()
+    {
+        tower.SetActive(true);
+    }
+    private void OnRuneUpgrade()
+    {
+        rune.SetActive(true);
+    }
+    private void OnBeaconUpgrade()
+    {
+        beacon.SetActive(true);
+    }
+    private void OnStormerUpgrade()
+    {
+        stormer.SetActive(true);
+    }
+    private void OnTreeUpgrade()
+    {
+        tree.SetActive(true);
+    }
+    private void OnFertileSoilUpgrade()
+    {
+        fertile.SetActive(true);
+    }
+    private void OnPopulousUpgrade()
+    {
+        populous.SetActive(true);
+    }
+    private void OnWinfallUpgrade()
+    {
+        windfall.SetActive(true);
+    }
+    private void OnHomeTreeUpgrade()
+    {
+        homeTree.SetActive(true);
+    }
+
+
 
     private void OnEnable()
     {
         GameEvents.OnGameOver += OnGameOver;
         GameEvents.OnBeaconPlaced += OnBeaconPlaced;
         GameEvents.OnStormerPlaced += OnStormerPlaced;
+        GameEvents.OnWaveOver += OnWaveOver;
+        GameEvents.OnContinueButton += OnContinueButton;
+        GameEvents.OnStartNextRound += OnStartNextRound;
+
+        GameEvents.OnBorkrskinnUpgrade += OnBorkrskinnUpgrade;
+        GameEvents.OnFlugafotrUpgrade += OnFlugafotrUpgrade;
+        GameEvents.OnJarnnefiUpgrade += OnJarnnefiUpgrade;
+        GameEvents.OnTowerUpgrade += OnTowerUpgrade;
+        GameEvents.OnRuneUpgrade += OnRuneUpgrade;
+        GameEvents.OnBeaconUpgrade += OnBeaconUpgrade;
+        GameEvents.OnStormerUpgrade += OnStormerUpgrade;
+        GameEvents.OnTreeUpgrade += OnTreeUpgrade;
+        GameEvents.OnFertileSoilUpgrade += OnFertileSoilUpgrade;
+        GameEvents.OnPopulousUpgrade += OnPopulousUpgrade;
+        GameEvents.OnWinfallUpgrade += OnWinfallUpgrade;
+        GameEvents.OnHomeTreeUpgrade += OnHomeTreeUpgrade;
     }
 
     private void OnDisable()
@@ -272,5 +401,20 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnGameOver -= OnGameOver;
         GameEvents.OnBeaconPlaced -= OnBeaconPlaced;
         GameEvents.OnStormerPlaced -= OnStormerPlaced;
+        GameEvents.OnWaveOver -= OnWaveOver;
+        GameEvents.OnContinueButton -= OnContinueButton;
+
+        GameEvents.OnBorkrskinnUpgrade -= OnBorkrskinnUpgrade;
+        GameEvents.OnFlugafotrUpgrade -= OnFlugafotrUpgrade;
+        GameEvents.OnJarnnefiUpgrade -= OnJarnnefiUpgrade;
+        GameEvents.OnTowerUpgrade -= OnTowerUpgrade;
+        GameEvents.OnRuneUpgrade -= OnRuneUpgrade;
+        GameEvents.OnBeaconUpgrade -= OnBeaconUpgrade;
+        GameEvents.OnStormerUpgrade -= OnStormerUpgrade;
+        GameEvents.OnTreeUpgrade -= OnTreeUpgrade;
+        GameEvents.OnFertileSoilUpgrade -= OnFertileSoilUpgrade;
+        GameEvents.OnPopulousUpgrade -= OnPopulousUpgrade;
+        GameEvents.OnWinfallUpgrade -= OnWinfallUpgrade;
+        GameEvents.OnHomeTreeUpgrade -= OnHomeTreeUpgrade;
     }
 }

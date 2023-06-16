@@ -117,14 +117,20 @@ public class Stormer : GameBehaviour
         go.GetComponent<AudioSource>().clip = _SM.stormerSummonSound;
         go.GetComponent<AudioSource>().Play();
     }
+    public void OnStormerUpgrade()
+    {
+        stormerLength = stormerLength * 2;
+    }
 
     private void OnEnable()
     {
         GameEvents.OnStormerPlaced += OnStormerPlaced;
+        GameEvents.OnStormerUpgrade += OnStormerUpgrade;
     }
 
     private void OnDisable()
     {
         GameEvents.OnStormerPlaced -= OnStormerPlaced;
+        GameEvents.OnStormerUpgrade -= OnStormerUpgrade;
     }
 }

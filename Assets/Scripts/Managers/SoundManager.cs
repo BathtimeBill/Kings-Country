@@ -29,6 +29,10 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip openMenuSound;
     public AudioClip closeMenuSound;
     public AudioClip warningSound;
+    public AudioClip waveOverSound;
+    public AudioClip waveBeginSound;
+    public AudioClip menuDragSound;
+    public AudioClip textGroupSound;
     [Header("Wildlife Distress Sounds")]
     public AudioClip[] deerDistressSounds;
     public AudioClip[] boarDistressSounds;
@@ -41,7 +45,23 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip rainSound;
     public AudioSource weatherAudioSource;
     public AudioClip stormerSummonSound;
+    [Header("Audio")]
+    public GameObject SFXPool;
+    public int soundPoolCurrent;
+    public AudioSource[] soundPool;
 
+
+
+    public void PlaySound(AudioClip _clip)
+    {
+        if (soundPoolCurrent == soundPool.Length - 1)
+            soundPoolCurrent = 0;
+        else
+            soundPoolCurrent += 1;
+
+        soundPool[soundPoolCurrent].clip = _clip;
+        soundPool[soundPoolCurrent].Play();
+    }
     public AudioClip GetLightningSound()
     {
         return lightningSounds[Random.Range(0, lightningSounds.Length)];

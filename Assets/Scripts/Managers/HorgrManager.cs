@@ -34,8 +34,8 @@ public class HorgrManager : Singleton<HorgrManager>
     void Start()
     {
         GameObject go = Instantiate(horgr, spawnLocations[RandomSpawnLocation()].transform.position, Quaternion.Euler(-90, 0, 0));
-        StartCoroutine(AddMaegen());
-        StartCoroutine(WaitToReferenceHorgr());
+        //StartCoroutine(AddMaegen());
+        //StartCoroutine(WaitToReferenceHorgr());
     }
     
     private int RandomSpawnLocation()
@@ -48,12 +48,12 @@ public class HorgrManager : Singleton<HorgrManager>
     {
         if(playerOwns)
         {
-            _GM.maegen += 25;
+            _GM.maegen += 2;
             Instantiate(maegen5, horgrLocation, Quaternion.Euler(-90f, 0, 0));
         }
         if(enemyOwns)
         {
-            _GM.maegen -= 25;
+            _GM.maegen -= 2;
             Instantiate(maegenLoss, horgrLocation, Quaternion.Euler(-90f, 0, 0));
         }
 
@@ -76,11 +76,11 @@ public class HorgrManager : Singleton<HorgrManager>
         horgrObject = GameObject.FindGameObjectWithTag("Horgr");
         if (playerOwns)
         {
-            if (_GM.maegen >= 200 && _GM.populous < _GM.maxPopulous)
+            if (_GM.maegen >= 3 && _GM.populous < _GM.maxPopulous)
             {
                 Instantiate(skessa, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.maegen -= 200;
+                _GM.maegen -= 3;
                 _UI.CheckPopulousUI();
             }
             else
@@ -101,11 +101,11 @@ public class HorgrManager : Singleton<HorgrManager>
         horgrObject = GameObject.FindGameObjectWithTag("Horgr");
         if (playerOwns)
         {
-            if (_GM.maegen >= 500 && _GM.populous < _GM.maxPopulous)
+            if (_GM.maegen >= 10 && _GM.populous < _GM.maxPopulous)
             {
                 Instantiate(huldra, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.maegen -= 500;
+                _GM.maegen -= 10;
                 _UI.CheckPopulousUI();
             }
             else

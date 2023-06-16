@@ -29,7 +29,7 @@ public class HutManager : Singleton<HutManager>
     void Start()
     {
         GameObject go = Instantiate(hut, spawnLocations[RandomSpawnLocation()].transform.position, Quaternion.Euler(0, 183.4f, 0));
-        StartCoroutine(AddMaegen());
+        //StartCoroutine(AddMaegen());
     }
 
     private int RandomSpawnLocation()
@@ -63,11 +63,11 @@ public class HutManager : Singleton<HutManager>
         hutObject = GameObject.FindGameObjectWithTag("Horgr");
         if (playerOwns)
         {
-            if (_GM.maegen >= 200 && _GM.populous < _GM.maxPopulous)
+            if (_GM.maegen >= 1 && _GM.populous < _GM.maxPopulous)
             {
                 Instantiate(skessa, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.maegen -= 200;
+                _GM.maegen -= 1;
                 _UI.CheckPopulousUI();
             }
             else

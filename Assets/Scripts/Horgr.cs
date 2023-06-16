@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using Unity.VisualScripting;
+using UnityEngine.Analytics;
 
 public class Horgr : GameBehaviour
 {
@@ -32,6 +33,7 @@ public class Horgr : GameBehaviour
         audioSource = GetComponent<AudioSource>();
         _HM.horgrObject = gameObject;
         _HM.spawnLocation = spawnLocation;
+        //ClaimHorgr();
     }
 
     private void Update()
@@ -57,7 +59,7 @@ public class Horgr : GameBehaviour
                     enemyTimeLeft += 1 * Time.deltaTime;
                 }
             }
-            if (other.tag == "Unit")
+            if (other.tag == "Unit" || other.tag == "LeshyUnit")
             {
                 if (_HM.enemies.Count < _HM.units.Count)
                 {
@@ -74,7 +76,7 @@ public class Horgr : GameBehaviour
                     enemyTimeLeft -= 1 * Time.deltaTime;
                 }
             }
-            if (other.tag == "Unit")
+            if (other.tag == "Unit" || other.tag == "LeshyUnit")
             {
                 if (_HM.enemies.Count < _HM.units.Count)
                 {
@@ -123,6 +125,15 @@ public class Horgr : GameBehaviour
             playerControlFX.SetActive(false);
         }
     }
+
+    public void ClaimHorgr()
+    {
+        enemyTimeLeft = enemyMaxTimeLeft;
+        mapIcon.color = unitSliderColour;
+        playerControlFX.SetActive(true);
+        _HM.playerOwns = true;
+        playerHasControl = true;
+    }
     float CalculateTimeLeft()
     {
         return enemyTimeLeft / enemyMaxTimeLeft;
@@ -131,5 +142,20 @@ public class Horgr : GameBehaviour
     public void SpawnSkessa()
     {
         Instantiate(skessa, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
+    }
+
+    private void OnContinueButton()
+    {
+        //ClaimHorgr();
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnContinueButton += OnContinueButton;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnContinueButton -= OnContinueButton;
     }
 }

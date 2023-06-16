@@ -591,6 +591,7 @@ Transform:
   - {fileID: 6900247461455650926}
   - {fileID: 6900247460500064495}
   - {fileID: 5913408436893661828}
+  - {fileID: 1313074615121142300}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
@@ -700,6 +701,7 @@ MonoBehaviour:
   leshy: {fileID: 1071894615449563641, guid: 71f02462b8f3a684bab792ced62f1cfe, type: 3}
   spawnLocation: {fileID: 9103368360889493230}
   audioSource: {fileID: 2742575085048848624}
+  homeTreeTower: {fileID: 9108620099173285338}
 --- !u!82 &2742575085048848624
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5788,7 +5790,7 @@ Transform:
   m_GameObject: {fileID: 7426737621856882579}
   m_LocalRotation: {x: -0.00000007374411, y: -0.7072302, z: -0.7069834, w: -0.00000007376985}
   m_LocalPosition: {x: 0, y: 0.0001, z: 0.232}
-  m_LocalScale: {x: 0.047337044, y: 0.047337033, z: 0.047337033}
+  m_LocalScale: {x: 0.025, y: 0.047337033, z: 0.025}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6900247461417144686}
@@ -5875,6 +5877,63 @@ Transform:
   m_Father: {fileID: 6900247461417144686}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 28.45, y: -90, z: -90}
+--- !u!1 &9108620099173285338
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1313074615121142300}
+  - component: {fileID: 694666556063357518}
+  m_Layer: 0
+  m_Name: HomeTreeUpgrade
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1313074615121142300
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9108620099173285338}
+  m_LocalRotation: {x: 0.7069834, y: -0, z: -0, w: 0.7072302}
+  m_LocalPosition: {x: 0.002, y: -0.0016, z: 0.0787}
+  m_LocalScale: {x: 0.005710044, y: 0.005710043, z: 0.005710043}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6900247461417144686}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &694666556063357518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9108620099173285338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54e4edfb95188854792156542d3ab425, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firingPoint: {fileID: 0}
+  projectile1: {fileID: 8076584472840813920, guid: d04a9e9b396e4ef438a4b1f91a5a6bc1,
+    type: 3}
+  closestEnemy: {x: 0, y: 0, z: 0}
+  projectileSpeed: 4000
+  distanceToClosestEnemy: 0
+  woodParticle: {fileID: 4197850467115213477, guid: 6e4da939aea615a46acdc0d7d7e2e189,
+    type: 3}
+  explosionParticle: {fileID: 1000011797152326, guid: acf39d9f4addf294d93fa56fa373961b,
+    type: 3}
+  spawnParticleEffect: {fileID: 6847423562014467715, guid: c4c0d718c2c69fa45a849207f9453535,
+    type: 3}
+  towerUpgrade: 0
 --- !u!1001 &6361374041115846409
 PrefabInstance:
   m_ObjectHideFlags: 0

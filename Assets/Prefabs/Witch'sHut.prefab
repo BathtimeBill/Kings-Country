@@ -276,6 +276,7 @@ Transform:
   - {fileID: 1283989418254537817}
   - {fileID: 5806892065248579082}
   - {fileID: 7040591930600487231}
+  - {fileID: 5205356554200327286}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5949,7 +5950,7 @@ Transform:
   m_GameObject: {fileID: 6716044385024396128}
   m_LocalRotation: {x: -0.024949133, y: -0.7066675, z: 0.70666564, w: -0.024949163}
   m_LocalPosition: {x: 0.2, y: 37.4, z: -7.5}
-  m_LocalScale: {x: 11.620975, y: 11.620974, z: 11.620975}
+  m_LocalScale: {x: 6.5, y: 6.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 40463486632119504}
@@ -6007,6 +6008,51 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &7756978692572341410
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5205356554200327286}
+  - component: {fileID: 3403595156421392370}
+  m_Layer: 0
+  m_Name: RaycastCollider
+  m_TagString: Hut
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5205356554200327286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7756978692572341410}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.7441716, y: 2.3470025, z: -4.407787}
+  m_LocalScale: {x: 0.57243973, y: 0.57243973, z: 0.57243973}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 40463486632119504}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &3403595156421392370
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7756978692572341410}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 19.4
+  m_Center: {x: -0.9709892, y: -0.55634224, z: 6.94033}
 --- !u!1 &7810586791409891717
 GameObject:
   m_ObjectHideFlags: 0

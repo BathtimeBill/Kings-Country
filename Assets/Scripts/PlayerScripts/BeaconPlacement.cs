@@ -26,7 +26,7 @@ public class BeaconPlacement : Singleton<BeaconPlacement>
         }
         if (_GM.beacons.Length < 1)
         {
-            if(_GM.maegen > 499 && _GM.wildlife > 14)
+            if(_GM.maegen > 5 && _GM.wildlife > 2)
             {
                 canPlace = true;
                 effectRadius.GetComponent<Renderer>().material = canPlaceMat;

@@ -22,6 +22,8 @@ public class Warrior : GameBehaviour
     public GameObject deathObject;
     public GameObject bloodParticle1;
     private float damping = 5;
+    public GameObject maegenPickup;
+    public int maxRandomDropChance;
 
     [Header("Components")]
     NavMeshAgent navAgent;
@@ -260,10 +262,19 @@ public class Warrior : GameBehaviour
             {
                 _HM.enemies.Remove(gameObject);
             }
+            DropMaegen();
             GameObject go;
             go = Instantiate(deathObject, transform.position, transform.rotation);
             Destroy(go, 15);
             Destroy(gameObject);
+        }
+    }
+    private void DropMaegen()
+    {
+        int rnd = Random.Range(1, maxRandomDropChance);
+        if (rnd == 1)
+        {
+            Instantiate(maegenPickup, transform.position, transform.rotation);
         }
     }
     public void Launch()

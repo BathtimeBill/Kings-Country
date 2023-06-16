@@ -11,10 +11,10 @@ public class MusicManager : Singleton<MusicManager>
 
     void Start()
     {
-        musicPlayer.clip = GetRandomCombatMusic();
+        musicPlayer.clip = GetRandomPeaceMusic();
         musicPlayer.loop = false;
         musicPlayer.Play();
-        StartCoroutine(WaitForCombatTrackToEnd());
+        StartCoroutine(WaitForPeaceTrackToEnd());
     }
 
     public AudioClip GetRandomCombatMusic()
@@ -55,9 +55,37 @@ public class MusicManager : Singleton<MusicManager>
         peaceMusic.Remove(currentClip);
         musicPlayer.clip = GetRandomPeaceMusic();
         musicPlayer.Play();
-        if (_EM.enemies.Length == 0)
-            StartCoroutine(WaitForPeaceTrackToEnd());
-        else
-            StartCoroutine(WaitForCombatTrackToEnd());
+        StartCoroutine(WaitForPeaceTrackToEnd());
+    }
+
+
+    public void OnWaveOver()
+    {
+        musicPlayer.Stop();
+        StopCoroutine(WaitForCombatTrackToEnd());
+    }
+    public void OnContinueButton()
+    {
+        StartCoroutine(WaitForPeaceTrackToEnd());
+    }
+    public void OnStartNextRound()
+    {
+        musicPlayer.Stop();
+        StopCoroutine(WaitForPeaceTrackToEnd());
+        StartCoroutine(WaitForCombatTrackToEnd());
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnWaveOver += OnWaveOver;
+        GameEvents.OnContinueButton += OnContinueButton;
+        GameEvents.OnStartNextRound += OnStartNextRound;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnWaveOver -= OnWaveOver;
+        GameEvents.OnContinueButton -= OnContinueButton;
+        GameEvents.OnStartNextRound -= OnStartNextRound;
     }
 }

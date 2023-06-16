@@ -260,7 +260,7 @@ public class Unit : GameBehaviour
         }
         if (other.tag == "Maegen")
         {
-            _GM.maegen += 200;
+            _GM.maegen += 1;
         }
         if (other.tag == "Horgr")
         {
@@ -299,7 +299,7 @@ public class Unit : GameBehaviour
         }
         if(other.tag == "Rune")
         {
-            health += 3 * Time.deltaTime;
+            health += 5 * Time.deltaTime;
             slider.value = slider.value = CalculateHealth();
         }
     }
@@ -573,13 +573,16 @@ public class Unit : GameBehaviour
         {
             case UnitType.SatyrUnit:
                 maxHealth = 130;
+                health = maxHealth;
                 break;
 
             case UnitType.LeshyUnit:
                 maxHealth = 260;
+                health = maxHealth;
                 break;
             case UnitType.OrcusUnit:
                 maxHealth = 195;
+                health = maxHealth;
                 break;
         }
         slider.value = slider.value = CalculateHealth();
@@ -600,18 +603,23 @@ public class Unit : GameBehaviour
                 break;
         }
     }
-
+    private void OnContinueButton()
+    {
+        health = maxHealth;
+        slider.value = slider.value = CalculateHealth();
+    }
     private void OnEnable()
     {
         GameEvents.OnBorkrskinnUpgrade += OnBorkrskinnUpgrade;
         GameEvents.OnFlugafotrUpgrade += OnFlugafotrUpgrade;
+        GameEvents.OnContinueButton += OnContinueButton;
     }
 
     private void OnDisable()
     {
         GameEvents.OnBorkrskinnUpgrade -= OnBorkrskinnUpgrade;
         GameEvents.OnFlugafotrUpgrade -= OnFlugafotrUpgrade;
+        GameEvents.OnContinueButton -= OnContinueButton;
     }
 
-    
 }

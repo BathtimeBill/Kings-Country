@@ -20,6 +20,8 @@ public class Hunter : GameBehaviour
     public GameObject bloodParticle1;
     private float damping = 5;
     public float stoppingDistance;
+    public GameObject maegenPickup;
+    public int maxRandomDropChance;
 
 
     [Header("Components")]
@@ -247,15 +249,29 @@ public class Hunter : GameBehaviour
             {
                 _HUTM.enemies.Remove(gameObject);
             }
+            DropMaegen();
             GameObject go;
             go = Instantiate(deathObject, transform.position, transform.rotation);
             Destroy(go, 15);
             Destroy(gameObject);
         }
     }
+    private void DropMaegen()
+    {
+        int rnd = Random.Range(1, maxRandomDropChance);
+        if(rnd == 1)
+        {
+            Instantiate(maegenPickup, transform.position, transform.rotation);
+        }
+    }
 
     public void Launch()
     {
+        if (_HUTM.enemies.Contains(gameObject))
+        {
+            _HUTM.enemies.Remove(gameObject);
+        }
+        DropMaegen();
         float thrust = 20000f;
         GameObject go;
         go = Instantiate(deathObject, transform.position, transform.rotation);

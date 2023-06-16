@@ -44,10 +44,10 @@ public class WoodcutterManager : GameBehaviour
         {
             Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
             Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
+            Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
             Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
             Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
+
         }
 
         yield return new WaitForSeconds(Random.Range(5, 10));

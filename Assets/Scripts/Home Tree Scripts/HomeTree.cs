@@ -17,6 +17,7 @@ public class HomeTree : GameBehaviour
     public GameObject spawnLocation;
     public AudioSource audioSource;
     private AudioClip audioclip;
+    public GameObject homeTreeTower;
     void Start()
     {
         maxHealth = 250;
@@ -31,11 +32,11 @@ public class HomeTree : GameBehaviour
     //Checks to see if the player has enough resources and then spawns a Satyr unit in front of the Home Tree. Is called when a button is pressed in the UI.
     public void SpawnSatyr()
     {
-        if(_GM.maegen >74)
+        if(_GM.maegen >1)
         {
             if(_GM.populous < _GM.maxPopulous)
             {
-                _GM.maegen -= 75;
+                _GM.maegen -= 2;
                 Instantiate(satyr, spawnLocation.transform.position, spawnLocation.transform.rotation);
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _UI.CheckPopulousUI();
@@ -55,11 +56,11 @@ public class HomeTree : GameBehaviour
     //Checks to see if the player has enough resources and then spawns a Orcus unit in front of the Home Tree. Is called when a button is pressed in the UI.
     public void SpawnOrcus()
     {
-        if (_GM.maegen > 149)
+        if (_GM.maegen > 3)
         {
             if(_GM.populous < _GM.maxPopulous)
             {
-                _GM.maegen -= 150;
+                _GM.maegen -= 4;
                 Instantiate(orcus, spawnLocation.transform.position, spawnLocation.transform.rotation);
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _UI.CheckPopulousUI();
@@ -79,11 +80,11 @@ public class HomeTree : GameBehaviour
     //Checks to see if the player has enough resources and then spawns a Leshy unit in front of the Home Tree. Is called when a button is pressed in the UI.
     public void SpawnLeshy()
     {
-        if (_GM.maegen > 999)
+        if (_GM.maegen > 5)
         {
             if(_GM.populous < _GM.maxPopulous)
             {
-                _GM.maegen -= 1000;
+                _GM.maegen -= 6;
                 Instantiate(leshy, spawnLocation.transform.position, spawnLocation.transform.rotation);
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _UI.CheckPopulousUI();
@@ -144,5 +145,27 @@ public class HomeTree : GameBehaviour
         {
             GameEvents.ReportOnGameOver();
         }
+    }
+
+    private void OnWinfallUpgrade()
+    {
+        _GM.maegen += 15;
+    }
+
+    private void OnHomeTreeUpgrade()
+    {
+        homeTreeTower.SetActive(true);
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnWinfallUpgrade += OnWinfallUpgrade;
+        GameEvents.OnHomeTreeUpgrade += OnHomeTreeUpgrade;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnWinfallUpgrade -= OnWinfallUpgrade;
+        GameEvents.OnHomeTreeUpgrade -= OnHomeTreeUpgrade;
     }
 }
