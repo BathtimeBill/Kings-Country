@@ -23,14 +23,14 @@ public class RunePlacement : Singleton<RunePlacement>
         if(_GM.runes.Length == 0)
         {
             _UI.maegenCostText.text = "2";
-            _UI.wildlifeCostText.text = "2";
-            if (_GM.maegen < 2 || _GM.wildlife < 2)
+            _UI.wildlifeCostText.text = "5";
+            if (_GM.maegen < 2 || _GM.wildlife < 5)
             {
                 canPlace = false;
                 gameObject.GetComponent<Renderer>().material = cannotPlaceMat;
                 effectRadius.GetComponent<Renderer>().material = cannotPlaceMat;
             }
-            if (_GM.maegen >= 2 && _GM.wildlife >= 2)
+            if (_GM.maegen >= 2 && _GM.wildlife >= 5)
             {
                 canPlace = true;
                 gameObject.GetComponent<Renderer>().material = canPlaceMat;
@@ -40,14 +40,14 @@ public class RunePlacement : Singleton<RunePlacement>
         if(_GM.runes.Length == 1)
         {
             _UI.maegenCostText.text = "4";
-            _UI.wildlifeCostText.text = "3";
-            if (_GM.maegen < 4 || _GM.wildlife < 3)
+            _UI.wildlifeCostText.text = "7";
+            if (_GM.maegen < 4 || _GM.wildlife < 7)
             {
                 canPlace = false;
                 gameObject.GetComponent<Renderer>().material = cannotPlaceMat;
                 effectRadius.GetComponent<Renderer>().material = cannotPlaceMat;
             }
-            if (_GM.maegen >= 4 && _GM.wildlife >= 3)
+            if (_GM.maegen >= 4 && _GM.wildlife >= 7)
             {
                 canPlace = true;
                 gameObject.GetComponent<Renderer>().material = canPlaceMat;
@@ -57,15 +57,15 @@ public class RunePlacement : Singleton<RunePlacement>
         if (_GM.runes.Length == 2)
         {
             _UI.maegenCostText.text = "8";
-            _UI.wildlifeCostText.text = "4";
-            if (_GM.maegen < 8 || _GM.wildlife < 4)
+            _UI.wildlifeCostText.text = "10";
+            if (_GM.maegen < 8 || _GM.wildlife < 10)
             {
                 
                 canPlace = false;
                 gameObject.GetComponent<Renderer>().material = cannotPlaceMat;
                 effectRadius.GetComponent<Renderer>().material = cannotPlaceMat;
             }
-            if (_GM.maegen >= 8 && _GM.wildlife >= 4)
+            if (_GM.maegen >= 8 && _GM.wildlife >= 10)
             {
                 canPlace = true;
                 gameObject.GetComponent<Renderer>().material = canPlaceMat;
@@ -75,14 +75,14 @@ public class RunePlacement : Singleton<RunePlacement>
         if (_GM.runes.Length == 3)
         {
             _UI.maegenCostText.text = "16";
-            _UI.wildlifeCostText.text = "5";
-            if (_GM.maegen < 16 || _GM.wildlife < 5)
+            _UI.wildlifeCostText.text = "15";
+            if (_GM.maegen < 16 || _GM.wildlife < 15)
             {
                 canPlace = false;
                 gameObject.GetComponent<Renderer>().material = cannotPlaceMat;
                 effectRadius.GetComponent<Renderer>().material = cannotPlaceMat;
             }
-            if (_GM.maegen >= 16 && _GM.wildlife >= 5)
+            if (_GM.maegen >= 16 && _GM.wildlife >= 15)
             {
                 canPlace = true;
                 gameObject.GetComponent<Renderer>().material = canPlaceMat;

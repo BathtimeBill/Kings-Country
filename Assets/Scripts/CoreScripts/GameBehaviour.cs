@@ -11,6 +11,7 @@ public class GameBehaviour : MonoBehaviour
     protected static MusicManager _MM { get { return MusicManager.instance; } }
     protected static EnemyManager _EM { get { return EnemyManager.instance; } }
     protected static UIManager _UI { get { return UIManager.instance; } }
+    protected static TutorialManager _TUTM { get { return TutorialManager.instance; } }
     protected static PlayerControls _PC { get { return PlayerControls.instance; } }
     protected static SoundManager _SM { get { return SoundManager.instance; } }
     protected static TreePlacement _TPlace { get { return TreePlacement.instance; } }
@@ -78,6 +79,7 @@ public enum UnitType
     LeshyUnit,
     HuldraUnit,
     VolvaUnit,
+    GoblinUnit,
     Tower,
 }
 public enum WildlifeType

@@ -108,6 +108,7 @@ public class Horgr : GameBehaviour
                 mapIcon.color = unitSliderColour;
                 playerControlFX.SetActive(true);
                 _HM.playerOwns = true;
+                _HM.hasBeenClaimed = true;
             }
             else
             {
@@ -146,7 +147,10 @@ public class Horgr : GameBehaviour
 
     private void OnContinueButton()
     {
-        //ClaimHorgr();
+        if(_HM.hasBeenClaimed)
+        {
+            ClaimHorgr();
+        }
     }
 
     private void OnEnable()
@@ -158,4 +162,5 @@ public class Horgr : GameBehaviour
     {
         GameEvents.OnContinueButton -= OnContinueButton;
     }
+
 }

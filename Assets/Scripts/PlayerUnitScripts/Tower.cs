@@ -168,14 +168,20 @@ public class Tower : GameBehaviour
         towerUpgrade = true;
         Setup();
     }
-
+    public void OnContinueButton()
+    {
+        health = maxHealth;
+        slider.value = slider.value = CalculateHealth();
+    }
     private void OnEnable()
     {
         GameEvents.OnTowerUpgrade += OnTowerUpgrade;
+        GameEvents.OnContinueButton += OnContinueButton;
     }
 
     private void OnDisable()
     {
         GameEvents.OnTowerUpgrade -= OnTowerUpgrade;
+        GameEvents.OnContinueButton -= OnContinueButton;
     }
 }

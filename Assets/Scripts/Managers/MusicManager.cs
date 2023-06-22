@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class MusicManager : Singleton<MusicManager>
 {
     public AudioSource musicPlayer;
     public List<AudioClip> combatMusic;
     public List<AudioClip> peaceMusic;
+    public AudioClip winMusic;
     public AudioClip currentClip;
 
     void Start()
@@ -74,9 +76,20 @@ public class MusicManager : Singleton<MusicManager>
         StopCoroutine(WaitForPeaceTrackToEnd());
         StartCoroutine(WaitForCombatTrackToEnd());
     }
-
+    public void OnGameOver()
+    {
+        musicPlayer.Stop();
+    }
+    public void OnGameWin()
+    {
+        musicPlayer.Stop();
+        musicPlayer.clip = winMusic;
+        musicPlayer.Play();
+    }
     private void OnEnable()
     {
+        GameEvents.OnGameOver += OnGameOver;
+        GameEvents.OnGameWin += OnGameWin;
         GameEvents.OnWaveOver += OnWaveOver;
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnStartNextRound += OnStartNextRound;
@@ -84,7 +97,8 @@ public class MusicManager : Singleton<MusicManager>
 
     private void OnDisable()
     {
-        GameEvents.OnWaveOver -= OnWaveOver;
+        GameEvents.OnGameOver -= OnGameOver;
+        GameEvents.OnGameWin -= OnGameWin;
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnStartNextRound -= OnStartNextRound;
     }

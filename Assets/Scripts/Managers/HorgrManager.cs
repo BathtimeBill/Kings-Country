@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class HorgrManager : Singleton<HorgrManager>
 {
@@ -23,6 +24,7 @@ public class HorgrManager : Singleton<HorgrManager>
 
     public bool playerOwns;
     public bool enemyOwns;
+    public bool hasBeenClaimed;
 
     private new void Awake()
     {
@@ -107,6 +109,10 @@ public class HorgrManager : Singleton<HorgrManager>
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _GM.maegen -= 10;
                 _UI.CheckPopulousUI();
+                if(_TUTM.isTutorial && _TUTM.tutorialStage == 12)
+                {
+                    GameEvents.ReportOnNextTutorial();  
+                }
             }
             else
             {
@@ -120,4 +126,5 @@ public class HorgrManager : Singleton<HorgrManager>
             _PC.Error();
         }
     }
+
 }

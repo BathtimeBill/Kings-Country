@@ -262,7 +262,15 @@ public class Logger : GameBehaviour
     }
     private void DropMaegen()
     {
-        int rnd = Random.Range(1, maxRandomDropChance);
+        int rnd;
+        if (_TUTM.isTutorial && _TUTM.tutorialStage == 8)
+        {
+            rnd = 1;
+        }
+        else
+        {
+            rnd = Random.Range(1, maxRandomDropChance);
+        }
         if (rnd == 1)
         {
             Instantiate(maegenPickup, transform.position, transform.rotation);
@@ -280,6 +288,7 @@ public class Logger : GameBehaviour
         go = Instantiate(deadLogger, transform.position, transform.rotation);
         go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * thrust);
         go.GetComponentInChildren<Rigidbody>().AddForce(transform.forward * -thrust);
+        go.GetComponent<RagdollSound>().hasBeenLaunched = true;
         Destroy(go, 25);
         Destroy(gameObject);
     }

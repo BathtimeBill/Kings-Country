@@ -12,7 +12,15 @@ public class WarriorManager : GameBehaviour
 
     void Start()
     {
-        StartCoroutine(SpawnWarrior());
+        if(_TUTM.isTutorial)
+        {
+            StartCoroutine(SpawnWarriorTutorial());
+        }
+        else
+        {
+            StartCoroutine(SpawnWarrior());
+        }
+
     }
 
     IEnumerator SpawnWarrior()
@@ -57,5 +65,27 @@ public class WarriorManager : GameBehaviour
         }
         yield return new WaitForSeconds(Random.Range(15, 25));
         StartCoroutine(SpawnWarrior());
+    }
+    IEnumerator SpawnWarriorTutorial()
+    {
+        int rndSpawn = Random.Range(0, spawnPoints.Length);
+
+        if (_GM.currentWave == 3 && _GM.agroWave)
+        {
+            Instantiate(dreng, spawnPoints[rndSpawn].position, transform.rotation);
+        }
+        if (_GM.currentWave == 4 && _GM.agroWave)
+        {
+            Instantiate(dreng, spawnPoints[rndSpawn].position, transform.rotation);
+            Instantiate(dreng, spawnPoints[rndSpawn].position, transform.rotation);
+        }
+        if (_GM.currentWave >= 5 && _GM.agroWave)
+        {
+            Instantiate(berserkr, spawnPoints[rndSpawn].position, transform.rotation);
+            Instantiate(dreng, spawnPoints[rndSpawn].position, transform.rotation);
+        }
+
+        yield return new WaitForSeconds(Random.Range(15, 25));
+        StartCoroutine(SpawnWarriorTutorial());
     }
 }

@@ -81,6 +81,7 @@ public class UIManager : Singleton<UIManager>
     public Button nextRoundButton;
     public GameObject waveOverPanel;
     public Button treetoolButton;
+    public GameObject collectMaegenButton;
 
     [Header("Current Upgrade Panel")]
     public GameObject barkSkin;
@@ -111,7 +112,6 @@ public class UIManager : Singleton<UIManager>
     void Update()
     {
         maegenText.text = _GM.maegen.ToString();
-
 
         if (beaconPlaced)
         {
@@ -206,6 +206,12 @@ public class UIManager : Singleton<UIManager>
     public void CloseHorgrMenu()
     {
         horgrPanel.SetActive(false);
+        audioSource.clip = _SM.closeMenuSound;
+        audioSource.Play();
+    }
+    public void CloseHutMenu()
+    {
+        hutPanel.SetActive(false);
         audioSource.clip = _SM.closeMenuSound;
         audioSource.Play();
     }
@@ -306,14 +312,15 @@ public class UIManager : Singleton<UIManager>
     }
     public void OnWaveOver()
     {
-
+        if(_GM.currentWave!= 10)
         waveOverPanel.SetActive(true);
         
     }
     public void OnContinueButton()
     {
         waveOverPanel.SetActive(false);
-        treeToolImage.sprite = usableBeaconTool;
+        treeToolImage.sprite = usableTreeTool;
+        collectMaegenButton.SetActive(false);
     }
     private void OnStartNextRound()
     {
@@ -370,17 +377,30 @@ public class UIManager : Singleton<UIManager>
     {
         homeTree.SetActive(true);
     }
-
-
-
+    private void OnGameWin()
+    {
+        winPanel.SetActive(true);
+        Time.timeScale = 0f;
+    }
+    private void OnJustStragglers()
+    {
+        collectMaegenButton.SetActive(true);
+    }
+    public void CollectMaegen()
+    {
+        GameEvents.ReportOnCollectMaegenButton();
+        collectMaegenButton.SetActive(false);
+    }
     private void OnEnable()
     {
         GameEvents.OnGameOver += OnGameOver;
+        GameEvents.OnGameWin += OnGameWin;
         GameEvents.OnBeaconPlaced += OnBeaconPlaced;
         GameEvents.OnStormerPlaced += OnStormerPlaced;
         GameEvents.OnWaveOver += OnWaveOver;
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnStartNextRound += OnStartNextRound;
+        GameEvents.OnJustStragglers += OnJustStragglers;
 
         GameEvents.OnBorkrskinnUpgrade += OnBorkrskinnUpgrade;
         GameEvents.OnFlugafotrUpgrade += OnFlugafotrUpgrade;
@@ -399,10 +419,12 @@ public class UIManager : Singleton<UIManager>
     private void OnDisable()
     {
         GameEvents.OnGameOver -= OnGameOver;
+        GameEvents.OnGameWin -= OnGameWin;
         GameEvents.OnBeaconPlaced -= OnBeaconPlaced;
         GameEvents.OnStormerPlaced -= OnStormerPlaced;
         GameEvents.OnWaveOver -= OnWaveOver;
         GameEvents.OnContinueButton -= OnContinueButton;
+        GameEvents.OnJustStragglers -= OnJustStragglers;
 
         GameEvents.OnBorkrskinnUpgrade -= OnBorkrskinnUpgrade;
         GameEvents.OnFlugafotrUpgrade -= OnFlugafotrUpgrade;

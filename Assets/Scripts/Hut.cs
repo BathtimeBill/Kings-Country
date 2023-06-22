@@ -106,6 +106,7 @@ public class Hut : GameBehaviour
                 mapIcon.color = unitSliderColour;
                 playerControlFX.SetActive(true);
                 _HUTM.playerOwns = true;
+                _HUTM.hasBeenClaimed = true;
             }
             else
             {
@@ -131,5 +132,30 @@ public class Hut : GameBehaviour
     public void SpawnSkessa()
     {
         Instantiate(skessa, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
+    }
+    public void ClaimHut()
+    {
+        enemyTimeLeft = enemyMaxTimeLeft;
+        mapIcon.color = unitSliderColour;
+        playerControlFX.SetActive(true);
+        _HUTM.playerOwns = true;
+        playerHasControl = true;
+    }
+    private void OnContinueButton()
+    {
+        if (_HUTM.hasBeenClaimed)
+        {
+            ClaimHut();
+        }
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnContinueButton += OnContinueButton;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnContinueButton -= OnContinueButton;
     }
 }

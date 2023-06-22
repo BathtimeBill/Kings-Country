@@ -12,7 +12,15 @@ public class HunterManager : GameBehaviour
 
     void Start()
     {
-        StartCoroutine(SpawnHunter());
+        if(_TUTM.isTutorial)
+        {
+            StartCoroutine(SpawnHunterTutorial());
+        }
+        else
+        {
+            StartCoroutine(SpawnHunter());
+        }
+
     }
 
     IEnumerator SpawnHunter()
@@ -51,5 +59,38 @@ public class HunterManager : GameBehaviour
         }
         yield return new WaitForSeconds(Random.Range(15, 25));
         StartCoroutine(SpawnHunter());
+    }
+    IEnumerator SpawnHunterTutorial()
+    {
+        int rndSpawn = Random.Range(0, spawnPoints.Length);
+        if (_GM.currentWave == 1 && _GM.agroWave)
+        {
+            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
+        }
+        if (_GM.currentWave == 2 && _GM.agroWave)
+        {
+            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
+            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
+        }
+        if (_GM.currentWave == 3 && _GM.agroWave)
+        {
+            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
+            Instantiate(hunter, spawnPoints[rndSpawn].position, transform.rotation);
+        }
+        if (_GM.currentWave == 4 && _GM.agroWave)
+        {
+            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
+            Instantiate(hunter, spawnPoints[rndSpawn].position, transform.rotation);
+            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
+        }
+        if (_GM.currentWave == 5 && _GM.agroWave)
+        {
+            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
+            Instantiate(hunter, spawnPoints[rndSpawn].position, transform.rotation);
+            Instantiate(bjornjeger, spawnPoints[rndSpawn].position, transform.rotation);
+
+        }
+        yield return new WaitForSeconds(Random.Range(10, 20));
+        StartCoroutine(SpawnHunterTutorial());
     }
 }

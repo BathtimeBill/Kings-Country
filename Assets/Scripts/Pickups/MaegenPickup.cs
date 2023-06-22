@@ -21,14 +21,21 @@ public class MaegenPickup : GameBehaviour
         Instantiate(maegenWisp, transform.position, transform.rotation);
         Destroy(gameObject);
     }
+    private void OnCollectMaegenButton()
+    {
+        Instantiate(maegenWisp, transform.position, transform.rotation);
+        Destroy(gameObject);
+    }
 
     private void OnEnable()
     {
         GameEvents.OnContinueButton += OnContinueButton;
+        GameEvents.OnCollectMaegenButton += OnCollectMaegenButton;
     }
 
     private void OnDisable()
     {
         GameEvents.OnContinueButton -= OnContinueButton;
+        GameEvents.OnCollectMaegenButton -= OnCollectMaegenButton;
     }
 }

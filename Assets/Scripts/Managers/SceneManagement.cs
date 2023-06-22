@@ -16,11 +16,21 @@ public class SceneManagement : GameBehaviour
     public AudioClip clickSound;
 
     public GameObject loadingScreen;
+    public GameObject levelSelectScreen;
 
     AsyncOperation loadingOperation;
 
 
 
+
+    public void CloseLevelSelectScreen()
+    {
+        levelSelectScreen.SetActive(false);
+    }
+    public void OpenLevelSelectScreen()
+    {
+        levelSelectScreen.SetActive(true);
+    }
     public void LoadScene(string _sceneName)
     {
         loadingScreen.SetActive(true);

@@ -40,6 +40,7 @@ public class HomeTree : GameBehaviour
                 Instantiate(satyr, spawnLocation.transform.position, spawnLocation.transform.rotation);
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _UI.CheckPopulousUI();
+                CheckForNumberOfUnitsForTutorial();
             }
             else
             {
@@ -64,6 +65,7 @@ public class HomeTree : GameBehaviour
                 Instantiate(orcus, spawnLocation.transform.position, spawnLocation.transform.rotation);
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _UI.CheckPopulousUI();
+                CheckForNumberOfUnitsForTutorial();
             }
             else
             {
@@ -88,6 +90,7 @@ public class HomeTree : GameBehaviour
                 Instantiate(leshy, spawnLocation.transform.position, spawnLocation.transform.rotation);
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _UI.CheckPopulousUI();
+                CheckForNumberOfUnitsForTutorial();
             }
             else
             {
@@ -101,7 +104,16 @@ public class HomeTree : GameBehaviour
             _PC.Error();
         }
     }
-
+    private void CheckForNumberOfUnitsForTutorial()
+    {
+        if (_TUTM.isTutorial)
+        {
+            if (_GM.populous >= 2 && _TUTM.tutorialStage == 4)
+            {
+                GameEvents.ReportOnNextTutorial();
+            }
+        }
+    }
     private void SummonSound()
     {
         audioclip = _SM.summonSound;

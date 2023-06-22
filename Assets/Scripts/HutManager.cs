@@ -17,12 +17,14 @@ public class HutManager : Singleton<HutManager>
 
     public GameObject skessa;
     public GameObject huldra;
+    public GameObject goblin;
 
     public GameObject maegen5;
     public GameObject maegenLoss;
 
     public bool playerOwns;
     public bool enemyOwns;
+    public bool hasBeenClaimed;
 
 
 
@@ -60,7 +62,7 @@ public class HutManager : Singleton<HutManager>
 
     public void SpawnSkessaManager()
     {
-        hutObject = GameObject.FindGameObjectWithTag("Horgr");
+        hutObject = GameObject.FindGameObjectWithTag("Hut");
         if (playerOwns)
         {
             if (_GM.maegen >= 1 && _GM.populous < _GM.maxPopulous)
@@ -83,16 +85,15 @@ public class HutManager : Singleton<HutManager>
             _PC.Error();
         }
     }
-    public void SpawnHuldraManager()
+    public void SpawnGoblinManager()
     {
-        hutObject = GameObject.FindGameObjectWithTag("Horgr");
         if (playerOwns)
         {
-            if (_GM.maegen >= 500 && _GM.populous < _GM.maxPopulous)
+            if (_GM.maegen >= 8 && _GM.populous < _GM.maxPopulous)
             {
-                Instantiate(huldra, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
+                Instantiate(goblin, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.maegen -= 500;
+                _GM.maegen -= 8;
                 _UI.CheckPopulousUI();
             }
             else

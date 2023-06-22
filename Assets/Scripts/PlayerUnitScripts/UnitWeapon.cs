@@ -1,15 +1,34 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class UnitWeapon : GameBehaviour
 {
-
+    public GameObject firingPoint;
+    public GameObject arrow;
     public Collider weaponCollider;
     public GameObject footstepParticle;
     public GameObject stompParticle;
     public GameObject leftFoot;
     public GameObject rightFoot;
+
+
+    private void Update()
+    {
+        if(gameObject.GetComponentInParent<Unit>().unitType == UnitType.GoblinUnit)
+        {
+            firingPoint.transform.LookAt(gameObject.GetComponentInParent<Unit>().closestEnemy);
+        }    
+    }
+    public void Arrow()
+    {
+        GameObject go = Instantiate(arrow, firingPoint.transform.position, transform.rotation);
+        go.GetComponent<Rigidbody>().AddForce(transform.forward * 1000f);
+        go.transform.LookAt(gameObject.GetComponentInParent<Unit>().closestEnemy);
+        Destroy(go, 2);
+        
+    }
     public void EnableCollider()
     {
         weaponCollider.enabled = true;

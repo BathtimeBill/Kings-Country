@@ -70,10 +70,6 @@ public class GameManager : Singleton<GameManager>
     {
         timeSinceAttack += Time.deltaTime;
         timeSinceWildlifeKilled += Time.deltaTime;
-        if(maegen < 0)
-        {
-            maegen = 0;
-        }
     }
 
     public void PauseGame()
@@ -102,7 +98,20 @@ public class GameManager : Singleton<GameManager>
         _UI.CheckWave();
         yield return new WaitForSeconds(agroWaveLength);
         agroWave = false;
-        //StartCoroutine(ManageWaveBreak());
+        StartCoroutine(CheckForCollectMaegen());
+    }
+    IEnumerator CheckForCollectMaegen()
+    {
+        yield return new WaitForSeconds(10);
+        int totalEnemies = _HM.enemies.Count + _HUTM.enemies.Count;
+        if (totalEnemies == _EM.enemies.Length)
+        {
+            if(canFinishWave)
+            {
+                GameEvents.ReportOnJustStragglers();
+            }
+        }
+        StartCoroutine(CheckForCollectMaegen());
     }
     IEnumerator WaitForCanFinishWave()
     {
@@ -223,12 +232,18 @@ public class GameManager : Singleton<GameManager>
         agroWave = false;
         gameState = GameState.Pause;
         Time.timeScale = 0;
+        StopCoroutine(CheckForCollectMaegen());
         Debug.Log("Wave is over");
     }
     public void OnContinueButton()
     {
         gameState = GameState.Play;
         Time.timeScale = 1;
+        StopCoroutine(CheckForCollectMaegen());
+    }
+    public void OnCollectMaegenButton()
+    {
+        StopCoroutine(CheckForCollectMaegen());
     }
     private void OnEnable()
     {
@@ -242,6 +257,7 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnWildlifeKilled += OnWildlifeKilled;
         GameEvents.OnWaveOver += OnWaveOver;
         GameEvents.OnContinueButton += OnContinueButton;
+        GameEvents.OnCollectMaegenButton += OnCollectMaegenButton;
     }
 
     private void OnDisable()
@@ -256,5 +272,6 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnWildlifeKilled -= OnWildlifeKilled;
         GameEvents.OnWaveOver -= OnWaveOver;
         GameEvents.OnContinueButton -= OnContinueButton;
+        GameEvents.OnCollectMaegenButton -= OnCollectMaegenButton;
     }
 }

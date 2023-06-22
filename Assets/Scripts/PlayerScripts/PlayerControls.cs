@@ -56,6 +56,14 @@ public class PlayerControls : Singleton<PlayerControls>
     {
         if(_GM.downTime)
         {
+            if(_TUTM.isTutorial)
+            {
+                if(_TUTM.tutorialStage == 1)
+                {
+                    GameEvents.ReportOnNextTutorial();
+                }
+            }
+
             _GM.playmode = PlayMode.TreeMode;
             runePlacement.SetActive(false);
             stormerPlacement.SetActive(false);
@@ -110,8 +118,8 @@ public class PlayerControls : Singleton<PlayerControls>
         _UI.runeToolSelectionBox.SetActive(false);
         _UI.maegenCost.SetActive(true);
         _UI.wildlifeCost.SetActive(true);
-        _UI.wildlifeCostText.text = "2";
-        _UI.maegenCostText.text = "5";
+        _UI.wildlifeCostText.text = "10";
+        _UI.maegenCostText.text = "0";
     }    
 
     private void SelectStormerMode()
@@ -129,8 +137,8 @@ public class PlayerControls : Singleton<PlayerControls>
         _UI.runeToolSelectionBox.SetActive(false);
         _UI.maegenCost.SetActive(true);
         _UI.wildlifeCost.SetActive(true);
-        _UI.wildlifeCostText.text = "5";
-        _UI.maegenCostText.text = "10";
+        _UI.wildlifeCostText.text = "20";
+        _UI.maegenCostText.text = "0";
     }
 
     private void DeslectAllModes()
@@ -282,7 +290,13 @@ public class PlayerControls : Singleton<PlayerControls>
                 _UI.beaconToolSelectionBox.SetActive(false);
                 _UI.audioSource.clip = _SM.openMenuSound;
                 _UI.audioSource.Play();
-
+                if (_TUTM.isTutorial)
+                {
+                    if(_TUTM.tutorialStage == 3)
+                    {
+                        GameEvents.ReportOnNextTutorial();
+                    }
+                }
             }
             else
             {
@@ -375,7 +389,7 @@ public class PlayerControls : Singleton<PlayerControls>
             {
                 if (_BPlace.canPlace == true)
                 {
-                    _GM.maegen -= 200;
+                    _GM.maegen -= 10;
 
                     Instantiate(beaconPrefab, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
                     _GM.CheckBeacons();
@@ -399,7 +413,7 @@ public class PlayerControls : Singleton<PlayerControls>
             {
                 if (_SPlace.canPlace == true)
                 {
-                    _GM.maegen -= 10;
+                    _GM.maegen -= 20;
                     GameEvents.ReportOnStormerPlaced();
                 }
                 else
@@ -520,6 +534,14 @@ public class PlayerControls : Singleton<PlayerControls>
                 _UI.homeTreePanel.SetActive(true);
                 _UI.horgrPanel.SetActive(false);
                 _UI.hutPanel.SetActive(false);
+
+                if (_TUTM.isTutorial)
+                {
+                    if (_TUTM.tutorialStage == 3)
+                    {
+                        GameEvents.ReportOnNextTutorial();
+                    }
+                }
             }
 
             _UI.audioSource.clip = _SM.openMenuSound;

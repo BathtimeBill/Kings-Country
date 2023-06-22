@@ -19,10 +19,16 @@ public static class GameEvents
     public static event Action OnRuneDestroyed = null;
 
     public static event Action OnGameOver = null;
+    public static event Action OnGameWin = null;
+
+    public static event Action OnJustStragglers = null;
+    public static event Action OnCollectMaegenButton = null;
 
     public static event Action OnWaveOver = null;
     public static event Action OnContinueButton = null;
     public static event Action OnStartNextRound = null;
+
+    public static event Action OnNextTutorial = null;
 
     public static event Action OnBorkrskinnUpgrade = null;
     public static event Action OnJarnnefiUpgrade = null;
@@ -40,6 +46,22 @@ public static class GameEvents
     public static event Action OnUpgradeSelected = null;
 
 
+    public static void ReportOnNextTutorial()
+    {
+        OnNextTutorial?.Invoke();
+    }
+    public static void ReportOnCollectMaegenButton()
+    {
+        OnCollectMaegenButton?.Invoke();
+    }
+    public static void ReportOnJustStragglers()
+    {
+        OnJustStragglers?.Invoke();
+    }
+    public static void ReportOnGameWin()
+    {
+        OnGameWin?.Invoke();
+    }
     public static void ReportOnHomeTreeUpgrade()
     {
         OnHomeTreeUpgrade?.Invoke();

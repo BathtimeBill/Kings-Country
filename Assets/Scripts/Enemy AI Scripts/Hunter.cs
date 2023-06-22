@@ -271,12 +271,14 @@ public class Hunter : GameBehaviour
         {
             _HUTM.enemies.Remove(gameObject);
         }
+
         DropMaegen();
         float thrust = 20000f;
         GameObject go;
         go = Instantiate(deathObject, transform.position, transform.rotation);
         go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * thrust);
         go.GetComponentInChildren<Rigidbody>().AddForce(transform.forward * -thrust);
+        go.GetComponent<RagdollSound>().hasBeenLaunched = true;
         Destroy(go, 25);
         Destroy(gameObject);
     }

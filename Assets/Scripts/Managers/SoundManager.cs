@@ -16,6 +16,7 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip[] impactSounds;
     public AudioClip[] gruntSounds;
     public AudioClip[] leshyStompSounds;
+    public AudioClip[] screamSounds;
     [Header("Footstep Sounds")]
     public AudioClip[] humanFootsteps;
     public AudioClip[] forestFootsteps;
@@ -33,6 +34,7 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip waveBeginSound;
     public AudioClip menuDragSound;
     public AudioClip textGroupSound;
+    public AudioClip nextTutorialSound;
     [Header("Wildlife Distress Sounds")]
     public AudioClip[] deerDistressSounds;
     public AudioClip[] boarDistressSounds;
@@ -61,6 +63,10 @@ public class SoundManager : Singleton<SoundManager>
 
         soundPool[soundPoolCurrent].clip = _clip;
         soundPool[soundPoolCurrent].Play();
+    }
+    public AudioClip GetScreamSound()
+    {
+        return screamSounds[Random.Range(0, screamSounds.Length)];
     }
     public AudioClip GetLightningSound()
     {

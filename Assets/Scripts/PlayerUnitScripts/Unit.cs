@@ -96,6 +96,10 @@ public class Unit : GameBehaviour
                 {
                     navAgent.stoppingDistance = 10;
                 }
+                if(unitType == UnitType.GoblinUnit)
+                {
+                    navAgent.stoppingDistance = 30;
+                }
                 else
                 {
                     navAgent.stoppingDistance = stoppingDistance;
@@ -119,6 +123,10 @@ public class Unit : GameBehaviour
                     {
                         state = UnitState.Idle;
                     }
+                }
+                if(unitType == UnitType.GoblinUnit)
+                {
+                    navAgent.stoppingDistance = 4;
                 }
                 break;
         }
@@ -159,6 +167,10 @@ public class Unit : GameBehaviour
             Vector3 offset = new Vector3(0, -1.5f, 0);
             if (unitType == UnitType.HuldraUnit && isSelected)
             {
+                if(_TUTM.isTutorial && _TUTM.tutorialStage == 13)
+                {
+                    GameEvents.ReportOnNextTutorial();
+                }
                 Instantiate(towerPrefab, transform.position + offset, Quaternion.Euler(-90,0,0));
                 UnitSelection.Instance.DeselectAll();
                 UnitSelection.Instance.unitList.Remove(gameObject);
@@ -452,13 +464,13 @@ public class Unit : GameBehaviour
             case UnitType.VolvaUnit:
                 if (_UM.borkrskinn)
                 {
-                    health = 90;
-                    maxHealth = 90;
+                    health = 130;
+                    maxHealth = 130;
                 }
                 else
                 {
-                    health = 65;
-                    maxHealth = 65;
+                    health = 100;
+                    maxHealth = 100;
                 }
                 if (_UM.flugafotr)
                 {
@@ -488,6 +500,27 @@ public class Unit : GameBehaviour
                 {
                     navAgent.speed = 30;
                 }
+                break;
+            case UnitType.GoblinUnit:
+                if (_UM.borkrskinn)
+                {
+                    health = 130;
+                    maxHealth = 130;
+                }
+                else
+                {
+                    health = 100;
+                    maxHealth = 100;
+                }
+                if (_UM.flugafotr)
+                {
+                    navAgent.speed = 21;
+                }
+                else
+                {
+                    navAgent.speed = 16;
+                }
+
                 break;
             case UnitType.Tower:
                 if (_UM.borkrskinn)
@@ -584,6 +617,14 @@ public class Unit : GameBehaviour
                 maxHealth = 195;
                 health = maxHealth;
                 break;
+            case UnitType.VolvaUnit:
+                maxHealth = 130;
+                health = maxHealth;
+                break;
+            case UnitType.GoblinUnit:
+                maxHealth = 130;
+                health = maxHealth;
+                break;
         }
         slider.value = slider.value = CalculateHealth();
     }
@@ -600,6 +641,12 @@ public class Unit : GameBehaviour
                 break;
             case UnitType.OrcusUnit:
                 navAgent.speed = 17;
+                break;
+            case UnitType.VolvaUnit:
+                navAgent.speed = 50;
+                break;
+            case UnitType.GoblinUnit:
+                navAgent.speed = 21;
                 break;
         }
     }
