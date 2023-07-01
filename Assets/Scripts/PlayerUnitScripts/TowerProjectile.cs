@@ -19,12 +19,10 @@ public class TowerProjectile : GameBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Hit Something");
-        if(collision.collider.tag == "Ground")
+        if (collision.collider.tag != "Tree" || collision.collider.tag != "Unit")
         {
             Instantiate(particleEffect, transform.position, transform.rotation);
             Destroy(gameObject);
         }
-
     }
 }

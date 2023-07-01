@@ -41,6 +41,10 @@ public class Unit : GameBehaviour
     [Header("Bools")]
     public bool isSelected;
     public bool inCombat;
+    public bool isMoving;
+    public bool isMovingCheck;
+    public bool isTooCloseToTower;
+    //public float isMovingCheckTime;
     private Vector3 attackDestination;
     [Header("Audio")]
     public GameObject SFXPool;
@@ -60,6 +64,15 @@ public class Unit : GameBehaviour
         slider.value = CalculateHealth();
     }
 
+    IEnumerator WaitForIsMovingCheck()
+    {
+        yield return new WaitForSeconds(1.5f);
+        if(isMoving == false)
+        {
+            state = UnitState.Idle;
+        }    
+
+    }
 
     void Update()
     {
@@ -110,7 +123,12 @@ public class Unit : GameBehaviour
 
                 break;
             case UnitState.Moving:
-                if(unitType == UnitType.LeshyUnit)
+                if (isMovingCheck == false)
+                {
+                    isMovingCheck = true;
+                    StartCoroutine(WaitForIsMovingCheck());
+                }
+                if (unitType == UnitType.LeshyUnit)
                 {
                     if (Vector3.Distance(pointer.transform.position, transform.position) <= 11)
                     {
@@ -142,6 +160,24 @@ public class Unit : GameBehaviour
                 GameEvents.ReportOnUnitMove();
                 navAgent.SetDestination(targetDest[0].transform.position);
             }
+            if(Input.GetKeyDown(KeyCode.Delete))
+            {
+                if (_HM.units.Contains(gameObject))
+                {
+                    _HM.units.Remove(gameObject);
+                }
+                if (_HUTM.units.Contains(gameObject))
+                {
+                    _HUTM.units.Remove(gameObject);
+                }
+                UnitSelection.Instance.Deselect(gameObject);
+                UnitSelection.Instance.unitList.Remove(gameObject);
+                GameObject go;
+                go = Instantiate(deadSatyr, transform.position, transform.rotation);
+                Destroy(go, 15);
+                _UI.CheckPopulousUI();
+                Destroy(gameObject);
+            }
         }
         else
         {
@@ -152,10 +188,13 @@ public class Unit : GameBehaviour
         if (navAgent.velocity != Vector3.zero)
         {
             animator.SetBool("isMoving", true);
+            isMoving = true;
         }
         if (navAgent.velocity == Vector3.zero)
         {
             animator.SetBool("isMoving", false);
+            isMoving = false;
+            isMovingCheck = false;
         }
 
         if (health > maxHealth)
@@ -171,10 +210,18 @@ public class Unit : GameBehaviour
                 {
                     GameEvents.ReportOnNextTutorial();
                 }
-                Instantiate(towerPrefab, transform.position + offset, Quaternion.Euler(-90,0,0));
-                UnitSelection.Instance.DeselectAll();
-                UnitSelection.Instance.unitList.Remove(gameObject);
-                Destroy(gameObject);
+                if(isTooCloseToTower == false)
+                {
+                    Instantiate(towerPrefab, transform.position + offset, Quaternion.Euler(-90, 0, 0));
+                    UnitSelection.Instance.Deselect(gameObject);
+                    UnitSelection.Instance.unitList.Remove(gameObject);
+                    Destroy(gameObject);
+                }
+                if (isTooCloseToTower == true)
+                {
+                    _UI.SetErrorMessageTooCloseToTower();
+                    _PC.Error();
+                }
             }
 
         }
@@ -286,6 +333,10 @@ public class Unit : GameBehaviour
                 _HUTM.units.Add(gameObject);
             GameEvents.ReportOnUnitArrivedAtHut();
         }
+        if(other.tag == "Tower")
+        {
+            isTooCloseToTower = true;
+        }
     }
     private void OnTriggerExit(Collider other)
     {
@@ -296,6 +347,10 @@ public class Unit : GameBehaviour
         if(other.tag == "Hut")
         {
             _HUTM.units.Remove(gameObject);
+        }
+        if (other.tag == "Tower")
+        {
+            isTooCloseToTower = false;
         }
     }
     private void OnTriggerStay(Collider other)
@@ -336,7 +391,7 @@ public class Unit : GameBehaviour
             {
                 _HUTM.units.Remove(gameObject);
             }
-            UnitSelection.Instance.DeselectAll();
+            UnitSelection.Instance.Deselect(gameObject);
             UnitSelection.Instance.unitList.Remove(gameObject);
             GameObject go;
             go = Instantiate(deadSatyr, transform.position, transform.rotation);

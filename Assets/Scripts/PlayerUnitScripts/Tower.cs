@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +20,7 @@ public class Tower : GameBehaviour
     public GameObject woodParticle;
     public GameObject explosionParticle;
     public GameObject spawnParticleEffect;
+    public MeshRenderer towerRadius;
 
     public bool towerUpgrade;
 
@@ -46,6 +48,14 @@ public class Tower : GameBehaviour
 
     }
 
+    private void OnMouseOver()
+    {
+        towerRadius.enabled = true;
+    }
+    private void OnMouseExit()
+    {
+        towerRadius.enabled = false;
+    }
     IEnumerator ShootProjectile()
     {
         if(distanceToClosestEnemy < 50)

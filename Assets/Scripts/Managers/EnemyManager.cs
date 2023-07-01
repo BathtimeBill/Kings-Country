@@ -27,7 +27,7 @@ public class EnemyManager : Singleton<EnemyManager>
             _GM.downTime = true;
             _UI.treeToolImage.sprite = _UI.usableTreeTool;
         }
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(10);
         StartCoroutine(CheckForEnemiesLeft());
     }
 }

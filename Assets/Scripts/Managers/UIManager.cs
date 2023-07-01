@@ -42,8 +42,13 @@ public class UIManager : Singleton<UIManager>
     public Sprite unusableStormerTool;
 
     public Image treeToolImage;
+    public Image runeToolImage;
     public Image beaconToolImage;
     public Image stormerToolImage;
+
+    public Button runeToolButton;
+    public Button beaconToolButton;
+    public Button stormerToolButton;
 
 
     public Slider beaconCooldownSlider;
@@ -100,6 +105,7 @@ public class UIManager : Singleton<UIManager>
 
     void Start()
     {
+        StartCoroutine(WaitToCheckForToolButtons());
         CheckTreeUI();
         CheckWildlifeUI();
         CheckPopulousUI();
@@ -297,6 +303,10 @@ public class UIManager : Singleton<UIManager>
     {
         errorText.text = "Can't place trees while the enemy is attacking";
     }
+    public void SetErrorMessageTooCloseToTower()
+    {
+        errorText.text = "Too close to another tower";
+    }
 
 
     public void OnBeaconPlaced()
@@ -321,7 +331,91 @@ public class UIManager : Singleton<UIManager>
         waveOverPanel.SetActive(false);
         treeToolImage.sprite = usableTreeTool;
         collectMaegenButton.SetActive(false);
+        StartCoroutine(WaitToCheckForToolButtons());
     }
+    IEnumerator WaitToCheckForToolButtons()
+    {
+        yield return new WaitForSeconds(1);
+        if (_GM.runes.Length == 0)
+        {
+            if (_GM.maegen < 2 || _GM.wildlife < 5)
+            {
+                runeToolButton.interactable = false;
+                runeToolImage.sprite = unusableRuneTool;
+            }
+            if (_GM.maegen >= 2 && _GM.wildlife >= 5)
+            {
+                runeToolButton.interactable = true;
+                runeToolImage.sprite = usableRuneTool;
+            }
+        }
+        if(_GM.runes.Length == 1)
+        {
+            if (_GM.maegen < 4 || _GM.wildlife < 7)
+            {
+                runeToolButton.interactable = false;
+                runeToolImage.sprite = unusableRuneTool;
+            }
+            if (_GM.maegen >= 4 && _GM.wildlife >= 7)
+            {
+                runeToolButton.interactable = true;
+                runeToolImage.sprite = usableRuneTool;
+            }
+        }
+        if (_GM.runes.Length == 2)
+        {
+            if (_GM.maegen < 8 || _GM.wildlife < 10)
+            {
+                runeToolButton.interactable = false;
+                runeToolImage.sprite = unusableRuneTool;
+            }
+            if (_GM.maegen >= 8 && _GM.wildlife >= 10)
+            {
+                runeToolButton.interactable = true;
+                runeToolImage.sprite = usableRuneTool;
+            }
+        }
+        if (_GM.runes.Length == 3)
+        {
+            if (_GM.maegen < 16 || _GM.wildlife < 15)
+            {
+                runeToolButton.interactable = false;
+                runeToolImage.sprite = unusableRuneTool;
+            }
+            if (_GM.maegen >= 16 && _GM.wildlife >= 15)
+            {
+                runeToolButton.interactable = true;
+                runeToolImage.sprite = usableRuneTool;
+            }
+        }
+        if (_GM.runes.Length > 3)
+        {
+            runeToolButton.interactable = false;
+            runeToolImage.sprite = unusableRuneTool;
+        }
+
+        if(_GM.wildlife >= 10)
+        {
+            beaconToolButton.interactable = true;
+            beaconToolImage.sprite = usableBeaconTool;
+        }
+        else
+        {
+            beaconToolButton.interactable = false;
+            beaconToolImage.sprite = unusableBeaconTool;
+        }
+        if(_GM.wildlife >= 20)
+        {
+            stormerToolButton.interactable = true;
+            stormerToolImage.sprite= usableStormerTool;
+        }
+        else
+        {
+            stormerToolButton.interactable = false;
+            stormerToolImage.sprite = unusableStormerTool;
+        }
+    }
+
     private void OnStartNextRound()
     {
         treeToolImage.sprite = unusableTreeTool;

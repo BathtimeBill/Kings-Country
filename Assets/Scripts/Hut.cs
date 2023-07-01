@@ -28,6 +28,7 @@ public class Hut : GameBehaviour
 
     void Start()
     {
+        ClaimHut();
         centre = transform.position;
         audioSource = GetComponent<AudioSource>();
         _HUTM.hutObject = gameObject;

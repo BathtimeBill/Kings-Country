@@ -113,8 +113,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.00000023842, y: 6.18}
-  m_SizeDelta: {x: 706, y: 397}
+  m_AnchoredPosition: {x: -0.00000023842, y: 7.1}
+  m_SizeDelta: {x: 920, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1071894615103872027
 Canvas:
@@ -190,6 +190,7 @@ GameObject:
   - component: {fileID: 1071894615424627094}
   - component: {fileID: 1071894615424627095}
   - component: {fileID: 1071894615424627093}
+  - component: {fileID: 7842634935566039045}
   m_Layer: 0
   m_Name: SelectionCircle
   m_TagString: Untagged
@@ -2237,6 +2238,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7842634935566039045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071894615424627091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 3
+  outlineColor: {r: 1, g: 1, b: 0.1137255, a: 1}
+  outlineWidth: 1
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1071894615449563641
 GameObject:
   m_ObjectHideFlags: 0
@@ -2649,7 +2668,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 430, y: 51.06}
+  m_SizeDelta: {x: 850, y: 95}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1071894615877026358
 MonoBehaviour:

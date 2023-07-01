@@ -373,7 +373,6 @@ public class PlayerControls : Singleton<PlayerControls>
             {
                 if (_RPlace.canPlace == true)
                 {
-
                     GameObject runeInstance;
                     runeInstance = Instantiate(runePrefab, runePlacement.transform.position, runePlacement.transform.rotation);
                     _GM.maegen -= 2;
@@ -389,8 +388,6 @@ public class PlayerControls : Singleton<PlayerControls>
             {
                 if (_BPlace.canPlace == true)
                 {
-                    _GM.maegen -= 10;
-
                     Instantiate(beaconPrefab, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
                     _GM.CheckBeacons();
                     GameEvents.ReportOnBeaconPlaced();
@@ -520,8 +517,6 @@ public class PlayerControls : Singleton<PlayerControls>
 
 
     }
-
-
 
     public void RaycastClick()
     {

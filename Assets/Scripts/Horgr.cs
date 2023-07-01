@@ -33,7 +33,7 @@ public class Horgr : GameBehaviour
         audioSource = GetComponent<AudioSource>();
         _HM.horgrObject = gameObject;
         _HM.spawnLocation = spawnLocation;
-        //ClaimHorgr();
+        ClaimHorgr();
     }
 
     private void Update()

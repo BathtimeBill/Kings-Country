@@ -117,6 +117,11 @@ public class UnitSelection : GameBehaviour
     }
     public void Deselect(GameObject unitToDeselect)
     {
-
+        unitToDeselect.GetComponent<Unit>().isSelected = false;
+        unitToDeselect.gameObject.GetComponent<Unit>().selectionCircle.SetActive(false);
+        //unit.transform.GetChild(0).gameObject.SetActive(false);
+        containsHuldra = false;
+        _UI.DisableTowerText();
+        unitSelected.Remove(unitToDeselect);
     }
 }
