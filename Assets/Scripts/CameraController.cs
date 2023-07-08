@@ -27,6 +27,11 @@ public class CameraController : GameBehaviour
     public float minY;
     public float maxY;
 
+    public float minMovementX;
+    public float maxMovementX;
+    public float minMovementZ;
+    public float maxMovementZ;
+
     public bool hasReachMaxZ;
     public bool hasReachMaxY;
 
@@ -52,14 +57,15 @@ public class CameraController : GameBehaviour
 
     void HandleMouseInput()
     {
+        newZoom.z = Mathf.Clamp(newZoom.z, minZ, maxZ);
+        newZoom.y = Mathf.Clamp(newZoom.y, minY, maxY);
+
         if (Input.mouseScrollDelta.y != 0)
         {
+            if(newZoom.y != minY || newZoom.y != maxY)
             newZoom += Input.mouseScrollDelta.y * zoomAmount;
+
         }
-
-
-        //newZoom.z = Mathf.Clamp(newZoom.z, minZ, maxZ);
-        //newZoom.y = Mathf.Clamp(newZoom.y, minY, maxY);
 
         if (Input.GetMouseButtonDown(2))
         {
@@ -91,6 +97,9 @@ public class CameraController : GameBehaviour
 
     void HandleMovementInput()
     {
+        newPosition.x = Mathf.Clamp(newPosition.x, minMovementX, maxMovementX);
+        newPosition.z = Mathf.Clamp(newPosition.z, minMovementZ, maxMovementZ);
+
         if (Input.GetKey(KeyCode.LeftShift))
         {
             movementSpeed = fastSpeed;

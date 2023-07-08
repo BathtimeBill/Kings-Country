@@ -115,7 +115,7 @@ public class GameManager : Singleton<GameManager>
     }
     IEnumerator WaitForCanFinishWave()
     {
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(25);
         canFinishWave = true;
     }
     IEnumerator ManageWaveBreak()

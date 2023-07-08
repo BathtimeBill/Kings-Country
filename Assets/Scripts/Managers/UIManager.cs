@@ -418,7 +418,14 @@ public class UIManager : Singleton<UIManager>
 
     private void OnStartNextRound()
     {
-        treeToolImage.sprite = unusableTreeTool;
+        if (treeToolImage != null) 
+        {
+            treeToolImage.sprite = unusableTreeTool; 
+        }
+        else
+        {
+            Debug.LogWarning("Image component is null. Make sure it is assigned.");
+        }
     }
 
 
