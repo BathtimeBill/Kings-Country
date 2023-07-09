@@ -43,7 +43,7 @@ public class UpgradeButtons : GameBehaviour
 
             case Upgrade.Rune:
                 GameEvents.ReportOnRuneUpgrade();
-                _UM.jarnnefi = true;
+                _UM.rune = true;
                 break;
 
             case Upgrade.Beacon:

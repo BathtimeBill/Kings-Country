@@ -132,7 +132,7 @@ public class Hunter : GameBehaviour
                     if (_HUTM.units.Count > 0)
                     {
                         animator.SetBool("hasStoppedHorgr", false);
-                        state = EnemyState.Attack;
+                        Attack();
                     }
                     if (_HUTM.units.Count == 0)
                     {
@@ -198,15 +198,20 @@ public class Hunter : GameBehaviour
                 _HUTM.enemies.Add(gameObject);
                 StartCoroutine(WaitForHorgr());
             }
+
         }
         if (other.tag == "Explosion")
         {
-            Debug.Log("Explosion");
+            if (_HUTM.enemies.Contains(gameObject))
+            {
+                _HUTM.enemies.Remove(gameObject);
+            }
             GameObject go;
             go = Instantiate(deadHunterFire, transform.position, transform.rotation);
             go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * 2000);
             go.GetComponentInChildren<Rigidbody>().AddForce(transform.forward * -16000);
             Destroy(go, 15);
+
             Destroy(gameObject);
         }
     }
@@ -216,6 +221,7 @@ public class Hunter : GameBehaviour
         if (other.tag == "Hut")
         {
             _HUTM.enemies.Remove(gameObject);
+            state = EnemyState.Attack;
             hasArrivedAtHorgr = false;
         }
     }

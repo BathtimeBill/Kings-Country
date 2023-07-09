@@ -95,33 +95,33 @@ public class RunePlacement : Singleton<RunePlacement>
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Tree" || other.tag == "CantPlace" || other.tag == "River")
-        {
-            canPlace = false;
-            gameObject.GetComponent<Renderer>().material = cannotPlaceMat;
-            effectRadius.GetComponent<Renderer>().material = cannotPlaceMat;
-        }
-        if (other.gameObject == null)
-        {
-            canPlace = true;
-            gameObject.GetComponent<Renderer>().material = canPlaceMat;
-            effectRadius.GetComponent<Renderer>().material = canPlaceMat;
-        }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.tag == "Tree" || other.tag == "CantPlace" || other.tag == "River")
+    //    {
+    //        canPlace = false;
+    //        gameObject.GetComponent<Renderer>().material = cannotPlaceMat;
+    //        effectRadius.GetComponent<Renderer>().material = cannotPlaceMat;
+    //    }
+    //    if (other.gameObject == null)
+    //    {
+    //        canPlace = true;
+    //        gameObject.GetComponent<Renderer>().material = canPlaceMat;
+    //        effectRadius.GetComponent<Renderer>().material = canPlaceMat;
+    //    }
 
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        //if (other.tag == "Tree" || other.tag == "CantPlace")
-        //{
-        //    if (!tooFarAway && !insufficientMaegen)
-        //    {
-        //        canPlace = true;
-        //        gameObject.GetComponent<Renderer>().material = canPlaceMat;
-        //    }
-        //}
-    }
+    //}
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.tag == "Tree" || other.tag == "CantPlace")
+    //    {
+    //        if (!tooFarAway && !insufficientMaegen)
+    //        {
+    //            canPlace = true;
+    //            gameObject.GetComponent<Renderer>().material = canPlaceMat;
+    //        }
+    //    }
+    //}
 
     private void OnTriggerStay(Collider other)
     {

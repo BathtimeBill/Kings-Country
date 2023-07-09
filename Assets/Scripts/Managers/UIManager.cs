@@ -307,6 +307,14 @@ public class UIManager : Singleton<UIManager>
     {
         errorText.text = "Too close to another tower";
     }
+    public void SetErrorMessageOutOfBounds()
+    {
+        errorText.text = "Too far away from the Home Tree";
+    }
+    public void SetErrorMessageSpy()
+    {
+        errorText.text = "A Spy is close by!";
+    }
 
 
     public void OnBeaconPlaced()

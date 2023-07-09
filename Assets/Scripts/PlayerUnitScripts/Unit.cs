@@ -44,6 +44,7 @@ public class Unit : GameBehaviour
     public bool isMoving;
     public bool isMovingCheck;
     public bool isTooCloseToTower;
+    public bool isOutOfBounds;
     //public float isMovingCheckTime;
     private Vector3 attackDestination;
     [Header("Audio")]
@@ -56,6 +57,7 @@ public class Unit : GameBehaviour
 
     void Start()
     {
+        isOutOfBounds = true;
         soundPool = SFXPool.GetComponents<AudioSource>();
         pointer = GameObject.FindGameObjectWithTag("Pointer");
         Setup();
@@ -210,7 +212,7 @@ public class Unit : GameBehaviour
                 {
                     GameEvents.ReportOnNextTutorial();
                 }
-                if(isTooCloseToTower == false)
+                if(isTooCloseToTower == false && isOutOfBounds == false)
                 {
                     Instantiate(towerPrefab, transform.position + offset, Quaternion.Euler(-90, 0, 0));
                     UnitSelection.Instance.Deselect(gameObject);
@@ -220,6 +222,11 @@ public class Unit : GameBehaviour
                 if (isTooCloseToTower == true)
                 {
                     _UI.SetErrorMessageTooCloseToTower();
+                    _PC.Error();
+                }
+                if(isOutOfBounds == true && isTooCloseToTower == false)
+                {
+                    _UI.SetErrorMessageOutOfBounds();
                     _PC.Error();
                 }
             }
@@ -337,6 +344,10 @@ public class Unit : GameBehaviour
         {
             isTooCloseToTower = true;
         }
+        if (other.tag == "Boundry")
+        {
+            isOutOfBounds = false;
+        }
     }
     private void OnTriggerExit(Collider other)
     {
@@ -352,6 +363,10 @@ public class Unit : GameBehaviour
         {
             isTooCloseToTower = false;
         }
+        if (other.tag == "Boundry")
+        {
+            isOutOfBounds = true;
+        }
     }
     private void OnTriggerStay(Collider other)
     {
@@ -366,7 +381,15 @@ public class Unit : GameBehaviour
         }
         if(other.tag == "Rune")
         {
-            health += 5 * Time.deltaTime;
+            if(_UM.rune)
+            {
+                health += 8 * Time.deltaTime;
+            }
+            else
+            {
+                health += 4 * Time.deltaTime;
+            }
+
             slider.value = slider.value = CalculateHealth();
         }
     }

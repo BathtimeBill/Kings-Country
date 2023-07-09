@@ -21,7 +21,7 @@ public class Tree : GameBehaviour
     public GameObject fallenTreePine;
     public GameObject fallenTreeDesiduous;
     public GameObject treeMesh;
-    public float energyMultiplier;
+    public int energyMultiplier;
     public bool runeBuff = false;
     public Animator animator;
     public GameObject chopParticle;
@@ -197,30 +197,51 @@ public class Tree : GameBehaviour
 
     private void OnContinueButton()
     {
-         
-        if(_UM.tree == true)
-        {
-           StartCoroutine(WispSpawnDelay());
-        }
-        else
-        {
-            Instantiate(maegenWisp, transform.position, transform.rotation);
-        }
+        StartCoroutine(WispSpawnDelay());
+        //int i = 0;
+        //while (i < energyMultiplier)
+        //{
+        //    Instantiate(maegenWisp, transform.position, transform.rotation);
+        //    i++;
+        //}
     }
     IEnumerator WispSpawnDelay()
     {
-        Instantiate(maegenWisp, transform.position, transform.rotation);
-        yield return new WaitForSeconds(0.3f);
-        Instantiate(maegenWisp, transform.position, transform.rotation);
+        if (energyMultiplier == 1)
+        {
+            Instantiate(maegenWisp, transform.position, transform.rotation);
+            yield return new WaitForSeconds(0.3f);
+        }
+        if(energyMultiplier == 2)
+        {
+            Instantiate(maegenWisp, transform.position, transform.rotation);
+            yield return new WaitForSeconds(0.3f);
+            Instantiate(maegenWisp, transform.position, transform.rotation);
+        }
+        if (energyMultiplier == 3)
+        {
+            Instantiate(maegenWisp, transform.position, transform.rotation);
+            yield return new WaitForSeconds(0.3f);
+            Instantiate(maegenWisp, transform.position, transform.rotation);
+            yield return new WaitForSeconds(0.3f);
+            Instantiate(maegenWisp, transform.position, transform.rotation);
+        }
+    }
+
+    private void OnTreeUpgrade()
+    {
+        energyMultiplier = energyMultiplier * 2;
     }
 
     private void OnEnable()
     {
         GameEvents.OnContinueButton += OnContinueButton;
+        GameEvents.OnTreeUpgrade += OnTreeUpgrade;
     }
 
     private void OnDisable()
     {
         GameEvents.OnContinueButton -= OnContinueButton;
+        GameEvents.OnTreeUpgrade -= OnTreeUpgrade;
     }
 }

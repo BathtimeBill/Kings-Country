@@ -69,7 +69,7 @@ public class PlayerControls : Singleton<PlayerControls>
             stormerPlacement.SetActive(false);
             treePlacement.SetActive(true);
             beaconPlacement.SetActive(false);
-            //treePercentageModifier.SetActive(true);
+            treePercentageModifier.SetActive(true);
             _UI.homeTreePanel.SetActive(false);
             _UI.treeToolSelectionBox.SetActive(true);
             _UI.runeToolSelectionBox.SetActive(false);
@@ -77,7 +77,6 @@ public class PlayerControls : Singleton<PlayerControls>
             _UI.stormerToolSelectionBox.SetActive(false);
             _UI.maegenCost.SetActive(true);
             _UI.wildlifeCost.SetActive(false);
-            _UI.maegenCostText.text = "2";
         }
         else
         {
@@ -336,13 +335,12 @@ public class PlayerControls : Singleton<PlayerControls>
                 {
                     if (_TPlace.canPlace == true)
                     {
-
                         GameObject treeInstance;
                         GameObject cantDestroy;
                         Vector3 randomSize = new Vector3(1, Random.Range(minScale, maxScale), 1);
                         treeInstance = Instantiate(treePrefab, treePlacement.transform.position, treePlacement.transform.rotation);
                         treeInstance.transform.localScale = randomSize;
-                        treeInstance.GetComponent<Tree>().energyMultiplier = _TPlace.energyMultiplier;
+                        treeInstance.GetComponent<Tree>().energyMultiplier = _TPlace.maegenPerWave;
                         cantDestroy = Instantiate(cantPlace, treePlacement.transform.position, treePlacement.transform.rotation);
                         Destroy(cantDestroy, 15);
                         GameEvents.ReportOnTreePlaced();
@@ -410,7 +408,6 @@ public class PlayerControls : Singleton<PlayerControls>
             {
                 if (_SPlace.canPlace == true)
                 {
-                    _GM.maegen -= 20;
                     GameEvents.ReportOnStormerPlaced();
                 }
                 else

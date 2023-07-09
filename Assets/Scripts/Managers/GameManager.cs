@@ -12,6 +12,7 @@ public class GameManager : Singleton<GameManager>
     public GameObject[] trees;
     public bool isPaused;
     public int startingMaegen;
+    public GameObject boundry;
 
     [Header("Waves")]
     public int currentWave;
@@ -152,7 +153,18 @@ public class GameManager : Singleton<GameManager>
     private void OnTreePlaced()
     {
         trees = GameObject.FindGameObjectsWithTag("Tree");
-        maegen -= 2;
+        if (_TPlace.maegenPerWave <= 1)
+        {
+            maegen -= 2;
+        }
+        if (_TPlace.maegenPerWave == 2)
+        {
+            maegen -= 3;
+        }
+        if (_TPlace.maegenPerWave == 3)
+        {
+            maegen -= 4;
+        }
         _UI.CheckTreeUI();
     }
 
@@ -240,10 +252,15 @@ public class GameManager : Singleton<GameManager>
         gameState = GameState.Play;
         Time.timeScale = 1;
         StopCoroutine(CheckForCollectMaegen());
+        _GM.boundry.SetActive(true);
     }
     public void OnCollectMaegenButton()
     {
         StopCoroutine(CheckForCollectMaegen());
+    }
+    private void OnStartNextRound()
+    {
+        boundry.SetActive(false);
     }
     private void OnEnable()
     {
@@ -256,6 +273,7 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnTreeHit += OnTreeHit;
         GameEvents.OnWildlifeKilled += OnWildlifeKilled;
         GameEvents.OnWaveOver += OnWaveOver;
+        GameEvents.OnStartNextRound += OnStartNextRound;
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnCollectMaegenButton += OnCollectMaegenButton;
     }
@@ -271,6 +289,7 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnTreeHit -= OnTreeHit;
         GameEvents.OnWildlifeKilled -= OnWildlifeKilled;
         GameEvents.OnWaveOver -= OnWaveOver;
+        GameEvents.OnStartNextRound -= OnStartNextRound;
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnCollectMaegenButton -= OnCollectMaegenButton;
     }

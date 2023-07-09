@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
+using Unity.Burst.CompilerServices;
 
 public class Spy : GameBehaviour
 {
@@ -13,6 +14,7 @@ public class Spy : GameBehaviour
     public NavMeshAgent navAgent;
     public Animator animator;
     public GameObject homeTree;
+    public GameObject spawnParticle;
 
     [Header("Death Objects")]
     public GameObject deathObject;
@@ -69,6 +71,8 @@ public class Spy : GameBehaviour
         }
         if(other.tag == "River")
         {
+            _SPYM.Respawn();
+            Instantiate(spawnParticle, transform.position, transform.rotation);
             Destroy(gameObject);
         }
 

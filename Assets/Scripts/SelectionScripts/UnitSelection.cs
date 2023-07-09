@@ -56,6 +56,7 @@ public class UnitSelection : GameBehaviour
         {
             Debug.Log("A Huldra is selected");
             _UI.EnableTowerText();
+            _GM.boundry.SetActive(true);
         }
         else
         {
@@ -111,6 +112,10 @@ public class UnitSelection : GameBehaviour
             //unit.transform.GetChild(0).gameObject.SetActive(false);
             containsHuldra = false;
             _UI.DisableTowerText();
+            if (_GM.downTime == false)
+            {
+                _GM.boundry.SetActive(false);
+            }
         }
 
         unitSelected.Clear();
@@ -122,6 +127,10 @@ public class UnitSelection : GameBehaviour
         //unit.transform.GetChild(0).gameObject.SetActive(false);
         containsHuldra = false;
         _UI.DisableTowerText();
+        if(_GM.downTime == false)
+        {
+            _GM.boundry.SetActive(false);
+        }
         unitSelected.Remove(unitToDeselect);
     }
 }

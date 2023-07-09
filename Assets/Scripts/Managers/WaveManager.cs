@@ -40,6 +40,7 @@ public class WaveManager : Singleton<WaveManager>
     public int totalMaegenDrops;
     public TMP_Text totalMaegenText;
     public TMP_Text totalTreesText;
+    public TMP_Text treeBonusText;
     public TMP_Text totalMaegenDropsText;
     public TMP_Text penaltyText;
 
@@ -66,13 +67,13 @@ public class WaveManager : Singleton<WaveManager>
         totalTextGroup.SetActive(true);
     }
 
-    void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    GameEvents.ReportOnWaveOver();
-        //}
-    }
+    //void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Space))
+    //    {
+    //        GameEvents.ReportOnWaveOver();
+    //    }
+    //}
     private void Start()
     {
         if(_TUTM.isTutorial)
@@ -130,10 +131,11 @@ public class WaveManager : Singleton<WaveManager>
 
                 totalTrees = _GM.trees.Length;
                 totalMaegenDrops = GameObject.FindGameObjectsWithTag("MaegenDrop").Length;
-                totalMaegen = totalTrees + totalMaegenDrops;
+                totalMaegen = totalTrees + totalMaegenDrops + GetTreeBonusTotal();
 
                 penaltyText.text = "+" + _FM.numberOfWildlifeToSpawn.ToString();
                 totalTreesText.text = totalTrees.ToString();
+                treeBonusText.text = "(+" +  GetTreeBonusTotal().ToString() + ")";
                 totalMaegenDropsText.text = totalMaegenDrops.ToString();
                 totalMaegenText.text = "+" + totalMaegen.ToString();
             }
@@ -144,7 +146,16 @@ public class WaveManager : Singleton<WaveManager>
         }
 
     }
-
+    private int GetTreeBonusTotal()
+    {
+        int treeBonus = 0;
+        foreach (GameObject i in _GM.trees)
+        {
+            treeBonus = treeBonus + i.GetComponent<Tree>().energyMultiplier;
+        }
+        int totalTreeBonus = treeBonus - totalTrees;
+        return totalTreeBonus;
+    }
     public void MouseOverSlot1()
     {
         mouseOverSlot1 = true;
