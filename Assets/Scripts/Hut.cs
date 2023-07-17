@@ -144,10 +144,7 @@ public class Hut : GameBehaviour
     }
     private void OnContinueButton()
     {
-        if (_HUTM.hasBeenClaimed)
-        {
-            ClaimHut();
-        }
+        ClaimHut();
     }
 
     private void OnEnable()

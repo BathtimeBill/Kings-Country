@@ -266,6 +266,7 @@ public class Warrior : GameBehaviour
             GameObject go;
             go = Instantiate(deathObject, transform.position, transform.rotation);
             Destroy(go, 15);
+            GameEvents.ReportOnEnemyKilled();
             Destroy(gameObject);
         }
     }

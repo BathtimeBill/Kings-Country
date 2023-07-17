@@ -13,11 +13,11 @@ public class Beacon : GameBehaviour
     {
         if(_UM.beacon)
         {
-            maxTimeLeft = 120;
+            maxTimeLeft = 30;
         }
         else
         {
-            maxTimeLeft = 60;
+            maxTimeLeft = 15;
         }
         timeLeft = maxTimeLeft;
         slider.value = CalculateTimeLeft();

@@ -65,11 +65,11 @@ public class HutManager : Singleton<HutManager>
         hutObject = GameObject.FindGameObjectWithTag("Hut");
         if (playerOwns)
         {
-            if (_GM.maegen >= 1 && _GM.populous < _GM.maxPopulous)
+            if (_GM.maegen >= 2 && _GM.populous < _GM.maxPopulous)
             {
                 Instantiate(skessa, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.maegen -= 1;
+                _GM.maegen -= 2;
                 _UI.CheckPopulousUI();
             }
             else

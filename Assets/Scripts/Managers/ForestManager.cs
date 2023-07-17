@@ -91,7 +91,7 @@ public class ForestManager : Singleton<ForestManager>
         Vector3 finalPosition = hit.position;
         GameObject rock;
         rock = Instantiate(levelRocks, hit.position, transform.rotation);
-        float rndScale = Random.Range(2, 10);
+        float rndScale = Random.Range(1, 6);
         rock.transform.rotation = Random.rotation;
         rock.transform.localScale = Vector3.one * rndScale;
     }

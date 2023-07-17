@@ -656,6 +656,7 @@ MonoBehaviour:
   deadPrefab: {fileID: 571176725606196648, guid: 40721ac8dbabeee43a278dee17cb39e3,
     type: 3}
   audiosource: {fileID: 731119928909979325}
+  outline: {fileID: 4339199670011014404}
 --- !u!195 &569931767524661825
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1148,6 +1149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 574438556529784360}
   - component: {fileID: 433132881311063130}
+  - component: {fileID: 4339199670011014404}
   m_Layer: 0
   m_Name: Boar_low
   m_TagString: Untagged
@@ -1255,6 +1257,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.077379465, y: 1.3491235, z: -1.0996857}
     m_Extent: {x: 2.0707917, y: 4.3928432, z: 2.6382306}
   m_DirtyAABB: 0
+--- !u!114 &4339199670011014404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 571408297532380600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 0.5863812, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &571412466968847368
 GameObject:
   m_ObjectHideFlags: 0

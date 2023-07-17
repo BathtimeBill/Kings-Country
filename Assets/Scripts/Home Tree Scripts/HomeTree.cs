@@ -32,11 +32,11 @@ public class HomeTree : GameBehaviour
     //Checks to see if the player has enough resources and then spawns a Satyr unit in front of the Home Tree. Is called when a button is pressed in the UI.
     public void SpawnSatyr()
     {
-        if(_GM.maegen >1)
+        if(_GM.maegen >0)
         {
             if(_GM.populous < _GM.maxPopulous)
             {
-                _GM.maegen -= 2;
+                _GM.maegen -= 1;
                 Instantiate(satyr, spawnLocation.transform.position, spawnLocation.transform.rotation);
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _UI.CheckPopulousUI();

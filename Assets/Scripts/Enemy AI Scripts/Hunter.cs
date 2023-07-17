@@ -259,6 +259,7 @@ public class Hunter : GameBehaviour
             GameObject go;
             go = Instantiate(deathObject, transform.position, transform.rotation);
             Destroy(go, 15);
+            GameEvents.ReportOnEnemyKilled();
             Destroy(gameObject);
         }
     }
@@ -286,6 +287,7 @@ public class Hunter : GameBehaviour
         go.GetComponentInChildren<Rigidbody>().AddForce(transform.forward * -thrust);
         go.GetComponent<RagdollSound>().hasBeenLaunched = true;
         Destroy(go, 25);
+        GameEvents.ReportOnEnemyKilled();
         Destroy(gameObject);
     }
     private void Setup()

@@ -21,6 +21,7 @@ public class WildlifeAI : GameBehaviour
     public GameObject deadPrefab;
     public AudioSource audiosource;
     private AudioClip audioClip;
+    public Outline outline;
 
     private void Awake()
     {
@@ -31,6 +32,7 @@ public class WildlifeAI : GameBehaviour
     void Start()
     {
         StartCoroutine(Move());
+        outline.enabled = false;
     }
 
     void Update()
@@ -42,6 +44,14 @@ public class WildlifeAI : GameBehaviour
         if (navAgent.velocity == Vector3.zero)
         {
             animator.SetBool("hasStopped", true);
+        }
+        if(Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            outline.enabled = true;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftAlt))
+        {
+            outline.enabled = false;
         }
     }
     IEnumerator Move()

@@ -6,19 +6,15 @@ public class EnemyManager : Singleton<EnemyManager>
 {
     public GameObject[] enemies;
 
-
-    private void Start()
-    {
-        StartCoroutine(CheckForEnemiesLeft());
-    }
     void Update()
     {
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        
     }
 
     IEnumerator CheckForEnemiesLeft()
     {
+        Debug.Log("Checking for enemies");
+        yield return new WaitForEndOfFrame();
         if (enemies.Length == 0 && _GM.canFinishWave)
         {
             GameEvents.ReportOnWaveOver();
@@ -27,7 +23,29 @@ public class EnemyManager : Singleton<EnemyManager>
             _GM.downTime = true;
             _UI.treeToolImage.sprite = _UI.usableTreeTool;
         }
-        yield return new WaitForSeconds(10);
+    }
+
+    private void OnEnemyKilled()
+    {
+
         StartCoroutine(CheckForEnemiesLeft());
+    }
+
+    private void OnContinueButton()
+    {
+
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnEnemyKilled += OnEnemyKilled;
+        GameEvents.OnContinueButton += OnContinueButton;
+
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnEnemyKilled -= OnEnemyKilled;
+        GameEvents.OnContinueButton -= OnContinueButton;
     }
 }

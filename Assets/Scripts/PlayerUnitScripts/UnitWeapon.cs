@@ -7,6 +7,7 @@ public class UnitWeapon : GameBehaviour
 {
     public GameObject firingPoint;
     public GameObject arrow;
+    public GameObject arrow2;
     public Collider weaponCollider;
     public GameObject footstepParticle;
     public GameObject stompParticle;
@@ -27,7 +28,6 @@ public class UnitWeapon : GameBehaviour
         go.GetComponent<Rigidbody>().AddForce(transform.forward * 1000f);
         go.transform.LookAt(gameObject.GetComponentInParent<Unit>().closestEnemy);
         Destroy(go, 2);
-        
     }
     public void EnableCollider()
     {

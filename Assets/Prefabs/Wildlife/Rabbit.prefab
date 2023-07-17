@@ -363,6 +363,7 @@ MonoBehaviour:
   deadPrefab: {fileID: 7333044533837775725, guid: 94d0606cadf51be45b1f348baf969909,
     type: 3}
   audiosource: {fileID: 0}
+  outline: {fileID: 8575031956428385970}
 --- !u!195 &7332193624451044264
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1139,6 +1140,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7336921089885557695}
   - component: {fileID: 7216712160946149425}
+  - component: {fileID: 8575031956428385970}
   m_Layer: 0
   m_Name: Hare_low
   m_TagString: Untagged
@@ -1247,6 +1249,24 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.092035204, y: 0.04189506, z: 0.22224784}
     m_Extent: {x: 0.27588844, y: 0.3118241, z: 0.24737442}
   m_DirtyAABB: 0
+--- !u!114 &8575031956428385970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7333539788993156675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 0.5863812, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &7333588952843611251
 GameObject:
   m_ObjectHideFlags: 0

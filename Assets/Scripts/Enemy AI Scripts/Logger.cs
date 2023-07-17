@@ -257,6 +257,7 @@ public class Logger : GameBehaviour
             GameObject go;
             go = Instantiate(deadLogger, transform.position, transform.rotation);
             Destroy(go, 15);
+            GameEvents.ReportOnEnemyKilled();
             Destroy(gameObject);
         }
     }
@@ -290,6 +291,7 @@ public class Logger : GameBehaviour
         go.GetComponentInChildren<Rigidbody>().AddForce(transform.forward * -thrust);
         go.GetComponent<RagdollSound>().hasBeenLaunched = true;
         Destroy(go, 25);
+        GameEvents.ReportOnEnemyKilled();
         Destroy(gameObject);
     }
 

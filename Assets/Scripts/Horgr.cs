@@ -147,10 +147,7 @@ public class Horgr : GameBehaviour
 
     private void OnContinueButton()
     {
-        if(_HM.hasBeenClaimed)
-        {
-            ClaimHorgr();
-        }
+        ClaimHorgr();
     }
 
     private void OnEnable()
