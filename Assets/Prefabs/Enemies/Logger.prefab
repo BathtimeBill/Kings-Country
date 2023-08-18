@@ -201,7 +201,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 176
   DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 200
@@ -424,7 +424,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 157
   DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 250
@@ -530,7 +530,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 157
   DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 250
@@ -636,7 +636,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 157
   DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 250
@@ -829,20 +829,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2384713380370973664}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7903437076882715179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1366233017398432304}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d1a1ebf1d47d2f44ba97061dd4f2f8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  axeCollider: {fileID: 1784554192428850697}
-  audioSource: {fileID: 0}
 --- !u!114 &4663068707627471411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -861,6 +847,20 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &7903437076882715179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366233017398432304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d1a1ebf1d47d2f44ba97061dd4f2f8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  axeCollider: {fileID: 1784554192428850697}
+  audioSource: {fileID: 0}
 --- !u!4 &1854925715561105546 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4082004207385955178, guid: 399322537581bb24fbaca95b9c42ed88,

@@ -31,8 +31,16 @@ public class TreePlacement : Singleton<TreePlacement>
 
     void Update()
     {
+        if(_GM.trees.Length != 0)
+        {
+            distanceFromTree = Vector3.Distance(GetClosestTree().transform.position, transform.position);
+        }
+        else
+        {
+            distanceFromTree = 67;
+        }
+
         percentagePanel.transform.position = Input.mousePosition;
-        distanceFromTree = Vector3.Distance(GetClosestTree().transform.position, transform.position);
         energyMultiplier = 1f / 100 * distanceFromTree;
         resultNumber = 5 / energyMultiplier;
         if(distanceFromTree > 0 && distanceFromTree < 33)
@@ -120,7 +128,7 @@ public class TreePlacement : Singleton<TreePlacement>
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Tree" || other.tag == "CantPlace" || other.tag == "River")
+        if (other.tag == "Tree" || other.tag == "CantPlace" || other.tag == "River" || other.tag == "Wildlife")
         {
             Debug.Log(other.tag);
             canPlace = false;
@@ -135,7 +143,7 @@ public class TreePlacement : Singleton<TreePlacement>
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Tree" || other.tag == "CantPlace" || other.tag == "River")
+        if (other.tag == "Tree" || other.tag == "CantPlace" || other.tag == "River" || other.tag == "Home Tree" || other.tag == "Wildlife")
         {
             if(!tooFarAway && !insufficientMaegen)
             {

@@ -21,6 +21,7 @@ public class Unit : GameBehaviour
     public Animator animator;
     [Header("AI")]
     public UnitState state;
+    public float detectionRadius;
     public Transform closestEnemy;
     public float distanceToClosestEnemy;
     public GameObject pointer;
@@ -89,29 +90,25 @@ public class Unit : GameBehaviour
             case UnitState.Idle:
                 if (_EM.enemies.Length > 0)
                 {
-                    if (distanceToClosestEnemy < 30)
+                    if (distanceToClosestEnemy < detectionRadius)
                     {
                         state = UnitState.Attack;
                     }
-                    else
-                    {
-                        navAgent.SetDestination(transform.position);
-                    }
+                    //else
+                    //{
+                    //    navAgent.SetDestination(transform.position);
+                    //}
                 }
 
                 animator.SetBool("inCombat", false);
                 break;
 
             case UnitState.Attack:
-                if (_EM.enemies.Length == 0 || distanceToClosestEnemy >= 30)
+                if (_EM.enemies.Length == 0 || distanceToClosestEnemy >= detectionRadius)
                 {
                     state = UnitState.Idle;
                 }
-                if (closestEnemy.name == "LogCutter")
-                {
-                    navAgent.stoppingDistance = 10;
-                }
-                if(unitType == UnitType.GoblinUnit)
+                if (unitType == UnitType.GoblinUnit)
                 {
                     navAgent.stoppingDistance = 30;
                 }
@@ -119,8 +116,11 @@ public class Unit : GameBehaviour
                 {
                     navAgent.stoppingDistance = stoppingDistance;
                 }
-                navAgent.SetDestination(closestEnemy.transform.position);
-                SmoothFocusOnEnemy();
+                if(_EM.enemies.Length != 0)
+                {
+                    navAgent.SetDestination(closestEnemy.transform.position);
+                    SmoothFocusOnEnemy();
+                }
                 animator.SetBool("inCombat", true);
 
                 break;
@@ -144,7 +144,7 @@ public class Unit : GameBehaviour
                         state = UnitState.Idle;
                     }
                 }
-                if(unitType == UnitType.GoblinUnit)
+                if (unitType == UnitType.GoblinUnit)
                 {
                     navAgent.stoppingDistance = 4;
                 }
@@ -162,7 +162,7 @@ public class Unit : GameBehaviour
                 GameEvents.ReportOnUnitMove();
                 navAgent.SetDestination(targetDest[0].transform.position);
             }
-            if(Input.GetKeyDown(KeyCode.Delete))
+            if (Input.GetKeyDown(KeyCode.Delete))
             {
                 if (_HM.units.Contains(gameObject))
                 {
@@ -203,16 +203,16 @@ public class Unit : GameBehaviour
         {
             health = maxHealth;
         }
-        if(Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.T))
         {
             Vector3 offset = new Vector3(0, -1.5f, 0);
             if (unitType == UnitType.HuldraUnit && isSelected)
             {
-                if(_TUTM.isTutorial && _TUTM.tutorialStage == 13)
+                if (_TUTM.isTutorial && _TUTM.tutorialStage == 13)
                 {
                     GameEvents.ReportOnNextTutorial();
                 }
-                if(isTooCloseToTower == false && isOutOfBounds == false)
+                if (isTooCloseToTower == false && isOutOfBounds == false)
                 {
                     Instantiate(towerPrefab, transform.position + offset, Quaternion.Euler(-90, 0, 0));
                     UnitSelection.Instance.Deselect(gameObject);
@@ -224,7 +224,7 @@ public class Unit : GameBehaviour
                     _UI.SetErrorMessageTooCloseToTower();
                     _PC.Error();
                 }
-                if(isOutOfBounds == true && isTooCloseToTower == false)
+                if (isOutOfBounds == true && isTooCloseToTower == false)
                 {
                     _UI.SetErrorMessageOutOfBounds();
                     _PC.Error();
@@ -478,6 +478,7 @@ public class Unit : GameBehaviour
                 {
                     health = 130;
                     maxHealth = 130;
+
                 }
                 else
                 {
@@ -492,7 +493,7 @@ public class Unit : GameBehaviour
                 {
                     navAgent.speed = 16;
                 }
-                
+                detectionRadius = 50;
 
                 break;
 
@@ -501,6 +502,7 @@ public class Unit : GameBehaviour
                 {
                     health = 200;
                     maxHealth = 200;
+
                 }
                 else
                 {
@@ -515,7 +517,7 @@ public class Unit : GameBehaviour
                 {
                     navAgent.speed = 8;
                 }
-
+                detectionRadius = 50;
                 break;
             case UnitType.OrcusUnit:
                 if (_UM.borkrskinn)
@@ -536,7 +538,7 @@ public class Unit : GameBehaviour
                 {
                     navAgent.speed = 13;
                 }
-
+                detectionRadius = 50;
 
                 break;
             case UnitType.VolvaUnit:
@@ -558,6 +560,7 @@ public class Unit : GameBehaviour
                 {
                     navAgent.speed = 40;
                 }
+                detectionRadius = 50;
                 break;
             case UnitType.HuldraUnit:
                 if (_UM.borkrskinn)
@@ -598,7 +601,7 @@ public class Unit : GameBehaviour
                 {
                     navAgent.speed = 16;
                 }
-
+                detectionRadius = 50;
                 break;
             case UnitType.Tower:
                 if (_UM.borkrskinn)
@@ -638,12 +641,6 @@ public class Unit : GameBehaviour
                 trans = go.transform;
             }
         }
-
-        if (_EM.enemies == null)
-        {
-            return null;
-        }
-        else
             return trans;
     }
 

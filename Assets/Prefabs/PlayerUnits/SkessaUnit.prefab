@@ -2666,6 +2666,7 @@ GameObject:
   - component: {fileID: 1071894615449563644}
   - component: {fileID: 1071894615449563646}
   - component: {fileID: 966169468}
+  - component: {fileID: -2262006213360901437}
   m_Layer: 6
   m_Name: SkessaUnit
   m_TagString: Unit
@@ -2799,6 +2800,10 @@ MonoBehaviour:
   rangedSpawnLocation: {fileID: 0}
   isSelected: 0
   inCombat: 0
+  isMoving: 0
+  isMovingCheck: 0
+  isTooCloseToTower: 0
+  isOutOfBounds: 0
   SFXPool: {fileID: 2081501896}
   soundPoolCurrent: 0
   soundPool:
@@ -2843,6 +2848,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 1
+--- !u!114 &-2262006213360901437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071894615449563641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7caf143013518864aa5a464a5c5abb70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originalSize: {x: 0, y: 0, z: 0}
+  scaleTo: {x: 0, y: 0, z: 0}
 --- !u!1 &1071894615477605823
 GameObject:
   m_ObjectHideFlags: 0
@@ -3335,6 +3354,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firingPoint: {fileID: 0}
   arrow: {fileID: 0}
+  arrow2: {fileID: 0}
   weaponCollider: {fileID: 1911833747}
   footstepParticle: {fileID: 0}
   stompParticle: {fileID: 0}
@@ -3492,6 +3512,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firingPoint: {fileID: 0}
   arrow: {fileID: 0}
+  arrow2: {fileID: 0}
   weaponCollider: {fileID: 6944717937811301859}
   footstepParticle: {fileID: 0}
   stompParticle: {fileID: 0}

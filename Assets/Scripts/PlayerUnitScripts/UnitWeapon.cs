@@ -44,7 +44,7 @@ public class UnitWeapon : GameBehaviour
     public void LeftLeshyFootstep()
     {
         gameObject.GetComponentInParent<Unit>().PlayLeshyFootstepSound();
-        Instantiate(footstepParticle, leftFoot.transform.position, Quaternion.Euler(90, 0, 0));
+        Instantiate(footstepParticle, leftFoot.transform.position, Quaternion.Euler(0, 0, 0));
     }
     public void RightLeshyFootstep()
     {

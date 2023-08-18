@@ -23,12 +23,14 @@ public class GameManager : Singleton<GameManager>
     public bool downTime;
 
 
+
     [Header("Player Resources")]
     public int maegen;
     public int maxTrees;
     public int wildlife;
     public int populous;
     public int maxPopulous = 10;
+    public int maxMaegen;
 
     [Header("Runes")]
     public GameObject[] runes;
@@ -253,6 +255,7 @@ public class GameManager : Singleton<GameManager>
         Time.timeScale = 1;
         StopCoroutine(CheckForCollectMaegen());
         _GM.boundry.SetActive(true);
+        maxMaegen = _WM.totalMaegen + maegen;
     }
     public void OnCollectMaegenButton()
     {
@@ -262,8 +265,14 @@ public class GameManager : Singleton<GameManager>
     {
         boundry.SetActive(false);
     }
+    private void OnWispDestroy()
+    {
+        if(maegen > maxMaegen)
+            maegen = maxMaegen;
+    }
     private void OnEnable()
     {
+        GameEvents.OnWispDestroy += OnWispDestroy;
         GameEvents.OnTreePlaced += OnTreePlaced;
         GameEvents.OnTreeDestroyed += OnTreeDestroy;
         GameEvents.OnJarnnefiUpgrade += OnJarnnefiUpgrade;
@@ -280,6 +289,7 @@ public class GameManager : Singleton<GameManager>
 
     private void OnDisable()
     {
+        GameEvents.OnWispDestroy -= OnWispDestroy;
         GameEvents.OnTreePlaced -= OnTreePlaced;
         GameEvents.OnTreeDestroyed -= OnTreeDestroy;
         GameEvents.OnJarnnefiUpgrade -= OnJarnnefiUpgrade;

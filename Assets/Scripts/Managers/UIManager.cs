@@ -26,6 +26,8 @@ public class UIManager : Singleton<UIManager>
     public GameObject eldyrButton;
     public GameObject ObjectiveText;
 
+    public bool settingsOpen;
+
     public GameObject treeToolSelectionBox;
     public GameObject runeToolSelectionBox;
     public GameObject beaconToolSelectionBox;
@@ -105,7 +107,7 @@ public class UIManager : Singleton<UIManager>
 
     void Start()
     {
-        StartCoroutine(WaitToCheckForToolButtons());
+        //StartCoroutine(WaitToCheckForToolButtons());
         CheckTreeUI();
         CheckWildlifeUI();
         CheckPopulousUI();
@@ -198,10 +200,12 @@ public class UIManager : Singleton<UIManager>
     public void OpenSettingsPanel()
     {
         settingsPanel.SetActive(true);
+        settingsOpen = true;
     }
     public void CloseSettingsPanel()
     {
         settingsPanel.SetActive(false);
+        settingsOpen = false;
     }
     public void CloseHomeTreeMenu()
     {
@@ -332,14 +336,16 @@ public class UIManager : Singleton<UIManager>
     {
         if(_GM.currentWave!= 10)
         waveOverPanel.SetActive(true);
-        
+        settingsOpen = true;
+
     }
     public void OnContinueButton()
     {
         waveOverPanel.SetActive(false);
         treeToolImage.sprite = usableTreeTool;
         collectMaegenButton.SetActive(false);
-        StartCoroutine(WaitToCheckForToolButtons());
+        settingsOpen = false;
+        //StartCoroutine(WaitToCheckForToolButtons());
     }
     IEnumerator WaitToCheckForToolButtons()
     {

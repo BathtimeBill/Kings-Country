@@ -200,7 +200,7 @@ public class Hunter : GameBehaviour
             }
 
         }
-        if (other.tag == "Explosion")
+        if (other.tag == "Explosion" || other.tag == "Explosion2")
         {
             if (_HUTM.enemies.Contains(gameObject))
             {
@@ -395,11 +395,11 @@ public class Hunter : GameBehaviour
         }
         return trans;
     }
-    private void OnBeaconPlaced()
-    {
-        fyreBeacon = GameObject.FindGameObjectWithTag("Beacon");
-        state = EnemyState.Beacon;
-    }
+    //private void OnBeaconPlaced()
+    //{
+    //    fyreBeacon = GameObject.FindGameObjectWithTag("Beacon");
+    //    state = EnemyState.Beacon;
+    //}
     private void OnBeaconDestroyed()
     {
         state = EnemyState.Work;
@@ -411,14 +411,14 @@ public class Hunter : GameBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnBeaconPlaced += OnBeaconPlaced;
+        //GameEvents.OnBeaconPlaced += OnBeaconPlaced;
         GameEvents.OnBeaconDestroyed += OnBeaconDestroyed;
         GameEvents.OnUnitArrivedAtHut += OnArrivedAtHut;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnBeaconPlaced -= OnBeaconPlaced;
+        //GameEvents.OnBeaconPlaced -= OnBeaconPlaced;
         GameEvents.OnBeaconDestroyed -= OnBeaconDestroyed;
         GameEvents.OnUnitArrivedAtHut -= OnArrivedAtHut;
     }

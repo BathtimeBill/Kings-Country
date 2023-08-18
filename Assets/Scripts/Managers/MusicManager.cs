@@ -99,6 +99,7 @@ public class MusicManager : Singleton<MusicManager>
     {
         GameEvents.OnGameOver -= OnGameOver;
         GameEvents.OnGameWin -= OnGameWin;
+        GameEvents.OnWaveOver -= OnWaveOver;
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnStartNextRound -= OnStartNextRound;
     }

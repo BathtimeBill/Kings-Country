@@ -11,6 +11,7 @@ public class MaegenSprite : GameBehaviour
     public bool isMovingTowardsTree;
     public Vector3 pointAboveTree;
 
+
     public GameObject plusParticle;
     public GameObject collectMaegenParticle;
 
@@ -19,7 +20,6 @@ public class MaegenSprite : GameBehaviour
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
         pointAboveTree = transform.position + new Vector3(0, 200, 0);
         StartCoroutine(WaitForChangeDirection());
-
     }
 
     // Update is called once per frame
@@ -48,6 +48,7 @@ public class MaegenSprite : GameBehaviour
             Instantiate(plusParticle, transform.position, transform.rotation);
             Instantiate(collectMaegenParticle, transform.position, transform.rotation);
             _GM.maegen++;
+            GameEvents.ReportOnWispDestroy();
             Destroy(gameObject);
         }
     }

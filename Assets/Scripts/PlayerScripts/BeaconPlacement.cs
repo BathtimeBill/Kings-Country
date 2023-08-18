@@ -19,14 +19,14 @@ public class BeaconPlacement : Singleton<BeaconPlacement>
 
     void Update()
     {
-        if(_GM.beacons.Length >= 1 || _UI.beaconPlaced)
+        if(_UI.beaconPlaced)
         {
             canPlace = false;
             effectRadius.GetComponent<Renderer>().material = cannotPlaceMat;
         }
-        if (_GM.beacons.Length < 1)
+        if (_GM.beacons.Length < 1 && _UI.beaconPlaced == false)
         {
-            if(_GM.wildlife > 9)
+            if(_GM.wildlife > 4)
             {
                 canPlace = true;
                 effectRadius.GetComponent<Renderer>().material = canPlaceMat;
@@ -37,6 +37,7 @@ public class BeaconPlacement : Singleton<BeaconPlacement>
                 effectRadius.GetComponent<Renderer>().material = cannotPlaceMat;
             }
         }
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -64,5 +65,20 @@ public class BeaconPlacement : Singleton<BeaconPlacement>
             canPlace = true;
             effectRadius.GetComponent<Renderer>().material = canPlaceMat;
         }
+    }
+
+    private void OnBeaconUpgrade()
+    {
+        effectRadius.transform.localScale = effectRadius.transform.localScale * 2;
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnBeaconUpgrade += OnBeaconUpgrade;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnBeaconUpgrade -= OnBeaconUpgrade;
     }
 }

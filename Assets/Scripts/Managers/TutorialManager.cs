@@ -25,6 +25,9 @@ public class TutorialManager : Singleton<TutorialManager>
     public Sprite fiveSprite;
     public Sprite sixSprite;
     public Sprite sevenSprite;
+    public Sprite eightSprite;
+    public Sprite nineSprite;
+    public Sprite tenSprite;
 
     [Header("In Game Tutorial")]
     public GameObject tutorialText;
@@ -186,49 +189,67 @@ public class TutorialManager : Singleton<TutorialManager>
         {
             tutorialImage.sprite = welcomeSprite;
             tutTitle.text = "Tutorial";
-            tutContextText.text = "Welcome to King's Country, thanks for playing!<br>The game is in early development and we would love your feedback. If you return to the main menu, you will see a link to a feedback form where you can give your thoughts and feelings about the game.";
+            tutContextText.text = "Welcome to Grove Keeper, thanks for playing!\r\n<br>The game is in development and we would love your feedback.\r\n<br>If you return to the main menu, you will see a link to a feedback form where you can give your thoughts and feelings about the game.";
         }
         if(tutorialCount == 1)
         {
             tutorialImage.sprite = oneSprite;
             tutTitle.text = "Camera Controls";
-            tutContextText.text = "Use 'W,A,S,D' to control the movement of the camera. Clicking and dragging 'Middle Mouse Button' will roatate and scrolling zooms in and out. Hold 'Shift' to increase the speed of the camera";
+            tutContextText.text = "Use 'W,A,S,D' to control the movement of the camera.\r\n<br>Clicking and dragging 'Middle Mouse Button' will roatate and scrolling zooms in and out.\r\n<br>Hold 'Shift' to increase the speed of the camera";
         }
         if(tutorialCount == 2)
         {
             tutorialImage.sprite = twoSprite;
             tutTitle.text = "Controls";
-            tutContextText.text = "To select multiple units, click and drag the left mouse button around the desired units. To order them to do something, right click on your desired target with them selected.\r\nThe number buttons will choose which tool is being used. Pressing a number button once will select that tool, pressing it again will deselect.\r\nPressing escape will open the pause menu, from which you can access the game settings, and exit the game.";
+            tutContextText.text = "To select a unit, left click on it.\r\n<br>To order them to do something, right click on your desired target with them selected.\r\n<br>To select multiple units, click and drag the left mouse button around the desired units.";
         }
         if( tutorialCount == 3)
         {
             tutorialImage.sprite = threeSprite;
             tutTitle.text = "Resources";
-            tutContextText.text = "The game has 4 resources. These include, Maegen, Trees, Wildlife, and Populous.\r\n<br>Maegen:<br>This is the main currency of the game. The player uses this to recruit units and purchase upgrades.\r\n<br>Trees:<br>Once placed, and at the cost of some maegen, trees produce maegen slowly over time. Upgrades can be purchased to increase the rate of maegen production.\r\n<br>Wildlife:<br>This represents the amount of wildlife you have in your forest. Wildlife includes rabbits, deer and boar (In that order). Wildlife slowly spawns over time and some buildings, tools and units require a certain amount of wildlife to be purchased.\r\n<br>Populous:<br>This represents how many units you can have in your army at any one time (game starts with 10 populous). This number can be increased through purchasing upgrades.";
+            tutContextText.text = "The game has 4 resources. These include, Maegen, Trees, Wildlife, and Populous.\r\n<br>Maegen:<br>This is the main currency of the game. Maegen represents the raw energy of the forest and you use this to recruit units. Maegen is collected at the end of each wave, based on the amount and quality of the trees standing.\r\n<br>Trees:<br>Once placed, trees produce Maegen based on their location to other trees at the end of each wave.\r\n<br>Wildlife:<br>This represents the amount of wildlife you have in your forest. Wildlife includes rabbits, deer and boar. Wildlife spawns in at the end of each round based on the amount of trees are in the forest; 1 wildlife for every 5 trees. Your special abilities require a certain amount of wildlife for them to be used.\r\n<br>Populous:<br>This represents how many units you can have in your army at any one time (game starts with 10 populous). This number can be increased through aquiring upgrades.";
         } 
         if(tutorialCount == 4)
         {
             tutorialImage.sprite = fourSprite;
             tutTitle.text = "Tools";
-            tutContextText.text = "Tree Tool:<br>Pressing ‘1’ will allow the player to place a tree by left clicking on an available ground space at the cost of 15 maegen. Trees cannot be placed on top of one another and neither on rocks nor swamp sections. A tree produces Maegen over time and its productivity is determined by its distance from other trees.\r\n<br>Rune Tool:<br>Pressing ‘2’ allows the player to place a ‘Rune’. This is a blue dome of magical energy that heals units that are inside it and increases the maegen production rate of all trees inside it (+5 maegen every 20-40 seconds). It’s on a timer of 5 mins and when it runs out the rune is destroyed. One Rune costs 150 maegen and requires 5 wildlife, a second is 150 maegen and 10 wildlife, a third is 150 and 20 wildlife and so on.\r\n<br>Fyre Beacon Tool:<br>Pressing ‘3’ allows the player to place a beacon at the cost of 200 maegen and requires at least 15 wildlife. The beacon must be placed within the forested section of the map (near at least 3 trees) and will draw all enemies to it. It appears as a hazy dome with fairies dancing around a toadstool. After 1 minute, the beacon will explode in flames, killing all enemies and destroying all trees in its radius.";
+            tutContextText.text = "Tree Tool:<br>Pressing ‘1’ or clicking on the tree icon at the bottom of the screen will allow you to place a tree by left clicking on an available ground space. Trees cannot be placed on top of one another and neither on rocks nor swamp sections. A tree produces Maegen at the end of each wave and its productivity is determined by its distance from other trees. (Trees cannot be placed while the enemy is attacking).\r\n<br>Rune Tool:<br>Pressing ‘2’ or clicking on the icon at the bottom of the screen allows you to place a ‘Rune’. This is a blue dome of magical energy that heals units that are inside it. The rune will last for 1 round and multiple can be placed at an increasing cost each time.\r\n<br>Fyre Tool:<br>Pressing ‘3’ or clicking on the icon at the bottom of the screen allows you to create a fiery explosion, dealing damage to all enemy units in it's radius.\r\n<br>Stormer Tool:<br>Pressing '4' or clicking on the icon at the bottom of the screen allows you to create an intense storm that requires at least 20 wildlife. Lightning bolts will randomly strike enemies down for a period of 1 minute.";
         }
         if(tutorialCount == 5)
         {
             tutorialImage.sprite = fiveSprite;
             tutTitle.text = "Home Tree";
-            tutContextText.text = "This is the main interface for the player. They can spawn creatures here and purchase upgrades for their units and tools. If the Home Tree is ever destroyed, the game is over.\r\n<br> To open the Home Tree menu, either click on it in the game world or press 'Tab'";
+            tutContextText.text = "The home tree is the heart of your forest and must be protected at all costs. Units can be spawned from this ancient tree to help defend the forest. If the Home Tree is ever destroyed, the game is over.\r\n<br>To open the Home Tree menu, either click on it in the game world or press 'Tab'";
         }
         if(tutorialCount == 6)
         {
             tutorialImage.sprite = sixSprite;
             tutTitle.text = "Horgr";
-            tutContextText.text = "This is a magical shrine that is valuable to both the humans and the forest. At the beginning of the game, a Horgr is placed randomly on the map and it belongs to no one. To claim one, the player or the enemy needs to have a unit close to it where a slider will slowly fill up, at which point the horgr is claimed. Once claimed, the player will recieve a regular income of Maegen and the ability to spawn unique units. If the enemy claims it, they will leave some units there to defend it and all their units damage and health are buffed by 30%.";
+            tutContextText.text = "This is a magical shrine that is valuable to both the humans and the forest.\r\n<br>From this location, you can purchase a 'Huldra', which can transform into a watch tower to defend your forest.\r\n<br>Enemies will attempt to claim this site for themselves so you'll need to either defend it or attack it before the wave is over.";
         }
         if(tutorialCount == 7)
         {
             tutorialImage.sprite = sevenSprite;
-            tutTitle.text = "Pickups";
-            tutContextText.text = "Throughout the game, you may notice various glowing objects throughout your forest. These are the Maegen and Health pickups. By sending a unit to collect these, the player will either recieve a winfall of Maegen or it will heal their unit.";
+            tutTitle.text = "Witch's Hut";
+            tutContextText.text = "From this location, you can purchase the 'Skessa' and the 'Goblin Archer'.\r\n<br>Just like the Horgr, the enemy will attempt to claim this site.";
+        }
+        if (tutorialCount == 8)
+        {
+            tutorialImage.sprite = eightSprite;
+            tutTitle.text = "Waves";
+            tutContextText.text = "The game is broken up into 'waves'.\r\n<br>Before a wave starts, you have the opportunity to place trees and purchase units in preparation for the incoming enemy force.\r\n<br>When you're ready to begin the wave, click the button pictured above and the enemies will begin to attack.\r\n<br>Once all enemies have been taken care of, the wave will end and you will recieve a breakdown of your incoming resources for the next round and a choice between two upgrades.\r\n<br>Press ‘F3’ to speed up time\r\n<br>Press ‘F4’ to slow down time.";
+        }
+        if (tutorialCount == 9)
+        {
+            tutorialImage.sprite = nineSprite;
+            tutTitle.text = "Enemy Types";
+            tutContextText.text = "There are 4 enemy types that you will encounter.\r\n<br>Woodcutters:<br>Woodcutters are marked in 'YELLOW' on the map. Their primary target are your trees and will prioritise cutting them down unless they are confronted by your units.\r\n<br>Hunters:<br>Hunters are marked in 'GREEN' on the map and their main focus is your wildlife. They will attempt to hunt your forest into extinction unless a 'Witch's Hut' or one of your units is closer.\r\n<br>Warriors:<br>Warriors are marked in 'RED' on the map and their main goal is to kill all of your units. They will attempt to claim your 'Horgr' if they are closer to it than they are to your units.\r\n<br>Spies:<br>Spies will spawn into the map at a random location and are marked in 'BLACK'. They will move towards your home tree, ignoring everything else in their path to destroy it. They will spawn in more regularly the higher the current wave is and can emerge at anytime, even inbetween waves.";
+        }
+        if (tutorialCount == 10)
+        {
+            tutorialImage.sprite = tenSprite;
+            tutTitle.text = "Health and Maegen Drops";
+            tutContextText.text = "Health:<br>During the game you might notice some pink objects appearing around the map. These are 'Health' pickups.<br>If you send a unit to collect these, they will heal any units that are nearby at the time.\r\n<br>Maegen Drops:<br>When an enemy is killed there is a random chance that they will drop some Maegen. This Maegen cannot be collected.<br>At the end of the round all the Maegen drops on the map will be added up and you will recieve some bonus Maegen.<br>If the only enemies that remain are defending either the 'Horgr' or the 'Witch's Hut' you will get the opportunity to 'Claim Maegen' to help you take back these locations and complete the wave.";
         }
     }
 

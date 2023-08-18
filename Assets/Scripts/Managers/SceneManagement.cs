@@ -21,7 +21,10 @@ public class SceneManagement : GameBehaviour
     AsyncOperation loadingOperation;
 
 
-
+    private void Start()
+    {
+        Time.timeScale = 1.0f;
+    }
 
     public void CloseLevelSelectScreen()
     {

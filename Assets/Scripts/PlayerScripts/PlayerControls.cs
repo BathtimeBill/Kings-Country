@@ -34,6 +34,8 @@ public class PlayerControls : Singleton<PlayerControls>
     public GameObject beaconPlacement;
     public MeshRenderer beaconPlacementMeshRenderer;
     public GameObject beaconPrefab;
+    public GameObject explosion;
+    public GameObject explosion2;
     [Header("Stormer Placement")]
     public GameObject stormerPlacement;
     public MeshRenderer stormerPlacementMeshRenderer;
@@ -117,7 +119,7 @@ public class PlayerControls : Singleton<PlayerControls>
         _UI.runeToolSelectionBox.SetActive(false);
         _UI.maegenCost.SetActive(true);
         _UI.wildlifeCost.SetActive(true);
-        _UI.wildlifeCostText.text = "10";
+        _UI.wildlifeCostText.text = "5";
         _UI.maegenCostText.text = "0";
     }    
 
@@ -310,19 +312,26 @@ public class PlayerControls : Singleton<PlayerControls>
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (_UI.pausePanel.gameObject.activeInHierarchy == false)
+            if(_UI.settingsOpen)
             {
-                _GM.isPaused = true;
-                _GM.gameState = GameState.Pause;
-                _UI.pausePanel.SetActive(true);
-                Time.timeScale = 0;
+                return;
             }
             else
             {
-                _GM.isPaused = false;
-                _GM.gameState = GameState.Play;
-                _UI.pausePanel.SetActive(false);
-                Time.timeScale = 1;
+                if (_UI.pausePanel.gameObject.activeInHierarchy == false)
+                {
+                    _GM.isPaused = true;
+                    _GM.gameState = GameState.Pause;
+                    _UI.pausePanel.SetActive(true);
+                    Time.timeScale = 0;
+                }
+                else
+                {
+                    _GM.isPaused = false;
+                    _GM.gameState = GameState.Play;
+                    _UI.pausePanel.SetActive(false);
+                    Time.timeScale = 1;
+                }
             }
         }
         if (Input.GetMouseButtonDown(0))
@@ -386,7 +395,15 @@ public class PlayerControls : Singleton<PlayerControls>
             {
                 if (_BPlace.canPlace == true)
                 {
-                    Instantiate(beaconPrefab, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
+                    if(_UM.beacon)
+                    {
+                        Instantiate(explosion2, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
+                    }
+                    else
+                    {
+                        Instantiate(explosion, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
+                    }
+                    
                     _GM.CheckBeacons();
                     GameEvents.ReportOnBeaconPlaced();
                 }

@@ -221,6 +221,13 @@ public class Warrior : GameBehaviour
             hasArrivedAtBeacon = false;
             state = EnemyState.Attack;
         }
+        if (other.tag == "Explosion2")
+        {
+            TakeDamage(100);
+            animator.SetTrigger("Impact");
+            hasArrivedAtBeacon = false;
+            state = EnemyState.Attack;
+        }
     }
     private void OnTriggerExit(Collider other)
     {
@@ -345,11 +352,11 @@ public class Warrior : GameBehaviour
             return trans;
     }
 
-    private void OnBeaconPlaced()
-    {
-        fyreBeacon = GameObject.FindGameObjectWithTag("Beacon");
-        state = EnemyState.Beacon;
-    }
+    //private void OnBeaconPlaced()
+    //{
+    //    fyreBeacon = GameObject.FindGameObjectWithTag("Beacon");
+    //    state = EnemyState.Beacon;
+    //}
     private void OnBeaconDestroyed()
     {
         state = EnemyState.Attack;
@@ -361,14 +368,14 @@ public class Warrior : GameBehaviour
     }
     private void OnEnable()
     {
-        GameEvents.OnBeaconPlaced += OnBeaconPlaced;
+        //GameEvents.OnBeaconPlaced += OnBeaconPlaced;
         GameEvents.OnBeaconDestroyed += OnBeaconDestroyed;
         GameEvents.OnUnitArrivedAtHorgr += OnArrivedAtHorgr;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnBeaconPlaced -= OnBeaconPlaced;
+        //GameEvents.OnBeaconPlaced -= OnBeaconPlaced;
         GameEvents.OnBeaconDestroyed -= OnBeaconDestroyed;
         GameEvents.OnUnitArrivedAtHorgr -= OnArrivedAtHorgr;
     }

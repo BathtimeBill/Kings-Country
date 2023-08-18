@@ -27,25 +27,26 @@ public class EnemyManager : Singleton<EnemyManager>
 
     private void OnEnemyKilled()
     {
-
         StartCoroutine(CheckForEnemiesLeft());
     }
 
-    private void OnContinueButton()
+    private void OnCollectMaegenButton()
     {
-
+        StartCoroutine(CheckForEnemiesLeft());
     }
 
     private void OnEnable()
     {
         GameEvents.OnEnemyKilled += OnEnemyKilled;
-        GameEvents.OnContinueButton += OnContinueButton;
+        //GameEvents.OnContinueButton += OnContinueButton;
+        GameEvents.OnCollectMaegenButton += OnCollectMaegenButton;
 
     }
 
     private void OnDisable()
     {
         GameEvents.OnEnemyKilled -= OnEnemyKilled;
-        GameEvents.OnContinueButton -= OnContinueButton;
+        //GameEvents.OnContinueButton -= OnContinueButton;
+        GameEvents.OnCollectMaegenButton -= OnCollectMaegenButton;
     }
 }

@@ -840,6 +840,7 @@ GameObject:
   - component: {fileID: 4049935371749668077}
   - component: {fileID: 4049935371749668079}
   - component: {fileID: 3950889126625891949}
+  - component: {fileID: 6420539160483477480}
   m_Layer: 6
   m_Name: GoblinUnit
   m_TagString: Unit
@@ -972,6 +973,10 @@ MonoBehaviour:
   rangedSpawnLocation: {fileID: 0}
   isSelected: 0
   inCombat: 0
+  isMoving: 0
+  isMovingCheck: 0
+  isTooCloseToTower: 0
+  isOutOfBounds: 0
   SFXPool: {fileID: 3950889125610715097}
   soundPoolCurrent: 0
   soundPool: []
@@ -1015,6 +1020,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 1
+--- !u!114 &6420539160483477480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4049935371749668072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7caf143013518864aa5a464a5c5abb70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originalSize: {x: 0, y: 0, z: 0}
+  scaleTo: {x: 0, y: 0, z: 0}
 --- !u!1 &4049935371807634562
 GameObject:
   m_ObjectHideFlags: 0
@@ -3347,6 +3366,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firingPoint: {fileID: 8227420821533532717}
   arrow: {fileID: 3894247749214064697, guid: a7363cc060e9aec4a839d5e9d107343a, type: 3}
+  arrow2: {fileID: 0}
   weaponCollider: {fileID: 0}
   footstepParticle: {fileID: 0}
   stompParticle: {fileID: 0}

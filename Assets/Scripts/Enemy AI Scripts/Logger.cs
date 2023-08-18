@@ -61,14 +61,16 @@ public class Logger : GameBehaviour
  
     void Update()
     {
-        closestUnit = GetClosestUnit();
-        closestTree = GetClosestTree();
-        if (UnitSelection.Instance.unitList.Count != 0)
+
+
+        if (UnitSelection.Instance.unitList != null)
         {
+            closestUnit = GetClosestUnit();
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
         }
-        if(_GM.trees.Length != 0)
+        if(_GM.trees != null)
         {
+            closestTree = GetClosestTree();
             distanceFromClosestTree = Vector3.Distance(closestTree.transform.position, transform.position);
         }
 
@@ -176,7 +178,7 @@ public class Logger : GameBehaviour
                 hasArrivedAtBeacon = true;
             }
         }
-        if(other.tag == "Explosion")
+        if(other.tag == "Explosion" || other.tag == "Explosion2")
         {
             GameObject go;
             go = Instantiate(deadLoggerFire, transform.position, transform.rotation);
@@ -185,6 +187,7 @@ public class Logger : GameBehaviour
             Destroy(go, 15);
             Destroy(gameObject);
         }
+
     }
 
     private int RandomCheerAnim()
@@ -385,14 +388,14 @@ public class Logger : GameBehaviour
     {
         navAgent.SetDestination(homeTree.transform.position);
     }
-    private void OnBeaconPlaced()
-    {
-        if(woodcutterType != WoodcutterType.LogCutter)
-        {
-            fyreBeacon = GameObject.FindGameObjectWithTag("Beacon");
-            state = EnemyState.Beacon;
-        }
-    }
+    //private void OnBeaconPlaced()
+    //{
+    //    if(woodcutterType != WoodcutterType.LogCutter)
+    //    {
+    //        fyreBeacon = GameObject.FindGameObjectWithTag("Beacon");
+    //        state = EnemyState.Beacon;
+    //    }
+    //}
     private void OnBeaconDestroyed()
     {
         if (woodcutterType != WoodcutterType.LogCutter)
@@ -402,13 +405,13 @@ public class Logger : GameBehaviour
     }
     private void OnEnable()
     {
-        GameEvents.OnBeaconPlaced += OnBeaconPlaced;
+        //GameEvents.OnBeaconPlaced += OnBeaconPlaced;
         GameEvents.OnBeaconDestroyed += OnBeaconDestroyed;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnBeaconPlaced -= OnBeaconPlaced;
+        //GameEvents.OnBeaconPlaced -= OnBeaconPlaced;
         GameEvents.OnBeaconDestroyed -= OnBeaconDestroyed;
     }
 }

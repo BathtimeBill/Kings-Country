@@ -11,7 +11,6 @@ public class RagdollSound : GameBehaviour
         audioSource = GetComponent<AudioSource>();
         if(hasBeenLaunched)
         {
-            Debug.Log("Scream");
             audioSource.clip = _SM.GetScreamSound();
             audioSource.Play();
         }

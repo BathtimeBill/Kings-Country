@@ -28,6 +28,8 @@ public static class GameEvents
     public static event Action OnContinueButton = null;
     public static event Action OnStartNextRound = null;
 
+    public static event Action OnWispDestroy = null;
+
     public static event Action OnEnemyKilled = null;
 
     public static event Action OnNextTutorial = null;
@@ -47,6 +49,11 @@ public static class GameEvents
 
     public static event Action OnUpgradeSelected = null;
 
+
+    public static void ReportOnWispDestroy()
+    {
+        OnWispDestroy?.Invoke();
+    }
     public static void ReportOnEnemyKilled()
     {
         OnEnemyKilled?.Invoke();

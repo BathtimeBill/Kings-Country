@@ -2272,6 +2272,7 @@ GameObject:
   - component: {fileID: 1071894615449563646}
   - component: {fileID: 966169468}
   - component: {fileID: 7473041590163469640}
+  - component: {fileID: 4627191716601214914}
   m_Layer: 6
   m_Name: LeshyUnit
   m_TagString: LeshyUnit
@@ -2404,6 +2405,10 @@ MonoBehaviour:
   rangedSpawnLocation: {fileID: 0}
   isSelected: 0
   inCombat: 0
+  isMoving: 0
+  isMovingCheck: 0
+  isTooCloseToTower: 0
+  isOutOfBounds: 0
   SFXPool: {fileID: 9035299592255929110}
   soundPoolCurrent: 0
   soundPool: []
@@ -2553,6 +2558,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4627191716601214914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071894615449563641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7caf143013518864aa5a464a5c5abb70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originalSize: {x: 0, y: 0, z: 0}
+  scaleTo: {x: 0, y: 0, z: 0}
 --- !u!1 &1071894615477605823
 GameObject:
   m_ObjectHideFlags: 0
@@ -2942,7 +2961,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 188
+  Priority: 215
   DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 250
@@ -3048,7 +3067,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 188
+  Priority: 215
   DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 250
@@ -3154,7 +3173,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 188
+  Priority: 215
   DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 250
@@ -3411,7 +3430,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMode: 3
   outlineColor: {r: 0.654902, g: 0.6745098, b: 1, a: 1}
-  outlineWidth: 4.99
+  outlineWidth: 2
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
@@ -3429,6 +3448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firingPoint: {fileID: 0}
   arrow: {fileID: 0}
+  arrow2: {fileID: 0}
   weaponCollider: {fileID: 3904795701664264158}
   footstepParticle: {fileID: 5382783085058185736, guid: df351d0faa5e0034da686dada662a71e,
     type: 3}

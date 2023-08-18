@@ -7,19 +7,10 @@ public class TowerProjectile : GameBehaviour
 {
     public GameObject particleEffect;
 
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.tag != "Tree" || collision.collider.tag != "Unit")
+        if (collision.collider.tag != "Tree" || collision.collider.tag != "Unit" || collision.collider.tag != "Wildlife")
         {
             Instantiate(particleEffect, transform.position, transform.rotation);
             Destroy(gameObject);
