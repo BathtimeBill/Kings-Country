@@ -13,7 +13,8 @@ public class PlayerControls : Singleton<PlayerControls>
     public GameObject targetPointerGraphics;
     public Material brightYellowMat;
     public Material invisibleMat;
-
+    public GameObject mouseOverEnemy;
+    public bool mouseOverEnemyBool;
     [Header("Tree Tool")]
     public bool treeTooClose;
     public GameObject treePlacement;
@@ -42,6 +43,13 @@ public class PlayerControls : Singleton<PlayerControls>
 
     [Header("Map")]
     public bool mouseOverMap;
+    [Header("Cursors")]
+    public Texture2D cursorTextureNormal;
+    public Texture2D cursorTextureRed;
+    public CursorMode cursorMode = CursorMode.Auto;
+    public Vector2 hotSpot = Vector2.zero;
+    public Vector2 hotSpotEnemy;
+
 
     private void Start()
     {
@@ -469,7 +477,7 @@ public class PlayerControls : Singleton<PlayerControls>
         {
             if (_GM.gameState == GameState.Play)
             {
-                Time.timeScale = 3.0f;
+                _GM.SpeedGame();
             }
 
         }
@@ -477,7 +485,7 @@ public class PlayerControls : Singleton<PlayerControls>
         {
             if (_GM.gameState == GameState.Play)
             {
-                Time.timeScale = 1.0f;
+                _GM.PlayGame();
             }
 
         }
@@ -528,7 +536,17 @@ public class PlayerControls : Singleton<PlayerControls>
             treePlacementMeshRenderer.enabled = false;
             runePlacementMeshRenderer.enabled = false;
         }
-
+        if(hitPoint.collider.tag == "Enemy")
+        {
+            mouseOverEnemy = hitPoint.collider.gameObject;
+            mouseOverEnemyBool = true;
+            Cursor.SetCursor(cursorTextureRed, hotSpotEnemy, cursorMode);
+        }
+        else
+        {
+            mouseOverEnemyBool = false;
+            Cursor.SetCursor(cursorTextureNormal, hotSpot, cursorMode);
+        }
 
     }
 

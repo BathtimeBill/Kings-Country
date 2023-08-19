@@ -72,6 +72,7 @@ public enum UnitState
     Idle,
     Attack,
     Moving,
+    Track,
 }
 public enum UnitType
 {

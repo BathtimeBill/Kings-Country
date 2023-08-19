@@ -26,6 +26,8 @@ public class Unit : GameBehaviour
     public float distanceToClosestEnemy;
     public GameObject pointer;
     public bool hasStopped = false;
+    public GameObject trackTarget;
+
     [Header("Death Objects")]
     public GameObject deadSatyr;
     public GameObject bloodParticle1;
@@ -55,6 +57,7 @@ public class Unit : GameBehaviour
     public AudioSource vocalSource;
     public AudioSource spellSource;
     private Transform[] rangedAttackLocations;
+
 
     void Start()
     {
@@ -94,10 +97,10 @@ public class Unit : GameBehaviour
                     {
                         state = UnitState.Attack;
                     }
-                    //else
-                    //{
-                    //    navAgent.SetDestination(transform.position);
-                    //}
+                    else
+                    {
+                        navAgent.SetDestination(transform.position);
+                    }
                 }
 
                 animator.SetBool("inCombat", false);
@@ -149,18 +152,40 @@ public class Unit : GameBehaviour
                     navAgent.stoppingDistance = 4;
                 }
                 break;
+            case UnitState.Track:
+                if(trackTarget != null)
+                {
+                    navAgent.SetDestination(trackTarget.transform.position);
+                    if (Vector3.Distance(transform.position, trackTarget.transform.position) <= 20)
+                    {
+                        state = UnitState.Attack;
+                    }
+                }
+                else
+                {
+                    state = UnitState.Attack;
+                }
+                break;
         }
 
         if (isSelected)
         {
             if (Input.GetMouseButtonDown(1))
             {
-                state = UnitState.Moving;
                 StopAllCoroutines();
-                //animator.SetBool("isAttacking", false);
-                //targetDest = GameObject.FindGameObjectWithTag("Destination");
                 GameEvents.ReportOnUnitMove();
-                StartCoroutine(WaitForSetDestination());
+                if (_PC.mouseOverEnemyBool)
+                {
+                    trackTarget = _PC.mouseOverEnemy;
+                    state = UnitState.Track;
+                    
+                }
+                else
+                {
+                    state = UnitState.Moving;
+
+                    StartCoroutine(WaitForSetDestination());
+                }
             }
             if (Input.GetKeyDown(KeyCode.Delete))
             {
@@ -652,8 +677,14 @@ public class Unit : GameBehaviour
     {
         weaponCollider.SetActive(false);
     }
-
-
+    //public void MouseOverEnemy()
+    //{
+    //    mouseOverEnemy = true;
+    //}
+    //public void MouseOffEnemy()
+    //{
+    //    mouseOverEnemy = false;
+    //}
 
     public void SpawnRangedAttack()
     {
@@ -730,7 +761,6 @@ public class Unit : GameBehaviour
         yield return new WaitForEndOfFrame();
         navAgent.SetDestination(targetDest.transform.position);
     }    
-
 
     private void OnContinueButton()
     {

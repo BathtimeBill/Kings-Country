@@ -17,6 +17,12 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip[] gruntSounds;
     public AudioClip[] leshyStompSounds;
     public AudioClip[] screamSounds;
+    [Header("Vocals")]
+    public AudioClip[] goblinVocals;
+    public AudioClip[] leshyVocals;
+    public AudioClip[] orcusVocals;
+    public AudioClip[] satyrVocals;
+    public AudioClip[] skessaVocals;
     [Header("Footstep Sounds")]
     public AudioClip[] humanFootsteps;
     public AudioClip[] forestFootsteps;
@@ -35,6 +41,8 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip menuDragSound;
     public AudioClip textGroupSound;
     public AudioClip nextTutorialSound;
+    public AudioClip timeSpeedUpSound;
+    public AudioClip timeStopSound;
     [Header("Wildlife Distress Sounds")]
     public AudioClip[] deerDistressSounds;
     public AudioClip[] boarDistressSounds;
@@ -63,6 +71,26 @@ public class SoundManager : Singleton<SoundManager>
 
         soundPool[soundPoolCurrent].clip = _clip;
         soundPool[soundPoolCurrent].Play();
+    }
+    public AudioClip GetGoblinVocal()
+    {
+        return goblinVocals[Random.Range(0, goblinVocals.Length)];
+    }
+    public AudioClip GetLeshyVocal()
+    {
+        return leshyVocals[Random.Range(0, leshyVocals.Length)];
+    }
+    public AudioClip GetOrcusVocal()
+    {
+        return orcusVocals[Random.Range(0, orcusVocals.Length)];
+    }
+    public AudioClip GetSatyrVocal()
+    {
+        return satyrVocals[Random.Range(0, satyrVocals.Length)];
+    }
+    public AudioClip GetSkessaVocal()
+    {
+        return skessaVocals[Random.Range(0, skessaVocals.Length)];
     }
     public AudioClip GetScreamSound()
     {

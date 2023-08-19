@@ -14,6 +14,8 @@ public class UnitSelection : GameBehaviour
     public bool containsHuldra;
     public GameObject[] destinations;
 
+    public AudioSource audioSource;
+
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -36,6 +38,31 @@ public class UnitSelection : GameBehaviour
             if(unitSelected != null)
             {
                 AssignDestination();
+                if (unitSelected[0].GetComponent<Unit>().unitType == UnitType.GoblinUnit)
+                {
+                    audioSource.clip = _SM.GetGoblinVocal();
+                    audioSource.Play();
+                }
+                if (unitSelected[0].GetComponent<Unit>().unitType == UnitType.LeshyUnit)
+                {
+                    audioSource.clip = _SM.GetLeshyVocal();
+                    audioSource.Play();
+                }
+                if (unitSelected[0].GetComponent<Unit>().unitType == UnitType.OrcusUnit)
+                {
+                    audioSource.clip = _SM.GetOrcusVocal();
+                    audioSource.Play();
+                }
+                if (unitSelected[0].GetComponent<Unit>().unitType == UnitType.SatyrUnit)
+                {
+                    audioSource.clip = _SM.GetSatyrVocal();
+                    audioSource.Play();
+                }
+                if (unitSelected[0].GetComponent<Unit>().unitType == UnitType.VolvaUnit)
+                {
+                    audioSource.clip = _SM.GetSkessaVocal();
+                    audioSource.Play();
+                }
             }
         }
     }
@@ -146,12 +173,7 @@ public class UnitSelection : GameBehaviour
     {
         for (int i = 0; i < unitSelected.Count; i++)
         {
-            print(i);
             unitSelected[i].GetComponent<Unit>().targetDest = destinations[i];
         }
-        //foreach(GameObject unit in unitSelected)
-        //{
-        //    unit.GetComponent<Unit>().
-        //}
     }
 }

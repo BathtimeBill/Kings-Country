@@ -2519,7 +2519,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 143
+  m_VersionIndex: 332
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2755,15 +2755,18 @@ MonoBehaviour:
   navAgent: {fileID: 1071894615449563646}
   animator: {fileID: 8081156688108910039}
   state: 0
+  detectionRadius: 0
   closestEnemy: {fileID: 0}
   distanceToClosestEnemy: 0
   pointer: {fileID: 0}
   hasStopped: 0
+  trackTarget: {fileID: 0}
+  mouseOverEnemy: 0
   deadSatyr: {fileID: 4706057043962962229, guid: 4ae3f37a2a3ec5f449a29af5defe4038,
     type: 3}
   bloodParticle1: {fileID: 4197850467115213477, guid: 4f3e906bea636e44fa28f67b2439a265,
     type: 3}
-  targetDest: []
+  targetDest: {fileID: 0}
   selectionCircle: {fileID: 1071894615424627091}
   weaponCollider: {fileID: 0}
   deadPrefab: {fileID: 0}
@@ -2783,6 +2786,9 @@ MonoBehaviour:
   soundPool: []
   vocalSource: {fileID: 0}
   spellSource: {fileID: 0}
+  cursorTexture: {fileID: 0}
+  cursorMode: 0
+  hotSpot: {x: 0, y: 0}
 --- !u!195 &1071894615449563646
 NavMeshAgent:
   m_ObjectHideFlags: 0

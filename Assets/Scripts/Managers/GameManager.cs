@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -52,6 +54,12 @@ public class GameManager : Singleton<GameManager>
     public float timeSinceWildlifeKilled = 0f;
     public GameObject warningSprite;
 
+    [Header("Time")]
+    public AudioSource timeAudioSource;
+    public Volume globalVolume;
+    private FilmGrain grain;
+    private ChromaticAberration chromaticAberration;
+
     void Start()
     {
         Time.timeScale = 1;
@@ -81,17 +89,29 @@ public class GameManager : Singleton<GameManager>
     }
     public void PlayGame()
     {
+        timeAudioSource.clip = _SM.timeStopSound;
+        timeAudioSource.Play();
+        globalVolume.profile.TryGet(out grain);
+        globalVolume.profile.TryGet(out chromaticAberration);
+        chromaticAberration.intensity.value = 0;
+        grain.intensity.value = 0;
         Time.timeScale = 1;
+
     }
     public void SpeedGame()
     {
+        timeAudioSource.clip = _SM.timeSpeedUpSound;
+        timeAudioSource.Play();
+        globalVolume.profile.TryGet(out grain);
+        globalVolume.profile.TryGet(out chromaticAberration);
+        chromaticAberration.intensity.value = 1;
+        grain.intensity.value = 1;
         Time.timeScale = 3;
     }
 
     //The wave system is managed by two coroutines. The 'agro' wave lasts 1 minute, during which enemies are spawned in (EnemyManager) and then a break period of 4 mins. 
     IEnumerator ManageWaveAgro()
     {
-        Debug.Log("Starting next wave");
         _UI.nextRoundButton.interactable = false;
         _UI.treeToolImage.sprite = _UI.unusableTreeTool;
         _GM.downTime = false;

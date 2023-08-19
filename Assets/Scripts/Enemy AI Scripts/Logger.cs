@@ -63,17 +63,20 @@ public class Logger : GameBehaviour
     {
 
 
-        if (UnitSelection.Instance.unitList != null)
+        if (UnitSelection.Instance.unitList.Count != 0)
         {
             closestUnit = GetClosestUnit();
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
         }
-        if(_GM.trees != null)
+        if(_GM.trees.Length != 0)
         {
             closestTree = GetClosestTree();
             distanceFromClosestTree = Vector3.Distance(closestTree.transform.position, transform.position);
         }
-
+        //else
+        //{
+        //    closestTree = homeTree;
+        //}
 
         if (UnitSelection.Instance.unitList.Count == 0)
         {
@@ -96,7 +99,7 @@ public class Logger : GameBehaviour
                         navAgent.stoppingDistance = 7;
                     }
 
-                    SmoothFocusOnTree();
+                    //SmoothFocusOnTree();
                     FindHomeTree();
                 }
                 else
