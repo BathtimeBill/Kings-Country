@@ -30,7 +30,7 @@ public class Unit : GameBehaviour
     public GameObject deadSatyr;
     public GameObject bloodParticle1;
     [Header("Relevant Game Objects")]
-    public GameObject[] targetDest;
+    public GameObject targetDest;
     public GameObject selectionCircle;
     public GameObject weaponCollider;
     public GameObject deadPrefab;
@@ -158,9 +158,9 @@ public class Unit : GameBehaviour
                 state = UnitState.Moving;
                 StopAllCoroutines();
                 //animator.SetBool("isAttacking", false);
-                targetDest = GameObject.FindGameObjectsWithTag("Destination");
+                //targetDest = GameObject.FindGameObjectWithTag("Destination");
                 GameEvents.ReportOnUnitMove();
-                navAgent.SetDestination(targetDest[0].transform.position);
+                StartCoroutine(WaitForSetDestination());
             }
             if (Input.GetKeyDown(KeyCode.Delete))
             {
@@ -725,6 +725,13 @@ public class Unit : GameBehaviour
                 break;
         }
     }
+    IEnumerator WaitForSetDestination()
+    {
+        yield return new WaitForEndOfFrame();
+        navAgent.SetDestination(targetDest.transform.position);
+    }    
+
+
     private void OnContinueButton()
     {
         health = maxHealth;

@@ -12,6 +12,7 @@ public class UnitSelection : GameBehaviour
 
     public GameObject huldraToFind;
     public bool containsHuldra;
+    public GameObject[] destinations;
 
     private void Awake()
     {
@@ -29,6 +30,13 @@ public class UnitSelection : GameBehaviour
         if (Input.GetKeyDown(KeyCode.Slash))
         {
             DeselectAll();
+        }
+        if(Input.GetMouseButtonDown(1))
+        {
+            if(unitSelected != null)
+            {
+                AssignDestination();
+            }
         }
     }
 
@@ -132,5 +140,18 @@ public class UnitSelection : GameBehaviour
             _GM.boundry.SetActive(false);
         }
         unitSelected.Remove(unitToDeselect);
+    }
+
+    public void AssignDestination()
+    {
+        for (int i = 0; i < unitSelected.Count; i++)
+        {
+            print(i);
+            unitSelected[i].GetComponent<Unit>().targetDest = destinations[i];
+        }
+        //foreach(GameObject unit in unitSelected)
+        //{
+        //    unit.GetComponent<Unit>().
+        //}
     }
 }
