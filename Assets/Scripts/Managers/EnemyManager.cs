@@ -13,7 +13,6 @@ public class EnemyManager : Singleton<EnemyManager>
 
     IEnumerator CheckForEnemiesLeft()
     {
-        Debug.Log("Checking for enemies");
         yield return new WaitForEndOfFrame();
         if (enemies.Length == 0 && _GM.canFinishWave)
         {
@@ -22,7 +21,10 @@ public class EnemyManager : Singleton<EnemyManager>
             _UI.nextRoundButton.interactable = true;
             _GM.downTime = true;
             _UI.treeToolImage.sprite = _UI.usableTreeTool;
+            StopCoroutine(CheckForEnemiesLeft());
         }
+
+        StartCoroutine(CheckForEnemiesLeft());
     }
 
     private void OnEnemyKilled()
