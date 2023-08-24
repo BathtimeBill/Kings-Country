@@ -166,20 +166,20 @@ public class Warrior : GameBehaviour
         {
             case WarriorType.Dreng:
                 navAgent.speed = 6;
-                health = 120;
-                maxHealth = 120;
+                health = _GM.drengHealth;
+                maxHealth = _GM.drengHealth;
                 break;
 
             case WarriorType.Berserkr:
                 navAgent.speed = 12;
-                health = 200;
-                maxHealth = 200;
+                health = _GM.beserkrHealth;
+                maxHealth = _GM.beserkrHealth;
                 break;
 
             case WarriorType.Knight:
-                navAgent.speed = 4;
-                health = 300;
-                maxHealth = 300;
+                navAgent.speed = 8;
+                health = _GM.knightHealth;
+                maxHealth = _GM.knightHealth;
                 break;
         }
     }

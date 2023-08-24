@@ -40,11 +40,37 @@ public class GameManager : Singleton<GameManager>
     [Header("Beacons")]
     public GameObject[] beacons;
 
+    [Header("Unit Health")]
+    public float satyrHealth;
+    public float orcusHealth;
+    public float leshyHealth;
+    public float huldraHealth;
+    public float skessaHealth;
+    public float goblinHealth;
+
     [Header("Unit Damage")]
     public float satyrDamage;
     public float orcusDamage;
     public float leshyDamage;
     public float skessaDamage;
+
+    [Header("Enemy Health")]
+    public float watheHealth;
+    public float hunterHealth;
+    public float bjornjeggerHealth;
+    public float drengHealth;
+    public float beserkrHealth;
+    public float knightHealth;
+    public float loggerHealth;
+    public float lumberjackHealth;
+
+    [Header("Enemy Damage")]
+    public float axe1Damage;
+    public float axe2Damage;
+    public float sword2Damage;
+    public float sword3Damage;
+    public float arrow1Damage;
+    public float arrow2Damage;
 
     [Header("Horgr")]
     public bool horgrClaimedByPlayer;
@@ -70,10 +96,6 @@ public class GameManager : Singleton<GameManager>
         trees = GameObject.FindGameObjectsWithTag("Tree");
         //StartCoroutine(ManageWaveAgro());
         _UI.CheckTreeUI();
-        satyrDamage = 15;
-        orcusDamage = 25;
-        leshyDamage = 60;
-        skessaDamage = 40;
         downTime = true;
     }
 

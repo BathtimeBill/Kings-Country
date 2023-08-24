@@ -156,7 +156,7 @@ public class Unit : GameBehaviour
                 if(trackTarget != null)
                 {
                     navAgent.SetDestination(trackTarget.transform.position);
-                    if (Vector3.Distance(transform.position, trackTarget.transform.position) <= 20)
+                    if (Vector3.Distance(transform.position, trackTarget.transform.position) <= 8)
                     {
                         state = UnitState.Attack;
                     }
@@ -301,19 +301,19 @@ public class Unit : GameBehaviour
     {
         if (other.tag == "Axe1")
         {
-            TakeDamage(10);
+            TakeDamage(_GM.axe1Damage);
             other.enabled = false;
         }
         if (other.tag == "Axe2")
         {
-            TakeDamage(20);
+            TakeDamage(_GM.axe2Damage);
             other.enabled = false;
         }
         if (other.tag == "Sword2")
         {
             if(unitType != UnitType.LeshyUnit)
             {
-                TakeDamage(35);
+                TakeDamage(_GM.sword2Damage);
             }
             else
             {
@@ -326,7 +326,7 @@ public class Unit : GameBehaviour
         {
             if (unitType != UnitType.LeshyUnit)
             {
-                TakeDamage(50);
+                TakeDamage(_GM.sword3Damage);
             }
             else
             {
@@ -336,12 +336,12 @@ public class Unit : GameBehaviour
         }
         if (other.tag == "Arrow")
         {
-            TakeDamage(15);
+            TakeDamage(_GM.arrow1Damage);
             Destroy(other.gameObject);
         }
         if (other.tag == "Arrow2")
         {
-            TakeDamage(35);
+            TakeDamage(_GM.arrow2Damage);
             Destroy(other.gameObject);
         }
         if(other.tag == "Heal")
@@ -525,14 +525,14 @@ public class Unit : GameBehaviour
             case UnitType.LeshyUnit:
                 if (_UM.borkrskinn)
                 {
-                    health = 200;
-                    maxHealth = 200;
+                    health = 260;
+                    maxHealth = 260;
 
                 }
                 else
                 {
-                    health = 260;
-                    maxHealth = 260;
+                    health = 200;
+                    maxHealth = 200;
                 }
                 if (_UM.flugafotr)
                 {

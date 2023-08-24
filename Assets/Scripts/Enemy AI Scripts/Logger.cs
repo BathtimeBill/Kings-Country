@@ -308,14 +308,14 @@ public class Logger : GameBehaviour
             case WoodcutterType.Logger:
                 
                 navAgent.speed = 5;
-                health = 100;
-                maxHealth = 100;
+                health = _GM.loggerHealth;
+                maxHealth = _GM.loggerHealth;
                 break;
 
             case WoodcutterType.Lumberjack:
                 navAgent.speed = 6;
-                health = 180;
-                maxHealth = 180;
+                health = _GM.lumberjackHealth;
+                maxHealth = _GM.lumberjackHealth;
                 break;
             case WoodcutterType.LogCutter:
                 navAgent.speed = 3;

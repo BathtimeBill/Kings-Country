@@ -296,20 +296,20 @@ public class Hunter : GameBehaviour
         {
             case HunterType.Wathe:
                 navAgent.speed = 6;
-                health = 80;
-                maxHealth = 80;
+                health = _GM.watheHealth;
+                maxHealth = _GM.watheHealth;
                 break;
 
             case HunterType.Hunter:
                 navAgent.speed = 7;
-                health = 150;
-                maxHealth = 150;
+                health = _GM.hunterHealth;
+                maxHealth = _GM.hunterHealth;
                 break;
 
             case HunterType.Bjornjeger:
                 navAgent.speed = 4;
-                health = 200;
-                maxHealth = 200;
+                health = _GM.bjornjeggerHealth;
+                maxHealth = _GM.bjornjeggerHealth;
                 break;
         }
     }
