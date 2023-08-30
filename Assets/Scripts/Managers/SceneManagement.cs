@@ -18,6 +18,8 @@ public class SceneManagement : GameBehaviour
     public GameObject loadingScreen;
     public GameObject levelSelectScreen;
 
+    public GameObject areYouSurePanel;
+
     AsyncOperation loadingOperation;
 
 
@@ -43,6 +45,14 @@ public class SceneManagement : GameBehaviour
     {
         SceneManager.LoadScene(titleName);
     }
+    public void AreYouSureOpen()
+    {
+        areYouSurePanel.SetActive(true);
+    }
+    public void AreYouSureClose()
+    {
+        areYouSurePanel.SetActive(false);
+    }
 
     //Quit Button
     public void QuitGame()
@@ -60,5 +70,6 @@ public class SceneManagement : GameBehaviour
         audioSource.clip = clickSound;
         audioSource.Play();
     }
+
 
 }

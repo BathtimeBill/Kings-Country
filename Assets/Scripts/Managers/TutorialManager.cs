@@ -15,6 +15,7 @@ public class TutorialManager : Singleton<TutorialManager>
     public GameObject tutorialPanel;
     public int tutorialCount = 0;
     public int maxTutorialCount;
+    public Scrollbar scrollbar;
 
     [Header("Sprites")]
     public Sprite welcomeSprite;
@@ -184,6 +185,7 @@ public class TutorialManager : Singleton<TutorialManager>
 
     private void CheckTutorial()
     {
+        scrollbar.value = 1;
         tutCounterText.text = tutorialCount.ToString() + "/" + maxTutorialCount.ToString();
         if (tutorialCount == 0)
         {
@@ -201,7 +203,7 @@ public class TutorialManager : Singleton<TutorialManager>
         {
             tutorialImage.sprite = twoSprite;
             tutTitle.text = "Controls";
-            tutContextText.text = "To select a unit, left click on it.\r\n<br>To order them to do something, right click on your desired target with them selected.\r\n<br>To select multiple units, click and drag the left mouse button around the desired units.";
+            tutContextText.text = "To select a unit, left click on it.\r\n<br>To order them to do something, right click on your desired target with them selected. If you right click on an enemy with a unit selected they will target that enemy.\r\n<br>To select multiple units, click and drag the left mouse button around the desired units.";
         }
         if( tutorialCount == 3)
         {
@@ -301,6 +303,7 @@ public class TutorialManager : Singleton<TutorialManager>
     {
         tutorialStage++;
         UpdateTutorialStage();
+        
     }
 
     public void OnStartNextRound()

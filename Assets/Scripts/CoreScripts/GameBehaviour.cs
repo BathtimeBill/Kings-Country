@@ -23,6 +23,8 @@ public class GameBehaviour : MonoBehaviour
     protected static TooltipManager _Tool { get { return TooltipManager.instance; } }
     protected static WaveManager _WM { get { return WaveManager.instance; } }
     protected static SpyManager _SPYM { get { return SpyManager.instance; } }
+    protected static SaveData _SAVE { get { return SaveData.instance; } }
+    protected static ScoreManager _SCORE { get { return ScoreManager.instance; } }
 
 }
 

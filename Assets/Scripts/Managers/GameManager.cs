@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.Rendering;
@@ -35,7 +36,7 @@ public class GameManager : Singleton<GameManager>
     public int maxMaegen;
 
     [Header("Runes")]
-    public GameObject[] runes;
+    public List<GameObject> runes;
 
     [Header("Beacons")]
     public GameObject[] beacons;
@@ -53,6 +54,7 @@ public class GameManager : Singleton<GameManager>
     public float orcusDamage;
     public float leshyDamage;
     public float skessaDamage;
+    public float goblinDamage;
 
     [Header("Enemy Health")]
     public float watheHealth;
@@ -103,6 +105,12 @@ public class GameManager : Singleton<GameManager>
     {
         timeSinceAttack += Time.deltaTime;
         timeSinceWildlifeKilled += Time.deltaTime;
+
+    }
+    public float GetPercentageIncrease(float originalValue, float percentage)
+    {
+        float f = originalValue + (originalValue * percentage);
+        return f;
     }
 
     public void PauseGame()
@@ -147,7 +155,8 @@ public class GameManager : Singleton<GameManager>
     }
     IEnumerator CheckForCollectMaegen()
     {
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(5);
+       
         int totalEnemies = _HM.enemies.Count + _HUTM.enemies.Count;
         if (totalEnemies == _EM.enemies.Length)
         {
@@ -181,7 +190,7 @@ public class GameManager : Singleton<GameManager>
     //Checks the scene for how many Runes are present.
     public void CheckRunes()
     {
-        runes = GameObject.FindGameObjectsWithTag("RuneObject");
+        runes = GameObject.FindGameObjectsWithTag("RuneObject").ToList<GameObject>();
     }
     public void CheckBeacons()
     {
@@ -231,6 +240,7 @@ public class GameManager : Singleton<GameManager>
         orcusDamage += orcusDamage * 0.3f;
         leshyDamage += leshyDamage * 0.3f;
         skessaDamage += skessaDamage * 0.3f;
+        goblinDamage += goblinDamage * 0.3f;
     }
 
     //When a rune has been depleted, we wait until the end of the frame and update the rune count and UI.
@@ -290,6 +300,8 @@ public class GameManager : Singleton<GameManager>
         Time.timeScale = 0;
         StopCoroutine(CheckForCollectMaegen());
         Debug.Log("Wave is over");
+        GameEvents.ReportOnRuneDestroyed();
+
     }
     public void OnContinueButton()
     {

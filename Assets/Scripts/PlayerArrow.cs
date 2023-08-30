@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class PlayerArrow : GameBehaviour
 {
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if(collision.collider.tag == "Enemy")
+        if(other.tag == "Enemy")
         {
             Destroy(gameObject);
         }
     }
+
 }

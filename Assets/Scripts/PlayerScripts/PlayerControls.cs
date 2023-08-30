@@ -15,6 +15,7 @@ public class PlayerControls : Singleton<PlayerControls>
     public Material invisibleMat;
     public GameObject mouseOverEnemy;
     public bool mouseOverEnemyBool;
+    public LayerMask uILayer;
     [Header("Tree Tool")]
     public bool treeTooClose;
     public GameObject treePlacement;
@@ -64,6 +65,7 @@ public class PlayerControls : Singleton<PlayerControls>
 
     private void SelectTreeMode()
     {
+
         if(_GM.downTime)
         {
             if(_TUTM.isTutorial)
@@ -93,6 +95,8 @@ public class PlayerControls : Singleton<PlayerControls>
             _UI.SetErrorMessageCantPlaceTrees();
             Error();
         }
+        _TPlace.canPlace = true;
+        _TPlace.gameObject.GetComponent<Renderer>().material = _TPlace.canPlaceMat;
     }
 
     private void SelectRuneMode()
@@ -320,7 +324,12 @@ public class PlayerControls : Singleton<PlayerControls>
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            
             if(_UI.settingsOpen)
+            {
+                return;
+            }
+            if (_UI.areYouSurePanel.gameObject.activeInHierarchy == true)
             {
                 return;
             }
@@ -471,6 +480,8 @@ public class PlayerControls : Singleton<PlayerControls>
             _UI.stormerToolSelectionBox.SetActive(false);
             _UI.treeToolSelectionBox.SetActive(false);
             _UI.beaconToolSelectionBox.SetActive(false);
+
+
         }
 
         if (Input.GetKeyDown(KeyCode.F4))
@@ -491,7 +502,7 @@ public class PlayerControls : Singleton<PlayerControls>
         }
 
     }
-
+   
     public void Error()
     {
         errorAnimator.SetTrigger("Error");

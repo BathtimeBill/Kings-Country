@@ -14,6 +14,7 @@ public class UIManager : Singleton<UIManager>
     public TMP_Text waveText;
     public TMP_Text errorText;
 
+    public GameObject menuPanel;
     public GameObject homeTreePanel;
     public GameObject homeTreeUnitPanel;
     public GameObject homeTreeUpgradePanel;
@@ -81,6 +82,7 @@ public class UIManager : Singleton<UIManager>
     public AudioSource audioSource;
     public AudioSource warningAudioSource;
 
+    public GameObject areYouSurePanel;
     
 
     [Header("Waves")]
@@ -350,7 +352,7 @@ public class UIManager : Singleton<UIManager>
     IEnumerator WaitToCheckForToolButtons()
     {
         yield return new WaitForSeconds(1);
-        if (_GM.runes.Length == 0)
+        if (_GM.runes.Count == 0)
         {
             if (_GM.maegen < 2 || _GM.wildlife < 5)
             {
@@ -363,7 +365,7 @@ public class UIManager : Singleton<UIManager>
                 runeToolImage.sprite = usableRuneTool;
             }
         }
-        if(_GM.runes.Length == 1)
+        if(_GM.runes.Count == 1)
         {
             if (_GM.maegen < 4 || _GM.wildlife < 7)
             {
@@ -376,7 +378,7 @@ public class UIManager : Singleton<UIManager>
                 runeToolImage.sprite = usableRuneTool;
             }
         }
-        if (_GM.runes.Length == 2)
+        if (_GM.runes.Count == 2)
         {
             if (_GM.maegen < 8 || _GM.wildlife < 10)
             {
@@ -389,7 +391,7 @@ public class UIManager : Singleton<UIManager>
                 runeToolImage.sprite = usableRuneTool;
             }
         }
-        if (_GM.runes.Length == 3)
+        if (_GM.runes.Count == 3)
         {
             if (_GM.maegen < 16 || _GM.wildlife < 15)
             {
@@ -402,7 +404,7 @@ public class UIManager : Singleton<UIManager>
                 runeToolImage.sprite = usableRuneTool;
             }
         }
-        if (_GM.runes.Length > 3)
+        if (_GM.runes.Count > 3)
         {
             runeToolButton.interactable = false;
             runeToolImage.sprite = unusableRuneTool;
@@ -440,6 +442,10 @@ public class UIManager : Singleton<UIManager>
         {
             Debug.LogWarning("Image component is null. Make sure it is assigned.");
         }
+
+        horgrPanel.gameObject.SetActive(false);
+        hutPanel.gameObject.SetActive(false);
+        homeTreePanel.gameObject.SetActive(false);
     }
 
 

@@ -201,6 +201,10 @@ public class Warrior : GameBehaviour
         {
             TakeDamage(_GM.skessaDamage);
         }
+        if (other.tag == "PlayerWeapon5")
+        {
+            TakeDamage(_GM.goblinDamage);
+        }
         if (other.tag == "Beacon")
         {
             animator.SetTrigger("Cheer" + RandomCheerAnim());

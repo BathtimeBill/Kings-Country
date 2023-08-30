@@ -43,6 +43,7 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip nextTutorialSound;
     public AudioClip timeSpeedUpSound;
     public AudioClip timeStopSound;
+    public AudioClip targetEnemySound;
     [Header("Wildlife Distress Sounds")]
     public AudioClip[] deerDistressSounds;
     public AudioClip[] boarDistressSounds;

@@ -173,6 +173,10 @@ public class Logger : GameBehaviour
         {
             TakeDamage(_GM.skessaDamage);
         }
+        if (other.tag == "PlayerWeapon5")
+        {
+            TakeDamage(_GM.goblinDamage);
+        }
         if (other.tag == "Beacon")
         {
             if(woodcutterType != WoodcutterType.LogCutter)
@@ -375,6 +379,7 @@ public class Logger : GameBehaviour
     //{
     //    axeObject.GetComponent<Collider>().enabled = false;
     //}
+
     public void FindTree()
     {
         navAgent.SetDestination(closestTree.transform.position);

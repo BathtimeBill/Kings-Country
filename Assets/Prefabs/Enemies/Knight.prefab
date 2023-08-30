@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6921572088926531857}
   - component: {fileID: 1521953139822443684}
   - component: {fileID: 3949965738830112567}
-  - component: {fileID: 184116795850014343}
+  - component: {fileID: 6362153953589259683}
   m_Layer: 0
   m_Name: Knight
   m_TagString: Enemy
@@ -236,7 +236,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 2
---- !u!114 &184116795850014343
+--- !u!114 &6362153953589259683
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -245,15 +245,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2523857342288541736}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Script: {fileID: 11500000, guid: 9579f69b9ff51a24d9f21212bdb067f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMode: 3
-  outlineColor: {r: 0.9960785, g: 0.27450982, b: 0.1764706, a: 1}
-  outlineWidth: 2
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
+  outline: {fileID: 0}
 --- !u!1 &4402727615912702409
 GameObject:
   m_ObjectHideFlags: 0
@@ -962,6 +957,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponCollider: {fileID: 2800473462943830544}
+--- !u!114 &4772896110818178832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5940296119974177432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.99607843, g: 0.30588236, b: 0.1764706, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!4 &6430009375095615522 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ea1c4291735eab943b135121c1b70c1b,

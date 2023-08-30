@@ -156,10 +156,21 @@ public class Unit : GameBehaviour
                 if(trackTarget != null)
                 {
                     navAgent.SetDestination(trackTarget.transform.position);
-                    if (Vector3.Distance(transform.position, trackTarget.transform.position) <= 8)
+                    if(unitType == UnitType.GoblinUnit)
                     {
-                        state = UnitState.Attack;
+                        if (Vector3.Distance(transform.position, trackTarget.transform.position) <= 30)
+                        {
+                            state = UnitState.Attack;
+                        }
                     }
+                    else
+                    {
+                        if (Vector3.Distance(transform.position, trackTarget.transform.position) <= 10)
+                        {
+                            state = UnitState.Attack;
+                        }
+                    }
+
                 }
                 else
                 {
@@ -178,7 +189,8 @@ public class Unit : GameBehaviour
                 {
                     trackTarget = _PC.mouseOverEnemy;
                     state = UnitState.Track;
-                    
+                    _PC.mouseOverEnemy.GetComponent<OutlineFlash>().BeginFlash();
+                    _SM.PlaySound(_SM.targetEnemySound);
                 }
                 else
                 {
@@ -501,14 +513,13 @@ public class Unit : GameBehaviour
             case UnitType.SatyrUnit:
                 if(_UM.borkrskinn)
                 {
-                    health = 130;
-                    maxHealth = 130;
-
+                    health = _GM.GetPercentageIncrease(_GM.satyrHealth, 0.3f);
+                    maxHealth = _GM.GetPercentageIncrease(_GM.satyrHealth, 0.3f);
                 }
                 else
                 {
-                    health = 100;
-                    maxHealth = 100;
+                    health = _GM.satyrHealth;
+                    maxHealth = _GM.satyrHealth;
                 }
                 if(_UM.flugafotr)
                 {
@@ -525,14 +536,14 @@ public class Unit : GameBehaviour
             case UnitType.LeshyUnit:
                 if (_UM.borkrskinn)
                 {
-                    health = 260;
-                    maxHealth = 260;
+                    health = _GM.GetPercentageIncrease(_GM.leshyHealth, 0.3f);
+                    maxHealth = _GM.GetPercentageIncrease(_GM.leshyHealth, 0.3f);
 
                 }
                 else
                 {
-                    health = 200;
-                    maxHealth = 200;
+                    health = _GM.leshyHealth;
+                    maxHealth = _GM.leshyHealth;
                 }
                 if (_UM.flugafotr)
                 {
@@ -547,13 +558,13 @@ public class Unit : GameBehaviour
             case UnitType.OrcusUnit:
                 if (_UM.borkrskinn)
                 {
-                    health = 195;
-                    maxHealth = 195;
+                    health = _GM.GetPercentageIncrease(_GM.orcusHealth, 0.3f);
+                    maxHealth = _GM.GetPercentageIncrease(_GM.orcusHealth, 0.3f);
                 }
                 else
                 {
-                    health = 150;
-                    maxHealth = 150;
+                    health = _GM.orcusHealth;
+                    maxHealth = _GM.orcusHealth;
                 }
                 if (_UM.flugafotr)
                 {
@@ -569,13 +580,13 @@ public class Unit : GameBehaviour
             case UnitType.VolvaUnit:
                 if (_UM.borkrskinn)
                 {
-                    health = 130;
-                    maxHealth = 130;
+                    health = _GM.GetPercentageIncrease(_GM.skessaHealth, 0.3f);
+                    maxHealth = _GM.GetPercentageIncrease(_GM.skessaHealth, 0.3f);
                 }
                 else
                 {
-                    health = 100;
-                    maxHealth = 100;
+                    health = _GM.skessaHealth;
+                    maxHealth = _GM.skessaHealth;
                 }
                 if (_UM.flugafotr)
                 {
@@ -590,13 +601,13 @@ public class Unit : GameBehaviour
             case UnitType.HuldraUnit:
                 if (_UM.borkrskinn)
                 {
-                    health = 65;
-                    maxHealth = 65;
+                    health = _GM.GetPercentageIncrease(_GM.huldraHealth, 0.3f);
+                    maxHealth = _GM.GetPercentageIncrease(_GM.huldraHealth, 0.3f);
                 }
                 else
                 {
-                    health = 40;
-                    maxHealth = 40;
+                    health = _GM.huldraHealth;
+                    maxHealth = _GM.huldraHealth;
                 }
                 if (_UM.flugafotr)
                 {
@@ -610,13 +621,13 @@ public class Unit : GameBehaviour
             case UnitType.GoblinUnit:
                 if (_UM.borkrskinn)
                 {
-                    health = 130;
-                    maxHealth = 130;
+                    health = _GM.GetPercentageIncrease(_GM.goblinHealth, 0.3f);
+                    maxHealth = _GM.GetPercentageIncrease(_GM.goblinHealth, 0.3f);
                 }
                 else
                 {
-                    health = 100;
-                    maxHealth = 100;
+                    health = _GM.goblinHealth;
+                    maxHealth = _GM.goblinHealth;
                 }
                 if (_UM.flugafotr)
                 {
@@ -711,24 +722,24 @@ public class Unit : GameBehaviour
         switch (unitType)
         {
             case UnitType.SatyrUnit:
-                maxHealth = 130;
+                maxHealth = _GM.GetPercentageIncrease(_GM.satyrHealth, 0.3f);
                 health = maxHealth;
                 break;
 
             case UnitType.LeshyUnit:
-                maxHealth = 260;
+                maxHealth = _GM.GetPercentageIncrease(_GM.leshyHealth, 0.3f);
                 health = maxHealth;
                 break;
             case UnitType.OrcusUnit:
-                maxHealth = 195;
+                maxHealth = _GM.GetPercentageIncrease(_GM.orcusHealth, 0.3f);
                 health = maxHealth;
                 break;
             case UnitType.VolvaUnit:
-                maxHealth = 130;
+                maxHealth = _GM.GetPercentageIncrease(_GM.skessaHealth, 0.3f);
                 health = maxHealth;
                 break;
             case UnitType.GoblinUnit:
-                maxHealth = 130;
+                maxHealth = _GM.GetPercentageIncrease(_GM.goblinHealth, 0.3f);
                 health = maxHealth;
                 break;
         }

@@ -73,7 +73,7 @@ Material:
     - _Reflectivity: 10
     - _ScaleRatioA: 0.9
     - _ScaleRatioB: 0.73125
-    - _ScaleRatioC: 0.73125
+    - _ScaleRatioC: 0.25541392
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
@@ -86,9 +86,9 @@ Material:
     - _StencilWriteMask: 255
     - _TextureHeight: 1024
     - _TextureWidth: 1024
-    - _UnderlayDilate: 0
-    - _UnderlayOffsetX: 0
-    - _UnderlayOffsetY: 0
+    - _UnderlayDilate: 1
+    - _UnderlayOffsetX: -0.705
+    - _UnderlayOffsetY: -0.863
     - _UnderlaySoftness: 1
     - _VertexOffsetX: 0
     - _VertexOffsetY: 0
@@ -104,7 +104,7 @@ Material:
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+    - _UnderlayColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!28 &-6377654816825206284
 Texture2D:
@@ -1134,6 +1134,20 @@ MonoBehaviour:
       m_Height: 45
     m_Scale: 1
     m_AtlasIndex: 0
+  - m_Index: 69
+    m_Metrics:
+      m_Width: 0
+      m_Height: 0
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 0
+      m_HorizontalAdvance: 90
+    m_GlyphRect:
+      m_X: 0
+      m_Y: 0
+      m_Width: 0
+      m_Height: 0
+    m_Scale: 1
+    m_AtlasIndex: 0
   - m_Index: 72
     m_Metrics:
       m_Width: 0
@@ -1272,20 +1286,6 @@ MonoBehaviour:
       m_Y: 775
       m_Width: 59
       m_Height: 58
-    m_Scale: 1
-    m_AtlasIndex: 0
-  - m_Index: 69
-    m_Metrics:
-      m_Width: 0
-      m_Height: 0
-      m_HorizontalBearingX: 0
-      m_HorizontalBearingY: 0
-      m_HorizontalAdvance: 90
-    m_GlyphRect:
-      m_X: 0
-      m_Y: 0
-      m_Width: 0
-      m_Height: 0
     m_Scale: 1
     m_AtlasIndex: 0
   m_CharacterTable:
@@ -1594,12 +1594,12 @@ MonoBehaviour:
     m_GlyphIndex: 68
     m_Scale: 1
   - m_ElementType: 1
-    m_Unicode: 8230
-    m_GlyphIndex: 72
-    m_Scale: 1
-  - m_ElementType: 1
     m_Unicode: 124
     m_GlyphIndex: 69
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 8230
+    m_GlyphIndex: 72
     m_Scale: 1
   m_AtlasTextures:
   - {fileID: -6377654816825206284}

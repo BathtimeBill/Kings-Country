@@ -71,7 +71,7 @@ public class WaveManager : Singleton<WaveManager>
     //{
     //    if (Input.GetKeyDown(KeyCode.Space))
     //    {
-    //        GameEvents.ReportOnWaveOver();
+    //        GameEvents.ReportOnGameWin();
     //    }
     //}
     private void Start()

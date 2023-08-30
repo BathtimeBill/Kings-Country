@@ -20,7 +20,7 @@ public class RunePlacement : Singleton<RunePlacement>
 
     void Update()
     {
-        if(_GM.runes.Length == 0)
+        if(_GM.runes.Count == 0)
         {
             _UI.maegenCostText.text = "2";
             _UI.wildlifeCostText.text = "5";
@@ -37,7 +37,7 @@ public class RunePlacement : Singleton<RunePlacement>
                 effectRadius.GetComponent<Renderer>().material = canPlaceMat;
             }
         }
-        if(_GM.runes.Length == 1)
+        if(_GM.runes.Count == 1)
         {
             _UI.maegenCostText.text = "4";
             _UI.wildlifeCostText.text = "7";
@@ -54,7 +54,7 @@ public class RunePlacement : Singleton<RunePlacement>
                 effectRadius.GetComponent<Renderer>().material = canPlaceMat;
             }
         }
-        if (_GM.runes.Length == 2)
+        if (_GM.runes.Count == 2)
         {
             _UI.maegenCostText.text = "8";
             _UI.wildlifeCostText.text = "10";
@@ -72,7 +72,7 @@ public class RunePlacement : Singleton<RunePlacement>
                 effectRadius.GetComponent<Renderer>().material = canPlaceMat;
             }
         }
-        if (_GM.runes.Length == 3)
+        if (_GM.runes.Count == 3)
         {
             _UI.maegenCostText.text = "16";
             _UI.wildlifeCostText.text = "15";
@@ -89,7 +89,7 @@ public class RunePlacement : Singleton<RunePlacement>
                 effectRadius.GetComponent<Renderer>().material = canPlaceMat;
             }
         }
-        if (_GM.runes.Length > 3)
+        if (_GM.runes.Count > 3)
         {
             canPlace = false;
         }
