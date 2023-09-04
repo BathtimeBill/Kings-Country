@@ -31,7 +31,7 @@ public class TreePlacement : Singleton<TreePlacement>
 
     void Update()
     {
-        if(_GM.trees.Length != 0)
+        if(_GM.trees.Count != 0)
         {
             distanceFromTree = Vector3.Distance(GetClosestTree().transform.position, transform.position);
         }

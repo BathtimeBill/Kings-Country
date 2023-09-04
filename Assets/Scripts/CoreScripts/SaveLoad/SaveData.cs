@@ -6,10 +6,12 @@ using UnityEngine;
 public class SaveData : Singleton<SaveData>
 {
     public int levelsUnlocked;
-    public int score;
-    public int highScore;
+    public int level1HighScore;
+    public int level1Score;
+    public int level2HighScore;
+    public int level2Score;
     public bool lvl1Complete;
-
+    public bool lvl2Complete;
     public SaveManager saveManager;
 
 
@@ -29,16 +31,40 @@ public class SaveData : Singleton<SaveData>
     //        Load();
     //    }
     //}
-
+    private PlayerProfile SaveLevel()
+    {
+        PlayerProfile profile = new PlayerProfile
+        {
+            levelsUnlocked = levelsUnlocked,
+            LVL1HighScore = level1HighScore,
+            LVL2HighScore = level2HighScore,
+            hasCompletedLVL1 = lvl1Complete,
+            hasCompletedLVL2 = lvl2Complete,
+        };
+        return profile;
+    }
     public void Save()
     {
-        if (lvl1Complete == false)
+        if(_GM.level == LevelNumber.One)
         {
-            levelsUnlocked += 1;
+            if (lvl1Complete == false)
+            {
+                levelsUnlocked += 1;
 
-            lvl1Complete = true;
+                lvl1Complete = true;
+            }
         }
-        saveManager.SaveGameData(levelsUnlocked, score, highScore, lvl1Complete);
+        if (_GM.level == LevelNumber.Two)
+        {
+            if (lvl2Complete == false)
+            {
+                levelsUnlocked += 1;
+
+                lvl2Complete = true;
+            }
+        }
+
+        saveManager.SaveGameData(SaveLevel());
     }
     public void Load()
     {
@@ -49,14 +75,15 @@ public class SaveData : Singleton<SaveData>
             //Debug.Log("Levels Unlocked: " + loadedData.levelsUnlocked);
             levelsUnlocked = loadedData.levelsUnlocked;
             lvl1Complete = loadedData.hasCompletedLVL1;
-            highScore = loadedData.LVL1HighScore;
+            lvl2Complete = loadedData.hasCompletedLVL2;
+            level1HighScore = loadedData.LVL1HighScore;
+            level2HighScore = loadedData.LVL2HighScore;
         }
         else
         {
             Debug.Log("ERROR!");
         }
     }
-
 
 
     private void OnGameWin()
@@ -70,18 +97,26 @@ public class SaveData : Singleton<SaveData>
     IEnumerator WaitToSaveScore()
     {
         yield return new WaitForEndOfFrame();
-        score = _SCORE.score;
-        if (score > highScore)
+        if(_GM.level == LevelNumber.One)
         {
-            highScore = score;
+            level1Score = _SCORE.score;
+        }
+        if (_GM.level == LevelNumber.Two)
+        {
+            level2Score = _SCORE.score;
+        }
+
+        if (level2Score > level2HighScore)
+        {
+            level2HighScore = level2Score;
 
         }
         else
         {
-            highScore = _SAVE.highScore;
+            level2HighScore = _SAVE.level2HighScore;
         }
         
-        _SCORE.highScoreText.text = highScore.ToString();
+        _SCORE.highScoreText.text = level1HighScore.ToString();
         print(_SCORE.score);
         yield return new WaitForEndOfFrame();
         Save();

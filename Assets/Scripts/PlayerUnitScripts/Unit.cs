@@ -48,6 +48,7 @@ public class Unit : GameBehaviour
     public bool isMovingCheck;
     public bool isTooCloseToTower;
     public bool isOutOfBounds;
+    public bool idleSetDest;
     //public float isMovingCheckTime;
     private Vector3 attackDestination;
     [Header("Audio")]
@@ -82,7 +83,7 @@ public class Unit : GameBehaviour
 
     void Update()
     {
-        if (_EM.enemies.Length != 0)
+        if (_EM.enemies.Count != 0)
         {
             closestEnemy = GetClosestEnemy();
             distanceToClosestEnemy = Vector3.Distance(closestEnemy.transform.position, transform.position);
@@ -91,7 +92,7 @@ public class Unit : GameBehaviour
         switch (state)
         {
             case UnitState.Idle:
-                if (_EM.enemies.Length > 0)
+                if (_EM.enemies.Count > 0)
                 {
                     if (distanceToClosestEnemy < detectionRadius)
                     {
@@ -100,14 +101,21 @@ public class Unit : GameBehaviour
                     else
                     {
                         navAgent.SetDestination(transform.position);
+                        navAgent.angularSpeed = 0;
                     }
+
                 }
 
                 animator.SetBool("inCombat", false);
                 break;
 
             case UnitState.Attack:
-                if (_EM.enemies.Length == 0 || distanceToClosestEnemy >= detectionRadius)
+                navAgent.angularSpeed = 500;
+                if (_EM.enemies.Count == 0)
+                {
+                    state = UnitState.Idle;
+                }
+                if (distanceToClosestEnemy >= detectionRadius)
                 {
                     state = UnitState.Idle;
                 }
@@ -119,7 +127,7 @@ public class Unit : GameBehaviour
                 {
                     navAgent.stoppingDistance = stoppingDistance;
                 }
-                if(_EM.enemies.Length != 0)
+                if(_EM.enemies.Count != 0)
                 {
                     navAgent.SetDestination(closestEnemy.transform.position);
                     SmoothFocusOnEnemy();
@@ -128,6 +136,7 @@ public class Unit : GameBehaviour
 
                 break;
             case UnitState.Moving:
+                navAgent.angularSpeed = 500;
                 if (isMovingCheck == false)
                 {
                     isMovingCheck = true;
@@ -153,7 +162,8 @@ public class Unit : GameBehaviour
                 }
                 break;
             case UnitState.Track:
-                if(trackTarget != null)
+                navAgent.angularSpeed = 500;
+                if (trackTarget != null)
                 {
                     navAgent.SetDestination(trackTarget.transform.position);
                     if(unitType == UnitType.GoblinUnit)
@@ -174,7 +184,7 @@ public class Unit : GameBehaviour
                 }
                 else
                 {
-                    state = UnitState.Attack;
+                    state = UnitState.Idle;
                 }
                 break;
         }
@@ -348,12 +358,28 @@ public class Unit : GameBehaviour
         }
         if (other.tag == "Arrow")
         {
-            TakeDamage(_GM.arrow1Damage);
+            if(unitType == UnitType.VolvaUnit)
+            {
+                TakeDamage(_GM.arrow1Damage * 3);
+            }
+            else
+            {
+                TakeDamage(_GM.arrow1Damage);
+            }
+
             Destroy(other.gameObject);
         }
         if (other.tag == "Arrow2")
         {
-            TakeDamage(_GM.arrow2Damage);
+            if (unitType == UnitType.VolvaUnit)
+            {
+                TakeDamage(_GM.arrow2Damage * 3);
+            }
+            else
+            {
+                TakeDamage(_GM.arrow2Damage);
+            }
+
             Destroy(other.gameObject);
         }
         if(other.tag == "Heal")
@@ -433,7 +459,8 @@ public class Unit : GameBehaviour
     public void TakeDamage(float damage)
     {
         state = UnitState.Attack;
-        Instantiate(bloodParticle1, transform.position, transform.rotation = Quaternion.Inverse(transform.rotation));
+        GameObject go = Instantiate(bloodParticle1, transform.position, transform.rotation);
+        go.transform.rotation = Quaternion.Inverse(transform.rotation);
         health -= damage;
         Die();
         slider.value = slider.value = CalculateHealth();

@@ -29,6 +29,7 @@ public class Spy : GameBehaviour
 
     void Start()
     {
+        _EM.enemies.Add(gameObject);
         health = maxHealth;
         soundPool = SFXPool.GetComponents<AudioSource>();
         navAgent = gameObject.GetComponent<NavMeshAgent>();
@@ -101,6 +102,7 @@ public class Spy : GameBehaviour
     {
         if (health <= 0)
         {
+            _EM.enemies.Remove(gameObject);
             GameObject go;
             go = Instantiate(deathObject, transform.position, transform.rotation);
             Destroy(go, 15);

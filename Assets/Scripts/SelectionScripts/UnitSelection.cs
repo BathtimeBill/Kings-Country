@@ -35,7 +35,7 @@ public class UnitSelection : GameBehaviour
         }
         if(Input.GetMouseButtonDown(1))
         {
-            if(unitSelected != null)
+            if(unitSelected.Count != 0)
             {
                 AssignDestination();
                 if (unitSelected[0].GetComponent<Unit>().unitType == UnitType.GoblinUnit)
@@ -63,6 +63,10 @@ public class UnitSelection : GameBehaviour
                     audioSource.clip = _SM.GetSkessaVocal();
                     audioSource.Play();
                 }
+            }
+            else
+            {
+                return;
             }
         }
     }

@@ -36,6 +36,7 @@ public class Tree : GameBehaviour
  
     void Start()
     {
+        _GM.trees.Add(gameObject);
         DecideType();
         //int amount;
         health = 100;
@@ -139,6 +140,7 @@ public class Tree : GameBehaviour
     
     private void Die()
     {
+        _GM.trees.Remove(gameObject);
         GameObject fallTree;
         if (type == TreeType.Pine)
         {

@@ -129,7 +129,7 @@ public class WaveManager : Singleton<WaveManager>
                 slot1Obj = go1;
                 slot2Obj = go2;
 
-                totalTrees = _GM.trees.Length;
+                totalTrees = _GM.trees.Count;
                 totalMaegenDrops = GameObject.FindGameObjectsWithTag("MaegenDrop").Length;
                 totalMaegen = totalTrees + totalMaegenDrops + GetTreeBonusTotal();
 

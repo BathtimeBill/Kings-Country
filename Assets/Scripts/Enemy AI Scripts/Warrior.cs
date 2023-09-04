@@ -51,6 +51,7 @@ public class Warrior : GameBehaviour
     }
     void Start()
     {
+        _EM.enemies.Add(gameObject);
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
         horgr = GameObject.FindGameObjectWithTag("HorgrRally");
     }
@@ -269,6 +270,7 @@ public class Warrior : GameBehaviour
     {
         if (health <= 0)
         {
+            _EM.enemies.Remove(gameObject);
             if (_HM.enemies.Contains(gameObject))
             {
                 _HM.enemies.Remove(gameObject);

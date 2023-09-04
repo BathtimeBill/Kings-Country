@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
-    public GameObject[] enemies;
+    public List<GameObject> enemies;
 
-    void Update()
-    {
-        enemies = GameObject.FindGameObjectsWithTag("Enemy");
-    }
+    //void Update()
+    //{
+    //    enemies = GameObject.FindGameObjectsWithTag("Enemy");
+    //}
 
     IEnumerator CheckForEnemiesLeft()
     {
         yield return new WaitForEndOfFrame();
-        if (enemies.Length == 0 && _GM.canFinishWave)
+        if (enemies.Count == 0 && _GM.canFinishWave)
         {
             GameEvents.ReportOnWaveOver();
             _GM.canFinishWave = false;

@@ -54,6 +54,7 @@ public class Logger : GameBehaviour
     }
     void Start()
     {
+        _EM.enemies.Add(gameObject);
         state = EnemyState.Work;
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
     }
@@ -68,7 +69,7 @@ public class Logger : GameBehaviour
             closestUnit = GetClosestUnit();
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
         }
-        if(_GM.trees.Length != 0)
+        if(_GM.trees.Count != 0)
         {
             closestTree = GetClosestTree();
             distanceFromClosestTree = Vector3.Distance(closestTree.transform.position, transform.position);
@@ -92,7 +93,7 @@ public class Logger : GameBehaviour
                     state = EnemyState.Attack;
                 }
 
-                if (_GM.trees.Length == 0)
+                if (_GM.trees.Count == 0)
                 {
                     if(woodcutterType != WoodcutterType.LogCutter)
                     {
@@ -225,7 +226,7 @@ public class Logger : GameBehaviour
     private void SmoothFocusOnTree()
     {
 
-        if (_GM.trees.Length == 0)
+        if (_GM.trees.Count == 0)
         {
             var targetRotation = Quaternion.LookRotation(homeTree.transform.position - transform.position);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
@@ -263,6 +264,7 @@ public class Logger : GameBehaviour
     {
         if(health <= 0)
         {
+            _EM.enemies.Remove(gameObject);
             DropMaegen();
             GameObject go;
             go = Instantiate(deadLogger, transform.position, transform.rotation);
@@ -289,6 +291,7 @@ public class Logger : GameBehaviour
     }
     public void Launch()
     {
+        _EM.enemies.Remove(gameObject);
         DropMaegen();
         if (_HUTM.enemies.Contains(gameObject))
         {

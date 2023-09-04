@@ -37,7 +37,7 @@ public class MaegenSprite : GameBehaviour
 
     IEnumerator WaitForChangeDirection()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(Random.Range(0.8f, 1.2f));
         isMovingTowardsTree = true;
     }
 
@@ -47,7 +47,10 @@ public class MaegenSprite : GameBehaviour
         {
             Instantiate(plusParticle, transform.position, transform.rotation);
             Instantiate(collectMaegenParticle, transform.position, transform.rotation);
-            _GM.maegen++;
+            if(_GM.maegen<_GM.maxMaegen)
+            {
+                _GM.maegen++;
+            }
             GameEvents.ReportOnWispDestroy();
             Destroy(gameObject);
         }

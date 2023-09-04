@@ -26,15 +26,15 @@ public class ForestManager : Singleton<ForestManager>
 
     void Start()
     {
-        int amount;
+        //int amount;
         spawnLocation = new Vector3(5, 0, 5);
         CheckTreesForWildlife();
         WildlifeInstantiate();
         _GM.wildlife = CheckWildlife();
-        for (amount = 0; amount < amountOfRocks; amount++)
-        {
-            SpawnRocks();
-        }
+        //for (amount = 0; amount < amountOfRocks; amount++)
+        //{
+        //    SpawnRocks();
+        //}
     }
 
     //This function checks how many animals are in the scene.
@@ -169,7 +169,7 @@ public class ForestManager : Singleton<ForestManager>
     }
     private void OnWaveOver()
     {
-        totalTrees = _GM.trees.Length;
+        totalTrees = _GM.trees.Count;
         if (_UM.fertileSoil)
         {
             numberOfWildlifeToSpawn = totalTrees / 3f;

@@ -69,7 +69,7 @@ public class ScreenShot : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            TakeScreenshot_Static(Screen.width-2, Screen.height-2);
+            TakeScreenshot_Static(Screen.width, Screen.height);
         }
     }
 }

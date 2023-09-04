@@ -9,10 +9,10 @@ using UnityEngine.Rendering.Universal;
 public class GameManager : Singleton<GameManager>
 {
     public float gameTime = 0;
-    
+    public LevelNumber level;
     public PlayMode playmode;
     public GameState gameState;
-    public GameObject[] trees;
+    public List<GameObject> trees;
     public bool isPaused;
     public int startingMaegen;
     public GameObject boundry;
@@ -95,7 +95,7 @@ public class GameManager : Singleton<GameManager>
         currentWave = 0;
         playmode = PlayMode.DefaultMode;
         gameState = GameState.Play;
-        trees = GameObject.FindGameObjectsWithTag("Tree");
+        trees.AddRange(GameObject.FindGameObjectsWithTag("Tree"));
         //StartCoroutine(ManageWaveAgro());
         _UI.CheckTreeUI();
         downTime = true;
@@ -158,7 +158,7 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForSeconds(5);
        
         int totalEnemies = _HM.enemies.Count + _HUTM.enemies.Count;
-        if (totalEnemies == _EM.enemies.Length)
+        if (totalEnemies == _EM.enemies.Count)
         {
             if(canFinishWave)
             {
@@ -205,7 +205,7 @@ public class GameManager : Singleton<GameManager>
     //Updates the the count for how many trees exist and updates the UI.
     private void OnTreePlaced()
     {
-        trees = GameObject.FindGameObjectsWithTag("Tree");
+        //trees = GameObject.FindGameObjectsWithTag("Tree");
         if (_TPlace.maegenPerWave <= 1)
         {
             maegen -= 2;
@@ -229,7 +229,7 @@ public class GameManager : Singleton<GameManager>
     IEnumerator WaitForTreeDestroy()
     {
         yield return new WaitForSeconds(0.1f);
-        trees = GameObject.FindGameObjectsWithTag("Tree");
+        //trees = GameObject.FindGameObjectsWithTag("Tree");
         _UI.CheckTreeUI();
     }
 

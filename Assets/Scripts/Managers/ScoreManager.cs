@@ -24,23 +24,23 @@ public class ScoreManager : Singleton<ScoreManager>
         int wildlife = _GM.wildlife * 2;
         int trees = 1;
 
-        if(_GM.trees.Length > 0 && _GM.trees.Length < 10)
+        if(_GM.trees.Count > 0 && _GM.trees.Count < 10)
         {
             trees = 1;
         }
-        if (_GM.trees.Length > 9 && _GM.trees.Length < 20)
+        if (_GM.trees.Count > 9 && _GM.trees.Count < 20)
         {
             trees = 1;
         }
-        if (_GM.trees.Length > 19 && _GM.trees.Length < 30)
+        if (_GM.trees.Count > 19 && _GM.trees.Count < 30)
         {
             trees = 2;
         }
-        if (_GM.trees.Length > 29 && _GM.trees.Length < 40)
+        if (_GM.trees.Count > 29 && _GM.trees.Count < 40)
         {
             trees = 3;
         }
-        if(_GM.trees.Length == 40)
+        if(_GM.trees.Count == 40)
         {
             trees = 4;
         }
@@ -57,28 +57,28 @@ public class ScoreManager : Singleton<ScoreManager>
     private void UpdateUI()
     {
         int trees = 1;
-        if (_GM.trees.Length > 0 && _GM.trees.Length < 10)
+        if (_GM.trees.Count > 0 && _GM.trees.Count < 10)
         {
             trees = 1;
         }
-        if (_GM.trees.Length > 9 && _GM.trees.Length < 20)
+        if (_GM.trees.Count > 9 && _GM.trees.Count < 20)
         {
             trees = 1;
         }
-        if (_GM.trees.Length > 19 && _GM.trees.Length < 30)
+        if (_GM.trees.Count > 19 && _GM.trees.Count < 30)
         {
             trees = 2;
         }
-        if (_GM.trees.Length > 29 && _GM.trees.Length < 40)
+        if (_GM.trees.Count > 29 && _GM.trees.Count < 40)
         {
             trees = 3;
         }
-        if (_GM.trees.Length == 40)
+        if (_GM.trees.Count == 40)
         {
             trees = 4;
         }
         maegenText.text = "+ " + _GM.maegen.ToString();
-        treesText.text = _GM.trees.Length.ToString() + " (x " + trees.ToString() + " to total score)";
+        treesText.text = _GM.trees.Count.ToString() + " (x " + trees.ToString() + " to total score)";
         wildlifeText.text = "+ " + _GM.wildlife.ToString() + " x2 = " + _GM.wildlife * 2;
         finalScoreText.text = CalculateScore().ToString();
 

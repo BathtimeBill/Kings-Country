@@ -55,6 +55,7 @@ public class Hunter : GameBehaviour
 
     private void Start()
     {
+        _EM.enemies.Add(gameObject);
         horgr = GameObject.FindGameObjectWithTag("HutRally");
     }
 
@@ -255,6 +256,7 @@ public class Hunter : GameBehaviour
     {
         if (health <= 0)
         {
+            _EM.enemies.Remove(gameObject);
             if (_HUTM.enemies.Contains(gameObject))
             {
                 _HUTM.enemies.Remove(gameObject);
@@ -282,6 +284,7 @@ public class Hunter : GameBehaviour
         {
             _HUTM.enemies.Remove(gameObject);
         }
+        _EM.enemies.Remove(gameObject);
 
         DropMaegen();
         float thrust = 20000f;

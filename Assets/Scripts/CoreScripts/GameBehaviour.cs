@@ -111,3 +111,11 @@ public enum WarriorType
     Berserkr,
     Knight,
 }
+public enum LevelNumber
+{
+    One,
+    Two,
+    Three,
+    Four,
+    Five,
+}

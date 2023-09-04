@@ -258,7 +258,7 @@ public class UIManager : Singleton<UIManager>
     }
     public void CheckTreeUI()
     {
-        treesText.text = _GM.trees.Length.ToString() + "/" + _GM.maxTrees;
+        treesText.text = _GM.trees.Count.ToString() + "/" + _GM.maxTrees;
     }
     public void CheckWildlifeUI()
     {
@@ -443,9 +443,18 @@ public class UIManager : Singleton<UIManager>
             Debug.LogWarning("Image component is null. Make sure it is assigned.");
         }
 
-        horgrPanel.gameObject.SetActive(false);
-        hutPanel.gameObject.SetActive(false);
-        homeTreePanel.gameObject.SetActive(false);
+        //if(horgrPanel.activeInHierarchy)
+        //{
+        //    horgrPanel.gameObject.SetActive(false);
+        //}
+        //if (hutPanel.activeInHierarchy)
+        //{
+        //    hutPanel.gameObject.SetActive(false);
+        //}
+        //if (homeTreePanel.activeInHierarchy)
+        //{
+        //    homeTreePanel.gameObject.SetActive(false);
+        //}
     }
 
 

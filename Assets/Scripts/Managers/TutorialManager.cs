@@ -65,8 +65,8 @@ public class TutorialManager : Singleton<TutorialManager>
             {
                 if (_GM.playmode == PlayMode.TreeMode)
                 {
-                    numberOfTreesText.text = "Trees placed: " + _GM.trees.Length.ToString() + "/" + "5";
-                    if (_GM.trees.Length >= 5 && tutorialStage == 2)
+                    numberOfTreesText.text = "Trees placed: " + _GM.trees.Count.ToString() + "/" + "5";
+                    if (_GM.trees.Count >= 5 && tutorialStage == 2)
                     {
                         GameEvents.ReportOnNextTutorial();
                     }

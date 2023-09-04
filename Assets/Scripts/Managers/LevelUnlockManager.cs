@@ -8,7 +8,8 @@ public class LevelUnlockManager : GameBehaviour
 {
     public Button[] levelButtons;
     public TMP_Text highScoreText;
-    public int highScore;
+    public int level1HighScore;
+    public int level2HighScore;
 
     private void Start()
     {
@@ -26,7 +27,8 @@ public class LevelUnlockManager : GameBehaviour
             levelButtons[i].interactable = true;
         }
         yield return new WaitForEndOfFrame();
-        highScore = _SAVE.highScore;
-        highScoreText.text = "High Score: " + _SAVE.highScore.ToString();
+        level1HighScore = _SAVE.level1Score;
+        level2HighScore = _SAVE.level2Score;
+
     }
 }

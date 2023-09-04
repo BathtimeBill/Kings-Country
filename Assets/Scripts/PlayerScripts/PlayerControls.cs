@@ -357,7 +357,7 @@ public class PlayerControls : Singleton<PlayerControls>
 
             if (_GM.playmode == PlayMode.TreeMode)
             {
-                if (_GM.trees.Length < _GM.maxTrees)
+                if (_GM.trees.Count < _GM.maxTrees)
                 {
                     if (_TPlace.canPlace == true)
                     {

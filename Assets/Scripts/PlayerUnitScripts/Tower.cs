@@ -37,7 +37,7 @@ public class Tower : GameBehaviour
     void Update()
     {
 
-        if (_EM.enemies.Length != 0)
+        if (_EM.enemies.Count != 0)
         {
             closestEnemy = GetClosestEnemy().transform.position;
             firingPoint.transform.LookAt(closestEnemy);
