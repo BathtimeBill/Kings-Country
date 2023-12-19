@@ -72,14 +72,15 @@ public class Spy : GameBehaviour
         }
         if(other.tag == "River")
         {
+            _EM.enemies.Remove(gameObject);
             _SPYM.Respawn();
             Instantiate(spawnParticle, transform.position, transform.rotation);
             Destroy(gameObject);
         }
 
-        if (other.tag == "Explosion")
+        if (other.tag == "Explosion" || other.tag == "Explosion2")
         {
-            Debug.Log("Explosion");
+            _EM.enemies.Remove(gameObject);
             GameObject go;
             go = Instantiate(deadFire, transform.position, transform.rotation);
             go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * 2000);

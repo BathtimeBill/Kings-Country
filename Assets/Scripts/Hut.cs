@@ -16,6 +16,7 @@ public class Hut : GameBehaviour
     public GameObject spawnLocation;
     public GameObject skessa;
     public GameObject huldra;
+    public GameObject selectionCircle;
     public Slider slider;
     public Image fill;
     public SpriteRenderer mapIcon;
@@ -146,14 +147,25 @@ public class Hut : GameBehaviour
     {
         ClaimHut();
     }
-
+    private void OnHutSelected()
+    {
+        selectionCircle.SetActive(true);
+    }
+    private void OnHutDeselected()
+    {
+        selectionCircle.SetActive(false);
+    }
     private void OnEnable()
     {
+        GameEvents.OnHutDeselected += OnHutDeselected;
+        GameEvents.OnHutSelected += OnHutSelected;
         GameEvents.OnContinueButton += OnContinueButton;
     }
 
     private void OnDisable()
     {
+        GameEvents.OnHutDeselected -= OnHutDeselected;
+        GameEvents.OnHutSelected -= OnHutSelected;
         GameEvents.OnContinueButton -= OnContinueButton;
     }
 }

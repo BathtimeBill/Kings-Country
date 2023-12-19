@@ -35,6 +35,7 @@ public class Warrior : GameBehaviour
     public GameObject horgr;
     public float distanceFromClosestHorgr;
     public bool hasArrivedAtHorgr;
+    public bool horgrSwitch;
 
     [Header("Audio")]
     public GameObject SFXPool;
@@ -77,6 +78,7 @@ public class Warrior : GameBehaviour
 
             case EnemyState.Attack:
                 animator.SetBool("hasStoppedHorgr", false);
+                horgrSwitch = false;
                 if (UnitSelection.Instance.unitList.Count == 0)
                 {
                     navAgent.stoppingDistance = 8;
@@ -126,16 +128,20 @@ public class Warrior : GameBehaviour
                     {
                         animator.SetBool("hasStoppedHorgr", false);
                         state = EnemyState.Attack;
+                        horgrSwitch = false;
                     }
                     if (_HM.units.Count == 0)
                     {
-                        animator.SetBool("hasStoppedHorgr", true);
-                        navAgent.SetDestination(transform.position);
+                        if(horgrSwitch == false)
+                        {
+                            animator.SetBool("hasStoppedHorgr", true);
+                            navAgent.SetDestination(transform.position);
+                            horgrSwitch = true;
+                            print("Setting Destination");
+                        }
+
                     }
-
                 }
-
-
                 break;
         }
         if (navAgent.velocity != Vector3.zero)

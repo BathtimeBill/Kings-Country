@@ -76,6 +76,12 @@ public enum UnitState
     Moving,
     Track,
 }
+public enum CombatMode
+{
+    Move,
+    AttackMove,
+    Defend,
+}
 public enum UnitType
 {
     SatyrUnit,

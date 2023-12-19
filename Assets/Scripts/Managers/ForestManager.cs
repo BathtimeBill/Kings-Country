@@ -6,6 +6,7 @@ using UnityEngine;
 public class ForestManager : Singleton<ForestManager>
 {
     [Header("General")]
+    public bool spawnRocks;
     public float rockPlacementRadius;
     public GameObject levelRocks;
     public int amountOfRocks;
@@ -26,15 +27,19 @@ public class ForestManager : Singleton<ForestManager>
 
     void Start()
     {
-        //int amount;
+
         spawnLocation = new Vector3(5, 0, 5);
         CheckTreesForWildlife();
         WildlifeInstantiate();
         _GM.wildlife = CheckWildlife();
-        //for (amount = 0; amount < amountOfRocks; amount++)
-        //{
-        //    SpawnRocks();
-        //}
+        if(spawnRocks)
+        {
+            int amount;
+            for (amount = 0; amount < amountOfRocks; amount++)
+            {
+                SpawnRocks();
+            }
+        }
     }
 
     //This function checks how many animals are in the scene.

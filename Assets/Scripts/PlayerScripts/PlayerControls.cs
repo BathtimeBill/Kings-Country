@@ -82,7 +82,7 @@ public class PlayerControls : Singleton<PlayerControls>
             treePlacement.SetActive(true);
             beaconPlacement.SetActive(false);
             treePercentageModifier.SetActive(true);
-            _UI.homeTreePanel.SetActive(false);
+            //_UI.homeTreePanel.SetActive(false);
             _UI.treeToolSelectionBox.SetActive(true);
             _UI.runeToolSelectionBox.SetActive(false);
             _UI.beaconToolSelectionBox.SetActive(false);
@@ -107,7 +107,7 @@ public class PlayerControls : Singleton<PlayerControls>
         stormerPlacement.SetActive(false);
         beaconPlacement.SetActive(false);
         treePercentageModifier.SetActive(false);
-        _UI.homeTreePanel.SetActive(false);
+        //_UI.homeTreePanel.SetActive(false);
         _UI.runeToolSelectionBox.SetActive(true);
         _UI.stormerToolSelectionBox.SetActive(false);
         _UI.treeToolSelectionBox.SetActive(false);
@@ -124,7 +124,7 @@ public class PlayerControls : Singleton<PlayerControls>
         runePlacement.SetActive(false);
         treePlacement.SetActive(false);
         treePercentageModifier.SetActive(false);
-        _UI.homeTreePanel.SetActive(false);
+        //_UI.homeTreePanel.SetActive(false);
         _UI.beaconToolSelectionBox.SetActive(true);
         _UI.stormerToolSelectionBox.SetActive(false);
         _UI.treeToolSelectionBox.SetActive(false);
@@ -143,7 +143,7 @@ public class PlayerControls : Singleton<PlayerControls>
         runePlacement.SetActive(false);
         treePlacement.SetActive(false);
         treePercentageModifier.SetActive(false);
-        _UI.homeTreePanel.SetActive(false);
+        //_UI.homeTreePanel.SetActive(false);
         _UI.stormerToolSelectionBox.SetActive(true);
         _UI.beaconToolSelectionBox.SetActive(false);
         _UI.treeToolSelectionBox.SetActive(false);
@@ -294,6 +294,7 @@ public class PlayerControls : Singleton<PlayerControls>
                 beaconPlacement.SetActive(false);
                 treePercentageModifier.SetActive(false);
                 _UI.homeTreePanel.SetActive(true);
+                GameEvents.ReportOnHomeTreeSelected();
                 _UI.hutPanel.SetActive(false);
                 _UI.horgrPanel.SetActive(false);
                 _UI.maegenCost.SetActive(false);
@@ -303,6 +304,8 @@ public class PlayerControls : Singleton<PlayerControls>
                 _UI.beaconToolSelectionBox.SetActive(false);
                 _UI.audioSource.clip = _SM.openMenuSound;
                 _UI.audioSource.Play();
+                GameEvents.ReportOnHorgrDeselected();
+                GameEvents.ReportOnHutDeselected();
                 if (_TUTM.isTutorial)
                 {
                     if(_TUTM.tutorialStage == 3)
@@ -313,11 +316,13 @@ public class PlayerControls : Singleton<PlayerControls>
             }
             else
             {
+                _UI.mouseOverUI = false;
                 _UI.homeTreePanel.SetActive(false);
                 _UI.horgrPanel.SetActive(false);
                 _UI.hutPanel.SetActive(false);
                 _UI.audioSource.clip = _SM.closeMenuSound;
                 _UI.audioSource.Play();
+                GameEvents.ReportOnHomeTreeDeselected();
             }
 
 
@@ -353,116 +358,118 @@ public class PlayerControls : Singleton<PlayerControls>
         }
         if (Input.GetMouseButtonDown(0))
         {
-
-
-            if (_GM.playmode == PlayMode.TreeMode)
+            if(_UI.mouseOverUI == false)
             {
-                if (_GM.trees.Count < _GM.maxTrees)
+                if (_GM.playmode == PlayMode.TreeMode)
                 {
-                    if (_TPlace.canPlace == true)
+                    if (_GM.trees.Count < _GM.maxTrees)
                     {
-                        GameObject treeInstance;
-                        GameObject cantDestroy;
-                        Vector3 randomSize = new Vector3(1, Random.Range(minScale, maxScale), 1);
-                        treeInstance = Instantiate(treePrefab, treePlacement.transform.position, treePlacement.transform.rotation);
-                        treeInstance.transform.localScale = randomSize;
-                        treeInstance.GetComponent<Tree>().energyMultiplier = _TPlace.maegenPerWave;
-                        cantDestroy = Instantiate(cantPlace, treePlacement.transform.position, treePlacement.transform.rotation);
-                        Destroy(cantDestroy, 15);
-                        GameEvents.ReportOnTreePlaced();
-                        worldAudioSource = treeInstance.GetComponent<AudioSource>();
-                        worldAudioSource.clip = _SM.GetTreeGrowSound();
-                        worldAudioSource.Play();
-                    }
-                    if (_TPlace.tooFarAway == true)
-                    {
-                        _UI.SetErrorMessageTooFar();
-                        Error();
-                    }
-                    if (_TPlace.insufficientMaegen == true)
-                    {
-                        _UI.SetErrorMessageInsufficientMaegen();
-                        Error();
-                    }
-                }
-                else
-                {
-                    _UI.SetErrorMessageTooManyTrees();
-                    Error();
-                }
-
-
-            }
-            if (_GM.playmode == PlayMode.RuneMode)
-            {
-                if (_RPlace.canPlace == true)
-                {
-                    GameObject runeInstance;
-                    runeInstance = Instantiate(runePrefab, runePlacement.transform.position, runePlacement.transform.rotation);
-                    _GM.maegen -= 2;
-                    _GM.CheckRunes();
-                }
-                if (_RPlace.canPlace == false)
-                {
-                    _UI.SetErrorMessageInsufficientResources();
-                    Error();
-                }
-            }
-            if (_GM.playmode == PlayMode.BeaconMode)
-            {
-                if (_BPlace.canPlace == true)
-                {
-                    if(_UM.beacon)
-                    {
-                        Instantiate(explosion2, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
+                        if (_TPlace.canPlace == true)
+                        {
+                            GameObject treeInstance;
+                            GameObject cantDestroy;
+                            Vector3 randomSize = new Vector3(1, Random.Range(minScale, maxScale), 1);
+                            treeInstance = Instantiate(treePrefab, treePlacement.transform.position, treePlacement.transform.rotation);
+                            treeInstance.transform.localScale = randomSize;
+                            treeInstance.GetComponent<Tree>().energyMultiplier = _TPlace.maegenPerWave;
+                            cantDestroy = Instantiate(cantPlace, treePlacement.transform.position, treePlacement.transform.rotation);
+                            Destroy(cantDestroy, 15);
+                            GameEvents.ReportOnTreePlaced();
+                            worldAudioSource = treeInstance.GetComponent<AudioSource>();
+                            worldAudioSource.clip = _SM.GetTreeGrowSound();
+                            worldAudioSource.Play();
+                        }
+                        if (_TPlace.tooFarAway == true)
+                        {
+                            _UI.SetErrorMessageTooFar();
+                            Error();
+                        }
+                        if (_TPlace.insufficientMaegen == true)
+                        {
+                            _UI.SetErrorMessageInsufficientMaegen();
+                            Error();
+                        }
                     }
                     else
                     {
-                        Instantiate(explosion, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
-                    }
-                    
-                    _GM.CheckBeacons();
-                    GameEvents.ReportOnBeaconPlaced();
-                }
-                if (_BPlace.canPlace == false)
-                {
-                    if (_UI.beaconPlaced)
-                    {
-                        _UI.SetErrorMessageBeaconCooldown();
+                        _UI.SetErrorMessageTooManyTrees();
                         Error();
                     }
-                    else
+
+
+                }
+                if (_GM.playmode == PlayMode.RuneMode)
+                {
+                    if (_RPlace.canPlace == true)
+                    {
+                        GameObject runeInstance;
+                        runeInstance = Instantiate(runePrefab, runePlacement.transform.position, runePlacement.transform.rotation);
+                        _GM.maegen -= 2;
+                        _GM.CheckRunes();
+                    }
+                    if (_RPlace.canPlace == false)
                     {
                         _UI.SetErrorMessageInsufficientResources();
                         Error();
                     }
                 }
-            }
-            if (_GM.playmode == PlayMode.StormerMode)
-            {
-                if (_SPlace.canPlace == true)
+                if (_GM.playmode == PlayMode.BeaconMode)
                 {
-                    GameEvents.ReportOnStormerPlaced();
-                }
-                else
-                {
-                    if (_UI.stormerPlaced == false)
+                    if (_BPlace.canPlace == true)
                     {
-                        _UI.SetErrorMessageInsufficientResources();
-                        Error();
+                        if (_UM.beacon)
+                        {
+                            Instantiate(explosion2, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
+                        }
+                        else
+                        {
+                            Instantiate(explosion, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
+                        }
+
+                        _GM.CheckBeacons();
+                        GameEvents.ReportOnBeaconPlaced();
+                    }
+                    if (_BPlace.canPlace == false)
+                    {
+                        if (_UI.beaconPlaced)
+                        {
+                            _UI.SetErrorMessageBeaconCooldown();
+                            Error();
+                        }
+                        else
+                        {
+                            _UI.SetErrorMessageInsufficientResources();
+                            Error();
+                        }
+                    }
+                }
+                if (_GM.playmode == PlayMode.StormerMode)
+                {
+                    if (_SPlace.canPlace == true)
+                    {
+                        GameEvents.ReportOnStormerPlaced();
                     }
                     else
                     {
-                        _UI.SetErrorMessageBeaconCooldown();
-                        Error();
-                    }
+                        if (_UI.stormerPlaced == false)
+                        {
+                            _UI.SetErrorMessageInsufficientResources();
+                            Error();
+                        }
+                        else
+                        {
+                            _UI.SetErrorMessageBeaconCooldown();
+                            Error();
+                        }
 
+                    }
+                }
+                if (_GM.playmode == PlayMode.DefaultMode)
+                {
+                    RaycastClick();
                 }
             }
-            if (_GM.playmode == PlayMode.DefaultMode)
-            {
-                RaycastClick();
-            }
+            
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -573,6 +580,9 @@ public class PlayerControls : Singleton<PlayerControls>
                 _UI.horgrPanel.SetActive(false);
                 _UI.hutPanel.SetActive(false);
 
+                GameEvents.ReportOnHomeTreeSelected();
+                GameEvents.ReportOnHutDeselected();
+                GameEvents.ReportOnHorgrDeselected();
                 if (_TUTM.isTutorial)
                 {
                     if (_TUTM.tutorialStage == 3)
@@ -594,6 +604,9 @@ public class PlayerControls : Singleton<PlayerControls>
             _UI.homeTreePanel.SetActive(false);
             _UI.audioSource.clip = _SM.openMenuSound;
             _UI.audioSource.Play();
+            GameEvents.ReportOnHorgrSelected();
+            GameEvents.ReportOnHomeTreeDeselected();
+            GameEvents.ReportOnHutDeselected();
         }
         if (Physics.Raycast(ray, out hitPoint) && hitPoint.collider.tag == "Hut")
         {
@@ -604,6 +617,9 @@ public class PlayerControls : Singleton<PlayerControls>
             _UI.horgrPanel.SetActive(false);
             _UI.audioSource.clip = _SM.openMenuSound;
             _UI.audioSource.Play();
+            GameEvents.ReportOnHutSelected();
+            GameEvents.ReportOnHomeTreeDeselected();
+            GameEvents.ReportOnHorgrDeselected();
         }
 
     }

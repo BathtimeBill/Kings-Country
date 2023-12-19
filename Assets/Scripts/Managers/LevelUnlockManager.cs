@@ -29,6 +29,6 @@ public class LevelUnlockManager : GameBehaviour
         yield return new WaitForEndOfFrame();
         level1HighScore = _SAVE.level1Score;
         level2HighScore = _SAVE.level2Score;
-
+        highScoreText.text = level1HighScore.ToString();
     }
 }

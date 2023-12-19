@@ -8,6 +8,7 @@ public class HomeTree : GameBehaviour
     public float health;
     public float maxHealth;
     public Slider slider;
+    public GameObject selectionCircle;
     public GameObject hitParticle;
     public GameObject spawnParticle;
     public GameObject particleSpawnPoint;
@@ -15,6 +16,7 @@ public class HomeTree : GameBehaviour
     public GameObject orcus;
     public GameObject leshy;
     public GameObject spawnLocation;
+    public GameObject deathParticle;
     public AudioSource audioSource;
     private AudioClip audioclip;
     public GameObject homeTreeTower;
@@ -155,7 +157,12 @@ public class HomeTree : GameBehaviour
         slider.value = slider.value = CalculateHealth();
         if(health < 1)
         {
+            Rigidbody rb = GetComponent<Rigidbody>();
             GameEvents.ReportOnGameOver();
+            rb.useGravity = true;
+            deathParticle.SetActive(true);
+            //rb.freezePosition.y = false;
+            health = 10000;
         }
     }
 
@@ -168,15 +175,26 @@ public class HomeTree : GameBehaviour
     {
         homeTreeTower.SetActive(true);
     }
-
+    private void OnHomeTreeSelected()
+    {
+        selectionCircle.SetActive(true);
+    }
+    private void OnHomeTreeDeselected()
+    {
+        selectionCircle.SetActive(false);
+    }
     private void OnEnable()
     {
+        GameEvents.OnHomeTreeDeselected += OnHomeTreeDeselected;
+        GameEvents.OnHomeTreeSelected += OnHomeTreeSelected;
         GameEvents.OnWinfallUpgrade += OnWinfallUpgrade;
         GameEvents.OnHomeTreeUpgrade += OnHomeTreeUpgrade;
     }
 
     private void OnDisable()
     {
+        GameEvents.OnHomeTreeDeselected -= OnHomeTreeDeselected;
+        GameEvents.OnHomeTreeSelected -= OnHomeTreeSelected;
         GameEvents.OnWinfallUpgrade -= OnWinfallUpgrade;
         GameEvents.OnHomeTreeUpgrade -= OnHomeTreeUpgrade;
     }

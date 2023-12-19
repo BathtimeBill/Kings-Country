@@ -76,15 +76,15 @@ public class WildlifeAI : GameBehaviour
         NavMeshHit hit;
         NavMesh.SamplePosition(randomDirection, out hit, walkRadius, 1);
         Vector3 finalPosition = hit.position;
-        while (Vector3.Distance(transform.position, finalPosition) > 0.1f)
-        {
-            navAgent.SetDestination(finalPosition);
-            yield return null;
-        }
+        navAgent.SetDestination(finalPosition);
+        //while (Vector3.Distance(transform.position, finalPosition) > 0.1f)
+        //{
+              //navAgent.SetDestination(finalPosition);
+        //    yield return null;
+        //}
         yield return new WaitForSeconds(8f);
 
         StartCoroutine(Move());
-
     }
 
     IEnumerator Run()

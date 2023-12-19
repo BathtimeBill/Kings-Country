@@ -51,6 +51,10 @@ public class MaegenSprite : GameBehaviour
             {
                 _GM.maegen++;
             }
+            else
+            {
+                _GM.maegen = _GM.maxMaegen;
+            }
             GameEvents.ReportOnWispDestroy();
             Destroy(gameObject);
         }

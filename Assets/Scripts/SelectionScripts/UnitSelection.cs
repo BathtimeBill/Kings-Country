@@ -12,9 +12,12 @@ public class UnitSelection : GameBehaviour
 
     public GameObject huldraToFind;
     public bool containsHuldra;
+    public bool canDoubleClick = false;
+    public float doubleClickTime = 0.3f;
     public GameObject[] destinations;
 
     public AudioSource audioSource;
+
 
     private void Awake()
     {
@@ -26,6 +29,21 @@ public class UnitSelection : GameBehaviour
         {
             _instance = this;
         }
+    }
+
+    public void SelectAllOfSameType()
+    {
+        foreach (GameObject go in unitList) 
+        {
+            
+        }
+    }
+
+    public IEnumerator DoubleClick()
+    {
+        canDoubleClick = true;
+        yield return new WaitForSeconds(doubleClickTime);
+        canDoubleClick = false;
     }
     private void Update()
     {
@@ -103,6 +121,24 @@ public class UnitSelection : GameBehaviour
         }
 
     }
+
+    IEnumerator WaitToCheckForUnits()
+    {
+        yield return new WaitForEndOfFrame();
+        CheckForUnits();
+    }
+    private void CheckForUnits()
+    {
+        if(unitSelected.Count > 0)
+        {
+            _UI.combatOptionsPanel.SetActive(true);
+        }
+        else
+        {
+            _UI.combatOptionsPanel.SetActive(false);
+        }
+             
+    }
     public void ClickSelect(GameObject unitToAdd)
     {
         DeselectAll();
@@ -111,6 +147,7 @@ public class UnitSelection : GameBehaviour
         unitToAdd.GetComponent<Unit>().isSelected = true;
         unitToAdd.gameObject.GetComponent<Unit>().selectionCircle.SetActive(true);
         StartCoroutine(WaitToCheckHuldra());
+        StartCoroutine(WaitToCheckForUnits());
     }
     public void ShiftClickSelect(GameObject unitToAdd)
     {
@@ -121,6 +158,7 @@ public class UnitSelection : GameBehaviour
             unitToAdd.GetComponent<Unit>().isSelected = true;
             unitToAdd.gameObject.GetComponent<Unit>().selectionCircle.SetActive(true);
             StartCoroutine(WaitToCheckHuldra());
+            StartCoroutine(WaitToCheckForUnits());
         }
         else
         {
@@ -129,7 +167,15 @@ public class UnitSelection : GameBehaviour
             unitSelected.Remove(unitToAdd);
             unitToAdd.gameObject.GetComponent<Unit>().selectionCircle.SetActive(true);
             StartCoroutine(WaitToCheckHuldra());
+            StartCoroutine(WaitToCheckForUnits());
         }
+    }
+    public void DoubleClickSelect(GameObject unitToAdd)
+    {
+        unitSelected.Add(unitToAdd);
+        unitToAdd.GetComponent<Unit>().isSelected = true;
+        unitToAdd.gameObject.GetComponent<Unit>().selectionCircle.SetActive(true);
+        StartCoroutine(WaitToCheckHuldra());
     }
     public void DragSelect(GameObject unitToAdd)
     {
@@ -140,24 +186,29 @@ public class UnitSelection : GameBehaviour
             unitToAdd.GetComponent<Unit>().isSelected = true;
             unitToAdd.gameObject.GetComponent<Unit>().selectionCircle.SetActive(true);
             StartCoroutine(WaitToCheckHuldra());
+            StartCoroutine(WaitToCheckForUnits());
         }
     }
     public void DeselectAll()
     {
-        foreach (var unit in unitSelected)
+        if(_UI.mouseOverCombatOptions == false)
         {
-            unit.GetComponent<Unit>().isSelected = false;
-            unit.gameObject.GetComponent<Unit>().selectionCircle.SetActive(false);
-            //unit.transform.GetChild(0).gameObject.SetActive(false);
-            containsHuldra = false;
-            _UI.DisableTowerText();
-            if (_GM.downTime == false)
+            foreach (var unit in unitSelected)
             {
-                _GM.boundry.SetActive(false);
+                unit.GetComponent<Unit>().isSelected = false;
+                unit.gameObject.GetComponent<Unit>().selectionCircle.SetActive(false);
+                //unit.transform.GetChild(0).gameObject.SetActive(false);
+                containsHuldra = false;
+                _UI.DisableTowerText();
+                if (_GM.downTime == false)
+                {
+                    _GM.boundry.SetActive(false);
+                }
             }
+            StartCoroutine(WaitToCheckForUnits());
+            unitSelected.Clear();
         }
 
-        unitSelected.Clear();
     }
     public void Deselect(GameObject unitToDeselect)
     {

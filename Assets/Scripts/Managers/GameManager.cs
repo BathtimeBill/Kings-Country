@@ -16,6 +16,7 @@ public class GameManager : Singleton<GameManager>
     public bool isPaused;
     public int startingMaegen;
     public GameObject boundry;
+    public GameObject introCam;
 
     [Header("Waves")]
     public int currentWave;
@@ -94,11 +95,17 @@ public class GameManager : Singleton<GameManager>
         maegen = startingMaegen;
         currentWave = 0;
         playmode = PlayMode.DefaultMode;
-        gameState = GameState.Play;
+        gameState = GameState.Pause;
         trees.AddRange(GameObject.FindGameObjectsWithTag("Tree"));
-        //StartCoroutine(ManageWaveAgro());
+        StartCoroutine(EndOfIntroCamera());
         _UI.CheckTreeUI();
         downTime = true;
+    }
+    IEnumerator EndOfIntroCamera()
+    {
+        yield return new WaitForSeconds(7);
+        introCam.SetActive(false);
+        gameState = GameState.Play;
     }
 
     private void Update()
@@ -299,7 +306,6 @@ public class GameManager : Singleton<GameManager>
         gameState = GameState.Pause;
         Time.timeScale = 0;
         StopCoroutine(CheckForCollectMaegen());
-        Debug.Log("Wave is over");
         GameEvents.ReportOnRuneDestroyed();
 
     }
@@ -310,6 +316,7 @@ public class GameManager : Singleton<GameManager>
         StopCoroutine(CheckForCollectMaegen());
         _GM.boundry.SetActive(true);
         maxMaegen = _WM.totalMaegen + maegen;
+        PlayGame();
     }
     public void OnCollectMaegenButton()
     {
@@ -324,8 +331,19 @@ public class GameManager : Singleton<GameManager>
         if(maegen > maxMaegen)
             maegen = maxMaegen;
     }
+    private void OnUnitKilled()
+    {
+        if(UnitSelection.Instance.unitList.Count == 0)
+        {
+            if(maegen == 0)
+            {
+                GameEvents.ReportOnGameOver();
+            }
+        }
+    }
     private void OnEnable()
     {
+        GameEvents.OnUnitKilled += OnUnitKilled;
         GameEvents.OnWispDestroy += OnWispDestroy;
         GameEvents.OnTreePlaced += OnTreePlaced;
         GameEvents.OnTreeDestroyed += OnTreeDestroy;
@@ -343,6 +361,7 @@ public class GameManager : Singleton<GameManager>
 
     private void OnDisable()
     {
+        GameEvents.OnUnitKilled -= OnUnitKilled;
         GameEvents.OnWispDestroy -= OnWispDestroy;
         GameEvents.OnTreePlaced -= OnTreePlaced;
         GameEvents.OnTreeDestroyed -= OnTreeDestroy;

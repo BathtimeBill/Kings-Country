@@ -3,6 +3,8 @@ using UnityEngine;
 
 public static class GameEvents
 {
+    public static event Action OnUnitKilled = null;
+
     public static event Action OnWildlifeKilled = null;
     public static event Action OnTreePlaced = null;
     public static event Action OnTreeDestroyed = null;
@@ -49,10 +51,56 @@ public static class GameEvents
 
     public static event Action OnUpgradeSelected = null;
 
+    public static event Action OnAttackSelected = null;
+    public static event Action OnDefendSelected = null;
 
+    public static event Action OnHomeTreeSelected = null;
+    public static event Action OnHorgrSelected = null;
+    public static event Action OnHutSelected = null;
+
+    public static event Action OnHomeTreeDeselected = null;
+    public static event Action OnHorgrDeselected = null;
+    public static event Action OnHutDeselected = null;
+
+    public static void ReportOnHomeTreeDeselected()
+    {
+        OnHomeTreeDeselected?.Invoke();
+    }
+    public static void ReportOnHorgrDeselected()
+    {
+        OnHorgrDeselected?.Invoke();
+    }
+    public static void ReportOnHutDeselected()
+    {
+        OnHutDeselected?.Invoke();
+    }
+    public static void ReportOnHomeTreeSelected()
+    {
+        OnHomeTreeSelected?.Invoke();
+    }
+    public static void ReportOnHorgrSelected()
+    {
+        OnHorgrSelected?.Invoke();
+    }
+    public static void ReportOnHutSelected()
+    {
+        OnHutSelected?.Invoke();
+    }
+    public static void ReportOnUnitKilled()
+    {
+        OnUnitKilled?.Invoke();
+    }
     public static void ReportOnWispDestroy()
     {
         OnWispDestroy?.Invoke();
+    }
+    public static void ReportOnAttackSelected()
+    {
+        OnAttackSelected?.Invoke();
+    }
+    public static void ReportOnDefendSelected()
+    {
+        OnDefendSelected?.Invoke();
     }
     public static void ReportOnEnemyKilled()
     {

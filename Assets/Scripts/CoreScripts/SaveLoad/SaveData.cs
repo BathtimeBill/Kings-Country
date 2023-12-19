@@ -18,6 +18,7 @@ public class SaveData : Singleton<SaveData>
     private void Start()
     {
         saveManager = FindObjectOfType<SaveManager>();
+        
     }
 
     //private void Update()
@@ -100,23 +101,39 @@ public class SaveData : Singleton<SaveData>
         if(_GM.level == LevelNumber.One)
         {
             level1Score = _SCORE.score;
+            if (level1Score > level1HighScore)
+            {
+                level1HighScore = level1Score;
+            }
+            else
+            {
+                level1HighScore = _SAVE.level1HighScore;
+            }
         }
         if (_GM.level == LevelNumber.Two)
         {
             level2Score = _SCORE.score;
+            if (level2Score > level2HighScore)
+            {
+                level2HighScore = level2Score;
+
+            }
+            else
+            {
+                level2HighScore = _SAVE.level2HighScore;
+            }
         }
 
-        if (level2Score > level2HighScore)
-        {
-            level2HighScore = level2Score;
 
-        }
-        else
+        if (_GM.level == LevelNumber.One)
         {
-            level2HighScore = _SAVE.level2HighScore;
+            _SCORE.highScoreText.text = level1HighScore.ToString();
         }
-        
-        _SCORE.highScoreText.text = level1HighScore.ToString();
+        if (_GM.level == LevelNumber.Two)
+        {
+            _SCORE.highScoreText.text = level2HighScore.ToString();
+        }
+
         print(_SCORE.score);
         yield return new WaitForEndOfFrame();
         Save();

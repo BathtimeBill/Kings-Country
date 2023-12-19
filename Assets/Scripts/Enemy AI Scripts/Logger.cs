@@ -188,6 +188,7 @@ public class Logger : GameBehaviour
         }
         if(other.tag == "Explosion" || other.tag == "Explosion2")
         {
+            _EM.enemies.Remove(gameObject);
             GameObject go;
             go = Instantiate(deadLoggerFire, transform.position, transform.rotation);
             go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * 2000);

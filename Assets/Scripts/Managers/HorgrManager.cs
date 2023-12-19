@@ -35,7 +35,7 @@ public class HorgrManager : Singleton<HorgrManager>
 
     void Start()
     {
-        GameObject go = Instantiate(horgr, spawnLocations[RandomSpawnLocation()].transform.position, Quaternion.Euler(-90, 0, 0));
+        GameObject go = Instantiate(horgr, spawnLocations[RandomSpawnLocation()].transform.position, Quaternion.Euler(-90, 180, 0));
         //StartCoroutine(AddMaegen());
         //StartCoroutine(WaitToReferenceHorgr());
     }

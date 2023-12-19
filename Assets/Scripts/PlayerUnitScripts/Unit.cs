@@ -8,6 +8,12 @@ public class Unit : GameBehaviour
 {
     [Header("Unit Type")]
     public UnitType unitType;
+    [Header("CombatMode")]
+    public CombatMode combatMode;
+    public Image combatModeImage;
+    public Sprite attackSprite;
+    public Sprite defendSprite;
+    public Vector3 defendPosition;
 
     [Header("Stats")] 
     public float health;
@@ -73,7 +79,7 @@ public class Unit : GameBehaviour
 
     IEnumerator WaitForIsMovingCheck()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         if(isMoving == false)
         {
             state = UnitState.Idle;
@@ -94,15 +100,22 @@ public class Unit : GameBehaviour
             case UnitState.Idle:
                 if (_EM.enemies.Count > 0)
                 {
-                    if (distanceToClosestEnemy < detectionRadius)
+                    if(combatMode != CombatMode.Defend)
                     {
-                        state = UnitState.Attack;
+                        if (distanceToClosestEnemy < detectionRadius)
+                        {
+                            state = UnitState.Attack;
+                        }
                     }
                     else
                     {
-                        navAgent.SetDestination(transform.position);
-                        navAgent.angularSpeed = 0;
+                        navAgent.SetDestination(defendPosition);
+                        if (distanceToClosestEnemy < detectionRadius)
+                        {
+                            state = UnitState.Attack;
+                        }
                     }
+
 
                 }
 
@@ -110,7 +123,7 @@ public class Unit : GameBehaviour
                 break;
 
             case UnitState.Attack:
-                navAgent.angularSpeed = 500;
+                //navAgent.angularSpeed = 500;
                 if (_EM.enemies.Count == 0)
                 {
                     state = UnitState.Idle;
@@ -129,14 +142,17 @@ public class Unit : GameBehaviour
                 }
                 if(_EM.enemies.Count != 0)
                 {
-                    navAgent.SetDestination(closestEnemy.transform.position);
-                    SmoothFocusOnEnemy();
+                    if(distanceToClosestEnemy < detectionRadius)
+                    {
+                        navAgent.SetDestination(closestEnemy.transform.position);
+                        SmoothFocusOnEnemy();
+                    }
+
                 }
                 animator.SetBool("inCombat", true);
 
                 break;
             case UnitState.Moving:
-                navAgent.angularSpeed = 500;
                 if (isMovingCheck == false)
                 {
                     isMovingCheck = true;
@@ -160,9 +176,16 @@ public class Unit : GameBehaviour
                 {
                     navAgent.stoppingDistance = 4;
                 }
+                if(combatMode == CombatMode.AttackMove)
+                {
+                    if (distanceToClosestEnemy < detectionRadius)
+                    {
+                        state = UnitState.Attack;
+                    }
+                }
                 break;
             case UnitState.Track:
-                navAgent.angularSpeed = 500;
+                //navAgent.angularSpeed = 500;
                 if (trackTarget != null)
                 {
                     navAgent.SetDestination(trackTarget.transform.position);
@@ -484,6 +507,7 @@ public class Unit : GameBehaviour
             go = Instantiate(deadSatyr, transform.position, transform.rotation);
             Destroy(go, 15);
             _UI.CheckPopulousUI();
+            GameEvents.ReportOnUnitKilled();
             Destroy(gameObject);
         }
     }
@@ -805,8 +829,27 @@ public class Unit : GameBehaviour
         health = maxHealth;
         slider.value = slider.value = CalculateHealth();
     }
+    public void OnAttackSelected()
+    {
+        if(isSelected)
+        {
+            combatModeImage.sprite = attackSprite;
+            combatMode = CombatMode.Move;
+        }
+    }
+    public void OnDefendSelected()
+    {
+        if (isSelected)
+        {
+            defendPosition = transform.position;
+            combatModeImage.sprite = defendSprite;
+            combatMode = CombatMode.Defend;
+        }
+    }
     private void OnEnable()
     {
+        GameEvents.OnAttackSelected += OnAttackSelected;
+        GameEvents.OnDefendSelected += OnDefendSelected;
         GameEvents.OnBorkrskinnUpgrade += OnBorkrskinnUpgrade;
         GameEvents.OnFlugafotrUpgrade += OnFlugafotrUpgrade;
         GameEvents.OnContinueButton += OnContinueButton;
@@ -814,6 +857,8 @@ public class Unit : GameBehaviour
 
     private void OnDisable()
     {
+        GameEvents.OnAttackSelected -= OnAttackSelected;
+        GameEvents.OnDefendSelected -= OnDefendSelected;
         GameEvents.OnBorkrskinnUpgrade -= OnBorkrskinnUpgrade;
         GameEvents.OnFlugafotrUpgrade -= OnFlugafotrUpgrade;
         GameEvents.OnContinueButton -= OnContinueButton;

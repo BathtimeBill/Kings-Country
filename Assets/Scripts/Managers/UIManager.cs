@@ -14,6 +14,9 @@ public class UIManager : Singleton<UIManager>
     public TMP_Text waveText;
     public TMP_Text errorText;
 
+
+    public GameObject combatOptionsPanel;
+    public bool mouseOverCombatOptions;
     public GameObject menuPanel;
     public GameObject homeTreePanel;
     public GameObject homeTreeUnitPanel;
@@ -83,6 +86,8 @@ public class UIManager : Singleton<UIManager>
     public AudioSource warningAudioSource;
 
     public GameObject areYouSurePanel;
+
+    public GameObject deathCameraRotator;
     
 
     [Header("Waves")]
@@ -105,6 +110,11 @@ public class UIManager : Singleton<UIManager>
     public GameObject populous;
     public GameObject windfall;
     public GameObject homeTree;
+
+    [Header("Mouse Over UI")]
+    public bool mouseOverUI;
+    public List<GameObject> elements;
+
 
 
     void Start()
@@ -149,7 +159,18 @@ public class UIManager : Singleton<UIManager>
                 stormerPlaced = false;
             }
         }
-
+        //if(Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    GameEvents.ReportOnGameOver();
+        //}
+    }
+    public void MouseOverCombatOptions()
+    {
+        mouseOverCombatOptions = true;
+    }
+    public void MouseExitCombatOptions()
+    {
+        mouseOverCombatOptions = false;
     }
     public void ContinueButton()
     {
@@ -181,7 +202,9 @@ public class UIManager : Singleton<UIManager>
         audioSource.clip = _SM.gameOverSound;
         audioSource.Play();
         GameOverPanel.SetActive(true);
-        Time.timeScale = 0;
+        Time.timeScale = 4;
+        deathCameraRotator.SetActive(true);
+        _GM.gameState = GameState.Pause;
     }    
 
     public void OpenUpgradeMenu()
@@ -214,18 +237,21 @@ public class UIManager : Singleton<UIManager>
         homeTreePanel.SetActive(false);
         audioSource.clip = _SM.closeMenuSound;
         audioSource.Play();
+        GameEvents.ReportOnHomeTreeDeselected();
     }
     public void CloseHorgrMenu()
     {
         horgrPanel.SetActive(false);
         audioSource.clip = _SM.closeMenuSound;
         audioSource.Play();
+        GameEvents.ReportOnHorgrDeselected();
     }
     public void CloseHutMenu()
     {
         hutPanel.SetActive(false);
         audioSource.clip = _SM.closeMenuSound;
         audioSource.Play();
+        GameEvents.ReportOnHutDeselected();
     }
     public void OpenWinPanel()
     {
@@ -521,8 +547,30 @@ public class UIManager : Singleton<UIManager>
         GameEvents.ReportOnCollectMaegenButton();
         collectMaegenButton.SetActive(false);
     }
+
+    public void SelectAttack()
+    {
+        GameEvents.ReportOnAttackSelected();
+        _SM.PlaySound(_SM.attackSound);
+
+    }
+    public void SelectDefend()
+    {
+        GameEvents.ReportOnDefendSelected();
+        _SM.PlaySound(_SM.defendSound);
+    }
+    public void OnAttackSelected()
+    {
+        
+    }
+    public void OnDefendSelected()
+    {
+
+    }
     private void OnEnable()
     {
+        GameEvents.OnAttackSelected += OnAttackSelected;
+        GameEvents.OnDefendSelected += OnDefendSelected;
         GameEvents.OnGameOver += OnGameOver;
         GameEvents.OnGameWin += OnGameWin;
         GameEvents.OnBeaconPlaced += OnBeaconPlaced;
@@ -548,6 +596,8 @@ public class UIManager : Singleton<UIManager>
 
     private void OnDisable()
     {
+        GameEvents.OnDefendSelected -= OnDefendSelected;
+        GameEvents.OnAttackSelected -= OnAttackSelected;
         GameEvents.OnGameOver -= OnGameOver;
         GameEvents.OnGameWin -= OnGameWin;
         GameEvents.OnBeaconPlaced -= OnBeaconPlaced;

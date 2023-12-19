@@ -40,7 +40,7 @@ public class SceneManagement : GameBehaviour
     private void Start()
     {
         Time.timeScale = 1.0f;
-        highScoreText.text = "High Score: " + _SAVE.level1HighScore.ToString();
+
     }
 
     public void CloseLevelSelectScreen()

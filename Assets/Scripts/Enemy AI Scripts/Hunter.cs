@@ -37,6 +37,7 @@ public class Hunter : GameBehaviour
     public GameObject horgr;
     public float distanceFromClosestHorgr;
     public bool hasArrivedAtHorgr;
+    public bool hutSwitch;
 
     [Header("Audio")]
     public GameObject SFXPool;
@@ -109,8 +110,8 @@ public class Hunter : GameBehaviour
                 break;
 
             case EnemyState.Attack:
-                
-                if(UnitSelection.Instance.unitList.Count == 0 || distanceFromClosestUnit > 30)
+                hutSwitch = false;
+                if (UnitSelection.Instance.unitList.Count == 0 || distanceFromClosestUnit > 30)
                 {
                     state = EnemyState.Work;
                 }
@@ -137,10 +138,14 @@ public class Hunter : GameBehaviour
                     }
                     if (_HUTM.units.Count == 0)
                     {
-                        animator.SetBool("hasStoppedHorgr", true);
-                        navAgent.SetDestination(transform.position);
-                    }
+                        if(hutSwitch==false)
+                        {
+                            animator.SetBool("hasStoppedHorgr", true);
+                            navAgent.SetDestination(transform.position);
+                            hutSwitch = true;
+                        }
 
+                    }
                 }
                 break;
         }
@@ -211,6 +216,7 @@ public class Hunter : GameBehaviour
             {
                 _HUTM.enemies.Remove(gameObject);
             }
+            _EM.enemies.Remove(gameObject);
             GameObject go;
             go = Instantiate(deadHunterFire, transform.position, transform.rotation);
             go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * 2000);
@@ -285,7 +291,6 @@ public class Hunter : GameBehaviour
             _HUTM.enemies.Remove(gameObject);
         }
         _EM.enemies.Remove(gameObject);
-
         DropMaegen();
         float thrust = 20000f;
         GameObject go;

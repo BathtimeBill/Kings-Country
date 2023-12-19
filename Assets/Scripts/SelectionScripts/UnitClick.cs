@@ -17,6 +17,7 @@ public class UnitClick : GameBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+
             RaycastHit hit;
             Ray ray = myCam.ScreenPointToRay(Input.mousePosition);
 
@@ -29,9 +30,23 @@ public class UnitClick : GameBehaviour
                 }
                 else
                 {
-                    UnitSelection.Instance.ClickSelect(hit.collider.gameObject);
+                    if(UnitSelection.Instance.canDoubleClick)
+                    {
+                        UnitType thisUnitType = hit.collider.gameObject.GetComponent<Unit>().unitType;
+                        foreach(GameObject go in UnitSelection.Instance.unitList)
+                        {
+                            if(go.gameObject.GetComponent<Unit>().unitType == thisUnitType)
+                            {
+                                UnitSelection.Instance.DoubleClickSelect(go);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        UnitSelection.Instance.ClickSelect(hit.collider.gameObject);
+                    }
                 }
-
+                UnitSelection.Instance.StartCoroutine(UnitSelection.Instance.DoubleClick());
             }
             else
             {

@@ -17,6 +17,7 @@ public class Horgr : GameBehaviour
     public GameObject spawnLocation;
     public GameObject skessa;
     public GameObject huldra;
+    public GameObject selectionCircle;
     public Slider slider;
     public Image fill;
     public SpriteRenderer mapIcon;
@@ -149,14 +150,26 @@ public class Horgr : GameBehaviour
     {
         ClaimHorgr();
     }
+    private void OnHorgrSelected()
+    {
+        selectionCircle.SetActive(true);
+    }
+    private void OnHorgrDeselected()
+    {
+        selectionCircle.SetActive(false);
+    }
 
     private void OnEnable()
     {
+        GameEvents.OnHorgrDeselected += OnHorgrDeselected;
+        GameEvents.OnHorgrSelected += OnHorgrSelected;
         GameEvents.OnContinueButton += OnContinueButton;
     }
 
     private void OnDisable()
     {
+        GameEvents.OnHorgrDeselected -= OnHorgrDeselected;
+        GameEvents.OnHorgrSelected -= OnHorgrSelected;
         GameEvents.OnContinueButton -= OnContinueButton;
     }
 
