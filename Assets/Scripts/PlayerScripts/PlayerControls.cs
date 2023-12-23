@@ -41,7 +41,8 @@ public class PlayerControls : Singleton<PlayerControls>
     [Header("Stormer Placement")]
     public GameObject stormerPlacement;
     public MeshRenderer stormerPlacementMeshRenderer;
-
+    [Header("Control Groups")]
+    public bool canGroup;
     [Header("Map")]
     public bool mouseOverMap;
     [Header("Cursors")]
@@ -239,49 +240,152 @@ public class PlayerControls : Singleton<PlayerControls>
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (_GM.playmode != PlayMode.TreeMode)
+
+            if(canGroup)
             {
-                SelectTreeMode();
+                UnitSelection.Instance.Group1();
+                _SM.PlaySound(_SM.controlGroup);
             }
             else
             {
-                DeslectAllModes();
+                UnitSelection.Instance.GroupSelect1();
+                _SM.PlaySound(_SM.controlGroupSelect);
             }
-
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (_GM.playmode != PlayMode.RuneMode)
+
+            if (canGroup)
             {
-                SelectRuneMode();
+                UnitSelection.Instance.Group2();
+                _SM.PlaySound(_SM.controlGroup);
             }
             else
             {
-                DeslectAllModes();
+                UnitSelection.Instance.GroupSelect2();
+                _SM.PlaySound(_SM.controlGroupSelect);
             }
-
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            if (_GM.playmode != PlayMode.BeaconMode)
+
+            if (canGroup)
             {
-                SelectBeaconMode();
+                UnitSelection.Instance.Group3();
+                _SM.PlaySound(_SM.controlGroup);
             }
             else
             {
-                DeslectAllModes();
+                UnitSelection.Instance.GroupSelect3();
+                _SM.PlaySound(_SM.controlGroupSelect);
             }
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            if (_GM.playmode != PlayMode.StormerMode)
+
+            if (canGroup)
             {
-                SelectStormerMode();
+                UnitSelection.Instance.Group4();
+                _SM.PlaySound(_SM.controlGroup);
             }
             else
             {
-                DeslectAllModes();
+                UnitSelection.Instance.GroupSelect4();
+                _SM.PlaySound(_SM.controlGroupSelect);
             }
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+
+            if (canGroup)
+            {
+                UnitSelection.Instance.Group5();
+                _SM.PlaySound(_SM.controlGroup);
+            }
+            else
+            {
+                UnitSelection.Instance.GroupSelect5();
+                _SM.PlaySound(_SM.controlGroupSelect);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+
+            if (canGroup)
+            {
+                UnitSelection.Instance.Group6();
+                _SM.PlaySound(_SM.controlGroup);
+            }
+            else
+            {
+                UnitSelection.Instance.GroupSelect6();
+                _SM.PlaySound(_SM.controlGroupSelect);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+
+            if (canGroup)
+            {
+                UnitSelection.Instance.Group7();
+                _SM.PlaySound(_SM.controlGroup);
+            }
+            else
+            {
+                UnitSelection.Instance.GroupSelect7();
+                _SM.PlaySound(_SM.controlGroupSelect);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+
+            if (canGroup)
+            {
+                UnitSelection.Instance.Group8();
+                _SM.PlaySound(_SM.controlGroup);
+            }
+            else
+            {
+                UnitSelection.Instance.GroupSelect8();
+                _SM.PlaySound(_SM.controlGroupSelect);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+
+            if (canGroup)
+            {
+                UnitSelection.Instance.Group9();
+                _SM.PlaySound(_SM.controlGroup);
+            }
+            else
+            {
+                UnitSelection.Instance.GroupSelect9();
+                _SM.PlaySound(_SM.controlGroupSelect);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+
+            if (canGroup)
+            {
+                UnitSelection.Instance.Group10();
+                _SM.PlaySound(_SM.controlGroup);
+            }
+            else
+            {
+                UnitSelection.Instance.GroupSelect10();
+                _SM.PlaySound(_SM.controlGroupSelect);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            canGroup = true;
+        }
+        if(Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            canGroup = false;
         }
 
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -542,28 +646,28 @@ public class PlayerControls : Singleton<PlayerControls>
                 stormerPlacement.transform.position = hitPoint.point;
                 stormerPlacement.SetActive(true);
             }
-
+            if (hitPoint.collider.tag == "Enemy")
+            {
+                mouseOverEnemy = hitPoint.collider.gameObject;
+                mouseOverEnemyBool = true;
+                Cursor.SetCursor(cursorTextureRed, hotSpotEnemy, cursorMode);
+            }
+            else
+            {
+                mouseOverEnemyBool = false;
+                Cursor.SetCursor(cursorTextureNormal, hotSpot, cursorMode);
+            }
             Debug.DrawLine(ray.origin, hitPoint.point);
             //Vector3 targetPosition = new Vector3(targetDest.transform.position.x, transform.position.y, targetDest.transform.position.z);
             targetDest.transform.position = hitPoint.point;
             treePlacementMeshRenderer.enabled = true;
             runePlacementMeshRenderer.enabled = true;
+
         }
         else
         {
             treePlacementMeshRenderer.enabled = false;
             runePlacementMeshRenderer.enabled = false;
-        }
-        if(hitPoint.collider.tag == "Enemy")
-        {
-            mouseOverEnemy = hitPoint.collider.gameObject;
-            mouseOverEnemyBool = true;
-            Cursor.SetCursor(cursorTextureRed, hotSpotEnemy, cursorMode);
-        }
-        else
-        {
-            mouseOverEnemyBool = false;
-            Cursor.SetCursor(cursorTextureNormal, hotSpot, cursorMode);
         }
 
     }

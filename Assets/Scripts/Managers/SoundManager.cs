@@ -46,6 +46,9 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip targetEnemySound;
     public AudioClip attackSound;
     public AudioClip defendSound;
+    public AudioClip formationSound;
+    public AudioClip controlGroup;
+    public AudioClip controlGroupSelect;
     [Header("Wildlife Distress Sounds")]
     public AudioClip[] deerDistressSounds;
     public AudioClip[] boarDistressSounds;

@@ -18,6 +18,17 @@ public class UnitSelection : GameBehaviour
 
     public AudioSource audioSource;
 
+    public List<GameObject> controlGroup1;
+    public List<GameObject> controlGroup2;
+    public List<GameObject> controlGroup3;
+    public List<GameObject> controlGroup4;
+    public List<GameObject> controlGroup5;
+    public List<GameObject> controlGroup6;
+    public List<GameObject> controlGroup7;
+    public List<GameObject> controlGroup8;
+    public List<GameObject> controlGroup9;
+    public List<GameObject> controlGroup10;
+
 
     private void Awake()
     {
@@ -31,11 +42,225 @@ public class UnitSelection : GameBehaviour
         }
     }
 
-    public void SelectAllOfSameType()
+    public void Group1()
     {
-        foreach (GameObject go in unitList) 
+        if (controlGroup1 != null)
         {
-            
+            RemoveGameObjectsWithScript(controlGroup1, typeof(Unit));
+        }
+        foreach (GameObject go in unitSelected)
+        {
+
+            controlGroup1.Add(go);
+        }
+    }
+    public void Group2()
+    {
+        if (controlGroup2 != null)
+        {
+            RemoveGameObjectsWithScript(controlGroup2, typeof(Unit));
+        }
+        foreach (GameObject go in unitSelected)
+        {
+            controlGroup2.Add(go);
+        }
+    }
+    public void Group3()
+    {
+        if (controlGroup3 != null)
+        {
+            RemoveGameObjectsWithScript(controlGroup3, typeof(Unit));
+        }
+        foreach (GameObject go in unitSelected)
+        {
+            controlGroup3.Add(go);
+        }
+    }
+    public void Group4()
+    {
+        if (controlGroup4 != null)
+        {
+            RemoveGameObjectsWithScript(controlGroup4, typeof(Unit));
+        }
+        foreach (GameObject go in unitSelected)
+        {
+            controlGroup4.Add(go);
+        }
+    }
+    public void Group5()
+    {
+        if (controlGroup5 != null)
+        {
+            RemoveGameObjectsWithScript(controlGroup5, typeof(Unit));
+        }
+        foreach (GameObject go in unitSelected)
+        {
+            controlGroup5.Add(go);
+        }
+    }
+    public void Group6()
+    {
+        if (controlGroup6 != null)
+        {
+            RemoveGameObjectsWithScript(controlGroup6, typeof(Unit));
+        }
+        foreach (GameObject go in unitSelected)
+        {
+            controlGroup6.Add(go);
+        }
+    }
+    public void Group7()
+    {
+        if (controlGroup7 != null)
+        {
+            RemoveGameObjectsWithScript(controlGroup7, typeof(Unit));
+        }
+        foreach (GameObject go in unitSelected)
+        {
+            controlGroup7.Add(go);
+        }
+    }
+    public void Group8()
+    {
+        if (controlGroup8 != null)
+        {
+            RemoveGameObjectsWithScript(controlGroup8, typeof(Unit));
+        }
+        foreach (GameObject go in unitSelected)
+        {
+            controlGroup8.Add(go);
+        }
+    }
+    public void Group9()
+    {
+        if (controlGroup9 != null)
+        {
+            RemoveGameObjectsWithScript(controlGroup9, typeof(Unit));
+        }
+        foreach (GameObject go in unitSelected)
+        {
+            controlGroup9.Add(go);
+        }
+    }
+    public void Group10()
+    {
+        if (controlGroup10 != null)
+        {
+            RemoveGameObjectsWithScript(controlGroup10, typeof(Unit));
+        }
+        foreach (GameObject go in unitSelected)
+        {
+            controlGroup10.Add(go);
+        }
+    }
+    public void GroupSelect1()
+    {
+        if(controlGroup1 != null)
+        {
+            DeselectAll();
+            foreach (GameObject go in controlGroup1)
+            {
+                DragSelect(go);
+            }
+        }
+    }
+    public void GroupSelect2()
+    {
+        DeselectAll();
+        if (controlGroup1 != null)
+        {
+            foreach (GameObject go in controlGroup2)
+            {
+                ShiftClickSelect(go);
+            }
+        }
+    }
+    public void GroupSelect3()
+    {
+        DeselectAll();
+        if (controlGroup1 != null)
+        {
+            foreach (GameObject go in controlGroup3)
+            {
+                ShiftClickSelect(go);
+            }
+        }
+    }
+    public void GroupSelect4()
+    {
+        DeselectAll();
+        if (controlGroup1 != null)
+        {
+            foreach (GameObject go in controlGroup4)
+            {
+                ShiftClickSelect(go);
+            }
+        }
+    }
+    public void GroupSelect5()
+    {
+        DeselectAll();
+        if (controlGroup1 != null)
+        {
+            foreach (GameObject go in controlGroup5)
+            {
+                ShiftClickSelect(go);
+            }
+        }
+    }
+    public void GroupSelect6()
+    {
+        DeselectAll();
+        if (controlGroup1 != null)
+        {
+            foreach (GameObject go in controlGroup6)
+            {
+                ShiftClickSelect(go);
+            }
+        }
+    }
+    public void GroupSelect7()
+    {
+        DeselectAll();
+        if (controlGroup1 != null)
+        {
+            foreach (GameObject go in controlGroup7)
+            {
+                ShiftClickSelect(go);
+            }
+        }
+    }
+    public void GroupSelect8()
+    {
+        DeselectAll();
+        if (controlGroup1 != null)
+        {
+            foreach (GameObject go in controlGroup8)
+            {
+                ShiftClickSelect(go);
+            }
+        }
+    }
+    public void GroupSelect9()
+    {
+        DeselectAll();
+        if (controlGroup1 != null)
+        {
+            foreach (GameObject go in controlGroup9)
+            {
+                ShiftClickSelect(go);
+            }
+        }
+    }
+    public void GroupSelect10()
+    {
+        DeselectAll();
+        if (controlGroup1 != null)
+        {
+            foreach (GameObject go in controlGroup10)
+            {
+                ShiftClickSelect(go);
+            }
         }
     }
 
@@ -230,5 +455,14 @@ public class UnitSelection : GameBehaviour
         {
             unitSelected[i].GetComponent<Unit>().targetDest = destinations[i];
         }
+    }
+
+
+
+    // Function to remove GameObjects with a specific script attached from a given list
+    void RemoveGameObjectsWithScript(List<GameObject> objectsList, System.Type scriptType)
+    {
+        // Use RemoveAll with a predicate to check for the script's presence
+        objectsList.RemoveAll(obj => obj != null && obj.GetComponent(scriptType) != null);
     }
 }

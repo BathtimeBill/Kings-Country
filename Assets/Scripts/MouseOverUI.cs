@@ -12,18 +12,13 @@ public class MouseOverUI : GameBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         mouse_over = true;
         _UI.mouseOverUI = true;
-        _UI.elements.Add(gameObject);
         Debug.Log("Mouse enter");
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         mouse_over = false;
-        _UI.elements.Remove(gameObject);
-        if(_UI.elements.Count == 0)
-        {
             _UI.mouseOverUI = false;
-        }
         Debug.Log("Mouse exit");
     }
 }

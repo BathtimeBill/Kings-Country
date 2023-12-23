@@ -114,6 +114,12 @@ public class UIManager : Singleton<UIManager>
     [Header("Mouse Over UI")]
     public bool mouseOverUI;
     public List<GameObject> elements;
+    [Header("Formations")]
+    public GameObject formationObject;
+    private bool largeFormationSelected;
+    public Image formationButtonImage;
+    public Sprite smallFormation;
+    public Sprite bigFormation;
 
 
 
@@ -163,6 +169,23 @@ public class UIManager : Singleton<UIManager>
         //{
         //    GameEvents.ReportOnGameOver();
         //}
+    }
+
+    public void FormationButtonPressed()
+    {
+        _SM.PlaySound(_SM.formationSound);
+        if(!largeFormationSelected)
+        {
+            formationObject.transform.localScale = Vector3.one * 16;
+            largeFormationSelected = true;
+            formationButtonImage.sprite = bigFormation;
+        }
+        else
+        {
+            formationObject.transform.localScale = Vector3.one * 6;
+            largeFormationSelected = false;
+            formationButtonImage.sprite = smallFormation;
+        }
     }
     public void MouseOverCombatOptions()
     {

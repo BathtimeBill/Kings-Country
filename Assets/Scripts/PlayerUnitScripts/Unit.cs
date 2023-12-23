@@ -234,21 +234,27 @@ public class Unit : GameBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Delete))
             {
-                if (_HM.units.Contains(gameObject))
+                if(isSelected)
                 {
-                    _HM.units.Remove(gameObject);
+                    print("Suicide");
+                    if (_HM.units.Contains(gameObject))
+                    {
+                        _HM.units.Remove(gameObject);
+                    }
+                    if (_HUTM.units.Contains(gameObject))
+                    {
+                        _HUTM.units.Remove(gameObject);
+                    }
+                    UnitSelection.Instance.Deselect(gameObject);
+                    UnitSelection.Instance.unitList.Remove(gameObject);
+                    GameObject go;
+                    go = Instantiate(deadSatyr, transform.position, transform.rotation);
+                    Destroy(go, 15);
+                    _UI.CheckPopulousUI();
+                    GameEvents.ReportOnUnitKilled();
+                    CheckIfUnitIsInGroup();
+                    Destroy(gameObject);
                 }
-                if (_HUTM.units.Contains(gameObject))
-                {
-                    _HUTM.units.Remove(gameObject);
-                }
-                UnitSelection.Instance.Deselect(gameObject);
-                UnitSelection.Instance.unitList.Remove(gameObject);
-                GameObject go;
-                go = Instantiate(deadSatyr, transform.position, transform.rotation);
-                Destroy(go, 15);
-                _UI.CheckPopulousUI();
-                Destroy(gameObject);
             }
         }
         else
@@ -508,10 +514,53 @@ public class Unit : GameBehaviour
             Destroy(go, 15);
             _UI.CheckPopulousUI();
             GameEvents.ReportOnUnitKilled();
+            CheckIfUnitIsInGroup();
             Destroy(gameObject);
         }
     }
-
+    void CheckIfUnitIsInGroup()
+    {
+        if (UnitSelection.Instance.controlGroup1.Contains(gameObject))
+        {
+            UnitSelection.Instance.controlGroup1.Remove(gameObject);
+        }
+        if (UnitSelection.Instance.controlGroup2.Contains(gameObject))
+        {
+            UnitSelection.Instance.controlGroup2.Remove(gameObject);
+        }
+        if (UnitSelection.Instance.controlGroup3.Contains(gameObject))
+        {
+            UnitSelection.Instance.controlGroup3.Remove(gameObject);
+        }
+        if (UnitSelection.Instance.controlGroup4.Contains(gameObject))
+        {
+            UnitSelection.Instance.controlGroup4.Remove(gameObject);
+        }
+        if (UnitSelection.Instance.controlGroup5.Contains(gameObject))
+        {
+            UnitSelection.Instance.controlGroup5.Remove(gameObject);
+        }
+        if (UnitSelection.Instance.controlGroup6.Contains(gameObject))
+        {
+            UnitSelection.Instance.controlGroup6.Remove(gameObject);
+        }
+        if (UnitSelection.Instance.controlGroup7.Contains(gameObject))
+        {
+            UnitSelection.Instance.controlGroup7.Remove(gameObject);
+        }
+        if (UnitSelection.Instance.controlGroup8.Contains(gameObject))
+        {
+            UnitSelection.Instance.controlGroup8.Remove(gameObject);
+        }
+        if (UnitSelection.Instance.controlGroup9.Contains(gameObject))
+        {
+            UnitSelection.Instance.controlGroup9.Remove(gameObject);
+        }
+        if (UnitSelection.Instance.controlGroup10.Contains(gameObject))
+        {
+            UnitSelection.Instance.controlGroup10.Remove(gameObject);
+        }
+    }
     IEnumerator Attack()
     {
 
