@@ -17,18 +17,21 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip[] gruntSounds;
     public AudioClip[] leshyStompSounds;
     public AudioClip[] screamSounds;
+    public AudioClip[] spitSpraySounds;
     [Header("Vocals")]
-    public AudioClip[] goblinVocals;
+    public AudioClip[] golemVocals;
     public AudioClip[] leshyVocals;
     public AudioClip[] orcusVocals;
     public AudioClip[] satyrVocals;
     public AudioClip[] skessaVocals;
+    public AudioClip[] goblinVocals;
     [Header("Footstep Sounds")]
     public AudioClip[] humanFootsteps;
     public AudioClip[] forestFootsteps;
     public AudioClip[] knightFootsteps;
     public AudioClip[] leshyFootsteps;
     public AudioClip[] flapSounds;
+    public AudioClip[] golemFootsteps;
     [Header("UI Sounds")]
     public AudioClip buttonClickSound;
     public AudioClip gameOverSound;
@@ -65,6 +68,9 @@ public class SoundManager : Singleton<SoundManager>
     public GameObject SFXPool;
     public int soundPoolCurrent;
     public AudioSource[] soundPool;
+    [Header("Towers")]
+    public AudioClip[] spitSounds;
+    public AudioClip[] spitExplosionSounds;
 
 
 
@@ -78,9 +84,25 @@ public class SoundManager : Singleton<SoundManager>
         soundPool[soundPoolCurrent].clip = _clip;
         soundPool[soundPoolCurrent].Play();
     }
+    public AudioClip GetSpitSounds()
+    {
+        return spitSounds[Random.Range(0, spitSounds.Length)];
+    }
+    public AudioClip GetSpitExplosionSounds()
+    {
+        return spitExplosionSounds[Random.Range(0, spitExplosionSounds.Length)];
+    }
     public AudioClip GetGoblinVocal()
     {
         return goblinVocals[Random.Range(0, goblinVocals.Length)];
+    }
+    public AudioClip GetGolemVocal()
+    {
+        return golemVocals[Random.Range(0, golemVocals.Length)];
+    }
+    public AudioClip GetGolemFootsteps()
+    {
+        return golemFootsteps[Random.Range(0, golemFootsteps.Length)];
     }
     public AudioClip GetLeshyVocal()
     {

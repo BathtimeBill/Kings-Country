@@ -120,7 +120,15 @@ public class UIManager : Singleton<UIManager>
     public Image formationButtonImage;
     public Sprite smallFormation;
     public Sprite bigFormation;
-
+    [Header("Unit Prices")]
+    public TMP_Text satyrPriceText;
+    public TMP_Text orcusPriceText;
+    public TMP_Text leshyPriceText;
+    public TMP_Text skessaPriceText;
+    public TMP_Text goblinPriceText;
+    public TMP_Text huldraPriceText;
+    public TMP_Text golemPriceText;
+    public TMP_Text dryadPriceText;
 
 
     void Start()
@@ -130,6 +138,7 @@ public class UIManager : Singleton<UIManager>
         CheckWildlifeUI();
         CheckPopulousUI();
         CheckWave();
+        CheckUnitPrices();
         beaconTimeLeft = 0;
         stormerTimeLeft = 0;
     }
@@ -171,6 +180,17 @@ public class UIManager : Singleton<UIManager>
         //}
     }
 
+    private void CheckUnitPrices()
+    {
+        satyrPriceText.text = _GM.satyrPrice.ToString();
+        orcusPriceText.text = _GM.orcusPrice.ToString();
+        leshyPriceText.text = _GM.leshyPrice.ToString();
+        skessaPriceText.text = _GM.skessaPrice.ToString();
+        goblinPriceText.text = _GM.goblinPrice.ToString();
+        huldraPriceText.text = _GM.huldraPrice.ToString();
+        golemPriceText.text = _GM.golemPrice.ToString();
+        dryadPriceText.text = _GM.dryadPrice.ToString();
+}
     public void FormationButtonPressed()
     {
         _SM.PlaySound(_SM.formationSound);

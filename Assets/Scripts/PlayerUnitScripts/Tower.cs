@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class Tower : GameBehaviour
 {
+    public UnitType unitType;
+    public Animator animator;
+
     public GameObject firingPoint;
     public GameObject projectile1;
     public GameObject projectile2;
@@ -16,6 +19,7 @@ public class Tower : GameBehaviour
 
     public float health;
     public float maxHealth;
+    public float fireRate;
 
     public GameObject woodParticle;
     public GameObject explosionParticle;
@@ -24,10 +28,15 @@ public class Tower : GameBehaviour
 
     public bool towerUpgrade;
 
+    public GameObject parent;
+    private AudioSource audioSource;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        parent = gameObject.transform.parent.gameObject;
         StartCoroutine(ShootProjectile());
-        UnitSelection.Instance.unitList.Add(gameObject);
+        UnitSelection.Instance.unitList.Add(parent);
         slider.value = CalculateHealth();
         Setup();
         Instantiate(spawnParticleEffect, transform.position, transform.rotation);
@@ -58,22 +67,40 @@ public class Tower : GameBehaviour
     }
     IEnumerator ShootProjectile()
     {
-        if(distanceToClosestEnemy < 50)
+
+        yield return new WaitForSeconds(fireRate);
+
+        if (distanceToClosestEnemy < 50)
         {
             if(_UM.tower)
             {
-                GameObject go = Instantiate(projectile2, firingPoint.transform.position, firingPoint.transform.rotation);
-                go.GetComponent<Rigidbody>().AddForce(firingPoint.transform.forward * projectileSpeed);
+
+                if(unitType == UnitType.SpitTower)
+                {
+                    animator.SetTrigger("Spit");
+                }
+                if (unitType == UnitType.Tower)
+                {
+                    GameObject go = Instantiate(projectile2, firingPoint.transform.position, firingPoint.transform.rotation);
+                    go.GetComponent<Rigidbody>().AddForce(firingPoint.transform.forward * projectileSpeed);
+                }
             }
             else
             {
-                GameObject go = Instantiate(projectile1, firingPoint.transform.position, firingPoint.transform.rotation);
-                go.GetComponent<Rigidbody>().AddForce(firingPoint.transform.forward * projectileSpeed);
+                if (unitType == UnitType.SpitTower)
+                {
+                    animator.SetTrigger("Spit");
+                }
+                if (unitType == UnitType.Tower)
+                {
+                    GameObject go = Instantiate(projectile1, firingPoint.transform.position, firingPoint.transform.rotation);
+                    go.GetComponent<Rigidbody>().AddForce(firingPoint.transform.forward * projectileSpeed);
+                }
             }
 
         }
 
-        yield return new WaitForSeconds(2);
+
         StartCoroutine(ShootProjectile());
     }
     public Transform GetClosestEnemy()
@@ -137,36 +164,62 @@ public class Tower : GameBehaviour
     {
         Instantiate(woodParticle, transform.position, transform.rotation);
         health -= damage;
-        Die();
         slider.value = slider.value = CalculateHealth();
+        Die();
     }
     private void Die()
     {
         if (health <= 0)
         {
-            if (_HM.units.Contains(gameObject))
+            if (_HM.units.Contains(parent))
             {
-                _HM.units.Remove(gameObject);
+                _HM.units.Remove(parent);
             }
-            UnitSelection.Instance.DeselectAll();
-            UnitSelection.Instance.unitList.Remove(gameObject);
+
             GameObject go;
             go = Instantiate(explosionParticle, transform.position, transform.rotation);
             Destroy(go, 15);
             _UI.CheckPopulousUI();
-            Destroy(gameObject);
+            if(unitType == UnitType.Tower)
+            {
+                UnitSelection.Instance.unitList.Remove(gameObject);
+                Destroy(gameObject);
+            }
+
+            if (unitType == UnitType.SpitTower)
+            {
+                UnitSelection.Instance.unitList.Remove(parent);
+                Destroy(parent);
+            }
         }
     }
     private void Setup()
     {
-        if(_UM.tower)
+        if(unitType == UnitType.Tower)
         {
-            maxHealth = 300;
+            fireRate = 2;
+            if (_UM.tower)
+            {
+                maxHealth = _GM.GetPercentageIncrease(_GM.towerHealth, 0.5f);
+            }
+            else
+            {
+                maxHealth = _GM.towerHealth;
+            }
         }
-        else
+        if(unitType == UnitType.SpitTower)
         {
-            maxHealth = 200;
+            fireRate = 4;
+            if (_UM.tower)
+            {
+                maxHealth = _GM.GetPercentageIncrease(_GM.spitTowerHealth, 0.5f);
+            }
+            else
+            {
+                maxHealth = _GM.spitTowerHealth;
+            }
         }
+
         health = maxHealth;
     }
     float CalculateHealth()
@@ -193,5 +246,21 @@ public class Tower : GameBehaviour
     {
         GameEvents.OnTowerUpgrade -= OnTowerUpgrade;
         GameEvents.OnContinueButton -= OnContinueButton;
+    }
+
+    public void Spit()
+    {
+        audioSource.clip = _SM.GetSpitSounds();
+        audioSource.Play();
+        if (_UM.tower)
+        {
+            GameObject go = Instantiate(projectile2, firingPoint.transform.position, firingPoint.transform.rotation);
+            go.GetComponent<Rigidbody>().AddForce(firingPoint.transform.forward * projectileSpeed);
+        }
+        else
+        {
+            GameObject go = Instantiate(projectile1, firingPoint.transform.position, firingPoint.transform.rotation);
+            go.GetComponent<Rigidbody>().AddForce(firingPoint.transform.forward * projectileSpeed);
+        }
     }
 }

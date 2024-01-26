@@ -34,11 +34,11 @@ public class HomeTree : GameBehaviour
     //Checks to see if the player has enough resources and then spawns a Satyr unit in front of the Home Tree. Is called when a button is pressed in the UI.
     public void SpawnSatyr()
     {
-        if(_GM.maegen >0)
+        if(_GM.maegen >= _GM.satyrPrice)
         {
             if(_GM.populous < _GM.maxPopulous)
             {
-                _GM.maegen -= 1;
+                _GM.maegen -= _GM.satyrPrice;
                 Instantiate(satyr, spawnLocation.transform.position, spawnLocation.transform.rotation);
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _UI.CheckPopulousUI();
@@ -59,11 +59,11 @@ public class HomeTree : GameBehaviour
     //Checks to see if the player has enough resources and then spawns a Orcus unit in front of the Home Tree. Is called when a button is pressed in the UI.
     public void SpawnOrcus()
     {
-        if (_GM.maegen > 3)
+        if (_GM.maegen >= _GM.orcusPrice)
         {
             if(_GM.populous < _GM.maxPopulous)
             {
-                _GM.maegen -= 4;
+                _GM.maegen -= _GM.orcusPrice;
                 Instantiate(orcus, spawnLocation.transform.position, spawnLocation.transform.rotation);
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _UI.CheckPopulousUI();
@@ -84,11 +84,11 @@ public class HomeTree : GameBehaviour
     //Checks to see if the player has enough resources and then spawns a Leshy unit in front of the Home Tree. Is called when a button is pressed in the UI.
     public void SpawnLeshy()
     {
-        if (_GM.maegen > 5)
+        if (_GM.maegen >= _GM.leshyPrice)
         {
             if(_GM.populous < _GM.maxPopulous)
             {
-                _GM.maegen -= 6;
+                _GM.maegen -= _GM.leshyPrice;
                 Instantiate(leshy, spawnLocation.transform.position, spawnLocation.transform.rotation);
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _UI.CheckPopulousUI();

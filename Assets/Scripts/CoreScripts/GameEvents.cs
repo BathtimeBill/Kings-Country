@@ -62,6 +62,12 @@ public static class GameEvents
     public static event Action OnHorgrDeselected = null;
     public static event Action OnHutDeselected = null;
 
+    public static event Action OnToggleOutline = null;
+
+    public static void ReportOnToggleOutline()
+    {
+        OnToggleOutline?.Invoke();
+    }
     public static void ReportOnHomeTreeDeselected()
     {
         OnHomeTreeDeselected?.Invoke();

@@ -49,6 +49,10 @@ public class GameManager : Singleton<GameManager>
     public float huldraHealth;
     public float skessaHealth;
     public float goblinHealth;
+    public float golemHealth;
+    public float dryadHealth;
+    public float towerHealth;
+    public float spitTowerHealth;
 
     [Header("Unit Damage")]
     public float satyrDamage;
@@ -56,6 +60,30 @@ public class GameManager : Singleton<GameManager>
     public float leshyDamage;
     public float skessaDamage;
     public float goblinDamage;
+    public float golemDamage;
+    public float dryadDamage;
+    public float spitDamage;
+    public float spitExplosionDamage;
+
+    [Header("Unit Speed")]
+    public float satyrSpeed;
+    public float orcusSpeed;
+    public float leshySpeed;
+    public float skessaSpeed;
+    public float goblinSpeed;
+    public float golemSpeed;
+    public float dryadSpeed;
+    public float huldraSpeed;
+
+    [Header("Unit Price")]
+    public int satyrPrice;
+    public int orcusPrice;
+    public int leshyPrice;
+    public int skessaPrice;
+    public int goblinPrice;
+    public int huldraPrice;
+    public int golemPrice;
+    public int dryadPrice;
 
     [Header("Enemy Health")]
     public float watheHealth;

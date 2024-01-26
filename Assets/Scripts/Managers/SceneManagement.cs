@@ -35,6 +35,8 @@ public class SceneManagement : GameBehaviour
     public Image levelImage;
     public Sprite level1Sprite;
     public Sprite level2Sprite;
+    public GameObject[] selectionBarLocations;
+    public GameObject selectionBar;
 
 
     private void Start()
@@ -98,16 +100,21 @@ public class SceneManagement : GameBehaviour
     }
     public void LevelOneButton()
     {
+        selectionBar.SetActive(true);
         selectedLevel = 1;
         StartCoroutine(WaitToUpdateLevelSelectUI());
+        selectionBar.transform.position = selectionBarLocations[0].transform.position;
     }
     public void LevelTwoButton()
     {
+        selectionBar.SetActive(true);
         selectedLevel = 2;
         StartCoroutine(WaitToUpdateLevelSelectUI());
+        selectionBar.transform.position = selectionBarLocations[1].transform.position;
     }
     IEnumerator WaitToUpdateLevelSelectUI()
     {
+       
         yield return new WaitForEndOfFrame();
         if(selectedLevel== 1)
         {

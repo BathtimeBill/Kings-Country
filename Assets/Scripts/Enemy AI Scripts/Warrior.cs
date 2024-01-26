@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
+using Unity.VisualScripting;
 
 public class Warrior : GameBehaviour
 {
@@ -17,6 +18,7 @@ public class Warrior : GameBehaviour
     public bool hasArrivedAtBeacon;
     public GameObject fyreBeacon;
     public GameObject deadWarriorFire;
+    public float speed;
 
     [Header("Death Objects")]
     public GameObject deathObject;
@@ -55,6 +57,7 @@ public class Warrior : GameBehaviour
         _EM.enemies.Add(gameObject);
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
         horgr = GameObject.FindGameObjectWithTag("HorgrRally");
+        speed = navAgent.speed;
     }
 
     void Update()
@@ -190,6 +193,9 @@ public class Warrior : GameBehaviour
                 break;
         }
     }
+
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "PlayerWeapon")
@@ -211,6 +217,18 @@ public class Warrior : GameBehaviour
         if (other.tag == "PlayerWeapon5")
         {
             TakeDamage(_GM.goblinDamage);
+        }
+        if (other.tag == "PlayerWeapon6")
+        {
+            TakeDamage(_GM.golemDamage);
+        }
+        if (other.tag == "Spit")
+        {
+            TakeDamage(_GM.spitDamage);
+        }
+        if (other.tag == "SpitExplosion")
+        {
+            TakeDamage(_GM.spitExplosionDamage);
         }
         if (other.tag == "Beacon")
         {
@@ -239,6 +257,10 @@ public class Warrior : GameBehaviour
             hasArrivedAtBeacon = false;
             state = EnemyState.Attack;
         }
+        if (other.tag == "Spit")
+        {
+            navAgent.speed = speed / 2;
+        }
     }
     private void OnTriggerExit(Collider other)
     {
@@ -247,7 +269,19 @@ public class Warrior : GameBehaviour
             _HM.enemies.Remove(gameObject);
             hasArrivedAtHorgr = false;
         }
+        if (other.tag == "Spit")
+        {
+            navAgent.speed = speed;
+        }
     }
+    
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if(other.tag == "Spit")
+    //    {
+    //        TakeDamage(_GM.spitDamage * Time.deltaTime);
+    //    }
+    //}
 
     IEnumerator WaitForHorgr()
     {

@@ -18,6 +18,7 @@ public class HorgrManager : Singleton<HorgrManager>
 
     public GameObject skessa;
     public GameObject huldra;
+    public GameObject golem;
 
     public GameObject maegen5;
     public GameObject maegenLoss;
@@ -103,16 +104,40 @@ public class HorgrManager : Singleton<HorgrManager>
         horgrObject = GameObject.FindGameObjectWithTag("Horgr");
         if (playerOwns)
         {
-            if (_GM.maegen >= 10 && _GM.populous < _GM.maxPopulous)
+            if (_GM.maegen >= _GM.huldraPrice && _GM.populous < _GM.maxPopulous)
             {
                 Instantiate(huldra, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.maegen -= 10;
+                _GM.maegen -= _GM.huldraPrice;
                 _UI.CheckPopulousUI();
                 if(_TUTM.isTutorial && _TUTM.tutorialStage == 12)
                 {
                     GameEvents.ReportOnNextTutorial();  
                 }
+            }
+            else
+            {
+                _UI.SetErrorMessageInsufficientResources();
+                _PC.Error();
+            }
+        }
+        else
+        {
+            _UI.SetErrorMessageNeedToClaimHorgr();
+            _PC.Error();
+        }
+    }
+    public void SpawnGolemManager()
+    {
+        horgrObject = GameObject.FindGameObjectWithTag("Horgr");
+        if (playerOwns)
+        {
+            if (_GM.maegen >= _GM.golemPrice && _GM.populous < _GM.maxPopulous)
+            {
+                Instantiate(golem, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
+                Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
+                _GM.maegen -= _GM.golemPrice;
+                _UI.CheckPopulousUI();
             }
             else
             {

@@ -90,7 +90,10 @@ public enum UnitType
     HuldraUnit,
     VolvaUnit,
     GoblinUnit,
+    GolemUnit,
+    DryadUnit,
     Tower,
+    SpitTower,
 }
 public enum WildlifeType
 {

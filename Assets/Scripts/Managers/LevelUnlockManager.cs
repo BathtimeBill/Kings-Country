@@ -8,6 +8,7 @@ public class LevelUnlockManager : GameBehaviour
 {
     public Button[] levelButtons;
     public TMP_Text highScoreText;
+
     public int level1HighScore;
     public int level2HighScore;
 

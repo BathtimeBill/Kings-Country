@@ -13,7 +13,9 @@ public class UnitWeapon : GameBehaviour
     public GameObject stompParticle;
     public GameObject leftFoot;
     public GameObject rightFoot;
-
+    public GameObject spit;
+    public ParticleSystem spitParticle;
+    public Collider spitCollider;
 
     private void Update()
     {
@@ -41,6 +43,10 @@ public class UnitWeapon : GameBehaviour
     {
         gameObject.GetComponentInParent<Unit>().PlayFootstepSound();
     }
+    public void GolemFootstep()
+    {
+        gameObject.GetComponentInParent<Unit>().PlayGolemFootstepSound();
+    }
     public void LeftLeshyFootstep()
     {
         gameObject.GetComponentInParent<Unit>().PlayLeshyFootstepSound();
@@ -59,5 +65,27 @@ public class UnitWeapon : GameBehaviour
     public void Flap()
     {
         gameObject.GetComponentInParent<Unit>().PlayFlapSound();
+    }
+    public void GolemStompLeft()
+    {
+        Instantiate(stompParticle, rightFoot.transform.position, Quaternion.Euler(-90, 0, 0));
+        gameObject.GetComponentInParent<Unit>().PlayLeshyStompSound();
+    }
+    public void GolemStompRight()
+    {
+        Instantiate(stompParticle, leftFoot.transform.position, Quaternion.Euler(-90, 0, 0));
+        gameObject.GetComponentInParent<Unit>().PlayLeshyStompSound();
+    }
+    public void EnableSpit()
+    {
+        spit.SetActive(true);
+        spitParticle.Play();
+        spitCollider.enabled = true;
+    }
+    public void DisableSpit()
+    {
+
+        spitParticle.Stop();
+        spitCollider.enabled = false;
     }
 }

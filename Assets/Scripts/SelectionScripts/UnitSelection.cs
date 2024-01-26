@@ -306,6 +306,11 @@ public class UnitSelection : GameBehaviour
                     audioSource.clip = _SM.GetSkessaVocal();
                     audioSource.Play();
                 }
+                if (unitSelected[0].GetComponent<Unit>().unitType == UnitType.GolemUnit)
+                {
+                    audioSource.clip = _SM.GetGolemVocal();
+                    audioSource.Play();
+                }
             }
             else
             {

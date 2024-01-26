@@ -383,11 +383,14 @@ public class PlayerControls : Singleton<PlayerControls>
         {
             canGroup = true;
         }
-        if(Input.GetKeyUp(KeyCode.LeftControl))
+        //if(Input.GetKeyUp(KeyCode.LeftControl))
+        //{
+        //    canGroup = false;
+        //}
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
             canGroup = false;
         }
-
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             if (_UI.homeTreePanel.gameObject.activeInHierarchy == false)
@@ -725,7 +728,17 @@ public class PlayerControls : Singleton<PlayerControls>
             GameEvents.ReportOnHomeTreeDeselected();
             GameEvents.ReportOnHorgrDeselected();
         }
-
+        if (Physics.Raycast(ray, out hitPoint) && hitPoint.collider.tag == "Ground")
+        {
+            if (_GM.playmode == PlayMode.DefaultMode)
+            GameEvents.ReportOnHorgrDeselected();
+            GameEvents.ReportOnHomeTreeDeselected();
+            GameEvents.ReportOnHutDeselected();
+            _UI.mouseOverUI = false;
+            _UI.homeTreePanel.SetActive(false);
+            _UI.horgrPanel.SetActive(false);
+            _UI.hutPanel.SetActive(false);
+        }
     }
 
     public void OnUnitMove()

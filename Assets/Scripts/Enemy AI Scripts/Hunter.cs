@@ -22,6 +22,7 @@ public class Hunter : GameBehaviour
     public float stoppingDistance;
     public GameObject maegenPickup;
     public int maxRandomDropChance;
+    public float speed;
 
 
     [Header("Components")]
@@ -58,6 +59,7 @@ public class Hunter : GameBehaviour
     {
         _EM.enemies.Add(gameObject);
         horgr = GameObject.FindGameObjectWithTag("HutRally");
+        speed = navAgent.speed;
     }
 
     void Update()
@@ -196,6 +198,18 @@ public class Hunter : GameBehaviour
         {
             TakeDamage(_GM.goblinDamage);
         }
+        if (other.tag == "PlayerWeapon6")
+        {
+            TakeDamage(_GM.golemDamage);
+        }
+        if (other.tag == "Spit")
+        {
+            TakeDamage(_GM.spitDamage);
+        }
+        if (other.tag == "SpitExplosion")
+        {
+            TakeDamage(_GM.spitExplosionDamage);
+        }
         if (other.tag == "Beacon")
         {
             animator.SetTrigger("Cheer" + RandomCheerAnim());
@@ -225,8 +239,18 @@ public class Hunter : GameBehaviour
 
             Destroy(gameObject);
         }
+        if (other.tag == "Spit")
+        {
+            navAgent.speed = speed / 2;
+        }
     }
-
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (other.tag == "Spit")
+    //    {
+    //        TakeDamage(_GM.spitDamage * Time.deltaTime);
+    //    }
+    //}
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Hut")
@@ -234,6 +258,10 @@ public class Hunter : GameBehaviour
             _HUTM.enemies.Remove(gameObject);
             state = EnemyState.Attack;
             hasArrivedAtHorgr = false;
+        }
+        if (other.tag == "Spit")
+        {
+            navAgent.speed = speed;
         }
     }
     IEnumerator WaitForHorgr()

@@ -13,6 +13,7 @@ public class Logger : GameBehaviour
     public float maxHealth;
     public float loggerStoppingDistance;
     public bool hasStopped = false;
+    public float speed;
 
     [Header("AI")]
     public EnemyState state;
@@ -57,6 +58,7 @@ public class Logger : GameBehaviour
         _EM.enemies.Add(gameObject);
         state = EnemyState.Work;
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
+        speed = navAgent.speed;
     }
 
  
@@ -155,6 +157,13 @@ public class Logger : GameBehaviour
 
         
     }
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (other.tag == "Spit")
+    //    {
+    //        TakeDamage(_GM.spitDamage * Time.deltaTime);
+    //    }
+    //}
 
     private void OnTriggerEnter(Collider other)
     {
@@ -178,6 +187,18 @@ public class Logger : GameBehaviour
         {
             TakeDamage(_GM.goblinDamage);
         }
+        if (other.tag == "PlayerWeapon6")
+        {
+            TakeDamage(_GM.golemDamage);
+        }
+        if (other.tag == "Spit")
+        {
+            TakeDamage(_GM.spitDamage);
+        }
+        if (other.tag == "SpitExplosion")
+        {
+            TakeDamage(_GM.spitExplosionDamage);
+        }
         if (other.tag == "Beacon")
         {
             if(woodcutterType != WoodcutterType.LogCutter)
@@ -196,9 +217,18 @@ public class Logger : GameBehaviour
             Destroy(go, 15);
             Destroy(gameObject);
         }
-
+        if (other.tag == "Spit")
+        {
+            navAgent.speed = speed / 2;
+        }
     }
-
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Spit")
+        {
+            navAgent.speed = speed;
+        }
+    }
     private int RandomCheerAnim()
     {
         int rnd = Random.Range(1, 3);

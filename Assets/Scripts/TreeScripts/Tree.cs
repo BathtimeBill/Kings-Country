@@ -38,21 +38,23 @@ public class Tree : GameBehaviour
     {
         _GM.trees.Add(gameObject);
         DecideType();
-        //int amount;
+
         health = 100;
-        
-        //StartCoroutine(AddMaegen());
-        //for (amount = 0; amount < amountOfDecor; amount++)
-        //{
-        //    ForestDecorSpawn();
-        //}
-        if(startingTree)
-        {
-            energyMultiplier = 1;
-        }
+
+        StartCoroutine(WaitForDecorSpawn());
+
 
         transform.rotation = Quaternion.Euler(0, RandomYAxisRotation(), 0);
         _UI.CheckTreeUI();
+    }
+    IEnumerator WaitForDecorSpawn()
+    {
+        int amount;
+        yield return new WaitForSeconds(5);
+        for (amount = 0; amount < amountOfDecor; amount++)
+        {
+            ForestDecorSpawn();
+        }
     }
     private int RandomYAxisRotation()
     {

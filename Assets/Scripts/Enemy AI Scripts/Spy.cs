@@ -70,7 +70,23 @@ public class Spy : GameBehaviour
         {
             TakeDamage(_GM.skessaDamage);
         }
-        if(other.tag == "River")
+        if (other.tag == "PlayerWeapon5")
+        {
+            TakeDamage(_GM.goblinDamage);
+        }
+        if (other.tag == "PlayerWeapon6")
+        {
+            TakeDamage(_GM.golemDamage);
+        }
+        if (other.tag == "Spit")
+        {
+            TakeDamage(_GM.spitDamage);
+        }
+        if (other.tag == "SpitExplosion")
+        {
+            TakeDamage(_GM.spitExplosionDamage);
+        }
+        if (other.tag == "River")
         {
             _EM.enemies.Remove(gameObject);
             _SPYM.Respawn();
