@@ -19,6 +19,7 @@ public class SceneManagement : GameBehaviour
 
     public GameObject loadingScreen;
     public GameObject levelSelectScreen;
+    public GameObject overworldScreen;
 
     public GameObject areYouSurePanel;
 
@@ -48,6 +49,18 @@ public class SceneManagement : GameBehaviour
     public void CloseLevelSelectScreen()
     {
         levelSelectScreen.SetActive(false);
+    }
+    public void CloseOverworldScreen()
+    {
+        overworldScreen.SetActive(false);
+        _SAVE.OverworldSave();   
+    }
+    public void OpenOverworldScreen()
+    {
+        _SAVE.Load();
+        StartCoroutine(_OM.WaitForLoadGame());
+        overworldScreen.SetActive(true);
+
     }
     public void OpenLevelSelectScreen()
     {

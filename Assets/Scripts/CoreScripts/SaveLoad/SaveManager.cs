@@ -14,13 +14,14 @@ public class SaveManager : MonoBehaviour
             Debug.Log("Save file not found. Creating a new one with default data.");
             PlayerProfile defaultData = new PlayerProfile
             {
-            levelsUnlocked = 1,
-            LVL1Score = 0,
-            LVL1HighScore = 0,
-            hasCompletedLVL1 = false,
-            LVL2Score = 0,
-            LVL2HighScore = 0,
-            hasCompletedLVL2 = false
+                levelsUnlocked = 1,
+                LVL1Score = 0,
+                LVL1HighScore = 0,
+                hasCompletedLVL1 = false,
+                LVL2Score = 0,
+                LVL2HighScore = 0,
+                hasCompletedLVL2 = false,
+                overworldMaegen = 0,
             };
             SaveGameData(defaultData);
         }

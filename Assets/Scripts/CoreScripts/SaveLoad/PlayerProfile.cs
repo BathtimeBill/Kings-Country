@@ -7,6 +7,7 @@ public class PlayerProfile
 {
     [Header("General")]
     public int levelsUnlocked;
+    public int overworldMaegen;
     [Header("Level 1")]
     public int LVL1Score;
     public int LVL1HighScore;

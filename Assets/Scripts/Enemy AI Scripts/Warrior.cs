@@ -38,6 +38,7 @@ public class Warrior : GameBehaviour
     public float distanceFromClosestHorgr;
     public bool hasArrivedAtHorgr;
     public bool horgrSwitch;
+    public bool spawnedFromBuilding;
 
     [Header("Audio")]
     public GameObject SFXPool;
@@ -104,7 +105,7 @@ public class Warrior : GameBehaviour
                         navAgent.stoppingDistance = stoppingDistance;
                     }
                 }
-                if (distanceFromClosestHorgr < distanceFromClosestUnit)
+                if (distanceFromClosestHorgr < distanceFromClosestUnit && !spawnedFromBuilding)
                 {
                     state = EnemyState.Horgr;
                 }
@@ -237,7 +238,7 @@ public class Warrior : GameBehaviour
         }
         if(other.tag == "Horgr")
         {
-            if(!_HM.enemies.Contains(gameObject))
+            if(!_HM.enemies.Contains(gameObject) && spawnedFromBuilding == false)
             {
                 _HM.enemies.Add(gameObject);
                 StartCoroutine(WaitForHorgr());
@@ -266,8 +267,12 @@ public class Warrior : GameBehaviour
     {
         if (other.tag == "Horgr")
         {
-            _HM.enemies.Remove(gameObject);
-            hasArrivedAtHorgr = false;
+            if(spawnedFromBuilding == false)
+            {
+                _HM.enemies.Remove(gameObject);
+                hasArrivedAtHorgr = false;
+            }
+
         }
         if (other.tag == "Spit")
         {

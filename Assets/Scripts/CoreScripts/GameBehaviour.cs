@@ -25,7 +25,7 @@ public class GameBehaviour : MonoBehaviour
     protected static SpyManager _SPYM { get { return SpyManager.instance; } }
     protected static SaveData _SAVE { get { return SaveData.instance; } }
     protected static ScoreManager _SCORE { get { return ScoreManager.instance; } }
-
+    protected static OverWorldManager _OM { get { return OverWorldManager.instance; } }
 }
 
 public enum Upgrade

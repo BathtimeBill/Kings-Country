@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Tooltip : GameBehaviour
@@ -15,6 +16,7 @@ public class Tooltip : GameBehaviour
     {
         _Tool.HideTooltip();
     }
+
     public void OnButtonHover()
     {
         _Tool.SetAndShowTooltip(message, title);

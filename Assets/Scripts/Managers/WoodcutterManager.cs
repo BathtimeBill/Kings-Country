@@ -4,96 +4,87 @@ using UnityEngine;
 
 public class WoodcutterManager : GameBehaviour
 {
-    public Transform[] spawnPoints;
-
     public GameObject logger;
     public GameObject lumberjack;
     public GameObject logCutter;
 
-
+    public int minCooldown;
+    public int maxCooldown;
 
     void Start()
     {
-        if(_TUTM.isTutorial)
-        {
-            StartCoroutine(SpawnWoodcutterTutorial());
-        }
-        else
-        {
-            StartCoroutine(SpawnWoodcutter());
-        }
-    }
-
-    IEnumerator SpawnWoodcutterTutorial()
-    {
-        int rndSpawn = Random.Range(0, spawnPoints.Length);
-        if(_GM.currentWave == 1 && _GM.agroWave)
-        {
-            Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
-        }
-        if (_GM.currentWave == 2 && _GM.agroWave)
-        {
-            Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
-        }
-        if (_GM.currentWave == 3 && _GM.agroWave)
-        {
-            Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
-        }
-        if (_GM.currentWave == 4 && _GM.agroWave)
-        {
-            Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
-        }
-        if (_GM.currentWave == 5 && _GM.agroWave)
-        {
-            Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
-
-        }
-
-        yield return new WaitForSeconds(Random.Range(10, 20));
         StartCoroutine(SpawnWoodcutter());
+        //if (_TUTM.isTutorial)
+        //{
+        //    StartCoroutine(SpawnWoodcutterTutorial());
+        //}
+        //else
+        //{
+        //    StartCoroutine(SpawnWoodcutter());
+        //}
     }
+
+    //IEnumerator SpawnWoodcutterTutorial()
+    //{
+    //    int rndSpawn = Random.Range(0, _EM.spawnPoints.Count);
+    //    if(_GM.currentWave == 1 && _GM.agroWave)
+    //    {
+    //        Instantiate(logger, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
+    //    }
+    //    if (_GM.currentWave == 2 && _GM.agroWave)
+    //    {
+    //        Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
+    //        Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
+    //    }
+    //    if (_GM.currentWave == 3 && _GM.agroWave)
+    //    {
+    //        Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
+    //        Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
+    //        Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
+    //    }
+    //    if (_GM.currentWave == 4 && _GM.agroWave)
+    //    {
+    //        Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
+    //        Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
+    //        Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
+    //    }
+    //    if (_GM.currentWave == 5 && _GM.agroWave)
+    //    {
+    //        Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
+    //        Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
+    //        Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
+    //        Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
+
+    //    }
+
+    //    yield return new WaitForSeconds(Random.Range(10, 20));
+    //    StartCoroutine(SpawnWoodcutter());
+    //}
     IEnumerator SpawnWoodcutter()
     {
-        int rndSpawn = Random.Range(0, spawnPoints.Length);
-        if (_GM.currentWave > 0 && _GM.currentWave < 3 && _GM.agroWave)
-        {
-            Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
-        }
-        if (_GM.currentWave >= 3 && _GM.currentWave < 5 && _GM.agroWave)
-        {
-            Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
-        }
-        if (_GM.currentWave >= 5 && _GM.currentWave < 7 && _GM.agroWave)
-        {
-            Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
-        }
-        if (_GM.currentWave >= 7 && _GM.currentWave < 10 && _GM.agroWave)
-        {
-            Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
-        }
-        if (_GM.currentWave >= 10 && _GM.agroWave)
-        {
-            Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(logger, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(lumberjack, spawnPoints[rndSpawn].position, transform.rotation);
-
-        }
-
-        yield return new WaitForSeconds(Random.Range(5, 10));
-        StartCoroutine(SpawnWoodcutterTutorial());
+        yield return new WaitForEndOfFrame();
+        SpawnLoop();
+        yield return new WaitForSeconds(Random.Range(minCooldown, maxCooldown));
+        StartCoroutine(SpawnWoodcutter());
     }
 
+
+    private void SpawnLoop()
+    {
+        print("Spawn Loop");
+        int rndSpawn = Random.Range(0, _EM.spawnPoints.Count);
+        if(_GM.agroWave)
+        {
+            
+            for (int i = 0; i < _EM.loggerAmount; i++)
+            {
+                print("SpawnThisManyLogger");
+                Instantiate(logger, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
+            }
+            for (int i = 0; i < _EM.lumberjackAmount; i++)
+            {
+                Instantiate(lumberjack, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
+            }
+        }
+    }
 }

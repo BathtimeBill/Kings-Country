@@ -11,6 +11,7 @@ public class Horgr : GameBehaviour
     public float enemyMaxTimeLeft;
     public float unitTimeLeft;
     public float unitMaxTimeLeft;
+    public float claimRate;
     public bool playerHasControl;
     public GameObject playerControlFX;
     public GameObject enemyControlFX;
@@ -57,14 +58,14 @@ public class Horgr : GameBehaviour
             {
                 if (_HM.enemies.Count > _HM.units.Count)
                 {
-                    enemyTimeLeft += 1 * Time.deltaTime;
+                    enemyTimeLeft += claimRate * Time.deltaTime;
                 }
             }
             if (other.tag == "Unit" || other.tag == "LeshyUnit")
             {
                 if (_HM.enemies.Count < _HM.units.Count)
                 {
-                    enemyTimeLeft -= 1 * Time.deltaTime;
+                    enemyTimeLeft -= claimRate * Time.deltaTime;
                 }
             }
         }
@@ -74,14 +75,14 @@ public class Horgr : GameBehaviour
             {
                 if (_HM.enemies.Count > _HM.units.Count)
                 {
-                    enemyTimeLeft -= 1 * Time.deltaTime;
+                    enemyTimeLeft -= claimRate * Time.deltaTime;
                 }
             }
             if (other.tag == "Unit" || other.tag == "LeshyUnit")
             {
                 if (_HM.enemies.Count < _HM.units.Count)
                 {
-                    enemyTimeLeft += 1 * Time.deltaTime;
+                    enemyTimeLeft += claimRate * Time.deltaTime;
                 }
             }
         }

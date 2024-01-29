@@ -101,7 +101,7 @@ public class Unit : GameBehaviour
             case UnitState.Idle:
                 if (_EM.enemies.Count > 0)
                 {
-                    if(combatMode != CombatMode.Defend)
+                    if (combatMode != CombatMode.Defend)
                     {
                         if (distanceToClosestEnemy < detectionRadius)
                         {
@@ -116,7 +116,10 @@ public class Unit : GameBehaviour
                             state = UnitState.Attack;
                         }
                     }
-
+                    if (unitType == UnitType.GoblinUnit || unitType == UnitType.DryadUnit)
+                    {
+                        navAgent.stoppingDistance = 4;
+                    }
 
                 }
 
@@ -133,13 +136,17 @@ public class Unit : GameBehaviour
                 {
                     state = UnitState.Idle;
                 }
-                if (unitType == UnitType.GoblinUnit || unitType == UnitType.DryadUnit)
+                if (unitType == UnitType.GoblinUnit)
                 {
-                    navAgent.stoppingDistance = 30;
+                    navAgent.stoppingDistance = 50;
                 }
                 else
                 {
                     navAgent.stoppingDistance = stoppingDistance;
+                }
+                if(unitType == UnitType.DryadUnit)
+                {
+                    navAgent.stoppingDistance = 20;
                 }
                 if(_EM.enemies.Count != 0)
                 {

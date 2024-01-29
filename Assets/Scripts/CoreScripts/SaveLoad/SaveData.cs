@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class SaveData : Singleton<SaveData>
 {
+    public SaveManager saveManager;
+    [Header("LevelScores")]
     public int levelsUnlocked;
     public int level1HighScore;
     public int level1Score;
@@ -12,7 +14,10 @@ public class SaveData : Singleton<SaveData>
     public int level2Score;
     public bool lvl1Complete;
     public bool lvl2Complete;
-    public SaveManager saveManager;
+    [Header("Overworld")]
+    public int overworldMaegen;
+
+
 
 
     private void Start()
@@ -41,6 +46,7 @@ public class SaveData : Singleton<SaveData>
             LVL2HighScore = level2HighScore,
             hasCompletedLVL1 = lvl1Complete,
             hasCompletedLVL2 = lvl2Complete,
+            overworldMaegen = _OM.overWorldMaegen,
         };
         return profile;
     }
@@ -67,6 +73,12 @@ public class SaveData : Singleton<SaveData>
 
         saveManager.SaveGameData(SaveLevel());
     }
+    public void OverworldSave()
+    {
+        overworldMaegen = _OM.overWorldMaegen;
+
+        saveManager.SaveGameData(SaveLevel());
+    }
     public void Load()
     {
         PlayerProfile loadedData = saveManager.LoadGameData();
@@ -79,6 +91,7 @@ public class SaveData : Singleton<SaveData>
             lvl2Complete = loadedData.hasCompletedLVL2;
             level1HighScore = loadedData.LVL1HighScore;
             level2HighScore = loadedData.LVL2HighScore;
+            overworldMaegen = loadedData.overworldMaegen;
         }
         else
         {

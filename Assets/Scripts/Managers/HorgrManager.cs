@@ -8,7 +8,7 @@ public class HorgrManager : Singleton<HorgrManager>
     public List<GameObject> enemies;
     public List<GameObject> units;
 
-    public GameObject[] spawnLocations;
+    public List<GameObject> spawnLocations;
     public GameObject horgr;
     public GameObject horgrObject;
     public GameObject spawnParticle;
@@ -26,6 +26,12 @@ public class HorgrManager : Singleton<HorgrManager>
     public bool playerOwns;
     public bool enemyOwns;
     public bool hasBeenClaimed;
+    [Header("EnemyUnits")]
+    public GameObject dreng;
+    public GameObject berserkr;
+    public GameObject knight;
+    public float minSpawnRate;
+    public float maxSpawnRate;
 
     private new void Awake()
     {
@@ -36,14 +42,29 @@ public class HorgrManager : Singleton<HorgrManager>
 
     void Start()
     {
-        GameObject go = Instantiate(horgr, spawnLocations[RandomSpawnLocation()].transform.position, Quaternion.Euler(-90, 180, 0));
+        //GameObject go = Instantiate(horgr, spawnLocations[RandomSpawnLocation()].transform.position, Quaternion.Euler(-90, 180, 0));
         //StartCoroutine(AddMaegen());
         //StartCoroutine(WaitToReferenceHorgr());
+        StartCoroutine(WaitToSpawn());
     }
-    
+    IEnumerator WaitToSpawn()
+    {
+        yield return new WaitForEndOfFrame();
+        GameObject go = Instantiate(horgr, spawnLocations[RandomSpawnLocation()].transform.position, Quaternion.Euler(-90, 180, 0));
+    }
+    IEnumerator SpawnEnemyUnits()
+    {
+        yield return new WaitForSeconds(Random.Range(minSpawnRate, maxSpawnRate));
+        if (enemyOwns)
+        {
+            GameObject go = Instantiate(knight, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
+            go.GetComponent<Warrior>().spawnedFromBuilding = true;
+        }
+        StartCoroutine(SpawnEnemyUnits());
+    }
     private int RandomSpawnLocation()
     {
-        int rndSpn = Random.Range(0, spawnLocations.Length);
+        int rndSpn = Random.Range(0, spawnLocations.Count);
         return rndSpn;
     }
 

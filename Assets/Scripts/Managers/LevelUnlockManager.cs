@@ -12,6 +12,7 @@ public class LevelUnlockManager : GameBehaviour
     public int level1HighScore;
     public int level2HighScore;
 
+
     private void Start()
     {
         StartCoroutine(WaitForLoadGame());

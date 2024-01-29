@@ -78,11 +78,15 @@ public class WaveManager : Singleton<WaveManager>
 
     private void Start()
     {
-        if(_TUTM.isTutorial)
+        if(_GM.level == LevelNumber.One)
         {
-            winLevel = 3;
+            winLevel = 5;
         }
-        else
+        if (_GM.level == LevelNumber.Two)
+        {
+            winLevel = 10;
+        }
+        if (_GM.level == LevelNumber.Three)
         {
             winLevel = 10;
         }

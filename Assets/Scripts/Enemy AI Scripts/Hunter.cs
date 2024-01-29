@@ -39,6 +39,7 @@ public class Hunter : GameBehaviour
     public float distanceFromClosestHorgr;
     public bool hasArrivedAtHorgr;
     public bool hutSwitch;
+    public bool spawnedFromBuilding;
 
     [Header("Audio")]
     public GameObject SFXPool;
@@ -156,7 +157,7 @@ public class Hunter : GameBehaviour
         {
             state = EnemyState.Work;
         }
-        if (distanceFromClosestHorgr <= distanceFromClosestWildlife)
+        if (distanceFromClosestHorgr <= distanceFromClosestWildlife && !spawnedFromBuilding)
         {
             state = EnemyState.Horgr;
         }
@@ -217,7 +218,7 @@ public class Hunter : GameBehaviour
         }
         if (other.tag == "Hut")
         {
-            if (!_HUTM.enemies.Contains(gameObject))
+            if (!_HUTM.enemies.Contains(gameObject) && spawnedFromBuilding == false)
             {
                 _HUTM.enemies.Add(gameObject);
                 StartCoroutine(WaitForHorgr());
@@ -255,9 +256,13 @@ public class Hunter : GameBehaviour
     {
         if (other.tag == "Hut")
         {
-            _HUTM.enemies.Remove(gameObject);
-            state = EnemyState.Attack;
-            hasArrivedAtHorgr = false;
+            if(spawnedFromBuilding == false)
+            {
+                _HUTM.enemies.Remove(gameObject);
+                state = EnemyState.Attack;
+                hasArrivedAtHorgr = false;
+            }
+
         }
         if (other.tag == "Spit")
         {

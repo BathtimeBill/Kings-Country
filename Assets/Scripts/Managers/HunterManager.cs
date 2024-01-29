@@ -4,93 +4,44 @@ using UnityEngine;
 
 public class HunterManager : GameBehaviour
 {
-    public Transform[] spawnPoints;
-
     public GameObject wathe;
     public GameObject hunter;
     public GameObject bjornjeger;
 
+    public int minCooldown;
+    public int maxCooldown;
+
     void Start()
     {
-        if(_TUTM.isTutorial)
-        {
-            StartCoroutine(SpawnHunterTutorial());
-        }
-        else
-        {
-            StartCoroutine(SpawnHunter());
-        }
-
+        StartCoroutine(SpawnWoodcutter());
     }
 
-    IEnumerator SpawnHunter()
+    IEnumerator SpawnWoodcutter()
     {
-        int rndSpawn = Random.Range(0, spawnPoints.Length);
-        if (_GM.currentWave > 0 && _GM.currentWave < 3 && _GM.agroWave)
-        {
-            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
-        }
-        if (_GM.currentWave >= 3 && _GM.currentWave < 5 && _GM.agroWave)
-        {
-            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(hunter, spawnPoints[rndSpawn].position, transform.rotation);
-        }
-        if (_GM.currentWave >= 5 && _GM.currentWave < 7 && _GM.agroWave)
-        {
-            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(hunter, spawnPoints[rndSpawn].position, transform.rotation);
-        }
-        if (_GM.currentWave >= 7 && _GM.currentWave < 10 && _GM.agroWave)
-        {
-            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(hunter, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(bjornjeger, spawnPoints[rndSpawn].position, transform.rotation);
-        }
-        if (_GM.currentWave >= 10 && _GM.agroWave)
-        {
-            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(hunter, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(bjornjeger, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(bjornjeger, spawnPoints[rndSpawn].position, transform.rotation);
-
-        }
-        yield return new WaitForSeconds(Random.Range(15, 25));
-        StartCoroutine(SpawnHunter());
+        yield return new WaitForEndOfFrame();
+        SpawnLoop();
+        yield return new WaitForSeconds(Random.Range(minCooldown, maxCooldown));
+        StartCoroutine(SpawnWoodcutter());
     }
-    IEnumerator SpawnHunterTutorial()
-    {
-        int rndSpawn = Random.Range(0, spawnPoints.Length);
-        if (_GM.currentWave == 1 && _GM.agroWave)
-        {
-            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
-        }
-        if (_GM.currentWave == 2 && _GM.agroWave)
-        {
-            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
-        }
-        if (_GM.currentWave == 3 && _GM.agroWave)
-        {
-            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(hunter, spawnPoints[rndSpawn].position, transform.rotation);
-        }
-        if (_GM.currentWave == 4 && _GM.agroWave)
-        {
-            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(hunter, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
-        }
-        if (_GM.currentWave == 5 && _GM.agroWave)
-        {
-            Instantiate(wathe, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(hunter, spawnPoints[rndSpawn].position, transform.rotation);
-            Instantiate(bjornjeger, spawnPoints[rndSpawn].position, transform.rotation);
 
+
+    private void SpawnLoop()
+    {
+        int rndSpawn = Random.Range(0, _EM.spawnPoints.Count);
+        if (_GM.agroWave)
+        {
+            for (int i = 0; i < _EM.watheAmount; i++)
+            {
+                Instantiate(wathe, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
+            }
+            for (int i = 0; i < _EM.longbowAmount; i++)
+            {
+                Instantiate(hunter, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
+            }
+            for (int i = 0; i < _EM.crossbowAmount; i++)
+            {
+                Instantiate(bjornjeger, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
+            }
         }
-        yield return new WaitForSeconds(Random.Range(10, 20));
-        StartCoroutine(SpawnHunterTutorial());
     }
 }
