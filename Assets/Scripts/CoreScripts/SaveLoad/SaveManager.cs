@@ -21,7 +21,18 @@ public class SaveManager : MonoBehaviour
                 LVL2Score = 0,
                 LVL2HighScore = 0,
                 hasCompletedLVL2 = false,
+                LVL3Score = 0,
+                LVL3HighScore = 0,
+                hasCompletedLVL3 = false,
+                LVL4Score = 0,
+                LVL4HighScore = 0,
+                hasCompletedLVL4 = false,
+                LVL5Score = 0,
+                LVL5HighScore = 0,
+                hasCompletedLVL5 = false,
                 overworldMaegen = 0,
+                overworldMaegenTotal = 0,
+                hasComeFromWin = false,
             };
             SaveGameData(defaultData);
         }

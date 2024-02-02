@@ -47,7 +47,7 @@ public class ScoreManager : Singleton<ScoreManager>
 
 
 
-        int finalScore = maegen + wildlife * trees;
+        int finalScore = (maegen + wildlife) * trees;
         print("Final Score: " + finalScore);
 
         

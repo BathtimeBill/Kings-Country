@@ -161,12 +161,13 @@ public class Tree : GameBehaviour
 
     public void ForestDecorSpawn()
     {
+        float rndRotation = Random.Range(0, 359);
         int rndForestSpawn = Random.Range(0, forestDecor.Length);
         Vector3 randomDirection = transform.position + Random.insideUnitSphere * spawnRadius;
         NavMeshHit hit;
         NavMesh.SamplePosition(randomDirection, out hit, spawnRadius, 1);
         Vector3 finalPosition = hit.position;
-        Instantiate(forestDecor[rndForestSpawn], hit.position, transform.rotation);
+        GameObject go = Instantiate(forestDecor[rndForestSpawn], hit.position, Quaternion.Euler(0, rndRotation, 0));
     }
     IEnumerator AddMaegen()
     {

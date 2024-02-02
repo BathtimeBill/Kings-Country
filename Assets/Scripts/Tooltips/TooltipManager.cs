@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class TooltipManager : Singleton<TooltipManager>
 {
@@ -11,6 +12,7 @@ public class TooltipManager : Singleton<TooltipManager>
     public GameObject tooltipBoxTop;
     public TextMeshProUGUI textComponentTop;
     public TextMeshProUGUI titleComponentTop;
+    public Image levelImage;
 
     void Start()
     {
@@ -37,6 +39,10 @@ public class TooltipManager : Singleton<TooltipManager>
         tooltipBoxTop.SetActive(true);
         textComponentTop.text = message;
         titleComponentTop.text = title;
+    }
+    public void SetLevelImage(Sprite sprite)
+    {
+        levelImage.sprite = sprite;
     }
 
     public void SetAndShowPopulousTooltip()

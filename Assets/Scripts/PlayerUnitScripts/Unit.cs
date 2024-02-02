@@ -963,31 +963,32 @@ public class Unit : GameBehaviour
         if(isSelected)
         {
             combatModeImage.sprite = attackSprite;
-            combatMode = CombatMode.Move;
-            if (unitType == UnitType.GoblinUnit)
-            {
-                navAgent.speed = _GM.goblinSpeed;
-            }
-            else
+            if(combatMode != CombatMode.Move)
             {
                 detectionRadius = detectionRadius * 2;
+                if (unitType == UnitType.GoblinUnit)
+                {
+                    navAgent.speed = _GM.goblinSpeed;
+                }
             }
 
+            combatMode = CombatMode.Move;
         }
     }
     public void OnDefendSelected()
     {
         if (isSelected)
         {
-            defendPosition = transform.position;
-            combatModeImage.sprite = defendSprite;
-            combatMode = CombatMode.Defend;
-
-            if(unitType != UnitType.GoblinUnit)
+            if (combatMode != CombatMode.Defend)
             {
-                detectionRadius = detectionRadius / 2;
+                if (unitType != UnitType.GoblinUnit)
+                {
+                    detectionRadius = detectionRadius / 2;
+                }
+                combatModeImage.sprite = defendSprite;
             }
-
+            defendPosition = transform.position;
+            combatMode = CombatMode.Defend;
         }
     }
     private void OnEnable()

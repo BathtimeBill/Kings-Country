@@ -405,10 +405,11 @@ public class UIManager : Singleton<UIManager>
     }
     public void OnWaveOver()
     {
-        if(_GM.currentWave!= 10)
-        waveOverPanel.SetActive(true);
-        settingsOpen = true;
-
+        if(_GM.currentWave!= _WM.winLevel)
+        {
+            waveOverPanel.SetActive(true);
+            settingsOpen = true;
+        }
     }
     public void OnContinueButton()
     {

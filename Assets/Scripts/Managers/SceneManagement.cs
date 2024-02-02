@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
-public class SceneManagement : GameBehaviour
+public class SceneManagement : Singleton<SceneManagement>
 {
     public AudioSource audioSource;
 
@@ -43,7 +43,6 @@ public class SceneManagement : GameBehaviour
     private void Start()
     {
         Time.timeScale = 1.0f;
-
     }
 
     public void CloseLevelSelectScreen()
@@ -67,10 +66,12 @@ public class SceneManagement : GameBehaviour
         levelSelectScreen.SetActive(true);
         StartCoroutine(WaitToUpdateLevelSelectUI());
     }
-    public void LoadScene(string _sceneName)
+    public void LoadScene()
     {
+        _SAVE.OverworldSave();
         loadingScreen.SetActive(true);
-        loadingOperation = SceneManager.LoadSceneAsync(_sceneName);
+        loadingOperation = SceneManager.LoadSceneAsync("Level" + selectedLevel.ToString());
+        
     }
     public void LoadMainMenu()
     {
@@ -150,8 +151,8 @@ public class SceneManagement : GameBehaviour
             highScoreText.text = "High Score: " + _SAVE.level2HighScore.ToString();
         }
     }
-    public void LoadSceneFromSelection()
-    {
-        LoadScene("Level"+selectedLevel.ToString());
-    }
+    //public void LoadSceneFromSelection()
+    //{
+    //    LoadScene("Level"+selectedLevel.ToString());
+    //}
 }

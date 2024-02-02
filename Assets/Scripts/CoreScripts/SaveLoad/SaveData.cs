@@ -14,8 +14,19 @@ public class SaveData : Singleton<SaveData>
     public int level2Score;
     public bool lvl1Complete;
     public bool lvl2Complete;
+    public int level3HighScore;
+    public int level3Score;
+    public bool lvl3Complete;
+    public int level4HighScore;
+    public int level4Score;
+    public bool lvl4Complete;
+    public int level5HighScore;
+    public int level5Score;
+    public bool lvl5Complete;
     [Header("Overworld")]
     public int overworldMaegen;
+    public int overworldMaegenTotal;
+    public bool hasComeFromWin;
 
 
 
@@ -44,9 +55,17 @@ public class SaveData : Singleton<SaveData>
             levelsUnlocked = levelsUnlocked,
             LVL1HighScore = level1HighScore,
             LVL2HighScore = level2HighScore,
+            LVL3HighScore = level3HighScore,
+            LVL4HighScore = level4HighScore,
+            LVL5HighScore = level5HighScore,
             hasCompletedLVL1 = lvl1Complete,
             hasCompletedLVL2 = lvl2Complete,
+            hasCompletedLVL3 = lvl3Complete,
+            hasCompletedLVL4 = lvl4Complete,
+            hasCompletedLVL5 = lvl5Complete,
             overworldMaegen = _OM.overWorldMaegen,
+            overworldMaegenTotal = _OM.overWorldMaegenTotal,
+            hasComeFromWin = hasComeFromWin,
         };
         return profile;
     }
@@ -70,13 +89,41 @@ public class SaveData : Singleton<SaveData>
                 lvl2Complete = true;
             }
         }
+        if (_GM.level == LevelNumber.Three)
+        {
+            if (lvl3Complete == false)
+            {
+                levelsUnlocked += 1;
+
+                lvl3Complete = true;
+            }
+        }
+        if (_GM.level == LevelNumber.Four)
+        {
+            if (lvl4Complete == false)
+            {
+                levelsUnlocked += 1;
+
+                lvl4Complete = true;
+            }
+        }
+        if (_GM.level == LevelNumber.Five)
+        {
+            if (lvl5Complete == false)
+            {
+                levelsUnlocked += 1;
+
+                lvl5Complete = true;
+            }
+        }
 
         saveManager.SaveGameData(SaveLevel());
     }
     public void OverworldSave()
     {
         overworldMaegen = _OM.overWorldMaegen;
-
+        overworldMaegenTotal = _OM.overWorldMaegenTotal;
+        hasComeFromWin = _OM.hasComeFromWin;
         saveManager.SaveGameData(SaveLevel());
     }
     public void Load()
@@ -89,9 +136,17 @@ public class SaveData : Singleton<SaveData>
             levelsUnlocked = loadedData.levelsUnlocked;
             lvl1Complete = loadedData.hasCompletedLVL1;
             lvl2Complete = loadedData.hasCompletedLVL2;
+            lvl3Complete = loadedData.hasCompletedLVL3;
+            lvl4Complete = loadedData.hasCompletedLVL4;
+            lvl5Complete = loadedData.hasCompletedLVL5;
             level1HighScore = loadedData.LVL1HighScore;
             level2HighScore = loadedData.LVL2HighScore;
+            level3HighScore = loadedData.LVL3HighScore;
+            level4HighScore = loadedData.LVL4HighScore;
+            level5HighScore = loadedData.LVL5HighScore;
             overworldMaegen = loadedData.overworldMaegen;
+            overworldMaegenTotal = loadedData.overworldMaegenTotal;
+            hasComeFromWin = loadedData.hasComeFromWin;
         }
         else
         {
@@ -102,7 +157,6 @@ public class SaveData : Singleton<SaveData>
 
     private void OnGameWin()
     {
- 
         StartCoroutine(WaitToSaveScore());
         //score = _SCORE.score;
         //print(_SCORE.score);
@@ -136,6 +190,45 @@ public class SaveData : Singleton<SaveData>
                 level2HighScore = _SAVE.level2HighScore;
             }
         }
+        if (_GM.level == LevelNumber.Three)
+        {
+            level3Score = _SCORE.score;
+            if (level3Score > level3HighScore)
+            {
+                level3HighScore = level3Score;
+
+            }
+            else
+            {
+                level3HighScore = _SAVE.level3HighScore;
+            }
+        }
+        if (_GM.level == LevelNumber.Four)
+        {
+            level4Score = _SCORE.score;
+            if (level4Score > level4HighScore)
+            {
+                level4HighScore = level4Score;
+
+            }
+            else
+            {
+                level4HighScore = _SAVE.level4HighScore;
+            }
+        }
+        if (_GM.level == LevelNumber.Five)
+        {
+            level5Score = _SCORE.score;
+            if (level5Score > level5HighScore)
+            {
+                level5HighScore = level5Score;
+
+            }
+            else
+            {
+                level5HighScore = _SAVE.level5HighScore;
+            }
+        }
 
 
         if (_GM.level == LevelNumber.One)
@@ -145,6 +238,18 @@ public class SaveData : Singleton<SaveData>
         if (_GM.level == LevelNumber.Two)
         {
             _SCORE.highScoreText.text = level2HighScore.ToString();
+        }
+        if (_GM.level == LevelNumber.Three)
+        {
+            _SCORE.highScoreText.text = level3HighScore.ToString();
+        }
+        if (_GM.level == LevelNumber.Four)
+        {
+            _SCORE.highScoreText.text = level4HighScore.ToString();
+        }
+        if (_GM.level == LevelNumber.Five)
+        {
+            _SCORE.highScoreText.text = level5HighScore.ToString();
         }
 
         print(_SCORE.score);

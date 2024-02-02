@@ -383,14 +383,14 @@ public class PlayerControls : Singleton<PlayerControls>
         {
             canGroup = true;
         }
-        //if(Input.GetKeyUp(KeyCode.LeftControl))
-        //{
-        //    canGroup = false;
-        //}
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        if (Input.GetKeyUp(KeyCode.LeftControl))
         {
             canGroup = false;
         }
+        //if (Input.GetKeyDown(KeyCode.LeftAlt))
+        //{
+        //    canGroup = false;
+        //}
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             if (_UI.homeTreePanel.gameObject.activeInHierarchy == false)

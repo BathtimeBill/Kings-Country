@@ -78,18 +78,26 @@ public class WaveManager : Singleton<WaveManager>
 
     private void Start()
     {
-        if(_GM.level == LevelNumber.One)
-        {
-            winLevel = 5;
-        }
-        if (_GM.level == LevelNumber.Two)
-        {
-            winLevel = 10;
-        }
-        if (_GM.level == LevelNumber.Three)
-        {
-            winLevel = 10;
-        }
+        //if(_GM.level == LevelNumber.One)
+        //{
+        //    winLevel = 1;
+        //}
+        //if (_GM.level == LevelNumber.Two)
+        //{
+        //    winLevel = 10;
+        //}
+        //if (_GM.level == LevelNumber.Three)
+        //{
+        //    winLevel = 10;
+        //}
+        //if (_GM.level == LevelNumber.Four)
+        //{
+        //    winLevel = 10;
+        //}
+        //if (_GM.level == LevelNumber.Five)
+        //{
+        //    winLevel = 10;
+        //}
     }
 
     private int GetRandomUpgrade()

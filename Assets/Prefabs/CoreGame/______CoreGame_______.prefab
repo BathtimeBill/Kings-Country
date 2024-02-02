@@ -25,14 +25,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 203844586}
-  m_LocalRotation: {x: -0.2840655, y: 0.8619944, z: 0.035922203, w: -0.41830862}
-  m_LocalPosition: {x: 146.94547, y: 53.632107, z: -364.9029}
+  m_LocalRotation: {x: -0.49068367, y: 0.76892436, z: 0.1564379, w: -0.37883005}
+  m_LocalPosition: {x: 156.2, y: 192, z: -338.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8290771809723132277}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 169.879, y: -311.124, z: 148.13}
+  m_LocalEulerAnglesHint: {x: 172.461, y: -312.05298, z: 118.269}
 --- !u!108 &203844588
 Light:
   m_ObjectHideFlags: 0
@@ -44,8 +44,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.7830189, g: 0.7389435, b: 0.5872642, a: 1}
-  m_Intensity: 2
+  m_Color: {r: 0.9960785, g: 0.9960785, b: 0.67058825, a: 1}
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -4928,6 +4928,177 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &1346107583
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1346107585}
+  - component: {fileID: 1346107584}
+  m_Layer: 0
+  m_Name: DeathCameraRotator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1346107585
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346107583}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 73.47272, y: 31.71604, z: -187.90144}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1495820448}
+  m_Father: {fileID: 8290771809359161408}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1346107584
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346107583}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 932328ba6536a374d8daa8c021e273be, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &1495820447
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1495820448}
+  - component: {fileID: 1495820451}
+  - component: {fileID: 1495820450}
+  - component: {fileID: 1495820449}
+  m_Layer: 0
+  m_Name: DeathCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1495820448
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495820447}
+  m_LocalRotation: {x: 0.29901752, y: -0, z: -0, w: 0.95424765}
+  m_LocalPosition: {x: 0, y: 71.04414, z: -119.96683}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1346107585}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 34.797, y: 0, z: 0}
+--- !u!20 &1495820451
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495820447}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_FocalLength: 50
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 471
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!81 &1495820450
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495820447}
+  m_Enabled: 1
+--- !u!114 &1495820449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495820447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 1
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &1768619526
 GameObject:
   m_ObjectHideFlags: 0
@@ -6913,7 +7084,7 @@ MonoBehaviour:
   drengAmount: 0
   bezerkerAmount: 0
   knightAmount: 0
-  LoggerAmount1: 1
+  LoggerAmount1: 2
   LumberjackAmount1: 0
   WatheAmount1: 1
   LongbowAmount1: 0
@@ -6921,7 +7092,7 @@ MonoBehaviour:
   DrengAmount1: 0
   BezerkerAmount1: 0
   KnightAmount1: 0
-  LoggerAmount2: 1
+  LoggerAmount2: 2
   LumberjackAmount2: 1
   WatheAmount2: 1
   LongbowAmount2: 0
@@ -10350,6 +10521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ab471141f607ff4ea46f4408e29ab39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dontDestroy: 0
   audioSource: {fileID: 8290771808535155280}
   levelName: TitleScreen
   titleName: TitleScreen
@@ -10655,7 +10827,7 @@ MonoBehaviour:
   animator: {fileID: 8290771809585540665}
   mouseOverSlot1: 0
   mouseOverSlot2: 0
-  winLevel: 0
+  winLevel: 1
   totalMaegen: 0
   totalTrees: 0
   totalMaegenDrops: 0
@@ -27163,6 +27335,7 @@ Transform:
   - {fileID: 8290771809965814576}
   - {fileID: 466257741822515019}
   - {fileID: 2309672807627849887}
+  - {fileID: 1346107585}
   m_Father: {fileID: 9193323549728430573}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -30751,6 +30924,7 @@ MonoBehaviour:
   tooltipBoxTop: {fileID: 8290771808579886975}
   textComponentTop: {fileID: 8290771809658177412}
   titleComponentTop: {fileID: 8290771809930107105}
+  levelImage: {fileID: 0}
 --- !u!1 &8290771809535278596
 GameObject:
   m_ObjectHideFlags: 0
@@ -35893,13 +36067,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dontDestroy: 0
   gameTime: 0
-  level: 2
+  level: 0
   playmode: 0
   gameState: 0
   trees: []
   isPaused: 0
   startingMaegen: 25
-  boundry: {fileID: 1768619526}
+  boundry: {fileID: 0}
   introCam: {fileID: 8290771809939871231}
   currentWave: 0
   agroWaveLength: 60
@@ -53412,7 +53586,7 @@ PrefabInstance:
     - target: {fileID: 1305649631322353990, guid: cb63a90c31358ab4088b9dc4169f75e8,
         type: 3}
       propertyPath: m_VersionIndex
-      value: 437
+      value: 434
       objectReference: {fileID: 0}
     - target: {fileID: 1450473054156712752, guid: cb63a90c31358ab4088b9dc4169f75e8,
         type: 3}

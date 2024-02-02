@@ -26,6 +26,7 @@ public class GameBehaviour : MonoBehaviour
     protected static SaveData _SAVE { get { return SaveData.instance; } }
     protected static ScoreManager _SCORE { get { return ScoreManager.instance; } }
     protected static OverWorldManager _OM { get { return OverWorldManager.instance; } }
+    protected static SceneManagement _SCENE { get { return SceneManagement.instance; } }
 }
 
 public enum Upgrade
@@ -121,6 +122,14 @@ public enum WarriorType
     Knight,
 }
 public enum LevelNumber
+{
+    One,
+    Two,
+    Three,
+    Four,
+    Five,
+}
+public enum LevelButton
 {
     One,
     Two,
