@@ -159,6 +159,10 @@ public class Tower : GameBehaviour
             TakeDamage(35);
             Destroy(other.gameObject);
         }
+        if(other.tag == "LordWeapon")
+        {
+            TakeDamage(_GM.lordDamage);
+        }
     }
     public void TakeDamage(float damage)
     {

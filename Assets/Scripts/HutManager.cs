@@ -12,6 +12,7 @@ public class HutManager : Singleton<HutManager>
     public GameObject hut;
     public GameObject hutObject;
     public GameObject spawnParticle;
+    public GameObject enemySpawnParticle;
     public Vector3 hutLocation;
 
     public GameObject spawnLocation;
@@ -78,6 +79,8 @@ public class HutManager : Singleton<HutManager>
         {
             GameObject go = Instantiate(bjornjegger, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
             go.GetComponent<Hunter>().spawnedFromBuilding = true;
+            Instantiate(enemySpawnParticle, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
+            //_EM.enemies.Add(go);
         }
         StartCoroutine(SpawnEnemyUnits());
     }

@@ -32,29 +32,7 @@ public class UIManager : Singleton<UIManager>
 
     public bool settingsOpen;
 
-    public GameObject treeToolSelectionBox;
-    public GameObject runeToolSelectionBox;
-    public GameObject beaconToolSelectionBox;
-    public GameObject stormerToolSelectionBox;
 
-
-    public Sprite usableTreeTool;
-    public Sprite unusableTreeTool;
-    public Sprite usableRuneTool;
-    public Sprite unusableRuneTool;
-    public Sprite usableBeaconTool;
-    public Sprite unusableBeaconTool;
-    public Sprite usableStormerTool;
-    public Sprite unusableStormerTool;
-
-    public Image treeToolImage;
-    public Image runeToolImage;
-    public Image beaconToolImage;
-    public Image stormerToolImage;
-
-    public Button runeToolButton;
-    public Button beaconToolButton;
-    public Button stormerToolButton;
 
 
     public Slider beaconCooldownSlider;
@@ -75,10 +53,7 @@ public class UIManager : Singleton<UIManager>
 
     public bool stormerPlaced;
 
-    public GameObject maegenCost;
-    public TMP_Text maegenCostText;
-    public GameObject wildlifeCost;
-    public TMP_Text wildlifeCostText;
+
 
     public GameObject transformText;
 
@@ -88,7 +63,38 @@ public class UIManager : Singleton<UIManager>
     public GameObject areYouSurePanel;
 
     public GameObject deathCameraRotator;
-    
+
+    [Header("Tools")]
+    public int fyreCost;
+    public int stormerCost;
+
+    public GameObject treeToolSelectionBox;
+    public GameObject runeToolSelectionBox;
+    public GameObject beaconToolSelectionBox;
+    public GameObject stormerToolSelectionBox;
+
+    public Sprite usableTreeTool;
+    public Sprite unusableTreeTool;
+    public Sprite usableRuneTool;
+    public Sprite unusableRuneTool;
+    public Sprite usableBeaconTool;
+    public Sprite unusableBeaconTool;
+    public Sprite usableStormerTool;
+    public Sprite unusableStormerTool;
+
+    public Image treeToolImage;
+    public Image runeToolImage;
+    public Image beaconToolImage;
+    public Image stormerToolImage;
+
+    public Button runeToolButton;
+    public Button beaconToolButton;
+    public Button stormerToolButton;
+
+    public GameObject maegenCost;
+    public TMP_Text maegenCostText;
+    public GameObject wildlifeCost;
+    public TMP_Text wildlifeCostText;
 
     [Header("Waves")]
     public Animator waveTextAnimator;
@@ -141,6 +147,7 @@ public class UIManager : Singleton<UIManager>
         CheckUnitPrices();
         beaconTimeLeft = 0;
         stormerTimeLeft = 0;
+        StartCoroutine(CheckToolAvailability());
     }
 
 
@@ -611,6 +618,111 @@ public class UIManager : Singleton<UIManager>
     {
 
     }
+
+    IEnumerator CheckToolAvailability()
+    {
+        yield return new WaitForSeconds(0.5f);
+        HandleRuneButton();
+        HandleFyreButton();
+        HandleStormerButton();
+        StartCoroutine(CheckToolAvailability());
+
+    }
+
+
+
+    private void HandleRuneButton()
+    {
+        if (_GM.runes.Count == 0)
+        {
+            if (_GM.maegen < _RPlace.maegenCost1 || _GM.wildlife < _RPlace.wildlifeCost1)
+            {
+                runeToolButton.interactable = false;
+                runeToolImage.sprite = unusableRuneTool;
+            }
+            if (_GM.maegen >= _RPlace.maegenCost1 && _GM.wildlife >= _RPlace.wildlifeCost1)
+            {
+                runeToolButton.interactable = true;
+                runeToolImage.sprite = usableRuneTool;
+            }
+        }
+        if (_GM.runes.Count == 1)
+        {
+            if (_GM.maegen < _RPlace.maegenCost2 || _GM.wildlife < _RPlace.wildlifeCost2)
+            {
+                runeToolButton.interactable = false;
+                runeToolImage.sprite = unusableRuneTool;
+            }
+            if (_GM.maegen >= _RPlace.maegenCost2 && _GM.wildlife >= _RPlace.wildlifeCost2)
+            {
+                runeToolButton.interactable = true;
+                runeToolImage.sprite = usableRuneTool;
+            }
+        }
+        if (_GM.runes.Count == 2)
+        {
+            if (_GM.maegen < _RPlace.maegenCost3 || _GM.wildlife < _RPlace.wildlifeCost3)
+            {
+                runeToolButton.interactable = false;
+                runeToolImage.sprite = unusableRuneTool;
+            }
+            if (_GM.maegen >= _RPlace.maegenCost3 && _GM.wildlife >= _RPlace.wildlifeCost3)
+            {
+                runeToolButton.interactable = true;
+                runeToolImage.sprite = usableRuneTool;
+            }
+        }
+        if (_GM.runes.Count == 3)
+        {
+            if (_GM.maegen < _RPlace.maegenCost4 || _GM.wildlife < _RPlace.wildlifeCost4)
+            {
+                runeToolButton.interactable = false;
+                runeToolImage.sprite = unusableRuneTool;
+            }
+            if (_GM.maegen >= _RPlace.maegenCost4 && _GM.wildlife >= _RPlace.wildlifeCost4)
+            {
+                runeToolButton.interactable = true;
+                runeToolImage.sprite = usableRuneTool;
+            }
+        }
+        if (_GM.runes.Count > 3)
+        {
+            runeToolButton.interactable = true;
+            runeToolImage.sprite = usableRuneTool;
+        }
+    }
+    private void HandleFyreButton()
+    {
+        if(_GM.wildlife < _UI.fyreCost)
+        {
+            beaconToolButton.interactable = false;
+            beaconToolImage.sprite = unusableBeaconTool;
+        }
+        else
+        {
+            if(beaconCooldownSlider.gameObject.activeInHierarchy == false)
+            {
+                beaconToolButton.interactable = true;
+                beaconToolImage.sprite = usableBeaconTool;
+            }
+        }
+    }
+
+    private void HandleStormerButton()
+    {
+        if(_GM.wildlife < _UI.stormerCost)
+        {
+            stormerToolButton.interactable = false;
+            stormerToolImage.sprite = unusableStormerTool;
+        }
+        else
+        {
+            stormerToolButton.interactable = true;
+            stormerToolImage.sprite = usableStormerTool;
+        }
+    }
+
+
     private void OnEnable()
     {
         GameEvents.OnAttackSelected += OnAttackSelected;

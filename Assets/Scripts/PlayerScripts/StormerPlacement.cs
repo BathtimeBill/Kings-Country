@@ -18,7 +18,7 @@ public class StormerPlacement : Singleton<StormerPlacement>
     // Update is called once per frame
     void Update()
     {
-        if(_GM.wildlife >= 20  && _UI.stormerPlaced == false)
+        if(_GM.wildlife >= _UI.stormerCost  && _UI.stormerPlaced == false)
         {
             mesh.GetComponent<MeshRenderer>().material = canPlaceMat;
             canPlace = true;

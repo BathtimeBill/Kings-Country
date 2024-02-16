@@ -35,6 +35,7 @@ public class Spy : GameBehaviour
         navAgent = gameObject.GetComponent<NavMeshAgent>();
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
         navAgent.SetDestination(homeTree.transform.position);
+        GameEvents.ReportOnSpySpawned();
     }
 
     // Update is called once per frame

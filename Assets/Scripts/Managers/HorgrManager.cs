@@ -12,6 +12,7 @@ public class HorgrManager : Singleton<HorgrManager>
     public GameObject horgr;
     public GameObject horgrObject;
     public GameObject spawnParticle;
+    public GameObject enemySpawnParticle;
     public Vector3 horgrLocation;
 
     public GameObject spawnLocation;
@@ -45,6 +46,7 @@ public class HorgrManager : Singleton<HorgrManager>
         //GameObject go = Instantiate(horgr, spawnLocations[RandomSpawnLocation()].transform.position, Quaternion.Euler(-90, 180, 0));
         //StartCoroutine(AddMaegen());
         //StartCoroutine(WaitToReferenceHorgr());
+        StartCoroutine(SpawnEnemyUnits());
         StartCoroutine(WaitToSpawn());
     }
     IEnumerator WaitToSpawn()
@@ -58,7 +60,9 @@ public class HorgrManager : Singleton<HorgrManager>
         if (enemyOwns)
         {
             GameObject go = Instantiate(knight, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
+            Instantiate(enemySpawnParticle, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
             go.GetComponent<Warrior>().spawnedFromBuilding = true;
+            //_EM.enemies.Add(go);
         }
         StartCoroutine(SpawnEnemyUnits());
     }

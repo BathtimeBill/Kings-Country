@@ -71,6 +71,10 @@ public class SoundManager : Singleton<SoundManager>
     [Header("Towers")]
     public AudioClip[] spitSounds;
     public AudioClip[] spitExplosionSounds;
+    [Header("Lords")]
+    public AudioClip[] whooshSounds;
+    public AudioClip horseGallopSound;
+
 
 
 
@@ -83,6 +87,10 @@ public class SoundManager : Singleton<SoundManager>
 
         soundPool[soundPoolCurrent].clip = _clip;
         soundPool[soundPoolCurrent].Play();
+    }
+    public AudioClip GetWhooshSounds()
+    {
+        return whooshSounds[Random.Range(0, whooshSounds.Length)];
     }
     public AudioClip GetSpitSounds()
     {

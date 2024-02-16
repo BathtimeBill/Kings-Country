@@ -64,6 +64,22 @@ public static class GameEvents
 
     public static event Action OnToggleOutline = null;
 
+    public static event Action OnMineSpawned = null;
+    public static event Action OnLordSpawned = null;
+    public static event Action OnSpySpawned = null;
+
+    public static void ReportOnSpySpawned()
+    {
+        OnSpySpawned?.Invoke();
+    }
+    public static void ReportOnMineSpawned()
+    {
+        OnMineSpawned?.Invoke();
+    }
+    public static void ReportOnLordSpawned()
+    {
+        OnLordSpawned?.Invoke();
+    }
     public static void ReportOnToggleOutline()
     {
         OnToggleOutline?.Invoke();

@@ -94,7 +94,19 @@ public class Unit : GameBehaviour
         {
             closestEnemy = GetClosestEnemy();
             distanceToClosestEnemy = Vector3.Distance(closestEnemy.transform.position, transform.position);
+            if (closestEnemy.gameObject.tag == "Lord")
+            {
+                if(unitType != UnitType.DryadUnit || unitType != UnitType.GoblinUnit)
+                {
+                    navAgent.stoppingDistance = stoppingDistance * 2;
+                }
+            }
+            if (closestEnemy.gameObject.tag != "Lord")
+            {
+                navAgent.stoppingDistance = stoppingDistance;
+            }
         }
+
 
         switch (state)
         {
@@ -140,10 +152,10 @@ public class Unit : GameBehaviour
                 {
                     navAgent.stoppingDistance = 50;
                 }
-                else
-                {
-                    navAgent.stoppingDistance = stoppingDistance;
-                }
+                //else
+                //{
+                //    navAgent.stoppingDistance = stoppingDistance;
+                //}
                 if(unitType == UnitType.DryadUnit)
                 {
                     navAgent.stoppingDistance = 20;
@@ -458,6 +470,14 @@ public class Unit : GameBehaviour
         if (other.tag == "Boundry")
         {
             isOutOfBounds = false;
+        }
+        if (other.tag == "LordWeapon")
+        {
+            TakeDamage(_GM.lordDamage);
+        }
+        if (other.tag == "Lord")
+        {
+            state = UnitState.Attack;
         }
     }
     private void OnTriggerExit(Collider other)
@@ -963,7 +983,7 @@ public class Unit : GameBehaviour
         if(isSelected)
         {
             combatModeImage.sprite = attackSprite;
-            if(combatMode != CombatMode.Move)
+            if(combatMode != CombatMode.Move || combatMode != CombatMode.AttackMove)
             {
                 detectionRadius = detectionRadius * 2;
                 if (unitType == UnitType.GoblinUnit)

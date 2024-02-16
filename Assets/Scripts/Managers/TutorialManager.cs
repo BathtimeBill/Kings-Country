@@ -16,6 +16,7 @@ public class TutorialManager : Singleton<TutorialManager>
     public int tutorialCount = 0;
     public int maxTutorialCount;
     public Scrollbar scrollbar;
+    public GameObject pageObjects;
 
     [Header("Sprites")]
     public Sprite welcomeSprite;
@@ -29,6 +30,10 @@ public class TutorialManager : Singleton<TutorialManager>
     public Sprite eightSprite;
     public Sprite nineSprite;
     public Sprite tenSprite;
+    public Sprite elevenSprite;
+    public Sprite twelveSprite;
+    public Sprite thirteenSprite;
+    public Sprite fouteenSprite;
 
     [Header("In Game Tutorial")]
     public GameObject tutorialText;
@@ -46,16 +51,73 @@ public class TutorialManager : Singleton<TutorialManager>
     public bool isTutorial;
     public bool playerHasClaimedBoth;
     public bool canMoveTo7;
+    [Header("New")]
+    public GameObject newTutorialButton;
+    public TMP_Text newTutorialTitle;
+    public bool firstPlay;
+    public bool firstWave;
+    public bool firstMine;
+    public bool firstLord;
+    public bool firstLevel2;
+    public bool firstSpy;
+    public bool firstHomeTree;
 
 
+    //protected override void Awake()
+    //{
+    //    _SAVE.Load();
+    //}
     void Start()
     {
+        _SAVE.Load();
         CheckTutorial();
-        if(isTutorial)
+        StartCoroutine(WaitForStartCamera());
+        //if (newTutorialButton != null)
+        //{
+        //    CheckTutorial();
+        //    StartCoroutine(WaitForStartCamera());
+        //}
+
+    }
+    IEnumerator WaitForStartCamera()
+    {
+        yield return new WaitForSeconds(10);
+        if (firstPlay == false && _GM.level == LevelNumber.One)
         {
-            Time.timeScale = 0;
-            StartNextWaveButton.interactable = false;
+
+            StartCoroutine(WaitForWavesTutorial());
+            StartCoroutine(WaitForHealthTutorial());
+            StartCoroutine(WaitForToolsTutorial());
+            FirstPlayTutorial();
         }
+        if (_SAVE.lvl2Complete == false && _GM.level == LevelNumber.Two)
+        {
+            NewTutorialAvailable(7, "Witch's Hut");
+        }
+        if (_SAVE.lvl3Complete == false && _GM.level == LevelNumber.Three)
+        {
+            NewTutorialAvailable(6, "Horgr Shrine");
+        }
+    }
+    public void FirstPlayTutorial()
+    {
+        maxTutorialCount = 3;
+        OpenTutPanel();
+    }
+    IEnumerator WaitForToolsTutorial()
+    {
+        yield return new WaitForSeconds(5);
+        NewTutorialAvailable(4, "Tools");
+    }
+    IEnumerator WaitForWavesTutorial()
+    {
+        yield return new WaitForSeconds(30);
+        NewTutorialAvailable(8, "Waves");
+    }
+    IEnumerator WaitForHealthTutorial()
+    {
+        yield return new WaitForSeconds(180);
+        NewTutorialAvailable(11, "Health Pickups");
     }
     private void Update()
     {
@@ -83,6 +145,16 @@ public class TutorialManager : Singleton<TutorialManager>
             }
         }
     }
+    public void NewTutorialAvailable(int i, string title)
+    {
+        tutorialCount = i;
+        newTutorialTitle.text = title;
+        newTutorialButton.SetActive(true);
+        newTutorialButton.GetComponent<Animator>().SetTrigger("TutorialAvailable");
+        newTutorialButton.GetComponent<AudioSource>().Play();
+        pageObjects.SetActive(false);
+    }
+
     public void UpdateTutorialStage()
     {
         _SM.PlaySound(_SM.nextTutorialSound);
@@ -209,13 +281,13 @@ public class TutorialManager : Singleton<TutorialManager>
         {
             tutorialImage.sprite = threeSprite;
             tutTitle.text = "Resources";
-            tutContextText.text = "The game has 4 resources. These include, Maegen, Trees, Wildlife, and Populous.\r\n<br>Maegen:<br>This is the main currency of the game. Maegen represents the raw energy of the forest and you use this to recruit units. Maegen is collected at the end of each wave, based on the amount and quality of the trees standing.\r\n<br>Trees:<br>Once placed, trees produce Maegen based on their location to other trees at the end of each wave.\r\n<br>Wildlife:<br>This represents the amount of wildlife you have in your forest. Wildlife includes rabbits, deer and boar. Wildlife spawns in at the end of each round based on the amount of trees are in the forest; 1 wildlife for every 5 trees. Your special abilities require a certain amount of wildlife for them to be used.\r\n<br>Populous:<br>This represents how many units you can have in your army at any one time (game starts with 10 populous). This number can be increased through aquiring upgrades.";
+            tutContextText.text = "The game has 4 resources. These include, Maegen, Trees, Wildlife, and Populous.\r\n<br>Maegen:<br>This is the main currency of the game. Maegen represents the raw energy of the grove, and you use this to recruit units. Maegen is collected at the end of each wave, based on the amount and quality of the trees standing.\r\n<br>Trees:<br>Once placed, trees produce Maegen based on their location to other trees at the end of each wave.\r\n<br>Wildlife:<br>This represents the amount of wildlife you have in your grove. Wildlife includes rabbits, deer, and boar. Wildlife spawns in at the end of each round based on the number of trees are in the grove; 1 wildlife for every 5 trees. Your special abilities require a certain amount of wildlife for them to be used.\r\n<br>Populous:<br>This represents how many units you can have in your army at any one time (game starts with 10 populous). This number can be increased through acquiring upgrades.";
         } 
         if(tutorialCount == 4)
         {
             tutorialImage.sprite = fourSprite;
             tutTitle.text = "Tools";
-            tutContextText.text = "Tree Tool:<br>Pressing ‘1’ or clicking on the tree icon at the bottom of the screen will allow you to place a tree by left clicking on an available ground space. Trees cannot be placed on top of one another and neither on rocks nor swamp sections. A tree produces Maegen at the end of each wave and its productivity is determined by its distance from other trees. (Trees cannot be placed while the enemy is attacking).\r\n<br>Rune Tool:<br>Pressing ‘2’ or clicking on the icon at the bottom of the screen allows you to place a ‘Rune’. This is a blue dome of magical energy that heals units that are inside it. The rune will last for 1 round and multiple can be placed at an increasing cost each time.\r\n<br>Fyre Tool:<br>Pressing ‘3’ or clicking on the icon at the bottom of the screen allows you to create a fiery explosion, dealing damage to all enemy units in it's radius.\r\n<br>Stormer Tool:<br>Pressing '4' or clicking on the icon at the bottom of the screen allows you to create an intense storm that requires at least 20 wildlife. Lightning bolts will randomly strike enemies down for a period of 1 minute.";
+            tutContextText.text = "Tree Tool:<br>Clicking on the tree icon at the bottom of the screen will allow you to place a tree by left clicking on an available ground space. Trees cannot be placed on top of one another and neither on rocks nor swamp sections. A tree produces Maegen at the end of each wave and its productivity is determined by its distance from other trees. (Trees cannot be placed while the enemy is attacking).\r\n<br>Rune Tool:<br>Clicking on the rune icon at the bottom of the screen allows you to place a ‘Rune’. This is a blue dome of magical energy that heals units that are inside it. The rune will last for 1 round and multiple can be placed at an increasing cost each time.\r\n<br>Fyre Tool:<br>Clicking on the icon at the bottom of the screen allows you to create a fiery explosion, dealing damage to all enemy units in its radius.\r\n<br>Stormer Tool:<br>Clicking on the icon at the bottom of the screen allows you to create an intense storm that requires at least 20 wildlife. Lightning bolts will randomly strike enemies down for a period of 1 minute.";
         }
         if(tutorialCount == 5)
         {
@@ -227,45 +299,74 @@ public class TutorialManager : Singleton<TutorialManager>
         {
             tutorialImage.sprite = sixSprite;
             tutTitle.text = "Horgr";
-            tutContextText.text = "This is a magical shrine that is valuable to both the humans and the forest.\r\n<br>From this location, you can purchase a 'Huldra', which can transform into a watch tower to defend your forest.\r\n<br>Enemies will attempt to claim this site for themselves so you'll need to either defend it or attack it before the wave is over.";
+            tutContextText.text = "This is a magical shrine that is valuable to both the humans and the grove.\r\n<br>From this location, you can purchase a 'Huldra', which can transform into a watch tower to defend your grove.\r\n<br>You can also call upon the ‘Mistclif’, an enormous stone golem with tremendous power but that can’t be healed.\r\n<br>Enemies will attempt to claim this site for themselves, at which point they will begin to spawn their own knights into the game, so you'll need to either defend it or attack it before the wave is over.\r\n<br>If the player outnumbers the enemy in the vicinity of the site, it will begin to be claimed back. The more units, the more quickly it will be claimed.\r\n<br>Units cannot be purchased unless you have control of the Horgr.";
         }
         if(tutorialCount == 7)
         {
             tutorialImage.sprite = sevenSprite;
             tutTitle.text = "Witch's Hut";
-            tutContextText.text = "From this location, you can purchase the 'Skessa' and the 'Goblin Archer'.\r\n<br>Just like the Horgr, the enemy will attempt to claim this site.";
+            tutContextText.text = "A lone witch in the woods allows the grove’s minions to gather here. From this location, you can purchase the 'Skessa', a fast and powerful female troll, the 'Goblin Archer', A reliable ranged unit with fire arrows, and the Fidhain, a wiry monster made from plants that spits acid and can transform into an acid tower.\r\n<br>Enemies will attempt to claim this site for themselves, at which point they will begin to spawn their own crossbowmen into the game, so you'll need to either defend it or attack it before the wave is over.\r\n<br>If the player outnumbers the enemy in the vicinity of the site, it will begin to be claimed back. The more units, the more quickly it will be claimed.\r\n<br>Units cannot be purchased unless you have control of the Witch’s Hut.";
         }
         if (tutorialCount == 8)
         {
             tutorialImage.sprite = eightSprite;
             tutTitle.text = "Waves";
-            tutContextText.text = "The game is broken up into 'waves'.\r\n<br>Before a wave starts, you have the opportunity to place trees and purchase units in preparation for the incoming enemy force.\r\n<br>When you're ready to begin the wave, click the button pictured above and the enemies will begin to attack.\r\n<br>Once all enemies have been taken care of, the wave will end and you will recieve a breakdown of your incoming resources for the next round and a choice between two upgrades.\r\n<br>Press ‘F3’ to speed up time\r\n<br>Press ‘F4’ to slow down time.";
+            tutContextText.text = "The game is broken up into 'waves'.\r\n<br>Before a wave starts, you have the opportunity to place trees and purchase units in preparation for the incoming enemy force.\r\n<br>When you're ready to begin the wave, click the button pictured above and the enemies will begin to attack.\r\n<br>Once all enemies have been taken care of, the wave will end and you will receive a breakdown of your incoming resources for the next round and a choice between two upgrades.\r\n<br>Press ‘F4’ to speed up time\r\n<br>Press ‘F3’ to return to regular speed.";
         }
         if (tutorialCount == 9)
         {
             tutorialImage.sprite = nineSprite;
             tutTitle.text = "Enemy Types";
-            tutContextText.text = "There are 4 enemy types that you will encounter.\r\n<br>Woodcutters:<br>Woodcutters are marked in 'YELLOW' on the map. Their primary target are your trees and will prioritise cutting them down unless they are confronted by your units.\r\n<br>Hunters:<br>Hunters are marked in 'GREEN' on the map and their main focus is your wildlife. They will attempt to hunt your forest into extinction unless a 'Witch's Hut' or one of your units is closer.\r\n<br>Warriors:<br>Warriors are marked in 'RED' on the map and their main goal is to kill all of your units. They will attempt to claim your 'Horgr' if they are closer to it than they are to your units.\r\n<br>Spies:<br>Spies will spawn into the map at a random location and are marked in 'BLACK'. They will move towards your home tree, ignoring everything else in their path to destroy it. They will spawn in more regularly the higher the current wave is and can emerge at anytime, even inbetween waves.";
+            tutContextText.text = "There are 4 enemy types that you will encounter.\r\n<br>Woodcutters:<br>Woodcutters are marked in 'YELLOW' on the map. Their primary target are your trees and will prioritise cutting them down unless they are confronted by your units.\r\n<br>Hunters:<br>Hunters are marked in 'GREEN' on the map and their main focus is your wildlife. They will attempt to hunt your grove into extinction unless a 'Witch's Hut' or one of your units is closer.\r\n<br>Warriors:<br>Warriors are marked in 'RED' on the map and their main goal is to kill all of your units. They will attempt to claim your 'Horgr' if they are closer to it than they are to your units.";
         }
         if (tutorialCount == 10)
         {
             tutorialImage.sprite = tenSprite;
-            tutTitle.text = "Health and Maegen Drops";
-            tutContextText.text = "Health:<br>During the game you might notice some pink objects appearing around the map. These are 'Health' pickups.<br>If you send a unit to collect these, they will heal any units that are nearby at the time.\r\n<br>Maegen Drops:<br>When an enemy is killed there is a random chance that they will drop some Maegen. This Maegen cannot be collected.<br>At the end of the round all the Maegen drops on the map will be added up and you will recieve some bonus Maegen.<br>If the only enemies that remain are defending either the 'Horgr' or the 'Witch's Hut' you will get the opportunity to 'Claim Maegen' to help you take back these locations and complete the wave.";
+            tutTitle.text = "Spies";
+            tutContextText.text = "Spies are unique enemies that will attempt to sneak through your defences and attack your Home Tree directly.\r\n<br>They will arrive on the map at a random location and are marked in 'BLACK'.\r\n<br>They will move towards your home tree, ignoring everything else in their path to destroy it.\r\n<br>They will spawn in more regularly the higher the current wave is and can emerge at any time, even in between waves.";
+        }
+        if (tutorialCount == 11)
+        {
+            tutorialImage.sprite = elevenSprite;
+            tutTitle.text = "Health Pickups";
+            tutContextText.text = "Health:<br>During the game you might notice some pink objects appearing around the map. These are 'Health' pickups.\r\n<br>If you send a unit to their location, they will heal any units that are nearby at the time.";
+        }
+        if (tutorialCount == 12)
+        {
+            tutorialImage.sprite = twelveSprite;
+            tutTitle.text = "Mines";
+            tutContextText.text = "The humans are coming out of holes in the ground!\r\n<br>Occasionally, the humans will bore through the earth and set up their iron mines, this creates a new spawn point that enemies can arrive from.\r\n<br>Any trees in the area will be destroyed as it emerges.";
+        }
+        if (tutorialCount == 13)
+        {
+            tutorialImage.sprite = thirteenSprite;
+            tutTitle.text = "Lords of the Land";
+            tutContextText.text = "These are high ranking members of the King’s Court, tasked with weakening the defences of the grove.\r\n<br>They are incredibly deadly warriors that will appear sporadically to cause as much chaos as possible.\r\n<br>If you’re not prepared, they can easily cut through your units and destroy your Home Tree.";
+        }
+        if (tutorialCount == 14)
+        {
+            tutorialImage.sprite = fouteenSprite;
+            tutTitle.text = "Combat";
+            tutContextText.text = "Right clicking on an enemy will order a selected unit to target it. They will track down the enemy until they catch up to them.\r\n<br>Otherwise, the unit will behave differently, depending on which Combat Mode you have selected. This is represented by this icon above the unit.\r\n<br>Attack Mode:<br>Selecting Attack Mode allows the unit to move freely about the map, attacking any enemies that come within its range.<br>This is the default Combat Mode.\r\n<br>Defend Mode:<br>Selecting Defend Mode orders the unit to defend its current position. Its range is reduced and will move small distances to attack enemies but will always return to its original defence position.\r\n<br>Formations:<br>Clicking the Formations button will change how spread out units are. You can choose to have them bunch them together to allow a more concentrated force or spread out to cover more ground.";
         }
     }
 
     public void OpenTutPanel()
     {
+        CheckTutorial();
         tutorialPanel.SetActive(true);
+        newTutorialButton.SetActive(false);
         _GM.gameState = GameState.Pause;
         Time.timeScale = 0f;
     }
     public void CloseTutPanel()
     {
+        maxTutorialCount = 14;
+        pageObjects.SetActive(true);
         tutorialPanel.SetActive(false);
         _GM.gameState = GameState.Play;
         Time.timeScale = 1f;
+
     }
 
     public void ContinueTutorialButton()
@@ -308,14 +409,19 @@ public class TutorialManager : Singleton<TutorialManager>
 
     public void OnStartNextRound()
     {
-        if(isTutorial)
+        if (firstPlay == false)
         {
-            if (tutorialStage == 7)
+            if(_GM.level == LevelNumber.One && _GM.currentWave == 1)
             {
-                GameEvents.ReportOnNextTutorial();
+                NewTutorialAvailable(9, "Enemy Types");
+                StartCoroutine(WaitToAddCombatTutorial());
             }
         }
-
+    }
+    IEnumerator WaitToAddCombatTutorial()
+    {
+        yield return new WaitForSeconds(25);
+        NewTutorialAvailable(14, "Combat");
     }
     public void OnWaveOver()
     {
@@ -337,12 +443,53 @@ public class TutorialManager : Singleton<TutorialManager>
             }
         }
     }
+    void OnGameWin()
+    {
+        firstPlay = true;
+    }
+    void OnMineSpawned()
+    {
+        if(firstMine == false)
+        {
+            firstMine = true;
+            NewTutorialAvailable(12, "Mines");
+        }
+    }
+    void OnLordSpawned()
+    {
+        if (firstLord == false)
+        {
+            firstLord = true;
+            NewTutorialAvailable(13, "Lords of the Land");
+        }
+    }
+    void OnSpySpawned()
+    {
+        if(firstSpy == false)
+        {
+            firstSpy = true;
+            NewTutorialAvailable(10, "Spies");
+        }
+    }
+    void OnHomeTreeSelected()
+    {
+        if (firstPlay == false && firstHomeTree == false)
+        {
+            firstHomeTree = true;
+            NewTutorialAvailable(5, "Home Tree");
+        }
+    }
     private void OnEnable()
     {
         GameEvents.OnNextTutorial += OnNextTutorial;
         GameEvents.OnStartNextRound += OnStartNextRound;
         GameEvents.OnWaveOver += OnWaveOver;
         GameEvents.OnContinueButton += OnContinueButton;
+        GameEvents.OnGameWin += OnGameWin;
+        GameEvents.OnMineSpawned += OnMineSpawned;
+        GameEvents.OnLordSpawned += OnLordSpawned;
+        GameEvents.OnSpySpawned += OnSpySpawned;
+        GameEvents.OnHomeTreeSelected += OnHomeTreeSelected;
     }
     private void OnDisable()
     {
@@ -350,5 +497,10 @@ public class TutorialManager : Singleton<TutorialManager>
         GameEvents.OnStartNextRound -= OnStartNextRound;
         GameEvents.OnWaveOver -= OnWaveOver;
         GameEvents.OnContinueButton -= OnContinueButton;
+        GameEvents.OnGameWin -= OnGameWin;
+        GameEvents.OnMineSpawned -= OnMineSpawned;
+        GameEvents.OnLordSpawned -= OnLordSpawned;
+        GameEvents.OnSpySpawned -= OnSpySpawned;
+        GameEvents.OnHomeTreeSelected -= OnHomeTreeSelected;
     }
 }

@@ -8,6 +8,7 @@ using UnityEngine.Rendering.Universal;
 
 public class GameManager : Singleton<GameManager>
 {
+    public bool tutorial;
     public float gameTime = 0;
     public LevelNumber level;
     public PlayMode playmode;
@@ -94,6 +95,7 @@ public class GameManager : Singleton<GameManager>
     public float knightHealth;
     public float loggerHealth;
     public float lumberjackHealth;
+    public float lordHealth;
 
     [Header("Enemy Damage")]
     public float axe1Damage;
@@ -102,6 +104,7 @@ public class GameManager : Singleton<GameManager>
     public float sword3Damage;
     public float arrow1Damage;
     public float arrow2Damage;
+    public float lordDamage;
 
     [Header("Horgr")]
     public bool horgrClaimedByPlayer;
@@ -131,7 +134,7 @@ public class GameManager : Singleton<GameManager>
     }
     IEnumerator EndOfIntroCamera()
     {
-        yield return new WaitForSeconds(7);
+        yield return new WaitForSeconds(10);
         introCam.SetActive(false);
         gameState = GameState.Play;
     }

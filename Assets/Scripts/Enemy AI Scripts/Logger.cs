@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class Logger : GameBehaviour
 {
     [Header("Woodcutter Type")]
     public WoodcutterType woodcutterType;
-
+    [Header("Tick")]
+    public float seconds = 0.5f;
     [Header("Stats")]
     public float health;
     public float maxHealth;
@@ -59,27 +61,21 @@ public class Logger : GameBehaviour
         state = EnemyState.Work;
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
         speed = navAgent.speed;
+        StartCoroutine(Tick());
     }
 
- 
-    void Update()
+    IEnumerator Tick()
     {
-
-
         if (UnitSelection.Instance.unitList.Count != 0)
         {
             closestUnit = GetClosestUnit();
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
         }
-        if(_GM.trees.Count != 0)
+        if (_GM.trees.Count != 0)
         {
             closestTree = GetClosestTree();
             distanceFromClosestTree = Vector3.Distance(closestTree.transform.position, transform.position);
         }
-        //else
-        //{
-        //    closestTree = homeTree;
-        //}
 
         if (UnitSelection.Instance.unitList.Count == 0)
         {
@@ -97,7 +93,7 @@ public class Logger : GameBehaviour
 
                 if (_GM.trees.Count == 0)
                 {
-                    if(woodcutterType != WoodcutterType.LogCutter)
+                    if (woodcutterType != WoodcutterType.LogCutter)
                     {
                         navAgent.stoppingDistance = 7;
                     }
@@ -126,9 +122,9 @@ public class Logger : GameBehaviour
                 SmoothFocusOnEnemy();
                 if (closestUnit.tag == "LeshyUnit")
                 {
-                    if(woodcutterType != WoodcutterType.LogCutter)
+                    if (woodcutterType != WoodcutterType.LogCutter)
                         navAgent.stoppingDistance = 6;
-                    
+
                 }
                 else
                 {
@@ -154,9 +150,103 @@ public class Logger : GameBehaviour
             animator.SetBool("hasStopped", true);
             hasStopped = true;
         }
-
-        
+        yield return new WaitForSeconds(seconds);
+        StartCoroutine(Tick());
     }
+
+    //void Update()
+    //{
+    //    if (UnitSelection.Instance.unitList.Count != 0)
+    //    {
+    //        closestUnit = GetClosestUnit();
+    //        distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
+    //    }
+    //    if(_GM.trees.Count != 0)
+    //    {
+    //        closestTree = GetClosestTree();
+    //        distanceFromClosestTree = Vector3.Distance(closestTree.transform.position, transform.position);
+    //    }
+    //    //else
+    //    //{
+    //    //    closestTree = homeTree;
+    //    //}
+
+    //    if (UnitSelection.Instance.unitList.Count == 0)
+    //    {
+    //        state = EnemyState.Work;
+    //    }
+
+    //    switch (state)
+    //    {
+    //        case EnemyState.Work:
+
+    //            if (distanceFromClosestUnit < 30)
+    //            {
+    //                state = EnemyState.Attack;
+    //            }
+
+    //            if (_GM.trees.Count == 0)
+    //            {
+    //                if(woodcutterType != WoodcutterType.LogCutter)
+    //                {
+    //                    navAgent.stoppingDistance = 7;
+    //                }
+
+    //                //SmoothFocusOnTree();
+    //                FindHomeTree();
+    //            }
+    //            else
+    //            {
+    //                navAgent.stoppingDistance = loggerStoppingDistance;
+    //                if (distanceFromClosestTree < 30)
+    //                {
+    //                    SmoothFocusOnTree();
+    //                }
+    //                FindTree();
+    //            }
+
+    //            break;
+
+    //        case EnemyState.Attack:
+    //            if (distanceFromClosestUnit >= 30)
+    //            {
+    //                state = EnemyState.Work;
+    //            }
+    //            FindUnit();
+    //            SmoothFocusOnEnemy();
+    //            if (closestUnit.tag == "LeshyUnit")
+    //            {
+    //                if(woodcutterType != WoodcutterType.LogCutter)
+    //                    navAgent.stoppingDistance = 6;
+
+    //            }
+    //            else
+    //            {
+    //                navAgent.stoppingDistance = loggerStoppingDistance;
+    //            }
+    //            break;
+    //        case EnemyState.Beacon:
+    //            if (!hasArrivedAtBeacon)
+    //                navAgent.SetDestination(fyreBeacon.transform.position);
+    //            else
+    //                navAgent.SetDestination(transform.position);
+
+    //            break;
+    //    }
+
+    //    if (navAgent.velocity != Vector3.zero)
+    //    {
+    //        animator.SetBool("hasStopped", false);
+    //        hasStopped = false;
+    //    }
+    //    if (navAgent.velocity == Vector3.zero)
+    //    {
+    //        animator.SetBool("hasStopped", true);
+    //        hasStopped = true;
+    //    }
+
+
+    //}
     //private void OnTriggerStay(Collider other)
     //{
     //    if (other.tag == "Spit")
@@ -428,6 +518,7 @@ public class Logger : GameBehaviour
     }
     public void FindHomeTree()
     {
+        print("Finding Home Tree");
         navAgent.SetDestination(homeTree.transform.position);
     }
     //private void OnBeaconPlaced()

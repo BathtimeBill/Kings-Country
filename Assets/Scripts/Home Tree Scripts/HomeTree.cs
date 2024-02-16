@@ -146,6 +146,11 @@ public class HomeTree : GameBehaviour
             TakeDamage(50);
             other.enabled = false;
         }
+        if(other.tag == "LordWeapon")
+        {
+            TakeDamage(50);
+            other.enabled = false;
+        }
     }
     //Manages the amount of damage taken by an enemy weapon. Updates the health slider, plays an impact sound, and checks to see if the Home Tree is dead.
     public void TakeDamage(float damage)

@@ -10,6 +10,11 @@ public class PlayerProfile
     public int overworldMaegen;
     public int overworldMaegenTotal;
     public bool hasComeFromWin;
+    public bool firstPlay;
+    public bool firstWave;
+    public bool firstMine;
+    public bool firstLord;
+    public bool firstLevel2;
     [Header("Level 1")]
     public int LVL1Score;
     public int LVL1HighScore;

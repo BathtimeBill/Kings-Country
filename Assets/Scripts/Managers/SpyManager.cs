@@ -12,8 +12,10 @@ public class SpyManager : Singleton<SpyManager>
 
     void Start()
     {
-        StartCoroutine(SpawnSpy());
-
+        if(_GM.level != LevelNumber.One)
+        {
+            StartCoroutine(SpawnSpy());
+        }
     }
     public void Respawn()
     {
@@ -26,6 +28,7 @@ public class SpyManager : Singleton<SpyManager>
     }
     IEnumerator SpawnSpy()
     {
+
         Vector3 randomLocation = transform.position + Random.insideUnitSphere * placementRadius;
         NavMeshHit hit;
         NavMesh.SamplePosition(randomLocation, out hit, placementRadius, 1);

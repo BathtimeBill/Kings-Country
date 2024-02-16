@@ -7,7 +7,8 @@ public class Hunter : GameBehaviour
 {
     [Header("Hunter Type")]
     public HunterType type;
-
+    [Header("Tick")]
+    public float seconds = 0.5f;
     [Header("Stats")]
     public float health;
     public float maxHealth;
@@ -61,11 +62,10 @@ public class Hunter : GameBehaviour
         _EM.enemies.Add(gameObject);
         horgr = GameObject.FindGameObjectWithTag("HutRally");
         speed = navAgent.speed;
+        StartCoroutine(Tick());
     }
-
-    void Update()
-    {
-        //Tracks the closest animal and player unit.
+    IEnumerator Tick()
+    {//Tracks the closest animal and player unit.
         wildlife = GameObject.FindGameObjectsWithTag("Wildlife");
         closestUnit = GetClosestUnit();
         closestWildlife = GetClosestWildlife();
@@ -109,7 +109,7 @@ public class Hunter : GameBehaviour
         {
             case EnemyState.Work:
                 Hunt();
-               
+
                 break;
 
             case EnemyState.Attack:
@@ -141,7 +141,7 @@ public class Hunter : GameBehaviour
                     }
                     if (_HUTM.units.Count == 0)
                     {
-                        if(hutSwitch==false)
+                        if (hutSwitch == false)
                         {
                             animator.SetBool("hasStoppedHorgr", true);
                             navAgent.SetDestination(transform.position);
@@ -170,7 +170,117 @@ public class Hunter : GameBehaviour
         {
             animator.SetBool("hasStopped", false);
         }
+        yield return new WaitForSeconds(seconds);
+        StartCoroutine(Tick());
     }
+    //void Update()
+    //{
+    //    //Tracks the closest animal and player unit.
+    //    wildlife = GameObject.FindGameObjectsWithTag("Wildlife");
+    //    closestUnit = GetClosestUnit();
+    //    closestWildlife = GetClosestWildlife();
+    //    distanceFromClosestHorgr = Vector3.Distance(horgr.transform.position, transform.position);
+
+
+    //    if (UnitSelection.Instance.unitList.Count != 0)
+    //    {
+    //        distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
+    //    }
+    //    else
+    //    {
+    //        distanceFromClosestUnit = 25;
+    //    }
+    //    if (wildlife.Length > 0)
+    //    {
+    //        distanceFromClosestWildlife = Vector3.Distance(closestWildlife.transform.position, transform.position);
+    //    }
+    //    else
+    //    {
+    //        distanceFromClosestWildlife = 50;
+    //    }
+
+
+    //    if (wildlife.Length == 0 || UnitSelection.Instance.unitList.Count == 0)
+    //    {
+
+    //        animator.SetBool("allWildlifeDead", true);
+    //    }
+    //    if (wildlife.Length > 0 || UnitSelection.Instance.unitList.Count > 0)
+    //    {
+
+    //        animator.SetBool("allWildlifeDead", false);
+    //    }
+    //    if (distanceFromClosestUnit < 30 && UnitSelection.Instance.unitList.Count != 0)
+    //    {
+    //        state = EnemyState.Attack;
+    //    }
+
+    //    switch (state)
+    //    {
+    //        case EnemyState.Work:
+    //            Hunt();
+               
+    //            break;
+
+    //        case EnemyState.Attack:
+    //            hutSwitch = false;
+    //            if (UnitSelection.Instance.unitList.Count == 0 || distanceFromClosestUnit > 30)
+    //            {
+    //                state = EnemyState.Work;
+    //            }
+    //            Attack();
+    //            break;
+
+    //        case EnemyState.Beacon:
+    //            navAgent.stoppingDistance = 0;
+    //            if (!hasArrivedAtBeacon)
+    //                navAgent.SetDestination(fyreBeacon.transform.position);
+    //            else
+    //                navAgent.SetDestination(transform.position);
+    //            break;
+
+    //        case EnemyState.Horgr:
+    //            if (!hasArrivedAtHorgr)
+    //                navAgent.SetDestination(horgr.transform.position);
+    //            else
+    //            {
+    //                if (_HUTM.units.Count > 0)
+    //                {
+    //                    animator.SetBool("hasStoppedHorgr", false);
+    //                    Attack();
+    //                }
+    //                if (_HUTM.units.Count == 0)
+    //                {
+    //                    if(hutSwitch==false)
+    //                    {
+    //                        animator.SetBool("hasStoppedHorgr", true);
+    //                        navAgent.SetDestination(transform.position);
+    //                        hutSwitch = true;
+    //                    }
+
+    //                }
+    //            }
+    //            break;
+    //    }
+
+    //    if (distanceFromClosestHorgr > distanceFromClosestWildlife)
+    //    {
+    //        state = EnemyState.Work;
+    //    }
+    //    if (distanceFromClosestHorgr <= distanceFromClosestWildlife && !spawnedFromBuilding)
+    //    {
+    //        state = EnemyState.Horgr;
+    //    }
+
+    //    if (navAgent.velocity != Vector3.zero)
+    //    {
+    //        animator.SetBool("hasStopped", true);
+    //    }
+    //    if (navAgent.velocity == Vector3.zero)
+    //    {
+    //        animator.SetBool("hasStopped", false);
+    //    }
+    //}
 
     private void OnTriggerEnter(Collider other)
     {

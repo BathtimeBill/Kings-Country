@@ -8,7 +8,8 @@ public class Warrior : GameBehaviour
 {
     [Header("Hunter Type")]
     public WarriorType type;
-
+    [Header("Tick")]
+    public float seconds = 0.5f;
     [Header("Stats")]
     public float health;
     public float maxHealth;
@@ -59,9 +60,11 @@ public class Warrior : GameBehaviour
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
         horgr = GameObject.FindGameObjectWithTag("HorgrRally");
         speed = navAgent.speed;
+        StartCoroutine(Tick());
     }
 
-    void Update()
+
+    IEnumerator Tick()
     {
         closestUnit = GetClosestUnit();
 
@@ -109,7 +112,7 @@ public class Warrior : GameBehaviour
                 {
                     state = EnemyState.Horgr;
                 }
-                if(distanceFromClosestHorgr >= distanceFromClosestUnit)
+                if (distanceFromClosestHorgr >= distanceFromClosestUnit)
                 {
                     state = EnemyState.Attack;
                 }
@@ -136,7 +139,7 @@ public class Warrior : GameBehaviour
                     }
                     if (_HM.units.Count == 0)
                     {
-                        if(horgrSwitch == false)
+                        if (horgrSwitch == false)
                         {
                             animator.SetBool("hasStoppedHorgr", true);
                             navAgent.SetDestination(transform.position);
@@ -156,8 +159,107 @@ public class Warrior : GameBehaviour
         {
             animator.SetBool("hasStopped", true);
         }
-
+        yield return new WaitForSeconds(seconds);
+        StartCoroutine(Tick());
     }
+
+    //void Update()
+    //{
+    //    closestUnit = GetClosestUnit();
+
+    //    if (UnitSelection.Instance.unitList.Count != 0)
+    //    {
+    //        distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
+    //    }
+    //    distanceFromClosestHorgr = Vector3.Distance(horgr.transform.position, transform.position);
+
+
+
+    //    switch (state)
+    //    {
+    //        case EnemyState.Work:
+    //            navAgent.SetDestination(transform.position);
+
+    //            break;
+
+    //        case EnemyState.Attack:
+    //            animator.SetBool("hasStoppedHorgr", false);
+    //            horgrSwitch = false;
+    //            if (UnitSelection.Instance.unitList.Count == 0)
+    //            {
+    //                navAgent.stoppingDistance = 8;
+    //                FindHomeTree();
+    //                SmoothFocusOnEnemy();
+    //            }
+    //            else
+    //            {
+    //                FindUnit();
+    //                if (distanceFromClosestUnit < 30)
+    //                {
+    //                    SmoothFocusOnEnemy();
+    //                }
+    //                if (closestUnit.tag == "LeshyUnit")
+    //                {
+    //                    navAgent.stoppingDistance = 6;
+    //                }
+    //                else
+    //                {
+    //                    navAgent.stoppingDistance = stoppingDistance;
+    //                }
+    //            }
+    //            if (distanceFromClosestHorgr < distanceFromClosestUnit && !spawnedFromBuilding)
+    //            {
+    //                state = EnemyState.Horgr;
+    //            }
+    //            if(distanceFromClosestHorgr >= distanceFromClosestUnit)
+    //            {
+    //                state = EnemyState.Attack;
+    //            }
+    //            break;
+    //        case EnemyState.Flee:
+
+    //            break;
+    //        case EnemyState.Beacon:
+    //            if (!hasArrivedAtBeacon)
+    //                navAgent.SetDestination(fyreBeacon.transform.position);
+    //            else
+    //                navAgent.SetDestination(transform.position);
+    //            break;
+    //        case EnemyState.Horgr:
+    //            if (!hasArrivedAtHorgr)
+    //                navAgent.SetDestination(horgr.transform.position);
+    //            else
+    //            {
+    //                if (_HM.units.Count > 0)
+    //                {
+    //                    animator.SetBool("hasStoppedHorgr", false);
+    //                    state = EnemyState.Attack;
+    //                    horgrSwitch = false;
+    //                }
+    //                if (_HM.units.Count == 0)
+    //                {
+    //                    if(horgrSwitch == false)
+    //                    {
+    //                        animator.SetBool("hasStoppedHorgr", true);
+    //                        navAgent.SetDestination(transform.position);
+    //                        horgrSwitch = true;
+    //                        print("Setting Destination");
+    //                    }
+
+    //                }
+    //            }
+    //            break;
+    //    }
+    //    if (navAgent.velocity != Vector3.zero)
+    //    {
+    //        animator.SetBool("hasStopped", false);
+    //    }
+    //    if (navAgent.velocity == Vector3.zero)
+    //    {
+    //        animator.SetBool("hasStopped", true);
+    //    }
+
+    //}
     private void SmoothFocusOnEnemy()
     {
         if (UnitSelection.Instance.unitList.Count == 0)

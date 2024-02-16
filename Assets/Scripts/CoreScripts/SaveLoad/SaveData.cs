@@ -66,6 +66,11 @@ public class SaveData : Singleton<SaveData>
             overworldMaegen = _OM.overWorldMaegen,
             overworldMaegenTotal = _OM.overWorldMaegenTotal,
             hasComeFromWin = hasComeFromWin,
+            firstPlay = _TUTM.firstPlay,
+            firstWave = _TUTM.firstWave,
+            firstMine = _TUTM.firstMine,
+            firstLord = _TUTM.firstLord,
+            firstLevel2 = _TUTM.firstLevel2,
         };
         return profile;
     }
@@ -147,6 +152,11 @@ public class SaveData : Singleton<SaveData>
             overworldMaegen = loadedData.overworldMaegen;
             overworldMaegenTotal = loadedData.overworldMaegenTotal;
             hasComeFromWin = loadedData.hasComeFromWin;
+            _TUTM.firstPlay = loadedData.firstPlay;
+            _TUTM.firstWave = loadedData.firstWave;
+            _TUTM.firstMine = loadedData.firstMine;
+            _TUTM.firstLord = loadedData.firstLord;
+            _TUTM.firstLevel2 = loadedData.firstLevel2;
         }
         else
         {

@@ -33,6 +33,12 @@ public class SaveManager : MonoBehaviour
                 overworldMaegen = 0,
                 overworldMaegenTotal = 0,
                 hasComeFromWin = false,
+                firstPlay = false,
+                firstWave = false,
+                firstMine = false,
+                firstLord = false,
+                firstLevel2 = false,
+
             };
             SaveGameData(defaultData);
         }

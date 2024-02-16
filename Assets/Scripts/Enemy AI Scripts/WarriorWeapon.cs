@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WarriorWeapon : MonoBehaviour
+public class WarriorWeapon : GameBehaviour
 {
     public Collider weaponCollider;
+    public AudioSource weaponSource;
     public void EnableCollider()
     {
         weaponCollider.enabled = true;
@@ -26,5 +27,10 @@ public class WarriorWeapon : MonoBehaviour
     {
         gameObject.GetComponentInParent<Warrior>().PlayKnightFootstepSound();
     }
-
+    public void Whoosh()
+    {
+        weaponSource.clip = _SM.GetWhooshSounds();
+        weaponSource.pitch = Random.Range(0.8f, 1.2f);
+        weaponSource.Play();
+    }
 }

@@ -89,6 +89,10 @@ public class Tree : GameBehaviour
         {
             runeBuff = true;
         }
+        if(other.tag == "Mine")
+        {
+            Die();
+        }
 
     }
 

@@ -82,7 +82,7 @@ public class WildlifeAI : GameBehaviour
               //navAgent.SetDestination(finalPosition);
         //    yield return null;
         //}
-        yield return new WaitForSeconds(8f);
+        yield return new WaitForSeconds(25f);
 
         StartCoroutine(Move());
     }
