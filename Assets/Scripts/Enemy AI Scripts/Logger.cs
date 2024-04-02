@@ -311,6 +311,16 @@ public class Logger : GameBehaviour
         {
             navAgent.speed = speed / 2;
         }
+        if (other.tag == "Hand")
+        {
+            _EM.enemies.Remove(gameObject);
+            DropMaegen();
+            GameObject go;
+            go = Instantiate(deadLogger, other.gameObject.transform.position, transform.rotation);
+            go.transform.parent = other.gameObject.transform;
+            GameEvents.ReportOnEnemyKilled();
+            Destroy(gameObject);
+        }
     }
     private void OnTriggerExit(Collider other)
     {
@@ -376,20 +386,25 @@ public class Logger : GameBehaviour
         Vector3 forward = new Vector3(0, 180, 0);
 
         GameObject bloodParticle;
-        bloodParticle = Instantiate(bloodParticle1, transform.position, Quaternion.LookRotation(forward));
+        bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
         health -= damage;
         Die();
     }
 
     private void Die()
     {
+        bool isColliding = false;
         if(health <= 0)
         {
             _EM.enemies.Remove(gameObject);
             DropMaegen();
-            GameObject go;
-            go = Instantiate(deadLogger, transform.position, transform.rotation);
-            Destroy(go, 15);
+            if (!isColliding)
+            {
+                isColliding = true;
+                GameObject go;
+                go = Instantiate(deadLogger, transform.position, transform.rotation);
+                Destroy(go, 15);
+            }
             GameEvents.ReportOnEnemyKilled();
             Destroy(gameObject);
         }
@@ -412,6 +427,7 @@ public class Logger : GameBehaviour
     }
     public void Launch()
     {
+        bool isColliding = false;
         _EM.enemies.Remove(gameObject);
         DropMaegen();
         if (_HUTM.enemies.Contains(gameObject))
@@ -419,12 +435,17 @@ public class Logger : GameBehaviour
             _HUTM.enemies.Remove(gameObject);
         }
         float thrust = 20000f;
-        GameObject go;
-        go = Instantiate(deadLogger, transform.position, transform.rotation);
-        go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * thrust);
-        go.GetComponentInChildren<Rigidbody>().AddForce(transform.forward * -thrust);
-        go.GetComponent<RagdollSound>().hasBeenLaunched = true;
-        Destroy(go, 25);
+        if(!isColliding)
+        {
+            isColliding= true;
+            GameObject go;
+            go = Instantiate(deadLogger, transform.position, transform.rotation);
+            go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * thrust);
+            go.GetComponentInChildren<Rigidbody>().AddForce(transform.forward * -thrust);
+            go.GetComponent<RagdollSound>().hasBeenLaunched = true;
+            Destroy(go, 25);
+        }
+
         GameEvents.ReportOnEnemyKilled();
         Destroy(gameObject);
     }
@@ -435,13 +456,13 @@ public class Logger : GameBehaviour
         {
             case WoodcutterType.Logger:
                 
-                navAgent.speed = 5;
+                navAgent.speed = 9;
                 health = _GM.loggerHealth;
                 maxHealth = _GM.loggerHealth;
                 break;
 
             case WoodcutterType.Lumberjack:
-                navAgent.speed = 6;
+                navAgent.speed = 10;
                 health = _GM.lumberjackHealth;
                 maxHealth = _GM.lumberjackHealth;
                 break;

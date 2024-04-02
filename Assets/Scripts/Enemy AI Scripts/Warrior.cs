@@ -63,7 +63,6 @@ public class Warrior : GameBehaviour
         StartCoroutine(Tick());
     }
 
-
     IEnumerator Tick()
     {
         closestUnit = GetClosestUnit();
@@ -151,11 +150,11 @@ public class Warrior : GameBehaviour
                 }
                 break;
         }
-        if (navAgent.velocity != Vector3.zero)
+        if (navAgent.velocity != Vector3.zero || distanceFromClosestUnit >= 10)
         {
             animator.SetBool("hasStopped", false);
         }
-        if (navAgent.velocity == Vector3.zero)
+        if (navAgent.velocity == Vector3.zero || distanceFromClosestUnit < 10)
         {
             animator.SetBool("hasStopped", true);
         }
@@ -163,103 +162,25 @@ public class Warrior : GameBehaviour
         StartCoroutine(Tick());
     }
 
-    //void Update()
-    //{
-    //    closestUnit = GetClosestUnit();
-
-    //    if (UnitSelection.Instance.unitList.Count != 0)
-    //    {
-    //        distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
-    //    }
-    //    distanceFromClosestHorgr = Vector3.Distance(horgr.transform.position, transform.position);
-
-
-
-    //    switch (state)
-    //    {
-    //        case EnemyState.Work:
-    //            navAgent.SetDestination(transform.position);
-
-    //            break;
-
-    //        case EnemyState.Attack:
-    //            animator.SetBool("hasStoppedHorgr", false);
-    //            horgrSwitch = false;
-    //            if (UnitSelection.Instance.unitList.Count == 0)
-    //            {
-    //                navAgent.stoppingDistance = 8;
-    //                FindHomeTree();
-    //                SmoothFocusOnEnemy();
-    //            }
-    //            else
-    //            {
-    //                FindUnit();
-    //                if (distanceFromClosestUnit < 30)
-    //                {
-    //                    SmoothFocusOnEnemy();
-    //                }
-    //                if (closestUnit.tag == "LeshyUnit")
-    //                {
-    //                    navAgent.stoppingDistance = 6;
-    //                }
-    //                else
-    //                {
-    //                    navAgent.stoppingDistance = stoppingDistance;
-    //                }
-    //            }
-    //            if (distanceFromClosestHorgr < distanceFromClosestUnit && !spawnedFromBuilding)
-    //            {
-    //                state = EnemyState.Horgr;
-    //            }
-    //            if(distanceFromClosestHorgr >= distanceFromClosestUnit)
-    //            {
-    //                state = EnemyState.Attack;
-    //            }
-    //            break;
-    //        case EnemyState.Flee:
-
-    //            break;
-    //        case EnemyState.Beacon:
-    //            if (!hasArrivedAtBeacon)
-    //                navAgent.SetDestination(fyreBeacon.transform.position);
-    //            else
-    //                navAgent.SetDestination(transform.position);
-    //            break;
-    //        case EnemyState.Horgr:
-    //            if (!hasArrivedAtHorgr)
-    //                navAgent.SetDestination(horgr.transform.position);
-    //            else
-    //            {
-    //                if (_HM.units.Count > 0)
-    //                {
-    //                    animator.SetBool("hasStoppedHorgr", false);
-    //                    state = EnemyState.Attack;
-    //                    horgrSwitch = false;
-    //                }
-    //                if (_HM.units.Count == 0)
-    //                {
-    //                    if(horgrSwitch == false)
-    //                    {
-    //                        animator.SetBool("hasStoppedHorgr", true);
-    //                        navAgent.SetDestination(transform.position);
-    //                        horgrSwitch = true;
-    //                        print("Setting Destination");
-    //                    }
-
-    //                }
-    //            }
-    //            break;
-    //    }
-    //    if (navAgent.velocity != Vector3.zero)
-    //    {
-    //        animator.SetBool("hasStopped", false);
-    //    }
-    //    if (navAgent.velocity == Vector3.zero)
-    //    {
-    //        animator.SetBool("hasStopped", true);
-    //    }
-
-    //}
+    void FixedUpdate()
+    {
+        switch (state)
+        {
+            case EnemyState.Attack:
+                if (UnitSelection.Instance.unitList.Count == 0)
+                {
+                    SmoothFocusOnEnemy();
+                }
+                else
+                {
+                    if (distanceFromClosestUnit < 30)
+                    {
+                        SmoothFocusOnEnemy();
+                    }
+                }
+                break;
+        }   
+    }
     private void SmoothFocusOnEnemy()
     {
         if (UnitSelection.Instance.unitList.Count == 0)
@@ -278,19 +199,19 @@ public class Warrior : GameBehaviour
         switch (type)
         {
             case WarriorType.Dreng:
-                navAgent.speed = 6;
+                navAgent.speed = 9;
                 health = _GM.drengHealth;
                 maxHealth = _GM.drengHealth;
                 break;
 
             case WarriorType.Berserkr:
-                navAgent.speed = 12;
+                navAgent.speed = 20;
                 health = _GM.beserkrHealth;
                 maxHealth = _GM.beserkrHealth;
                 break;
 
             case WarriorType.Knight:
-                navAgent.speed = 8;
+                navAgent.speed = 12;
                 health = _GM.knightHealth;
                 maxHealth = _GM.knightHealth;
                 break;
@@ -409,12 +330,13 @@ public class Warrior : GameBehaviour
         audioSource.pitch = Random.Range(0.8f, 1.2f);
         audioSource.Play();
         GameObject bloodParticle;
-        bloodParticle = Instantiate(bloodParticle1, transform.position, transform.rotation);
+        bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
         health -= damage;
         Die();
     }
     private void Die()
     {
+        bool isColliding = false;
         if (health <= 0)
         {
             _EM.enemies.Remove(gameObject);
@@ -423,9 +345,13 @@ public class Warrior : GameBehaviour
                 _HM.enemies.Remove(gameObject);
             }
             DropMaegen();
-            GameObject go;
-            go = Instantiate(deathObject, transform.position, transform.rotation);
-            Destroy(go, 15);
+            if (!isColliding)
+            {
+                isColliding = true;
+                GameObject go;
+                go = Instantiate(deathObject, transform.position, transform.rotation);
+                Destroy(go, 15);
+            }
             GameEvents.ReportOnEnemyKilled();
             Destroy(gameObject);
         }

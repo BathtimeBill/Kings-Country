@@ -38,6 +38,21 @@ public class SaveManager : MonoBehaviour
                 firstMine = false,
                 firstLord = false,
                 firstLevel2 = false,
+                satyrPerk = false,
+                orcusPerk = false,
+                leshyPerk = false,
+                willowPerk = false,
+                skessaPerk = false,
+                goblinPerk = false,
+                fidhainPerk = false,
+                oakPerk = false,
+                huldraPerk = false,
+                golemPerk = false,
+                explosiveTreePerk = false,
+                homeTreePerk = false,
+                runePerk = false,
+                fyrePerk = false,
+                bearPerk = false,
 
             };
             SaveGameData(defaultData);

@@ -9,10 +9,12 @@ public class UnitWeapon : GameBehaviour
     public GameObject arrow;
     public GameObject arrow2;
     public Collider weaponCollider;
+    public Collider weaponCollider2;
     public GameObject footstepParticle;
     public GameObject stompParticle;
     public GameObject leftFoot;
     public GameObject rightFoot;
+    public GameObject hand;
     public GameObject spit;
     public ParticleSystem spitParticle;
     public Collider spitCollider;
@@ -26,10 +28,12 @@ public class UnitWeapon : GameBehaviour
     }
     public void Arrow()
     {
-        GameObject go = Instantiate(arrow, firingPoint.transform.position, transform.rotation);
-        go.GetComponent<Rigidbody>().AddForce(transform.forward * 1000f);
-        go.transform.LookAt(gameObject.GetComponentInParent<Unit>().closestEnemy);
-        Destroy(go, 2);
+        if(_EM.enemies.Count != 0 && GetComponentInParent<Unit>().distanceToClosestEnemy < 80)
+        {
+            GameObject go = Instantiate(arrow, firingPoint.transform.position, transform.rotation);
+            go.GetComponent<EnemyProjectile>().target = GetComponentInParent<Unit>().closestEnemy.gameObject;
+            Destroy(go, 1);
+        }
     }
     public void EnableCollider()
     {
@@ -38,6 +42,14 @@ public class UnitWeapon : GameBehaviour
     public void DisableCollider()
     {
         weaponCollider.enabled = false;
+    }
+    public void EnableHandCollider()
+    {
+        weaponCollider2.enabled = true;
+    }
+    public void DisableHandCollider()
+    {
+        weaponCollider2.enabled = false;
     }
     public void Footstep()
     {
@@ -60,6 +72,11 @@ public class UnitWeapon : GameBehaviour
     public void Stomp()
     {
         Instantiate(stompParticle, rightFoot.transform.position, Quaternion.Euler(90, 0, 0));
+        gameObject.GetComponentInParent<Unit>().PlayLeshyStompSound();
+    }
+    public void HandStomp()
+    {
+        Instantiate(stompParticle, hand.transform.position, Quaternion.Euler(90, 0, 0));
         gameObject.GetComponentInParent<Unit>().PlayLeshyStompSound();
     }
     public void Flap()

@@ -41,33 +41,10 @@ public class Bow : GameBehaviour
             closestTarget = gameObject.GetComponentInParent<Hunter>().closestUnit;
         }
 
-
-        //Adjusts the speed of the projectile based on its distance from the target.
-        if (distanceFromWildlife >= 18)
-        {
-            projectileSpeed = 2000;
-        }
-        if (distanceFromWildlife < 18 && distanceFromWildlife <= 14)
-        {
-            projectileSpeed = 1000;
-        }
-        if (distanceFromWildlife < 14 && distanceFromWildlife <= 10)
-        {
-            projectileSpeed = 800;
-        }
-        if (distanceFromWildlife < 10 && distanceFromWildlife <= 5)
-        {
-            projectileSpeed = 300;
-        }
-        if (distanceFromWildlife < 5)
-        {
-            projectileSpeed = 150;
-        }
         GameObject projectileInstance;
-        projectileInstance = Instantiate(projectilePrefab, arrowSpawnPoint.transform.position, Quaternion.Euler(90, 0, transform.parent.rotation.z));
-        projectileInstance.GetComponent<Rigidbody>().AddForce(transform.forward * projectileSpeed);
-        projectileInstance.transform.LookAt(closestTarget);
-        Destroy(projectileInstance, 2);
+        projectileInstance = Instantiate(projectilePrefab, arrowSpawnPoint.transform.position, transform.rotation);
+        projectileInstance.GetComponent<EnemyProjectile>().target = closestTarget.gameObject;
+        Destroy(projectileInstance, 1);
         PlayBowReleaseSound();
     }
     public void CheckForEnemies()

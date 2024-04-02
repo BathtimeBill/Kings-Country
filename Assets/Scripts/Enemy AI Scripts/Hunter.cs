@@ -34,6 +34,7 @@ public class Hunter : GameBehaviour
     public float distanceFromClosestWildlife;
     public Transform closestUnit;
     public float distanceFromClosestUnit;
+    public float range;
 
     [Header("Hut")]
     public GameObject horgr;
@@ -78,7 +79,7 @@ public class Hunter : GameBehaviour
         }
         else
         {
-            distanceFromClosestUnit = 25;
+            distanceFromClosestUnit = 200000;
         }
         if (wildlife.Length > 0)
         {
@@ -86,7 +87,7 @@ public class Hunter : GameBehaviour
         }
         else
         {
-            distanceFromClosestWildlife = 50;
+            distanceFromClosestWildlife = 200000;
         }
 
 
@@ -100,7 +101,7 @@ public class Hunter : GameBehaviour
 
             animator.SetBool("allWildlifeDead", false);
         }
-        if (distanceFromClosestUnit < 30 && UnitSelection.Instance.unitList.Count != 0)
+        if (distanceFromClosestUnit < range && UnitSelection.Instance.unitList.Count != 0)
         {
             state = EnemyState.Attack;
         }
@@ -114,7 +115,7 @@ public class Hunter : GameBehaviour
 
             case EnemyState.Attack:
                 hutSwitch = false;
-                if (UnitSelection.Instance.unitList.Count == 0 || distanceFromClosestUnit > 30)
+                if (UnitSelection.Instance.unitList.Count == 0 || distanceFromClosestUnit > range)
                 {
                     state = EnemyState.Work;
                 }
@@ -131,9 +132,13 @@ public class Hunter : GameBehaviour
 
             case EnemyState.Horgr:
                 if (!hasArrivedAtHorgr)
+                {
                     navAgent.SetDestination(horgr.transform.position);
+                    navAgent.stoppingDistance = range / 2;
+                }
                 else
                 {
+                    navAgent.stoppingDistance = range;
                     if (_HUTM.units.Count > 0)
                     {
                         animator.SetBool("hasStoppedHorgr", false);
@@ -162,11 +167,11 @@ public class Hunter : GameBehaviour
             state = EnemyState.Horgr;
         }
 
-        if (navAgent.velocity != Vector3.zero)
+        if (navAgent.velocity != Vector3.zero || distanceFromClosestUnit >= 10)
         {
             animator.SetBool("hasStopped", true);
         }
-        if (navAgent.velocity == Vector3.zero)
+        if (navAgent.velocity == Vector3.zero || distanceFromClosestUnit < 10)
         {
             animator.SetBool("hasStopped", false);
         }
@@ -219,7 +224,7 @@ public class Hunter : GameBehaviour
     //    {
     //        case EnemyState.Work:
     //            Hunt();
-               
+
     //            break;
 
     //        case EnemyState.Attack:
@@ -281,7 +286,18 @@ public class Hunter : GameBehaviour
     //        animator.SetBool("hasStopped", false);
     //    }
     //}
-
+    private void FixedUpdate()
+    {
+        if(distanceFromClosestUnit < range)
+        {
+            SmoothFocusOnEnemy();
+        }
+    }
+    private void SmoothFocusOnEnemy()
+    {
+        var targetRotation = Quaternion.LookRotation(closestUnit.transform.position - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2 * Time.deltaTime);
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "PlayerWeapon")
@@ -397,12 +413,13 @@ public class Hunter : GameBehaviour
         audioSource.pitch = Random.Range(0.8f, 1.2f);
         audioSource.Play();
         GameObject bloodParticle;
-        bloodParticle = Instantiate(bloodParticle1, transform.position, transform.rotation);
+        bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
         health -= damage;
         Die();
     }
     private void Die()
     {
+        bool isColliding = false;
         if (health <= 0)
         {
             _EM.enemies.Remove(gameObject);
@@ -411,9 +428,13 @@ public class Hunter : GameBehaviour
                 _HUTM.enemies.Remove(gameObject);
             }
             DropMaegen();
-            GameObject go;
-            go = Instantiate(deathObject, transform.position, transform.rotation);
-            Destroy(go, 15);
+            if (!isColliding)
+            {
+                isColliding = true;
+                GameObject go;
+                go = Instantiate(deathObject, transform.position, transform.rotation);
+                Destroy(go, 15);
+            }
             GameEvents.ReportOnEnemyKilled();
             Destroy(gameObject);
         }
@@ -429,6 +450,7 @@ public class Hunter : GameBehaviour
 
     public void Launch()
     {
+        bool isColliding = false;
         if (_HUTM.enemies.Contains(gameObject))
         {
             _HUTM.enemies.Remove(gameObject);
@@ -436,33 +458,39 @@ public class Hunter : GameBehaviour
         _EM.enemies.Remove(gameObject);
         DropMaegen();
         float thrust = 20000f;
-        GameObject go;
-        go = Instantiate(deathObject, transform.position, transform.rotation);
-        go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * thrust);
-        go.GetComponentInChildren<Rigidbody>().AddForce(transform.forward * -thrust);
-        go.GetComponent<RagdollSound>().hasBeenLaunched = true;
-        Destroy(go, 25);
+        if(!isColliding)
+        {
+            isColliding = true;
+            GameObject go;
+            go = Instantiate(deathObject, transform.position, transform.rotation);
+            go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * thrust);
+            go.GetComponentInChildren<Rigidbody>().AddForce(transform.forward * -thrust);
+            go.GetComponent<RagdollSound>().hasBeenLaunched = true;
+            Destroy(go, 25);
+        }
+
         GameEvents.ReportOnEnemyKilled();
         Destroy(gameObject);
     }
     private void Setup()
     {
+        navAgent.stoppingDistance = range;
         switch (type)
         {
             case HunterType.Wathe:
-                navAgent.speed = 6;
+                navAgent.speed = 9;
                 health = _GM.watheHealth;
                 maxHealth = _GM.watheHealth;
                 break;
 
             case HunterType.Hunter:
-                navAgent.speed = 7;
+                navAgent.speed = 11;
                 health = _GM.hunterHealth;
                 maxHealth = _GM.hunterHealth;
                 break;
 
             case HunterType.Bjornjeger:
-                navAgent.speed = 4;
+                navAgent.speed = 8;
                 health = _GM.bjornjeggerHealth;
                 maxHealth = _GM.bjornjeggerHealth;
                 break;
@@ -495,7 +523,7 @@ public class Hunter : GameBehaviour
         }
         else
         {
-            if (distanceFromClosestWildlife < 30)
+            if (distanceFromClosestWildlife < range)
             {
                 transform.LookAt(closestWildlife.transform.position);
             }

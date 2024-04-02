@@ -53,7 +53,7 @@ public class StartCamera : GameBehaviour
                     break;
                 case LevelNumber.Four:
 
-                    animator.SetTrigger("Four");
+                    //animator.SetTrigger("Four");
                     levelTitle.text = "Level 4";
                     break;
                 case LevelNumber.Five:

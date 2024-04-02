@@ -31,6 +31,10 @@ public class Tree : GameBehaviour
     public GameObject[] forestDecor;
     public float spawnRadius;
     public GameObject[] meshes;
+    public Renderer[] treeRenderers;
+    public Material summerFoilage;
+    public Material winterFoilage;
+
 
 
  
@@ -38,12 +42,8 @@ public class Tree : GameBehaviour
     {
         _GM.trees.Add(gameObject);
         DecideType();
-
         health = 100;
-
         StartCoroutine(WaitForDecorSpawn());
-
-
         transform.rotation = Quaternion.Euler(0, RandomYAxisRotation(), 0);
         _UI.CheckTreeUI();
     }
@@ -93,6 +93,10 @@ public class Tree : GameBehaviour
         {
             Die();
         }
+        if(other.tag == "Explosion3")
+        {
+            Die();
+        }
 
     }
 
@@ -119,18 +123,35 @@ public class Tree : GameBehaviour
     private void DecideType()
     {
         int rnd = Random.Range(0, meshes.Length);
-        if(rnd == 0)
-        {
-            type = TreeType.Pine;
-            
-        }
-        if(rnd == 1)
-        {
-            type = TreeType.Deciduous;
-        }
-        meshes[rnd].SetActive(true);
-    }
 
+        if(_GM.level == LevelNumber.Four)
+        {
+            meshes[1].SetActive(true);
+            StartCoroutine(WaitToAssignWinterMaterial());
+        }
+        else
+        {
+            if (rnd == 0)
+            {
+                type = TreeType.Pine;
+            }
+            if (rnd == 1)
+            {
+                type = TreeType.Deciduous;
+            }
+            meshes[rnd].SetActive(true);
+        }
+    }
+    IEnumerator WaitToAssignWinterMaterial()
+    {
+        yield return new WaitForSeconds(1);
+        treeRenderers[0].materials[0] = winterFoilage;
+        treeRenderers[1].materials[0] = winterFoilage;
+        treeRenderers[0].materials[1] = winterFoilage;
+        treeRenderers[1].materials[1] = winterFoilage;
+        treeRenderers[2].material = winterFoilage;
+        treeRenderers[3].material = winterFoilage;
+    }
     private void ChopSound()
     {
         audioSource.clip = _SM.GetChopSounds();

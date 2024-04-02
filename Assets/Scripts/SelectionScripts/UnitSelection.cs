@@ -311,6 +311,11 @@ public class UnitSelection : GameBehaviour
                     audioSource.clip = _SM.GetGolemVocal();
                     audioSource.Play();
                 }
+                if (unitSelected[0].GetComponent<Unit>().unitType == UnitType.DryadUnit)
+                {
+                    audioSource.clip = _SM.GetFidhainVocal();
+                    audioSource.Play();
+                }
             }
             else
             {

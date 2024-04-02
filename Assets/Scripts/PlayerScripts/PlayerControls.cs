@@ -537,7 +537,7 @@ public class PlayerControls : Singleton<PlayerControls>
                         }
                         if (_RPlace.canPlace == false)
                         {
-                            _UI.SetErrorMessageInsufficientResources();
+                            _UI.SetErrorMessageCannotPlace();
                             Error();
                         }
                     }

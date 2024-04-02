@@ -2811,8 +2811,7 @@ MonoBehaviour:
   trackTarget: {fileID: 0}
   deadSatyr: {fileID: 1071894615449563641, guid: 479d623d51e43914c8eb5d653eafb5ad,
     type: 3}
-  bloodParticle1: {fileID: 4197850467115213477, guid: 4f3e906bea636e44fa28f67b2439a265,
-    type: 3}
+  bloodParticle1: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}
   targetDest: {fileID: 0}
   selectionCircle: {fileID: 1071894615424627091}
   weaponCollider: {fileID: 0}
@@ -2830,12 +2829,14 @@ MonoBehaviour:
   isTooCloseToTower: 0
   isOutOfBounds: 0
   idleSetDest: 0
+  hitByArrow: 0
   SFXPool: {fileID: 2081501896}
   soundPoolCurrent: 0
   soundPool:
   - {fileID: 2081501898}
   vocalSource: {fileID: 0}
   spellSource: {fileID: 0}
+  isUpgraded: 0
 --- !u!195 &1071894615449563646
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3692,10 +3693,12 @@ MonoBehaviour:
   arrow: {fileID: 0}
   arrow2: {fileID: 0}
   weaponCollider: {fileID: 1911833747}
+  weaponCollider2: {fileID: 0}
   footstepParticle: {fileID: 0}
   stompParticle: {fileID: 0}
   leftFoot: {fileID: 0}
   rightFoot: {fileID: 0}
+  hand: {fileID: 0}
   spit: {fileID: 0}
   spitParticle: {fileID: 0}
   spitCollider: {fileID: 0}
@@ -4983,10 +4986,12 @@ MonoBehaviour:
   arrow: {fileID: 0}
   arrow2: {fileID: 0}
   weaponCollider: {fileID: 0}
+  weaponCollider2: {fileID: 0}
   footstepParticle: {fileID: 0}
   stompParticle: {fileID: 0}
   leftFoot: {fileID: 0}
   rightFoot: {fileID: 0}
+  hand: {fileID: 0}
   spit: {fileID: 1986597658935742764}
   spitParticle: {fileID: 1986597658949700764}
   spitCollider: {fileID: 5900068976047832006}
@@ -5022,6 +5027,26 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &2094332579994990716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8980000185805220643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 901b059ae1c967e46b189731ae7b1ae9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentSpeed: 0
+  oldPosition: {x: 0, y: 0, z: 0}
+  tickInterval: 0.1
+  attackSpeed: 0
+  closestUnit: {fileID: 0}
+  distanceFromClosestUnit: 0
+  isCloseToEnemy: 0
+  fadeOut: 0
 --- !u!1001 &8309259024131104081
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -35,4 +35,20 @@ public class PlayerProfile
     public int LVL5Score;
     public int LVL5HighScore;
     public bool hasCompletedLVL5;
+    [Header("Perks")]
+    public bool satyrPerk;
+    public bool orcusPerk;
+    public bool leshyPerk;
+    public bool willowPerk;
+    public bool skessaPerk;
+    public bool goblinPerk;
+    public bool fidhainPerk;
+    public bool oakPerk;
+    public bool huldraPerk;
+    public bool golemPerk;
+    public bool explosiveTreePerk;
+    public bool homeTreePerk;
+    public bool runePerk;
+    public bool fyrePerk;
+    public bool bearPerk;
 }

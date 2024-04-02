@@ -189,22 +189,21 @@ public class GameManager : Singleton<GameManager>
         _UI.CheckWave();
         yield return new WaitForSeconds(agroWaveLength);
         agroWave = false;
-        StartCoroutine(CheckForCollectMaegen());
     }
-    IEnumerator CheckForCollectMaegen()
-    {
-        yield return new WaitForSeconds(5);
+    //IEnumerator CheckForCollectMaegen()
+    //{
+    //    yield return new WaitForSeconds(5);
        
-        int totalEnemies = _HM.enemies.Count + _HUTM.enemies.Count;
-        if (totalEnemies == _EM.enemies.Count)
-        {
-            if(canFinishWave)
-            {
-                GameEvents.ReportOnJustStragglers();
-            }
-        }
-        StartCoroutine(CheckForCollectMaegen());
-    }
+    //    int totalEnemies = _HM.enemies.Count + _HUTM.enemies.Count;
+    //    if (totalEnemies == _EM.enemies.Count)
+    //    {
+    //        if(canFinishWave)
+    //        {
+    //            GameEvents.ReportOnJustStragglers();
+    //        }
+    //    }
+    //    StartCoroutine(CheckForCollectMaegen());
+    //}
     IEnumerator WaitForCanFinishWave()
     {
         yield return new WaitForSeconds(60);
@@ -336,7 +335,6 @@ public class GameManager : Singleton<GameManager>
         agroWave = false;
         gameState = GameState.Pause;
         Time.timeScale = 0;
-        StopCoroutine(CheckForCollectMaegen());
         GameEvents.ReportOnRuneDestroyed();
 
     }
@@ -344,15 +342,14 @@ public class GameManager : Singleton<GameManager>
     {
         gameState = GameState.Play;
         Time.timeScale = 1;
-        StopCoroutine(CheckForCollectMaegen());
         _GM.boundry.SetActive(true);
         maxMaegen = _WM.totalMaegen + maegen;
         PlayGame();
     }
-    public void OnCollectMaegenButton()
-    {
-        StopCoroutine(CheckForCollectMaegen());
-    }
+    //public void OnCollectMaegenButton()
+    //{
+    //    StopCoroutine(CheckForCollectMaegen());
+    //}
     private void OnStartNextRound()
     {
         boundry.SetActive(false);
@@ -387,7 +384,6 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnWaveOver += OnWaveOver;
         GameEvents.OnStartNextRound += OnStartNextRound;
         GameEvents.OnContinueButton += OnContinueButton;
-        GameEvents.OnCollectMaegenButton += OnCollectMaegenButton;
     }
 
     private void OnDisable()
@@ -405,6 +401,5 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnWaveOver -= OnWaveOver;
         GameEvents.OnStartNextRound -= OnStartNextRound;
         GameEvents.OnContinueButton -= OnContinueButton;
-        GameEvents.OnCollectMaegenButton -= OnCollectMaegenButton;
     }
 }

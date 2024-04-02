@@ -89,6 +89,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
+  seconds: 0.5
   health: 0
   maxHealth: 0
   state: 0
@@ -97,10 +98,10 @@ MonoBehaviour:
   hasArrivedAtBeacon: 0
   fyreBeacon: {fileID: 0}
   deadWarriorFire: {fileID: 0}
+  speed: 0
   deathObject: {fileID: 2523857342288541736, guid: e66d005444246dc478d28ef5c1ffb874,
     type: 3}
-  bloodParticle1: {fileID: 4197850467115213477, guid: 4f3e906bea636e44fa28f67b2439a265,
-    type: 3}
+  bloodParticle1: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}
   maegenPickup: {fileID: 1244892433919609755, guid: f6c8136a3fd58064198b300f4c94f5a3,
     type: 3}
   maxRandomDropChance: 3
@@ -110,6 +111,8 @@ MonoBehaviour:
   horgr: {fileID: 0}
   distanceFromClosestHorgr: 0
   hasArrivedAtHorgr: 0
+  horgrSwitch: 0
+  spawnedFromBuilding: 0
   SFXPool: {fileID: 4402727615912702409}
   soundPoolCurrent: 0
   soundPool: []
@@ -812,6 +815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponCollider: {fileID: 2800473462943830544}
+  weaponSource: {fileID: 0}
 --- !u!114 &6071091625816170523
 MonoBehaviour:
   m_ObjectHideFlags: 0

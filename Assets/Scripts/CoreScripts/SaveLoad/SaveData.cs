@@ -27,6 +27,22 @@ public class SaveData : Singleton<SaveData>
     public int overworldMaegen;
     public int overworldMaegenTotal;
     public bool hasComeFromWin;
+    [Header("Perks")]
+    public bool satyrPerk;
+    public bool orcusPerk;
+    public bool leshyPerk;
+    public bool willowPerk;
+    public bool skessaPerk;
+    public bool goblinPerk;
+    public bool fidhainPerk;
+    public bool oakPerk;
+    public bool huldraPerk;
+    public bool golemPerk;
+    public bool explosiveTreePerk;
+    public bool homeTreePerk;
+    public bool runePerk;
+    public bool fyrePerk;
+    public bool bearPerk;
 
 
 
@@ -71,6 +87,21 @@ public class SaveData : Singleton<SaveData>
             firstMine = _TUTM.firstMine,
             firstLord = _TUTM.firstLord,
             firstLevel2 = _TUTM.firstLevel2,
+            satyrPerk = _PERK.satyrPerk,
+            orcusPerk = _PERK.orcusPerk,
+            leshyPerk = _PERK.leshyPerk,
+            willowPerk = _PERK.willowPerk,
+            skessaPerk = _PERK.skessaPerk,
+            goblinPerk = _PERK.goblinPerk,
+            fidhainPerk = _PERK.fidhainPerk,
+            oakPerk = _PERK.oakPerk,
+            huldraPerk = _PERK.huldraPerk,
+            golemPerk = _PERK.golemPerk,
+            explosiveTreePerk = _PERK.explosiveTreePerk,
+            homeTreePerk = _PERK.homeTreePerk,
+            runePerk = _PERK.runePerk,
+            fyrePerk = _PERK.fyrePerk,
+            bearPerk = _PERK.bearPerk,
         };
         return profile;
     }
@@ -129,6 +160,21 @@ public class SaveData : Singleton<SaveData>
         overworldMaegen = _OM.overWorldMaegen;
         overworldMaegenTotal = _OM.overWorldMaegenTotal;
         hasComeFromWin = _OM.hasComeFromWin;
+        satyrPerk = _PERK.satyrPerk;
+        orcusPerk = _PERK.orcusPerk;
+        leshyPerk = _PERK.leshyPerk;
+        willowPerk = _PERK.willowPerk;
+        skessaPerk = _PERK.skessaPerk;
+        goblinPerk = _PERK.goblinPerk;
+        fidhainPerk = _PERK.fidhainPerk;
+        oakPerk = _PERK.oakPerk;
+        huldraPerk = _PERK.huldraPerk;
+        golemPerk = _PERK.golemPerk;
+        explosiveTreePerk = _PERK.explosiveTreePerk;
+        homeTreePerk = _PERK.homeTreePerk;
+        runePerk = _PERK.runePerk;
+        fyrePerk = _PERK.fyrePerk;
+        bearPerk = _PERK.bearPerk;
         saveManager.SaveGameData(SaveLevel());
     }
     public void Load()
@@ -157,6 +203,26 @@ public class SaveData : Singleton<SaveData>
             _TUTM.firstMine = loadedData.firstMine;
             _TUTM.firstLord = loadedData.firstLord;
             _TUTM.firstLevel2 = loadedData.firstLevel2;
+            _TUTM.firstPlay = loadedData.firstPlay;
+            _TUTM.firstWave = loadedData.firstWave;
+            _TUTM.firstMine = loadedData.firstMine;
+            _TUTM.firstLord = loadedData.firstLord;
+            _TUTM.firstLevel2 = loadedData.firstLevel2;
+            _PERK.satyrPerk = loadedData.satyrPerk;
+            _PERK.orcusPerk = loadedData.orcusPerk;
+            _PERK.leshyPerk = loadedData.leshyPerk;
+            _PERK.willowPerk = loadedData.willowPerk;
+            _PERK.skessaPerk = loadedData.skessaPerk;
+            _PERK.goblinPerk = loadedData.goblinPerk;
+            _PERK.fidhainPerk = loadedData.fidhainPerk;
+            _PERK.oakPerk = loadedData.oakPerk;
+            _PERK.huldraPerk = loadedData.huldraPerk;
+            _PERK.golemPerk = loadedData.golemPerk;
+            _PERK.explosiveTreePerk = loadedData.explosiveTreePerk;
+            _PERK.homeTreePerk = loadedData.homeTreePerk;
+            _PERK.runePerk = loadedData.runePerk;
+            _PERK.fyrePerk = loadedData.fyrePerk;
+            _PERK.bearPerk = loadedData.bearPerk;
         }
         else
         {

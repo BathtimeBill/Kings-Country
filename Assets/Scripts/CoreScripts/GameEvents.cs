@@ -68,6 +68,13 @@ public static class GameEvents
     public static event Action OnLordSpawned = null;
     public static event Action OnSpySpawned = null;
 
+    public static event Action OnPerkButtonPressed = null;
+
+
+    public static void ReportOnPerkButtonPressed()
+    {
+        OnPerkButtonPressed?.Invoke();
+    }
     public static void ReportOnSpySpawned()
     {
         OnSpySpawned?.Invoke();

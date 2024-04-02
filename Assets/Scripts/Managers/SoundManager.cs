@@ -25,6 +25,8 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip[] satyrVocals;
     public AudioClip[] skessaVocals;
     public AudioClip[] goblinVocals;
+    public AudioClip[] fidhainVocals;
+    
     [Header("Footstep Sounds")]
     public AudioClip[] humanFootsteps;
     public AudioClip[] forestFootsteps;
@@ -123,6 +125,10 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip GetSatyrVocal()
     {
         return satyrVocals[Random.Range(0, satyrVocals.Length)];
+    }
+    public AudioClip GetFidhainVocal()
+    {
+        return fidhainVocals[Random.Range(0, fidhainVocals.Length)];
     }
     public AudioClip GetSkessaVocal()
     {

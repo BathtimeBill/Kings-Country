@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,6 +57,7 @@ public class Unit : GameBehaviour
     public bool isTooCloseToTower;
     public bool isOutOfBounds;
     public bool idleSetDest;
+    public bool hitByArrow;
     //public float isMovingCheckTime;
     private Vector3 attackDestination;
     [Header("Audio")]
@@ -65,6 +67,8 @@ public class Unit : GameBehaviour
     public AudioSource vocalSource;
     public AudioSource spellSource;
     private Transform[] rangedAttackLocations;
+    [Header("Perks")]
+    public bool isUpgraded;
 
 
     void Start()
@@ -72,16 +76,16 @@ public class Unit : GameBehaviour
         isOutOfBounds = true;
         soundPool = SFXPool.GetComponents<AudioSource>();
         pointer = GameObject.FindGameObjectWithTag("Pointer");
-        Setup();
+        ApplyPerks();
+        StartCoroutine(Setup());
         UnitSelection.Instance.unitList.Add(gameObject);
-        health = maxHealth;
-        slider.value = CalculateHealth();
+
     }
 
     IEnumerator WaitForIsMovingCheck()
     {
-        yield return new WaitForSeconds(1f);
-        if(isMoving == false)
+        yield return new WaitForSeconds(0.5f);
+        if(GetComponentInChildren<TestSatyrAnimation>().currentSpeed == 0)
         {
             state = UnitState.Idle;
         }    
@@ -105,6 +109,7 @@ public class Unit : GameBehaviour
             {
                 navAgent.stoppingDistance = stoppingDistance;
             }
+
         }
 
 
@@ -135,7 +140,7 @@ public class Unit : GameBehaviour
 
                 }
 
-                animator.SetBool("inCombat", false);
+                //animator.SetBool("inCombat", false);
                 break;
 
             case UnitState.Attack:
@@ -144,7 +149,7 @@ public class Unit : GameBehaviour
                 {
                     state = UnitState.Idle;
                 }
-                if (distanceToClosestEnemy >= detectionRadius)
+                if (distanceToClosestEnemy >= detectionRadius && hitByArrow == false)
                 {
                     state = UnitState.Idle;
                 }
@@ -167,9 +172,16 @@ public class Unit : GameBehaviour
                         navAgent.SetDestination(closestEnemy.transform.position);
                         SmoothFocusOnEnemy();
                     }
-
+                    else
+                    {
+                        if (hitByArrow == true)
+                        {
+                            navAgent.SetDestination(closestEnemy.transform.position);
+                            SmoothFocusOnEnemy();
+                        }
+                    }
                 }
-                animator.SetBool("inCombat", true);
+                //animator.SetBool("inCombat", true);
 
                 break;
             case UnitState.Moving:
@@ -283,17 +295,19 @@ public class Unit : GameBehaviour
         }
 
 
-        if (navAgent.velocity != Vector3.zero)
-        {
-            animator.SetBool("isMoving", true);
-            isMoving = true;
-        }
-        if (navAgent.velocity == Vector3.zero)
-        {
-            animator.SetBool("isMoving", false);
-            isMoving = false;
-            isMovingCheck = false;
-        }
+        //if (navAgent.velocity != Vector3.zero)
+        //{
+        //    animator.SetBool("isMoving", true);
+        //    isMoving = true;
+        //}
+        //if (navAgent.velocity == Vector3.zero)
+        //{
+        //    animator.SetBool("isMoving", false);
+        //    isMoving = false;
+        //    isMovingCheck = false;
+        //}
+
+
 
         if (health > maxHealth)
         {
@@ -375,6 +389,13 @@ public class Unit : GameBehaviour
     {
         return health / maxHealth;
     }
+    
+    IEnumerator HitByArrowDelay()
+    {
+        yield return new WaitForSeconds(1);
+        hitByArrow = false;
+        detectionRadius = detectionRadius / 2;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -415,7 +436,11 @@ public class Unit : GameBehaviour
         }
         if (other.tag == "Arrow")
         {
-            if(unitType == UnitType.VolvaUnit)
+            hitByArrow = true;
+            detectionRadius = detectionRadius * 2;
+            state = UnitState.Attack;
+            StartCoroutine(HitByArrowDelay());
+            if (unitType == UnitType.VolvaUnit)
             {
                 TakeDamage(_GM.arrow1Damage * 3);
             }
@@ -428,6 +453,10 @@ public class Unit : GameBehaviour
         }
         if (other.tag == "Arrow2")
         {
+            hitByArrow = true;
+            detectionRadius = detectionRadius * 2;
+            state = UnitState.Attack;
+            StartCoroutine(HitByArrowDelay());
             if (unitType == UnitType.VolvaUnit)
             {
                 TakeDamage(_GM.arrow2Damage * 3);
@@ -479,6 +508,10 @@ public class Unit : GameBehaviour
         {
             state = UnitState.Attack;
         }
+        if (other.tag == "Explosion3")
+        {
+            TakeDamage(100);
+        }
     }
     private void OnTriggerExit(Collider other)
     {
@@ -505,7 +538,7 @@ public class Unit : GameBehaviour
         {
             health -= 0.5f * Time.deltaTime;
             slider.value = slider.value = CalculateHealth();
-            if(health < 1)
+            if(health < 0)
             {
                 Die();
             }
@@ -529,8 +562,8 @@ public class Unit : GameBehaviour
     public void TakeDamage(float damage)
     {
         state = UnitState.Attack;
-        GameObject go = Instantiate(bloodParticle1, transform.position, transform.rotation);
-        go.transform.rotation = Quaternion.Inverse(transform.rotation);
+        GameObject go = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
+        //go.transform.rotation = Quaternion.Inverse(transform.rotation);
         health -= damage;
         Die();
         slider.value = slider.value = CalculateHealth();
@@ -538,6 +571,7 @@ public class Unit : GameBehaviour
 
     private void Die()
     {
+        bool isColliding = false;
         if (health <= 0)
         {
             if (_HM.units.Contains(gameObject))
@@ -550,9 +584,14 @@ public class Unit : GameBehaviour
             }
             UnitSelection.Instance.Deselect(gameObject);
             UnitSelection.Instance.unitList.Remove(gameObject);
-            GameObject go;
-            go = Instantiate(deadSatyr, transform.position, transform.rotation);
-            Destroy(go, 15);
+
+            if(!isColliding)
+            {
+                GameObject go;
+                go = Instantiate(deadSatyr, transform.position, transform.rotation);
+                isColliding = true;
+                Destroy(go, 15);
+            }
             _UI.CheckPopulousUI();
             GameEvents.ReportOnUnitKilled();
             CheckIfUnitIsInGroup();
@@ -608,19 +647,19 @@ public class Unit : GameBehaviour
         while (Vector3.Distance(transform.position, attackDestination) > 4f)
         {
             navAgent.SetDestination(attackDestination);
-            animator.SetBool("isAttacking", false);
+            //animator.SetBool("isAttacking", false);
             yield return null;
         }
         while (Vector3.Distance(transform.position, attackDestination) < 4f)
         {
             transform.LookAt(attackDestination);
-            animator.SetBool("isAttacking", true);
+            //animator.SetBool("isAttacking", true);
 
             yield return null;
         }
         yield return null;
 
-        animator.SetBool("isAttacking", false);
+        //animator.SetBool("isAttacking", false);
         StartCoroutine(Attack());
 
     }
@@ -631,152 +670,100 @@ public class Unit : GameBehaviour
         while (Vector3.Distance(transform.position, attackDestination) > 50f)
         {
             navAgent.SetDestination(attackDestination);
-            animator.SetBool("isAttacking", false);
+            //animator.SetBool("isAttacking", false);
             yield return null;
         }
         while (Vector3.Distance(transform.position, attackDestination) < 50f)
         {
             transform.LookAt(attackDestination);
-            animator.SetBool("isAttacking", true);
+            //animator.SetBool("isAttacking", true);
 
             yield return null;
         }
         yield return null;
 
-        animator.SetBool("isAttacking", false);
+        //animator.SetBool("isAttacking", false);
         StartCoroutine(RangedAttack());
 
     }
-    void Setup()
+    IEnumerator Setup()
     {
+        yield return new WaitForEndOfFrame();
         switch (unitType)
         {
             case UnitType.SatyrUnit:
-                if(_UM.borkrskinn)
+                if(_UM.borkrskinn && _PERK.satyrPerk == false)
                 {
-                    health = _GM.GetPercentageIncrease(_GM.satyrHealth, 0.3f);
                     maxHealth = _GM.GetPercentageIncrease(_GM.satyrHealth, 0.3f);
                 }
-                else
+
+                if(_UM.flugafotr && _PERK.satyrPerk == false)
                 {
-                    health = _GM.satyrHealth;
-                    maxHealth = _GM.satyrHealth;
+                    navAgent.speed = _GM.GetPercentageIncrease(_GM.satyrSpeed, 0.3f); 
                 }
-                if(_UM.flugafotr)
-                {
-                    navAgent.speed = navAgent.speed = _GM.GetPercentageIncrease(_GM.satyrSpeed, 0.3f); ;
-                }
-                else
-                {
-                    navAgent.speed = _GM.satyrSpeed;
-                }
+
                 detectionRadius = 50;
 
                 break;
 
             case UnitType.LeshyUnit:
-                if (_UM.borkrskinn)
+                if (_UM.borkrskinn && _PERK.leshyPerk == false)
                 {
-                    health = _GM.GetPercentageIncrease(_GM.leshyHealth, 0.3f);
                     maxHealth = _GM.GetPercentageIncrease(_GM.leshyHealth, 0.3f);
+                }
 
-                }
-                else
+                if (_UM.flugafotr && _PERK.leshyPerk == false)
                 {
-                    health = _GM.leshyHealth;
-                    maxHealth = _GM.leshyHealth;
-                }
-                if (_UM.flugafotr)
-                {
-                    navAgent.speed = navAgent.speed = _GM.GetPercentageIncrease(_GM.leshySpeed, 0.3f); ;
-                }
-                else
-                {
-                    navAgent.speed = _GM.leshySpeed;
+                    navAgent.speed = _GM.GetPercentageIncrease(_GM.leshySpeed, 0.3f);
                 }
                 detectionRadius = 50;
                 break;
             case UnitType.OrcusUnit:
-                if (_UM.borkrskinn)
+                if (_UM.borkrskinn && _PERK.orcusPerk == false)
                 {
-                    health = _GM.GetPercentageIncrease(_GM.orcusHealth, 0.3f);
                     maxHealth = _GM.GetPercentageIncrease(_GM.orcusHealth, 0.3f);
                 }
-                else
+
+                if (_UM.flugafotr && _PERK.orcusPerk == false)
                 {
-                    health = _GM.orcusHealth;
-                    maxHealth = _GM.orcusHealth;
-                }
-                if (_UM.flugafotr)
-                {
-                    navAgent.speed = navAgent.speed = _GM.GetPercentageIncrease(_GM.orcusSpeed, 0.3f);
-                }
-                else
-                {
-                    navAgent.speed = _GM.orcusSpeed;
+                    navAgent.speed = _GM.GetPercentageIncrease(_GM.orcusSpeed, 0.3f);
                 }
                 detectionRadius = 50;
 
                 break;
             case UnitType.VolvaUnit:
-                if (_UM.borkrskinn)
+                if (_UM.borkrskinn && _PERK.skessaPerk == false)
                 {
-                    health = _GM.GetPercentageIncrease(_GM.skessaHealth, 0.3f);
                     maxHealth = _GM.GetPercentageIncrease(_GM.skessaHealth, 0.3f);
                 }
-                else
+
+                if (_UM.flugafotr && _PERK.skessaPerk == false)
                 {
-                    health = _GM.skessaHealth;
-                    maxHealth = _GM.skessaHealth;
-                }
-                if (_UM.flugafotr)
-                {
-                    navAgent.speed = navAgent.speed = _GM.GetPercentageIncrease(_GM.skessaSpeed, 0.3f);
-                }
-                else
-                {
-                    navAgent.speed = _GM.skessaSpeed;
+                    navAgent.speed = _GM.GetPercentageIncrease(_GM.skessaSpeed, 0.3f);
                 }
                 detectionRadius = 50;
                 break;
             case UnitType.HuldraUnit:
-                if (_UM.borkrskinn)
+                if (_UM.borkrskinn && _PERK.huldraPerk == false)
                 {
-                    health = _GM.GetPercentageIncrease(_GM.huldraHealth, 0.3f);
                     maxHealth = _GM.GetPercentageIncrease(_GM.huldraHealth, 0.3f);
                 }
-                else
+
+                if (_UM.flugafotr && _PERK.huldraPerk == false)
                 {
-                    health = _GM.huldraHealth;
-                    maxHealth = _GM.huldraHealth;
+                    navAgent.speed = _GM.GetPercentageIncrease(_GM.huldraSpeed, 0.3f);
                 }
-                if (_UM.flugafotr)
-                {
-                    navAgent.speed = navAgent.speed = _GM.GetPercentageIncrease(_GM.huldraSpeed, 0.3f); ;
-                }
-                else
-                {
-                    navAgent.speed = _GM.huldraSpeed;
-                }
+                detectionRadius = 50;
                 break;
             case UnitType.GoblinUnit:
-                if (_UM.borkrskinn)
+                if (_UM.borkrskinn && _PERK.goblinPerk == false)
                 {
-                    health = _GM.GetPercentageIncrease(_GM.goblinHealth, 0.3f);
                     maxHealth = _GM.GetPercentageIncrease(_GM.goblinHealth, 0.3f);
                 }
-                else
-                {
-                    health = _GM.goblinHealth;
-                    maxHealth = _GM.goblinHealth;
-                }
-                if (_UM.flugafotr)
+
+                if (_UM.flugafotr && _PERK.goblinPerk == false)
                 {
                     navAgent.speed = _GM.GetPercentageIncrease(_GM.goblinSpeed, 0.3f);
-                }
-                else
-                {
-                    navAgent.speed = _GM.goblinSpeed;
                 }
                 detectionRadius = 50;
                 break;
@@ -786,65 +773,159 @@ public class Unit : GameBehaviour
                     health = 130;
                     maxHealth = 130;
                 }
+
+                break;
+            case UnitType.GolemUnit:
+                if (_UM.borkrskinn && _PERK.golemPerk == false)
+                {
+                    maxHealth = _GM.GetPercentageIncrease(_GM.golemHealth, 0.3f);
+                }
+
+                if (_UM.flugafotr && _PERK.golemPerk == false)
+                {
+                    navAgent.speed = _GM.GetPercentageIncrease(_GM.golemSpeed, 0.3f);
+                }
+                detectionRadius = 75;
+
+                break;
+            case UnitType.DryadUnit:
+                if (_UM.borkrskinn && _PERK.fidhainPerk == false)
+                {
+                    maxHealth = _GM.GetPercentageIncrease(_GM.dryadHealth, 0.3f);
+                }
+
+                if (_UM.flugafotr && _PERK.fidhainPerk == false)
+                {
+                    navAgent.speed = _GM.GetPercentageIncrease(_GM.dryadSpeed, 0.3f);
+                }
+                detectionRadius = 50;
+                break;
+            
+        }
+        health = maxHealth;
+        slider.value = CalculateHealth();
+    }
+
+    void ApplyPerks()
+    {
+        switch (unitType)
+        {
+            case UnitType.SatyrUnit:
+                if(_PERK.satyrPerk == true)
+                {
+                    health = _GM.GetPercentageIncrease(_GM.satyrHealth, 0.5f);
+                    maxHealth = _GM.GetPercentageIncrease(_GM.satyrHealth, 0.5f);
+                    navAgent.speed = _GM.GetPercentageIncrease(_GM.satyrSpeed, 0.5f);
+                    isUpgraded = true;
+                }
                 else
                 {
-                    health = 100;
-                    maxHealth = 100;
+                    health = _GM.satyrHealth;
+                    maxHealth = _GM.satyrHealth;
+                    navAgent.speed = _GM.satyrSpeed;
                 }
-                if (_UM.flugafotr)
+                break;
+
+            case UnitType.LeshyUnit:
+                if (_PERK.leshyPerk == true)
                 {
-                    navAgent.speed = 0;
+                    health = _GM.GetPercentageIncrease(_GM.leshyHealth, 0.5f);
+                    maxHealth = _GM.GetPercentageIncrease(_GM.leshyHealth, 0.5f);
+                    navAgent.speed = _GM.GetPercentageIncrease(_GM.leshySpeed, 0.5f);
                 }
                 else
                 {
-                    navAgent.speed = 0;
+                    health = _GM.leshyHealth;
+                    maxHealth = _GM.leshyHealth;
+                    navAgent.speed = _GM.leshySpeed;
+                }
+                break;
+            case UnitType.OrcusUnit:
+                if (_PERK.orcusPerk == true)
+                {
+                    health = _GM.GetPercentageIncrease(_GM.orcusHealth, 0.5f);
+                    maxHealth = _GM.GetPercentageIncrease(_GM.orcusHealth, 0.5f);
+                    navAgent.speed = _GM.GetPercentageIncrease(_GM.orcusSpeed, 0.5f);
+                }
+                else
+                {
+                    health = _GM.orcusHealth;
+                    maxHealth = _GM.orcusHealth;
+                    navAgent.speed = _GM.orcusSpeed;
+                }
+                break;
+            case UnitType.VolvaUnit:
+                if (_PERK.skessaPerk == true)
+                {
+                    health = _GM.GetPercentageIncrease(_GM.skessaHealth, 0.5f);
+                    maxHealth = _GM.GetPercentageIncrease(_GM.skessaHealth, 0.5f);
+                    navAgent.speed = _GM.GetPercentageIncrease(_GM.skessaSpeed, 0.5f);
+                }
+                else
+                {
+                    health = _GM.skessaHealth;
+                    maxHealth = _GM.skessaHealth;
+                    navAgent.speed = _GM.skessaSpeed;
+                }
+                break;
+            case UnitType.HuldraUnit:
+                if (_PERK.huldraPerk == true)
+                {
+                    health = _GM.GetPercentageIncrease(_GM.huldraHealth, 0.5f);
+                    maxHealth = _GM.GetPercentageIncrease(_GM.huldraHealth, 0.5f);
+                    navAgent.speed = _GM.GetPercentageIncrease(_GM.huldraSpeed, 0.5f);
+                }
+                else
+                {
+                    health = _GM.huldraHealth;
+                    maxHealth = _GM.huldraHealth;
+                    navAgent.speed = _GM.huldraSpeed;
+                }
+                break;
+            case UnitType.GoblinUnit:
+                if (_PERK.goblinPerk == true)
+                {
+                    health = _GM.GetPercentageIncrease(_GM.goblinHealth, 0.5f);
+                    maxHealth = _GM.GetPercentageIncrease(_GM.goblinHealth, 0.5f);
+                    navAgent.speed = _GM.GetPercentageIncrease(_GM.goblinSpeed, 0.5f);
+                }
+                else
+                {
+                    health = _GM.goblinHealth;
+                    maxHealth = _GM.goblinHealth;
+                    navAgent.speed = _GM.goblinSpeed;
                 }
                 break;
             case UnitType.GolemUnit:
-                if (_UM.borkrskinn)
+                if (_PERK.golemPerk == true)
                 {
-                    health = _GM.GetPercentageIncrease(_GM.golemHealth, 0.3f);
-                    maxHealth = _GM.GetPercentageIncrease(_GM.golemHealth, 0.3f);
+                    health = _GM.GetPercentageIncrease(_GM.golemHealth, 0.5f);
+                    maxHealth = _GM.GetPercentageIncrease(_GM.golemHealth, 0.5f);
+                    navAgent.speed = _GM.GetPercentageIncrease(_GM.golemSpeed, 0.5f);
                 }
                 else
                 {
                     health = _GM.golemHealth;
                     maxHealth = _GM.golemHealth;
-                }
-                if (_UM.flugafotr)
-                {
-                    navAgent.speed = _GM.GetPercentageIncrease(_GM.golemSpeed, 0.3f);
-                }
-                else
-                {
                     navAgent.speed = _GM.golemSpeed;
                 }
-                detectionRadius = 75;
                 break;
             case UnitType.DryadUnit:
-                if (_UM.borkrskinn)
+                if (_PERK.fidhainPerk == true)
                 {
-                    health = _GM.GetPercentageIncrease(_GM.dryadHealth, 0.3f);
-                    maxHealth = _GM.GetPercentageIncrease(_GM.dryadHealth, 0.3f);
+                    health = _GM.GetPercentageIncrease(_GM.dryadHealth, 0.5f);
+                    maxHealth = _GM.GetPercentageIncrease(_GM.dryadHealth, 0.5f);
+                    navAgent.speed = _GM.GetPercentageIncrease(_GM.dryadSpeed, 0.5f);
                 }
                 else
                 {
                     health = _GM.dryadHealth;
                     maxHealth = _GM.dryadHealth;
-                }
-                if (_UM.flugafotr)
-                {
-                    navAgent.speed = _GM.GetPercentageIncrease(_GM.dryadSpeed, 0.3f);
-                }
-                else
-                {
                     navAgent.speed = _GM.dryadSpeed;
                 }
-                detectionRadius = 50;
                 break;
         }
-
-    }
+    }    
     public Transform GetClosestEnemy()
     {
         float closestDistance = Mathf.Infinity;
@@ -884,7 +965,7 @@ public class Unit : GameBehaviour
     {
         if (inCombat == false)
         {
-            animator.SetBool("inCombat", false);
+            //animator.SetBool("inCombat", false);
         }
         else
         {
@@ -901,75 +982,75 @@ public class Unit : GameBehaviour
 
     public void OnBorkrskinnUpgrade()
     {
-        
-        switch (unitType)
-        {
-            case UnitType.SatyrUnit:
-                maxHealth = _GM.GetPercentageIncrease(_GM.satyrHealth, 0.3f);
-                health = maxHealth;
-                break;
+        StartCoroutine(Setup());
+        //switch (unitType)
+        //{
+        //    case UnitType.SatyrUnit:
+        //        maxHealth = _GM.GetPercentageIncrease(_GM.satyrHealth, 0.3f);
+        //        health = maxHealth;
+        //        break;
 
-            case UnitType.LeshyUnit:
-                maxHealth = _GM.GetPercentageIncrease(_GM.leshyHealth, 0.3f);
-                health = maxHealth;
-                break;
-            case UnitType.OrcusUnit:
-                maxHealth = _GM.GetPercentageIncrease(_GM.orcusHealth, 0.3f);
-                health = maxHealth;
-                break;
-            case UnitType.VolvaUnit:
-                maxHealth = _GM.GetPercentageIncrease(_GM.skessaHealth, 0.3f);
-                health = maxHealth;
-                break;
-            case UnitType.GoblinUnit:
-                maxHealth = _GM.GetPercentageIncrease(_GM.goblinHealth, 0.3f);
-                health = maxHealth;
-                break;
-            case UnitType.GolemUnit:
-                maxHealth = _GM.GetPercentageIncrease(_GM.golemHealth, 0.3f);
-                health = maxHealth;
-                break;
-            case UnitType.DryadUnit:
-                maxHealth = _GM.GetPercentageIncrease(_GM.dryadHealth, 0.3f);
-                health = maxHealth;
-                break;
-        }
+        //    case UnitType.LeshyUnit:
+        //        maxHealth = _GM.GetPercentageIncrease(_GM.leshyHealth, 0.3f);
+        //        health = maxHealth;
+        //        break;
+        //    case UnitType.OrcusUnit:
+        //        maxHealth = _GM.GetPercentageIncrease(_GM.orcusHealth, 0.3f);
+        //        health = maxHealth;
+        //        break;
+        //    case UnitType.VolvaUnit:
+        //        maxHealth = _GM.GetPercentageIncrease(_GM.skessaHealth, 0.3f);
+        //        health = maxHealth;
+        //        break;
+        //    case UnitType.GoblinUnit:
+        //        maxHealth = _GM.GetPercentageIncrease(_GM.goblinHealth, 0.3f);
+        //        health = maxHealth;
+        //        break;
+        //    case UnitType.GolemUnit:
+        //        maxHealth = _GM.GetPercentageIncrease(_GM.golemHealth, 0.3f);
+        //        health = maxHealth;
+        //        break;
+        //    case UnitType.DryadUnit:
+        //        maxHealth = _GM.GetPercentageIncrease(_GM.dryadHealth, 0.3f);
+        //        health = maxHealth;
+        //        break;
+        //}
         slider.value = slider.value = CalculateHealth();
     }
     public void OnFlugafotrUpgrade()
     {
-        switch (unitType)
-        {
-            case UnitType.SatyrUnit:
-                navAgent.speed = _GM.GetPercentageIncrease(_GM.satyrSpeed, 0.3f);
-                break;
+        StartCoroutine(Setup());
+        //switch (unitType)
+        //{
+        //    case UnitType.SatyrUnit:
+        //        navAgent.speed = _GM.GetPercentageIncrease(_GM.satyrSpeed, 0.3f);
+        //        break;
 
-            case UnitType.LeshyUnit:
-                navAgent.speed = _GM.GetPercentageIncrease(_GM.leshySpeed, 0.3f);
-                break;
-            case UnitType.OrcusUnit:
-                navAgent.speed = _GM.GetPercentageIncrease(_GM.orcusSpeed, 0.3f);
-                break;
-            case UnitType.VolvaUnit:
-                navAgent.speed = _GM.GetPercentageIncrease(_GM.skessaSpeed, 0.3f);
-                break;
-            case UnitType.HuldraUnit:
-                navAgent.speed = _GM.GetPercentageIncrease(_GM.huldraSpeed, 0.3f);
-                break;
-            case UnitType.GoblinUnit:
-                navAgent.speed = _GM.GetPercentageIncrease(_GM.goblinSpeed, 0.3f);
-                break;
-            case UnitType.GolemUnit:
-                navAgent.speed = _GM.GetPercentageIncrease(_GM.golemSpeed, 0.3f);
-                break;
-        }
+        //    case UnitType.LeshyUnit:
+        //        navAgent.speed = _GM.GetPercentageIncrease(_GM.leshySpeed, 0.3f);
+        //        break;
+        //    case UnitType.OrcusUnit:
+        //        navAgent.speed = _GM.GetPercentageIncrease(_GM.orcusSpeed, 0.3f);
+        //        break;
+        //    case UnitType.VolvaUnit:
+        //        navAgent.speed = _GM.GetPercentageIncrease(_GM.skessaSpeed, 0.3f);
+        //        break;
+        //    case UnitType.HuldraUnit:
+        //        navAgent.speed = _GM.GetPercentageIncrease(_GM.huldraSpeed, 0.3f);
+        //        break;
+        //    case UnitType.GoblinUnit:
+        //        navAgent.speed = _GM.GetPercentageIncrease(_GM.goblinSpeed, 0.3f);
+        //        break;
+        //    case UnitType.GolemUnit:
+        //        navAgent.speed = _GM.GetPercentageIncrease(_GM.golemSpeed, 0.3f);
+        //        break;
+        //}
     }
     IEnumerator WaitForSetDestination()
     {
         yield return new WaitForEndOfFrame();
         navAgent.SetDestination(targetDest.transform.position);
-    }    
-
+    }
     private void OnContinueButton()
     {
         if(unitType != UnitType.GolemUnit)

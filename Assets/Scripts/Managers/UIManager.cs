@@ -397,7 +397,10 @@ public class UIManager : Singleton<UIManager>
     {
         errorText.text = "A Spy is close by!";
     }
-
+    public void SetErrorMessageCannotPlace()
+    {
+        errorText.text = "";
+    }
 
     public void OnBeaconPlaced()
     {

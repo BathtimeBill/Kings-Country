@@ -2867,6 +2867,7 @@ MonoBehaviour:
   attackSprite: {fileID: 21300000, guid: c5cd52a4f3d0bc744a6182db1ed6818d, type: 3}
   defendSprite: {fileID: 21300000, guid: 021aa7092ae516e4a9c156f7049ca959, type: 3}
   defendPosition: {x: 0, y: 0, z: 0}
+  unitSpeed: 0
   health: 0
   maxHealth: 0
   projectileSpeed: 1000
@@ -2884,8 +2885,7 @@ MonoBehaviour:
   trackTarget: {fileID: 0}
   deadSatyr: {fileID: 1071894615449563641, guid: 43118f4588fabd44ba2cb84fea1c7462,
     type: 3}
-  bloodParticle1: {fileID: 4197850467115213477, guid: 4f3e906bea636e44fa28f67b2439a265,
-    type: 3}
+  bloodParticle1: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}
   targetDest: {fileID: 0}
   selectionCircle: {fileID: 1071894615424627091}
   weaponCollider: {fileID: 0}
@@ -2908,6 +2908,7 @@ MonoBehaviour:
   - {fileID: 2081501898}
   vocalSource: {fileID: 0}
   spellSource: {fileID: 0}
+  isUpgraded: 0
 --- !u!195 &1071894615449563646
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3447,6 +3448,11 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PlayerWeapon4
       objectReference: {fileID: 0}
+    - target: {fileID: -4278032810995721380, guid: 7d822ac7447cec943a6ec3b3a3af545c,
+        type: 3}
+      propertyPath: m_TagString
+      value: PlayerWeapon4
+      objectReference: {fileID: 0}
     - target: {fileID: -933895757607389765, guid: 7d822ac7447cec943a6ec3b3a3af545c,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -3459,6 +3465,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d822ac7447cec943a6ec3b3a3af545c, type: 3}
+--- !u!1 &4245752090458701224 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -4278032810995721380, guid: 7d822ac7447cec943a6ec3b3a3af545c,
+    type: 3}
+  m_PrefabInstance: {fileID: 9100278252929017588}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &968171010281812305
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4245752090458701224}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 2.59
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8080794886446763905 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8183481454299698827, guid: 7d822ac7447cec943a6ec3b3a3af545c,
@@ -3520,10 +3545,35 @@ MonoBehaviour:
   arrow: {fileID: 0}
   arrow2: {fileID: 0}
   weaponCollider: {fileID: 6954496595841947536}
+  weaponCollider2: {fileID: 968171010281812305}
   footstepParticle: {fileID: 0}
   stompParticle: {fileID: 0}
   leftFoot: {fileID: 0}
   rightFoot: {fileID: 0}
+  hand: {fileID: 0}
+  spit: {fileID: 0}
+  spitParticle: {fileID: 0}
+  spitCollider: {fileID: 0}
+--- !u!114 &2525198313594243484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8253909591793261477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 901b059ae1c967e46b189731ae7b1ae9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentSpeed: 0
+  oldPosition: {x: 0, y: 0, z: 0}
+  tickInterval: 0.1
+  attackSpeed: 1.5
+  closestUnit: {fileID: 0}
+  distanceFromClosestUnit: 0
+  isCloseToEnemy: 0
+  fadeOut: 0
 --- !u!114 &3499498470752213363
 MonoBehaviour:
   m_ObjectHideFlags: 0

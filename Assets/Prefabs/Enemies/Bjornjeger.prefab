@@ -187,8 +187,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.3, y: 4.6, z: 2.3}
-  m_Center: {x: 0, y: 2.27, z: 0}
+  m_Size: {x: 2.3, y: 6.24, z: 2.3}
+  m_Center: {x: 0, y: 3.14, z: 0}
 --- !u!195 &6651862902898196267
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -207,7 +207,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
   m_AutoRepath: 1
-  m_Height: 4.53
+  m_Height: 5.98
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -224,6 +224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
+  seconds: 0.5
   health: 0
   maxHealth: 0
   state: 0
@@ -233,12 +234,12 @@ MonoBehaviour:
     type: 3}
   deathObject: {fileID: 3766977380576458618, guid: 3c5f8c2bb4d709c4197390ffcf192b71,
     type: 3}
-  bloodParticle1: {fileID: 4197850467115213477, guid: 4f3e906bea636e44fa28f67b2439a265,
-    type: 3}
+  bloodParticle1: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}
   stoppingDistance: 0
   maegenPickup: {fileID: 1244892433919609755, guid: f6c8136a3fd58064198b300f4c94f5a3,
     type: 3}
   maxRandomDropChance: 3
+  speed: 0
   animator: {fileID: 6514565393141692603}
   wildlife: []
   closestWildlife: {fileID: 0}
@@ -248,6 +249,8 @@ MonoBehaviour:
   horgr: {fileID: 0}
   distanceFromClosestHorgr: 0
   hasArrivedAtHorgr: 0
+  hutSwitch: 0
+  spawnedFromBuilding: 0
   SFXPool: {fileID: 8878307506942366345}
   soundPoolCurrent: 0
   soundPool: []

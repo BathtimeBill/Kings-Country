@@ -27,8 +27,26 @@ public class GameBehaviour : MonoBehaviour
     protected static ScoreManager _SCORE { get { return ScoreManager.instance; } }
     protected static OverWorldManager _OM { get { return OverWorldManager.instance; } }
     protected static SceneManagement _SCENE { get { return SceneManagement.instance; } }
+    protected static PerkManager _PERK { get { return PerkManager.instance; } }
 }
-
+public enum Perk
+{
+    satyr,
+    orcus,
+    leshy,
+    willow,
+    skessa,
+    goblin,
+    fidhain,
+    oak,
+    huldra,
+    golem,
+    explosiveTree,
+    homeTree,
+    rune,
+    fyre,
+    bear,
+}
 public enum Upgrade
 {
     BarkSkin,

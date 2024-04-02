@@ -1048,6 +1048,7 @@ MonoBehaviour:
   attackSprite: {fileID: 21300000, guid: c5cd52a4f3d0bc744a6182db1ed6818d, type: 3}
   defendSprite: {fileID: 21300000, guid: 021aa7092ae516e4a9c156f7049ca959, type: 3}
   defendPosition: {x: 0, y: 0, z: 0}
+  unitSpeed: 0
   health: 0
   maxHealth: 0
   projectileSpeed: 1000
@@ -1065,8 +1066,7 @@ MonoBehaviour:
   trackTarget: {fileID: 0}
   deadSatyr: {fileID: 4049935371749668072, guid: 992e32f7ec99329489062bb0a66b5530,
     type: 3}
-  bloodParticle1: {fileID: 4197850467115213477, guid: 4f3e906bea636e44fa28f67b2439a265,
-    type: 3}
+  bloodParticle1: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}
   targetDest: {fileID: 0}
   selectionCircle: {fileID: 4049935371807634562}
   weaponCollider: {fileID: 0}
@@ -1083,11 +1083,13 @@ MonoBehaviour:
   isTooCloseToTower: 0
   isOutOfBounds: 0
   idleSetDest: 0
+  hitByArrow: 0
   SFXPool: {fileID: 3950889125610715097}
   soundPoolCurrent: 0
   soundPool: []
   vocalSource: {fileID: 0}
   spellSource: {fileID: 0}
+  isUpgraded: 0
 --- !u!195 &4049935371749668079
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3535,6 +3537,20 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &7363534647966204730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6135593950801038850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f2c0dfcf5218564fb90fc3bdfbaa7c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineScript: {fileID: 5706256015578100147}
+  outlineScript2: {fileID: 1466734496106566389}
 --- !u!114 &8689616733042416316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3551,11 +3567,16 @@ MonoBehaviour:
   arrow: {fileID: 3894247749214064697, guid: a7363cc060e9aec4a839d5e9d107343a, type: 3}
   arrow2: {fileID: 0}
   weaponCollider: {fileID: 0}
+  weaponCollider2: {fileID: 0}
   footstepParticle: {fileID: 0}
   stompParticle: {fileID: 0}
   leftFoot: {fileID: 0}
   rightFoot: {fileID: 0}
---- !u!114 &7363534647966204730
+  hand: {fileID: 0}
+  spit: {fileID: 0}
+  spitParticle: {fileID: 0}
+  spitCollider: {fileID: 0}
+--- !u!114 &5587373407927340144
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3564,11 +3585,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 6135593950801038850}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f2c0dfcf5218564fb90fc3bdfbaa7c9, type: 3}
+  m_Script: {fileID: 11500000, guid: 901b059ae1c967e46b189731ae7b1ae9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineScript: {fileID: 5706256015578100147}
-  outlineScript2: {fileID: 1466734496106566389}
+  currentSpeed: 0
+  oldPosition: {x: 0, y: 0, z: 0}
+  tickInterval: 0.1
+  attackSpeed: 0
+  closestUnit: {fileID: 0}
+  distanceFromClosestUnit: 0
+  isCloseToEnemy: 0
+  fadeOut: 0
 --- !u!4 &6135593950801531426 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400086, guid: f80781be66fad4b4d8009b408672c2a0,
