@@ -158,7 +158,7 @@ public class UIManager : Singleton<UIManager>
         if (beaconPlaced)
         {
             beaconTimeLeft += 1 * Time.deltaTime;
-            beaconCooldownSlider.value = CalculateTimeLeft();
+            beaconCooldownSlider.value = CalculateCooldownTimeLeft(beaconTimeLeft, beaconMaxTimeLeft);
             beaconToolImage.sprite = unusableBeaconTool;
             if (beaconTimeLeft >= beaconMaxTimeLeft)
             {
@@ -171,7 +171,7 @@ public class UIManager : Singleton<UIManager>
         if (stormerPlaced)
         {
             stormerTimeLeft += 1 * Time.deltaTime;
-            stormerCooldownSlider.value = CalculateStormerTimeLeft();
+            stormerCooldownSlider.value = CalculateCooldownTimeLeft(stormerTimeLeft, stormerMaxTimeLeft);
             stormerToolImage.sprite = unusableStormerTool;
             if (stormerTimeLeft >= stormerMaxTimeLeft)
             {
@@ -239,13 +239,9 @@ public class UIManager : Singleton<UIManager>
     {
         transformText.SetActive(false);
     }
-    float CalculateTimeLeft()
+    float CalculateCooldownTimeLeft(float _timeLeft, float _maxTime)
     {
-        return beaconTimeLeft / beaconMaxTimeLeft;
-    }
-    float CalculateStormerTimeLeft()
-    {
-        return stormerTimeLeft / stormerMaxTimeLeft;
+        return _timeLeft / _maxTime;
     }
     public void OnGameOver()
     {

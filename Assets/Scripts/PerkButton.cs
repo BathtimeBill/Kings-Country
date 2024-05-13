@@ -7,7 +7,7 @@ public class PerkButton : GameBehaviour
 {
     Image image;
     Button button;
-    public Perk perk;
+    public PerkID perk;
     public Sprite avatar;
     public int myPrice;
     public GameObject purchased;
@@ -27,7 +27,7 @@ public class PerkButton : GameBehaviour
     }
     void Setup()
     {
-        if(perk == Perk.satyr)
+        if(perk == PerkID.satyr)
         {
             if(_PERK.satyrPerk == true)
             {
@@ -35,7 +35,7 @@ public class PerkButton : GameBehaviour
                 purchased.SetActive(true);
             }
         }
-        if (perk == Perk.orcus)
+        if (perk == PerkID.orcus)
         {
             if (_PERK.orcusPerk == true)
             {
@@ -43,7 +43,7 @@ public class PerkButton : GameBehaviour
                 purchased.SetActive(true);
             }
         }
-        if (perk == Perk.leshy)
+        if (perk == PerkID.leshy)
         {
             if (_PERK.leshyPerk == true)
             {
@@ -51,7 +51,7 @@ public class PerkButton : GameBehaviour
                 purchased.SetActive(true);
             }
         }
-        if (perk == Perk.willow)
+        if (perk == PerkID.willow)
         {
             if (_PERK.willowPerk == true)
             {
@@ -59,7 +59,7 @@ public class PerkButton : GameBehaviour
                 purchased.SetActive(true);
             }
         }
-        if (perk == Perk.skessa)
+        if (perk == PerkID.skessa)
         {
             if (_PERK.skessaPerk == true)
             {
@@ -67,7 +67,7 @@ public class PerkButton : GameBehaviour
                 purchased.SetActive(true);
             }
         }
-        if (perk == Perk.goblin)
+        if (perk == PerkID.goblin)
         {
             if (_PERK.goblinPerk == true)
             {
@@ -75,7 +75,7 @@ public class PerkButton : GameBehaviour
                 purchased.SetActive(true);
             }
         }
-        if (perk == Perk.fidhain)
+        if (perk == PerkID.fidhain)
         {
             if (_PERK.fidhainPerk == true)
             {
@@ -83,7 +83,7 @@ public class PerkButton : GameBehaviour
                 purchased.SetActive(true);
             }
         }
-        if (perk == Perk.oak)
+        if (perk == PerkID.oak)
         {
             if (_PERK.oakPerk == true)
             {
@@ -91,7 +91,7 @@ public class PerkButton : GameBehaviour
                 purchased.SetActive(true);
             }
         }
-        if (perk == Perk.huldra)
+        if (perk == PerkID.huldra)
         {
             if (_PERK.huldraPerk == true)
             {
@@ -99,7 +99,7 @@ public class PerkButton : GameBehaviour
                 purchased.SetActive(true);
             }
         }
-        if (perk == Perk.golem)
+        if (perk == PerkID.golem)
         {
             if (_PERK.golemPerk == true)
             {
@@ -107,7 +107,7 @@ public class PerkButton : GameBehaviour
                 purchased.SetActive(true);
             }
         }
-        if (perk == Perk.explosiveTree)
+        if (perk == PerkID.explosiveTree)
         {
             if (_PERK.explosiveTreePerk == true)
             {
@@ -115,7 +115,7 @@ public class PerkButton : GameBehaviour
                 purchased.SetActive(true);
             }
         }
-        if (perk == Perk.homeTree)
+        if (perk == PerkID.homeTree)
         {
             if (_PERK.homeTreePerk == true)
             {
@@ -123,7 +123,7 @@ public class PerkButton : GameBehaviour
                 purchased.SetActive(true);
             }
         }
-        if (perk == Perk.rune)
+        if (perk == PerkID.rune)
         {
             if (_PERK.runePerk == true)
             {
@@ -131,7 +131,7 @@ public class PerkButton : GameBehaviour
                 purchased.SetActive(true);
             }
         }
-        if (perk == Perk.fyre)
+        if (perk == PerkID.fyre)
         {
             if (_PERK.fyrePerk == true)
             {
@@ -139,7 +139,7 @@ public class PerkButton : GameBehaviour
                 purchased.SetActive(true);
             }
         }
-        if (perk == Perk.bear)
+        if (perk == PerkID.bear)
         {
             if (_PERK.bearPerk == true)
             {
@@ -173,49 +173,49 @@ public class PerkButton : GameBehaviour
         purchased.SetActive(true);
         switch (perk)
         {
-            case Perk.satyr:
+            case PerkID.satyr:
                 _PERK.satyrPerk = true;
                 break;
-            case Perk.orcus:
+            case PerkID.orcus:
                 _PERK.orcusPerk = true;
                 break;
-            case Perk.leshy:
+            case PerkID.leshy:
                 _PERK.leshyPerk = true;
                 break;
-            case Perk.willow:
+            case PerkID.willow:
                 _PERK.willowPerk = true;
                 break;
-            case Perk.skessa:
+            case PerkID.skessa:
                 _PERK.skessaPerk = true;
                 break;
-            case Perk.goblin:
+            case PerkID.goblin:
                 _PERK.goblinPerk = true;
                 break;
-            case Perk.fidhain:
+            case PerkID.fidhain:
                 _PERK.fidhainPerk = true;
                 break;
-            case Perk.oak:
+            case PerkID.oak:
                 _PERK.oakPerk = true;
                 break;
-            case Perk.huldra:
+            case PerkID.huldra:
                 _PERK.huldraPerk = true;
                 break;
-            case Perk.golem:
+            case PerkID.golem:
                 _PERK.golemPerk = true;
                 break;
-            case Perk.explosiveTree:
+            case PerkID.explosiveTree:
                 _PERK.explosiveTreePerk = true;
                 break;
-            case Perk.homeTree:
+            case PerkID.homeTree:
                 _PERK.homeTreePerk = true;
                 break;
-            case Perk.rune:
+            case PerkID.rune:
                 _PERK.runePerk = true;
                 break;
-            case Perk.fyre:
+            case PerkID.fyre:
                 _PERK.fyrePerk = true;
                 break;
-            case Perk.bear:
+            case PerkID.bear:
                 _PERK.bearPerk = true;
                 break;
         }

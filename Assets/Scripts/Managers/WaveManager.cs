@@ -235,3 +235,16 @@ public class WaveManager : Singleton<WaveManager>
         GameEvents.OnUpgradeSelected -= OnUpgradeSelected;
     }
 }
+
+[System.Serializable]
+public class Wave
+{
+    public int LoggerAmount;
+    public int LumberjackAmount;
+    public int WatheAmount;
+    public int LongbowAmount;
+    public int CrossbowAmount;
+    public int DrengAmount;
+    public int BezerkerAmount;
+    public int KnightAmount;
+}

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Unit : GameBehaviour
 {
     [Header("Unit Type")]
-    public UnitType unitType;
+    public UnitID unitType;
     [Header("CombatMode")]
     public CombatMode combatMode;
     public Image combatModeImage;
@@ -102,7 +102,7 @@ public class Unit : GameBehaviour
             distanceToClosestEnemy = Vector3.Distance(closestEnemy.transform.position, transform.position);
             if (closestEnemy.gameObject.tag == "Lord")
             {
-                if(unitType != UnitType.DryadUnit || unitType != UnitType.GoblinUnit)
+                if(unitType != UnitID.DryadUnit || unitType != UnitID.GoblinUnit)
                 {
                     navAgent.stoppingDistance = stoppingDistance * 2;
                 }
@@ -135,7 +135,7 @@ public class Unit : GameBehaviour
                             state = UnitState.Attack;
                         }
                     }
-                    if (unitType == UnitType.GoblinUnit || unitType == UnitType.DryadUnit)
+                    if (unitType == UnitID.GoblinUnit || unitType == UnitID.DryadUnit)
                     {
                         navAgent.stoppingDistance = 4;
                     }
@@ -156,7 +156,7 @@ public class Unit : GameBehaviour
                     if (hitByArrow == false)
                         state = UnitState.Moving;
                 }
-                if (unitType == UnitType.GoblinUnit)
+                if (unitType == UnitID.GoblinUnit)
                 {
                     navAgent.stoppingDistance = 50;
                 }
@@ -164,7 +164,7 @@ public class Unit : GameBehaviour
                 //{
                 //    navAgent.stoppingDistance = stoppingDistance;
                 //}
-                if (unitType == UnitType.DryadUnit)
+                if (unitType == UnitID.DryadUnit)
                 {
                     navAgent.stoppingDistance = 20;
                 }
@@ -193,7 +193,7 @@ public class Unit : GameBehaviour
                     isMovingCheck = true;
                     StartCoroutine(WaitForIsMovingCheck());
                 }
-                if (unitType == UnitType.LeshyUnit)
+                if (unitType == UnitID.LeshyUnit)
                 {
                     if (Vector3.Distance(pointer.transform.position, transform.position) <= 11)
                     {
@@ -207,7 +207,7 @@ public class Unit : GameBehaviour
                         state = UnitState.Idle;
                     }
                 }
-                if (unitType == UnitType.GoblinUnit || unitType == UnitType.DryadUnit)
+                if (unitType == UnitID.GoblinUnit || unitType == UnitID.DryadUnit)
                 {
                     navAgent.stoppingDistance = 4;
                 }
@@ -224,7 +224,7 @@ public class Unit : GameBehaviour
                 if (trackTarget != null)
                 {
                     navAgent.SetDestination(trackTarget.transform.position);
-                    if (unitType == UnitType.GoblinUnit)
+                    if (unitType == UnitID.GoblinUnit)
                     {
                         if (Vector3.Distance(transform.position, trackTarget.transform.position) <= 30)
                         {
@@ -305,7 +305,7 @@ public class Unit : GameBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
             Vector3 offset = new Vector3(0, -1.5f, 0);
-            if (unitType == UnitType.HuldraUnit && isSelected || unitType == UnitType.DryadUnit && isSelected)
+            if (unitType == UnitID.HuldraUnit && isSelected || unitType == UnitID.DryadUnit && isSelected)
             {
                 if (_TUTM.isTutorial && _TUTM.tutorialStage == 13)
                 {
@@ -355,7 +355,7 @@ public class Unit : GameBehaviour
                             state = UnitState.Attack;
                         }
                     }
-                    if (unitType == UnitType.GoblinUnit || unitType == UnitType.DryadUnit)
+                    if (unitType == UnitID.GoblinUnit || unitType == UnitID.DryadUnit)
                     {
                         navAgent.stoppingDistance = 4;
                     }
@@ -376,7 +376,7 @@ public class Unit : GameBehaviour
                     if (hitByArrow == false)
                         state = UnitState.Moving;
                 }
-                if (unitType == UnitType.GoblinUnit)
+                if (unitType == UnitID.GoblinUnit)
                 {
                     navAgent.stoppingDistance = 50;
                 }
@@ -384,7 +384,7 @@ public class Unit : GameBehaviour
                 //{
                 //    navAgent.stoppingDistance = stoppingDistance;
                 //}
-                if (unitType == UnitType.DryadUnit)
+                if (unitType == UnitID.DryadUnit)
                 {
                     navAgent.stoppingDistance = 20;
                 }
@@ -413,7 +413,7 @@ public class Unit : GameBehaviour
                     isMovingCheck = true;
                     StartCoroutine(WaitForIsMovingCheck());
                 }
-                if (unitType == UnitType.LeshyUnit)
+                if (unitType == UnitID.LeshyUnit)
                 {
                     if (Vector3.Distance(pointer.transform.position, transform.position) <= 11)
                     {
@@ -427,7 +427,7 @@ public class Unit : GameBehaviour
                         state = UnitState.Idle;
                     }
                 }
-                if (unitType == UnitType.GoblinUnit || unitType == UnitType.DryadUnit)
+                if (unitType == UnitID.GoblinUnit || unitType == UnitID.DryadUnit)
                 {
                     navAgent.stoppingDistance = 4;
                 }
@@ -444,7 +444,7 @@ public class Unit : GameBehaviour
                 if (trackTarget != null)
                 {
                     navAgent.SetDestination(trackTarget.transform.position);
-                    if (unitType == UnitType.GoblinUnit)
+                    if (unitType == UnitID.GoblinUnit)
                     {
                         if (Vector3.Distance(transform.position, trackTarget.transform.position) <= 30)
                         {
@@ -538,7 +538,7 @@ public class Unit : GameBehaviour
         }
         if (other.tag == "Sword2")
         {
-            if(unitType != UnitType.LeshyUnit)
+            if(unitType != UnitID.LeshyUnit)
             {
                 TakeDamage(_GM.sword2Damage);
             }
@@ -551,7 +551,7 @@ public class Unit : GameBehaviour
         }
         if (other.tag == "Sword3")
         {
-            if (unitType != UnitType.LeshyUnit)
+            if (unitType != UnitID.LeshyUnit)
             {
                 TakeDamage(_GM.sword3Damage);
             }
@@ -567,7 +567,7 @@ public class Unit : GameBehaviour
             detectionRadius = detectionRadius * 2;
             state = UnitState.Attack;
             StartCoroutine(HitByArrowDelay());
-            if (unitType == UnitType.VolvaUnit)
+            if (unitType == UnitID.VolvaUnit)
             {
                 TakeDamage(_GM.arrow1Damage * 3);
             }
@@ -584,7 +584,7 @@ public class Unit : GameBehaviour
             detectionRadius = detectionRadius * 2;
             state = UnitState.Attack;
             StartCoroutine(HitByArrowDelay());
-            if (unitType == UnitType.VolvaUnit)
+            if (unitType == UnitID.VolvaUnit)
             {
                 TakeDamage(_GM.arrow2Damage * 3);
             }
@@ -597,7 +597,7 @@ public class Unit : GameBehaviour
         }
         if(other.tag == "Heal")
         {
-            if(unitType != UnitType.GolemUnit)
+            if(unitType != UnitID.GolemUnit)
             {
                 health += 100;
                 slider.value = slider.value = CalculateHealth();
@@ -641,7 +641,7 @@ public class Unit : GameBehaviour
         }
         if (other.tag == "Rune")
         {
-            if (unitType != UnitType.GolemUnit)
+            if (unitType != UnitID.GolemUnit)
             {
                 healingParticle.SetActive(true);
             }
@@ -665,7 +665,7 @@ public class Unit : GameBehaviour
         {
             isOutOfBounds = true;
         }
-        if (unitType != UnitType.GolemUnit)
+        if (unitType != UnitID.GolemUnit)
         {
             healingParticle.SetActive(false);
         }
@@ -683,7 +683,7 @@ public class Unit : GameBehaviour
         }
         if(other.tag == "Rune")
         {
-            if(unitType != UnitType.GolemUnit)
+            if(unitType != UnitID.GolemUnit)
             {
                 if (_UM.rune)
                 {
@@ -830,7 +830,7 @@ public class Unit : GameBehaviour
         yield return new WaitForEndOfFrame();
         switch (unitType)
         {
-            case UnitType.SatyrUnit:
+            case UnitID.SatyrUnit:
                 if(_UM.borkrskinn && _PERK.satyrPerk == false)
                 {
                     maxHealth = _GM.GetPercentageIncrease(_GM.satyrHealth, 0.3f);
@@ -845,7 +845,7 @@ public class Unit : GameBehaviour
 
                 break;
 
-            case UnitType.LeshyUnit:
+            case UnitID.LeshyUnit:
                 if (_UM.borkrskinn && _PERK.leshyPerk == false)
                 {
                     maxHealth = _GM.GetPercentageIncrease(_GM.leshyHealth, 0.3f);
@@ -857,7 +857,7 @@ public class Unit : GameBehaviour
                 }
                 detectionRadius = 50;
                 break;
-            case UnitType.OrcusUnit:
+            case UnitID.OrcusUnit:
                 if (_UM.borkrskinn && _PERK.orcusPerk == false)
                 {
                     maxHealth = _GM.GetPercentageIncrease(_GM.orcusHealth, 0.3f);
@@ -870,7 +870,7 @@ public class Unit : GameBehaviour
                 detectionRadius = 50;
 
                 break;
-            case UnitType.VolvaUnit:
+            case UnitID.VolvaUnit:
                 if (_UM.borkrskinn && _PERK.skessaPerk == false)
                 {
                     maxHealth = _GM.GetPercentageIncrease(_GM.skessaHealth, 0.3f);
@@ -882,7 +882,7 @@ public class Unit : GameBehaviour
                 }
                 detectionRadius = 50;
                 break;
-            case UnitType.HuldraUnit:
+            case UnitID.HuldraUnit:
                 if (_UM.borkrskinn && _PERK.huldraPerk == false)
                 {
                     maxHealth = _GM.GetPercentageIncrease(_GM.huldraHealth, 0.3f);
@@ -894,7 +894,7 @@ public class Unit : GameBehaviour
                 }
                 detectionRadius = 50;
                 break;
-            case UnitType.GoblinUnit:
+            case UnitID.GoblinUnit:
                 if (_UM.borkrskinn && _PERK.goblinPerk == false)
                 {
                     maxHealth = _GM.GetPercentageIncrease(_GM.goblinHealth, 0.3f);
@@ -906,7 +906,7 @@ public class Unit : GameBehaviour
                 }
                 detectionRadius = 50;
                 break;
-            case UnitType.Tower:
+            case UnitID.Tower:
                 if (_UM.borkrskinn)
                 {
                     health = 130;
@@ -914,7 +914,7 @@ public class Unit : GameBehaviour
                 }
 
                 break;
-            case UnitType.GolemUnit:
+            case UnitID.GolemUnit:
                 if (_UM.borkrskinn && _PERK.golemPerk == false)
                 {
                     maxHealth = _GM.GetPercentageIncrease(_GM.golemHealth, 0.3f);
@@ -927,7 +927,7 @@ public class Unit : GameBehaviour
                 detectionRadius = 75;
 
                 break;
-            case UnitType.DryadUnit:
+            case UnitID.DryadUnit:
                 if (_UM.borkrskinn && _PERK.fidhainPerk == false)
                 {
                     maxHealth = _GM.GetPercentageIncrease(_GM.dryadHealth, 0.3f);
@@ -949,7 +949,7 @@ public class Unit : GameBehaviour
     {
         switch (unitType)
         {
-            case UnitType.SatyrUnit:
+            case UnitID.SatyrUnit:
                 if(_PERK.satyrPerk == true)
                 {
                     health = _GM.GetPercentageIncrease(_GM.satyrHealth, 0.5f);
@@ -965,7 +965,7 @@ public class Unit : GameBehaviour
                 }
                 break;
 
-            case UnitType.LeshyUnit:
+            case UnitID.LeshyUnit:
                 if (_PERK.leshyPerk == true)
                 {
                     health = _GM.GetPercentageIncrease(_GM.leshyHealth, 0.5f);
@@ -979,7 +979,7 @@ public class Unit : GameBehaviour
                     navAgent.speed = _GM.leshySpeed;
                 }
                 break;
-            case UnitType.OrcusUnit:
+            case UnitID.OrcusUnit:
                 if (_PERK.orcusPerk == true)
                 {
                     health = _GM.GetPercentageIncrease(_GM.orcusHealth, 0.5f);
@@ -993,7 +993,7 @@ public class Unit : GameBehaviour
                     navAgent.speed = _GM.orcusSpeed;
                 }
                 break;
-            case UnitType.VolvaUnit:
+            case UnitID.VolvaUnit:
                 if (_PERK.skessaPerk == true)
                 {
                     health = _GM.GetPercentageIncrease(_GM.skessaHealth, 0.5f);
@@ -1007,7 +1007,7 @@ public class Unit : GameBehaviour
                     navAgent.speed = _GM.skessaSpeed;
                 }
                 break;
-            case UnitType.HuldraUnit:
+            case UnitID.HuldraUnit:
                 if (_PERK.huldraPerk == true)
                 {
                     health = _GM.GetPercentageIncrease(_GM.huldraHealth, 0.5f);
@@ -1021,7 +1021,7 @@ public class Unit : GameBehaviour
                     navAgent.speed = _GM.huldraSpeed;
                 }
                 break;
-            case UnitType.GoblinUnit:
+            case UnitID.GoblinUnit:
                 if (_PERK.goblinPerk == true)
                 {
                     health = _GM.GetPercentageIncrease(_GM.goblinHealth, 0.5f);
@@ -1035,7 +1035,7 @@ public class Unit : GameBehaviour
                     navAgent.speed = _GM.goblinSpeed;
                 }
                 break;
-            case UnitType.GolemUnit:
+            case UnitID.GolemUnit:
                 if (_PERK.golemPerk == true)
                 {
                     health = _GM.GetPercentageIncrease(_GM.golemHealth, 0.5f);
@@ -1049,7 +1049,7 @@ public class Unit : GameBehaviour
                     navAgent.speed = _GM.golemSpeed;
                 }
                 break;
-            case UnitType.DryadUnit:
+            case UnitID.DryadUnit:
                 if (_PERK.fidhainPerk == true)
                 {
                     health = _GM.GetPercentageIncrease(_GM.dryadHealth, 0.5f);
@@ -1192,7 +1192,7 @@ public class Unit : GameBehaviour
     }
     private void OnContinueButton()
     {
-        if(unitType != UnitType.GolemUnit)
+        if(unitType != UnitID.GolemUnit)
         {
             health = maxHealth;
             slider.value = slider.value = CalculateHealth();
@@ -1206,7 +1206,7 @@ public class Unit : GameBehaviour
             if(combatMode != CombatMode.Move || combatMode != CombatMode.AttackMove)
             {
                 detectionRadius = detectionRadius * 2;
-                if (unitType == UnitType.GoblinUnit)
+                if (unitType == UnitID.GoblinUnit)
                 {
                     navAgent.speed = _GM.goblinSpeed;
                 }
@@ -1221,7 +1221,7 @@ public class Unit : GameBehaviour
         {
             if (combatMode != CombatMode.Defend)
             {
-                if (unitType != UnitType.GoblinUnit)
+                if (unitType != UnitID.GoblinUnit)
                 {
                     detectionRadius = detectionRadius / 2;
                 }

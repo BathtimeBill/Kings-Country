@@ -7,6 +7,7 @@ public class EnemyManager : Singleton<EnemyManager>
 {
     public List<GameObject> enemies;
     public List<GameObject> spawnPoints;
+    public List<Wave> waves;
 
     [Header("Waves")]
     public int loggerAmount;

@@ -29,7 +29,7 @@ public class GameBehaviour : MonoBehaviour
     protected static SceneManagement _SCENE { get { return SceneManagement.instance; } }
     protected static PerkManager _PERK { get { return PerkManager.instance; } }
 }
-public enum Perk
+public enum PerkID
 {
     satyr,
     orcus,
@@ -46,6 +46,12 @@ public enum Perk
     rune,
     fyre,
     bear,
+}
+public enum ToolID
+{
+    Rune,
+    FyreBeacon,
+    Stormer
 }
 public enum Upgrade
 {
@@ -101,7 +107,7 @@ public enum CombatMode
     AttackMove,
     Defend,
 }
-public enum UnitType
+public enum UnitID
 {
     SatyrUnit,
     OrcusUnit,

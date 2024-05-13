@@ -69,11 +69,21 @@ public static class GameEvents
     public static event Action OnSpySpawned = null;
 
     public static event Action OnPerkButtonPressed = null;
+    public static event Action<Tool> OnToolButtonPressed = null;
+    public static event Action<UnitData> OnUnitButtonPressed = null;
 
 
     public static void ReportOnPerkButtonPressed()
     {
         OnPerkButtonPressed?.Invoke();
+    }
+    public static void ReportOnToolButtonPressed(Tool _tool)
+    {
+        OnToolButtonPressed?.Invoke(_tool);
+    }
+    public static void ReportOnUnitButtonPressed(UnitData _unit)
+    {
+        OnUnitButtonPressed?.Invoke(_unit);
     }
     public static void ReportOnSpySpawned()
     {

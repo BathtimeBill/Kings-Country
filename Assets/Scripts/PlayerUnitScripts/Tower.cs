@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Tower : GameBehaviour
 {
-    public UnitType unitType;
+    public UnitID unitType;
     public Animator animator;
 
     public GameObject firingPoint;
@@ -75,11 +75,11 @@ public class Tower : GameBehaviour
             if(_UM.tower)
             {
 
-                if(unitType == UnitType.SpitTower)
+                if(unitType == UnitID.SpitTower)
                 {
                     animator.SetTrigger("Spit");
                 }
-                if (unitType == UnitType.Tower)
+                if (unitType == UnitID.Tower)
                 {
                     GameObject go = Instantiate(projectile2, firingPoint.transform.position, firingPoint.transform.rotation);
                     go.GetComponent<Rigidbody>().AddForce(firingPoint.transform.forward * projectileSpeed);
@@ -87,11 +87,11 @@ public class Tower : GameBehaviour
             }
             else
             {
-                if (unitType == UnitType.SpitTower)
+                if (unitType == UnitID.SpitTower)
                 {
                     animator.SetTrigger("Spit");
                 }
-                if (unitType == UnitType.Tower)
+                if (unitType == UnitID.Tower)
                 {
                     GameObject go = Instantiate(projectile1, firingPoint.transform.position, firingPoint.transform.rotation);
                     go.GetComponent<Rigidbody>().AddForce(firingPoint.transform.forward * projectileSpeed);
@@ -184,13 +184,13 @@ public class Tower : GameBehaviour
             go = Instantiate(explosionParticle, transform.position, transform.rotation);
             Destroy(go, 15);
             _UI.CheckPopulousUI();
-            if(unitType == UnitType.Tower)
+            if(unitType == UnitID.Tower)
             {
                 UnitSelection.Instance.unitList.Remove(gameObject);
                 Destroy(gameObject);
             }
 
-            if (unitType == UnitType.SpitTower)
+            if (unitType == UnitID.SpitTower)
             {
                 UnitSelection.Instance.unitList.Remove(parent);
                 Destroy(parent);
@@ -199,7 +199,7 @@ public class Tower : GameBehaviour
     }
     private void Setup()
     {
-        if(unitType == UnitType.Tower)
+        if(unitType == UnitID.Tower)
         {
             fireRate = 2;
             if (_UM.tower)
@@ -211,7 +211,7 @@ public class Tower : GameBehaviour
                 maxHealth = _GM.towerHealth;
             }
         }
-        if(unitType == UnitType.SpitTower)
+        if(unitType == UnitID.SpitTower)
         {
             fireRate = 4;
             if (_UM.tower)

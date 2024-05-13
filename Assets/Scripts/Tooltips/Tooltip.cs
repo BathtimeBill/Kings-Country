@@ -8,6 +8,12 @@ public class Tooltip : GameBehaviour
     public string title;
     public string message;
 
+    public void SetValues(string _title, string _message)
+    {
+        title = _title;
+        message = _message;
+    }
+
     private void OnMouseEnter()
     {
         StartCoroutine(TooltipDelay());
