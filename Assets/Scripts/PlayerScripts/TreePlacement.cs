@@ -11,6 +11,8 @@ public class TreePlacement : Singleton<TreePlacement>
     public Material canPlaceMat;
     public Material cannotPlaceMat;
     public GameObject percentagePanel;
+    public Renderer[] myRenderers;
+    public Material[] myMaterials;
     
     [Header("Tree Stats")]
     public float distanceFromTree;
@@ -25,8 +27,18 @@ public class TreePlacement : Singleton<TreePlacement>
 
     void Start()
     {
-        gameObject.GetComponent<Renderer>().material = canPlaceMat;
+        myRenderers = GetComponentsInChildren<Renderer>();
+        myMaterials = GetComponentsInChildren<Material>();
+        SetMaterials(canPlaceMat);
         canPlace = true;
+    }
+
+    void SetMaterials(Material material)
+    {
+        foreach (var r in myRenderers)
+        {
+            r.material = material;
+        }
     }
 
     void Update()
@@ -66,7 +78,7 @@ public class TreePlacement : Singleton<TreePlacement>
         {
             tooFarAway = true;
             canPlace = false;
-            gameObject.GetComponent<Renderer>().material = cannotPlaceMat;
+            SetMaterials(cannotPlaceMat);
         }
         if (distanceFromTree < 99 && tooFarAway == true)
         {
@@ -74,8 +86,7 @@ public class TreePlacement : Singleton<TreePlacement>
             {
                 tooFarAway = false;
                 canPlace = true;
-                gameObject.GetComponent<Renderer>().material = canPlaceMat;
-
+                SetMaterials(canPlaceMat);
             }
         }
 
@@ -85,13 +96,13 @@ public class TreePlacement : Singleton<TreePlacement>
             {
                 insufficientMaegen = true;
                 canPlace = false;
-                gameObject.GetComponent<Renderer>().material = cannotPlaceMat;
+                SetMaterials(cannotPlaceMat);
             }
             if (_GM.maegen >= 2 && insufficientMaegen == true)
             {
                 insufficientMaegen = false;
                 canPlace = true;
-                gameObject.GetComponent<Renderer>().material = canPlaceMat;
+                SetMaterials(canPlaceMat);
             }
         }
         if (maegenPerWave == 2)
@@ -100,13 +111,13 @@ public class TreePlacement : Singleton<TreePlacement>
             {
                 insufficientMaegen = true;
                 canPlace = false;
-                gameObject.GetComponent<Renderer>().material = cannotPlaceMat;
+                SetMaterials(cannotPlaceMat);
             }
             if (_GM.maegen >= 3 && insufficientMaegen == true)
             {
                 insufficientMaegen = false;
                 canPlace = true;
-                gameObject.GetComponent<Renderer>().material = canPlaceMat;
+                SetMaterials(canPlaceMat);
             }
         }
         if (maegenPerWave == 3)
@@ -115,13 +126,13 @@ public class TreePlacement : Singleton<TreePlacement>
             {
                 insufficientMaegen = true;
                 canPlace = false;
-                gameObject.GetComponent<Renderer>().material = cannotPlaceMat;
+                SetMaterials(cannotPlaceMat);
             }
             if (_GM.maegen >= 4 && insufficientMaegen == true)
             {
                 insufficientMaegen = false;
                 canPlace = true;
-                gameObject.GetComponent<Renderer>().material = canPlaceMat;
+                SetMaterials(canPlaceMat);
             }
         }
     }
@@ -132,12 +143,12 @@ public class TreePlacement : Singleton<TreePlacement>
         {
             Debug.Log(other.tag);
             canPlace = false;
-            gameObject.GetComponent<Renderer>().material = cannotPlaceMat;
+            SetMaterials(cannotPlaceMat);
         }
         if (other.gameObject == null)
         {
             canPlace = true;
-            gameObject.GetComponent<Renderer>().material = canPlaceMat;
+            SetMaterials(canPlaceMat);
         }
 
     }
@@ -148,7 +159,7 @@ public class TreePlacement : Singleton<TreePlacement>
             if(!tooFarAway && !insufficientMaegen)
             {
                 canPlace = true;
-                gameObject.GetComponent<Renderer>().material = canPlaceMat;
+                SetMaterials(canPlaceMat);
             }
         }
     }
@@ -158,12 +169,12 @@ public class TreePlacement : Singleton<TreePlacement>
         if (other.tag == "Tree" || other.tag == "CantPlace" || other.tag == "River")
         {
             canPlace = false;
-            gameObject.GetComponent<Renderer>().material = cannotPlaceMat;
+            SetMaterials(cannotPlaceMat);
         }
         if (other.gameObject == null)
         {
             canPlace = true;
-            gameObject.GetComponent<Renderer>().material = canPlaceMat;
+            SetMaterials(canPlaceMat);
         }
     }
 

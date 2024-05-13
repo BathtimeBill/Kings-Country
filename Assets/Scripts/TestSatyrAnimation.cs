@@ -30,7 +30,10 @@ public class TestSatyrAnimation : GameBehaviour
         {
             if (distanceFromClosestUnit < 80 && _EM.enemies.Count != 0)
             {
-                SmoothFocusOnEnemy();
+                if(closestUnit != null)
+                {
+                    SmoothFocusOnEnemy();
+                }
             }
         }
     }

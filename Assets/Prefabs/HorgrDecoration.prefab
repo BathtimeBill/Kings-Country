@@ -23,8 +23,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 17239266238521030}
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.026036114, y: 0.0016303062, z: 6.8280687}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.026036114, y: -3.7, z: -0.3}
   m_LocalScale: {x: 1, y: 0.99999976, z: 0.99999976}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9855,8 +9855,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.495283, g: 0.5415875, b: 1, a: 1}
-  m_Intensity: 10
-  m_Range: 19.49
+  m_Intensity: 600
+  m_Range: 126.1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -14823,7 +14823,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4742069047227298650}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -14832,7 +14832,7 @@ Transform:
   - {fileID: 6359149934436272878}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &9019370390390367813
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -14840,7 +14840,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4742069047227298650}
-  m_Mesh: {fileID: -2477511411847689622, guid: a6d28efe4cb4c4943b17f057e9020b99, type: 3}
+  m_Mesh: {fileID: -2432090755550338912, guid: c972250d46288ed41925915aceef6b95, type: 3}
 --- !u!23 &6543671832836575887
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -14912,9 +14912,14 @@ MonoBehaviour:
   enemyMaxTimeLeft: 160
   unitTimeLeft: 0
   unitMaxTimeLeft: 0
+  claimRate: 0
   playerHasControl: 0
   playerControlFX: {fileID: 17239266238521030}
   enemyControlFX: {fileID: 2911154980770579604}
+  spawnLocation: {fileID: 0}
+  skessa: {fileID: 0}
+  huldra: {fileID: 0}
+  selectionCircle: {fileID: 0}
   slider: {fileID: 0}
   fill: {fileID: 0}
   mapIcon: {fileID: 0}
@@ -14923,6 +14928,7 @@ MonoBehaviour:
   neutralColour: {r: 1, g: 1, b: 1, a: 1}
   radius: 47.18
   centre: {x: 0, y: 0, z: 0}
+  audioSource: {fileID: 0}
 --- !u!208 &1092812706
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -19856,7 +19862,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5949682373167729219}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.026036114, y: 6.6719375, z: 0.0016293529}
+  m_LocalPosition: {x: 0.026036114, y: 4.74, z: 0}
   m_LocalScale: {x: 15.9047985, y: 15.9047985, z: 15.9047985}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24681,7 +24687,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5964670535830498470}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.026036114, y: -2.13, z: 0.0016312603}
+  m_LocalPosition: {x: 0.026036114, y: 3.7, z: 0}
   m_LocalScale: {x: 0.92717326, y: 0.9271732, z: 0.9271732}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -29515,8 +29521,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6615083503145753819}
   m_LocalRotation: {x: -0.6995766, y: 0.10292032, z: 0.10292032, w: 0.6995766}
-  m_LocalPosition: {x: 0.026036114, y: -0.14806704, z: 0.0016303215}
-  m_LocalScale: {x: 7.696085, y: 7.696085, z: 7.696085}
+  m_LocalPosition: {x: 0.026036114, y: 4.6, z: 0}
+  m_LocalScale: {x: 8.852807, y: 8.852807, z: 8.852807}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4785122167260805407}
@@ -34406,7 +34412,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7409980434085535628}
   m_LocalRotation: {x: 0.2480501, y: 0.66217154, z: 0.66217154, w: -0.2480501}
-  m_LocalPosition: {x: 0.026036114, y: -0.82, z: 0.0016312603}
+  m_LocalPosition: {x: 0.026036114, y: 3.5, z: 0}
   m_LocalScale: {x: 2.2011735, y: 2.2011733, z: 2.201173}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -293,8 +293,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 3.12
-  m_Height: 15.31
+  m_Radius: 2.62
+  m_Height: 26.24
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4680683886014204572
@@ -392,7 +392,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 0
-  m_Extents: {x: 0.17, y: 1.2520001, z: 0.17}
+  m_Extents: {x: 0.39, y: 1.2520001, z: 0.39}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 0
@@ -485,6 +485,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2590152243037156440, guid: 2d70943f065e94142b9b01aba8977da3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6481864946312750265, guid: 2d70943f065e94142b9b01aba8977da3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8820301908845390206, guid: 2d70943f065e94142b9b01aba8977da3,
         type: 3}
       propertyPath: m_LODs.Array.size
@@ -505,7 +515,9 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9215264823216836328, guid: 2d70943f065e94142b9b01aba8977da3, type: 3}
+    - {fileID: 8820301908845390206, guid: 2d70943f065e94142b9b01aba8977da3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2d70943f065e94142b9b01aba8977da3, type: 3}
 --- !u!4 &1335936784105549379 stripped
 Transform:
@@ -541,6 +553,11 @@ PrefabInstance:
     - target: {fileID: 4630175658693278180, guid: 97e01250523785f419de0f124f12f5d6,
         type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6950286847093847786, guid: 97e01250523785f419de0f124f12f5d6,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6950286847093847790, guid: 97e01250523785f419de0f124f12f5d6,
@@ -638,7 +655,14 @@ PrefabInstance:
       propertyPath: m_LODs.Array.data[1].screenRelativeHeight
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8356519400733046114, guid: 97e01250523785f419de0f124f12f5d6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 4630175658693278180, guid: 97e01250523785f419de0f124f12f5d6, type: 3}
+    - {fileID: 6950286847111102062, guid: 97e01250523785f419de0f124f12f5d6, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 97e01250523785f419de0f124f12f5d6, type: 3}
 --- !u!1 &3281396539364765153 stripped
 GameObject:

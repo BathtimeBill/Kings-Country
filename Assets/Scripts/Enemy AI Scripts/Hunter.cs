@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Hunter : GameBehaviour
 {
+    public bool invincible = true;
     [Header("Hunter Type")]
     public HunterType type;
     [Header("Tick")]
@@ -64,6 +65,7 @@ public class Hunter : GameBehaviour
         horgr = GameObject.FindGameObjectWithTag("HutRally");
         speed = navAgent.speed;
         StartCoroutine(Tick());
+        StartCoroutine(WaitForInvincible());
     }
     IEnumerator Tick()
     {//Tracks the closest animal and player unit.
@@ -295,8 +297,12 @@ public class Hunter : GameBehaviour
     }
     private void SmoothFocusOnEnemy()
     {
-        var targetRotation = Quaternion.LookRotation(closestUnit.transform.position - transform.position);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2 * Time.deltaTime);
+        if(closestUnit != null)
+        {
+            var targetRotation = Quaternion.LookRotation(closestUnit.transform.position - transform.position);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2 * Time.deltaTime);
+        }
+
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -409,13 +415,22 @@ public class Hunter : GameBehaviour
     }
     public void TakeDamage(float damage)
     {
-        audioSource.clip = _SM.GetGruntSounds();
-        audioSource.pitch = Random.Range(0.8f, 1.2f);
-        audioSource.Play();
-        GameObject bloodParticle;
-        bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
-        health -= damage;
-        Die();
+        if(!invincible)
+        {
+            audioSource.clip = _SM.GetGruntSounds();
+            audioSource.pitch = Random.Range(0.8f, 1.2f);
+            audioSource.Play();
+            GameObject bloodParticle;
+            bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
+            health -= damage;
+            Die();
+        }
+    }
+    IEnumerator WaitForInvincible()
+    {
+        invincible = true;
+        yield return new WaitForSeconds(5);
+        invincible = false;
     }
     private void Die()
     {

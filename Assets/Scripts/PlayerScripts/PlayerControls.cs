@@ -263,7 +263,6 @@ public class PlayerControls : Singleton<PlayerControls>
                         _GM.gameState = GameState.Pause;
                         _UI.pausePanel.SetActive(true);
                         Time.timeScale = 0;
-                        print("Here");
                     }
                     else
                     {
@@ -690,14 +689,14 @@ public class PlayerControls : Singleton<PlayerControls>
             Debug.DrawLine(ray.origin, hitPoint.point);
             //Vector3 targetPosition = new Vector3(targetDest.transform.position.x, transform.position.y, targetDest.transform.position.z);
             targetDest.transform.position = hitPoint.point;
-            treePlacementMeshRenderer.enabled = true;
-            runePlacementMeshRenderer.enabled = true;
+            //treePlacementMeshRenderer.enabled = true;
+            //runePlacementMeshRenderer.enabled = true;
 
         }
         else
         {
-            treePlacementMeshRenderer.enabled = false;
-            runePlacementMeshRenderer.enabled = false;
+            //treePlacementMeshRenderer.enabled = false;
+            //runePlacementMeshRenderer.enabled = false;
         }
 
     }
@@ -780,13 +779,20 @@ public class PlayerControls : Singleton<PlayerControls>
         targetPointerGraphics.SetActive(false);
     }
 
+
+    void OnGameWin()
+    {
+        canPressEscape = false;
+    }
     private void OnEnable()
     {
         GameEvents.OnUnitMove += OnUnitMove;
+        GameEvents.OnGameWin += OnGameWin;
     }
 
     private void OnDisable()
     {
         GameEvents.OnUnitMove -= OnUnitMove;
+        GameEvents.OnGameWin -= OnGameWin;
     }
 }

@@ -156,4 +156,20 @@ public class HutManager : Singleton<HutManager>
             _PC.Error();
         }
     }
+
+    void OnContinueButton()
+    {
+        playerOwns = true;
+        enemyOwns = false;
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnContinueButton += OnContinueButton;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnContinueButton -= OnContinueButton;
+    }
 }

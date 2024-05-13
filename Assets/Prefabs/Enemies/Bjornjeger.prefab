@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8774176018161635195}
   - component: {fileID: 7096892820727070874}
   - component: {fileID: 4394728631136639956}
+  - component: {fileID: 6254734442496380548}
   m_Layer: 3
   m_Name: MapSprite
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 3657180017089710214}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 16.454, z: -1.5841}
-  m_LocalScale: {x: 3, y: 1, z: 3}
+  m_LocalScale: {x: 3.7689, y: 1.2563, z: 3.7689}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6651862902898196268}
@@ -83,6 +84,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6254734442496380548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3657180017089710214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f028e87966e69f546b173a1aba4cfec6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6651862902898196266
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +129,7 @@ Transform:
   m_GameObject: {fileID: 6651862902898196266}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2917, y: 1.2917, z: 1.2917}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 722921399805050821}
@@ -223,6 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b869c959d7e2ff42ad634ee441fc716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  invincible: 1
   type: 2
   seconds: 0.5
   health: 0
@@ -246,6 +260,7 @@ MonoBehaviour:
   distanceFromClosestWildlife: 0
   closestUnit: {fileID: 0}
   distanceFromClosestUnit: 0
+  range: 0
   horgr: {fileID: 0}
   distanceFromClosestHorgr: 0
   hasArrivedAtHorgr: 0
@@ -389,7 +404,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9579f69b9ff51a24d9f21212bdb067f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outline: {fileID: 0}
+  outline: {fileID: 1358804064418555012}
+  timerLength: 0
+  isInvincible: 1
 --- !u!1 &8878307506942366345
 GameObject:
   m_ObjectHideFlags: 0

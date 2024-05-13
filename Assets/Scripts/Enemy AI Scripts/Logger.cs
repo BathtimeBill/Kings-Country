@@ -6,6 +6,7 @@ using UnityEngine.PlayerLoop;
 
 public class Logger : GameBehaviour
 {
+    public bool invincible = true;
     [Header("Woodcutter Type")]
     public WoodcutterType woodcutterType;
     [Header("Tick")]
@@ -62,6 +63,7 @@ public class Logger : GameBehaviour
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
         speed = navAgent.speed;
         StartCoroutine(Tick());
+        StartCoroutine(WaitForInvincible());
     }
 
     IEnumerator Tick()
@@ -371,26 +373,34 @@ public class Logger : GameBehaviour
 
     public void TakeDamage(float damage)
     {
-        if(woodcutterType != WoodcutterType.LogCutter)
+        if(!invincible)
         {
-            audioSource.clip = _SM.GetGruntSounds();
-            audioSource.pitch = Random.Range(0.8f, 1.2f);
-            audioSource.Play();
-        }
-        else
-        {
-            audioSource.clip = _SM.GetChopSounds();
-            audioSource.pitch = Random.Range(0.8f, 1.2f);
-            audioSource.Play();
-        }
-        Vector3 forward = new Vector3(0, 180, 0);
+            if (woodcutterType != WoodcutterType.LogCutter)
+            {
+                audioSource.clip = _SM.GetGruntSounds();
+                audioSource.pitch = Random.Range(0.8f, 1.2f);
+                audioSource.Play();
+            }
+            else
+            {
+                audioSource.clip = _SM.GetChopSounds();
+                audioSource.pitch = Random.Range(0.8f, 1.2f);
+                audioSource.Play();
+            }
+            Vector3 forward = new Vector3(0, 180, 0);
 
-        GameObject bloodParticle;
-        bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
-        health -= damage;
-        Die();
+            GameObject bloodParticle;
+            bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
+            health -= damage;
+            Die();
+        }
     }
-
+    IEnumerator WaitForInvincible()
+    {
+        invincible = true;
+        yield return new WaitForSeconds(5);
+        invincible = false;
+    }
     private void Die()
     {
         bool isColliding = false;

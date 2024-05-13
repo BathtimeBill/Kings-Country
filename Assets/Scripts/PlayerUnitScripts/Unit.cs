@@ -16,6 +16,7 @@ public class Unit : GameBehaviour
     public Sprite defendSprite;
     public Vector3 defendPosition;
     public float unitSpeed;
+    public float tickRate;
 
     [Header("Stats")] 
     public float health;
@@ -49,6 +50,7 @@ public class Unit : GameBehaviour
     public GameObject rangedPrefab;
     public GameObject towerPrefab;
     public GameObject rangedSpawnLocation;
+    public GameObject healingParticle;
     [Header("Bools")]
     public bool isSelected;
     public bool inCombat;
@@ -149,9 +151,10 @@ public class Unit : GameBehaviour
                 {
                     state = UnitState.Idle;
                 }
-                if (distanceToClosestEnemy >= detectionRadius && hitByArrow == false)
+                if (distanceToClosestEnemy >= detectionRadius)
                 {
-                    state = UnitState.Idle;
+                    if (hitByArrow == false)
+                        state = UnitState.Moving;
                 }
                 if (unitType == UnitType.GoblinUnit)
                 {
@@ -161,13 +164,13 @@ public class Unit : GameBehaviour
                 //{
                 //    navAgent.stoppingDistance = stoppingDistance;
                 //}
-                if(unitType == UnitType.DryadUnit)
+                if (unitType == UnitType.DryadUnit)
                 {
                     navAgent.stoppingDistance = 20;
                 }
-                if(_EM.enemies.Count != 0)
+                if (_EM.enemies.Count != 0)
                 {
-                    if(distanceToClosestEnemy < detectionRadius)
+                    if (distanceToClosestEnemy < detectionRadius)
                     {
                         navAgent.SetDestination(closestEnemy.transform.position);
                         SmoothFocusOnEnemy();
@@ -208,7 +211,7 @@ public class Unit : GameBehaviour
                 {
                     navAgent.stoppingDistance = 4;
                 }
-                if(combatMode == CombatMode.AttackMove)
+                if (combatMode == CombatMode.AttackMove)
                 {
                     if (distanceToClosestEnemy < detectionRadius)
                     {
@@ -221,7 +224,7 @@ public class Unit : GameBehaviour
                 if (trackTarget != null)
                 {
                     navAgent.SetDestination(trackTarget.transform.position);
-                    if(unitType == UnitType.GoblinUnit)
+                    if (unitType == UnitType.GoblinUnit)
                     {
                         if (Vector3.Distance(transform.position, trackTarget.transform.position) <= 30)
                         {
@@ -295,20 +298,6 @@ public class Unit : GameBehaviour
         }
 
 
-        //if (navAgent.velocity != Vector3.zero)
-        //{
-        //    animator.SetBool("isMoving", true);
-        //    isMoving = true;
-        //}
-        //if (navAgent.velocity == Vector3.zero)
-        //{
-        //    animator.SetBool("isMoving", false);
-        //    isMoving = false;
-        //    isMovingCheck = false;
-        //}
-
-
-
         if (health > maxHealth)
         {
             health = maxHealth;
@@ -343,7 +332,143 @@ public class Unit : GameBehaviour
 
         }
     }
-    
+    IEnumerator Tick()
+    {
+        print("Tick");
+        switch (state)
+        {
+            case UnitState.Idle:
+                if (_EM.enemies.Count > 0)
+                {
+                    if (combatMode != CombatMode.Defend)
+                    {
+                        if (distanceToClosestEnemy < detectionRadius)
+                        {
+                            state = UnitState.Attack;
+                        }
+                    }
+                    else
+                    {
+                        navAgent.SetDestination(defendPosition);
+                        if (distanceToClosestEnemy < detectionRadius)
+                        {
+                            state = UnitState.Attack;
+                        }
+                    }
+                    if (unitType == UnitType.GoblinUnit || unitType == UnitType.DryadUnit)
+                    {
+                        navAgent.stoppingDistance = 4;
+                    }
+
+                }
+
+                //animator.SetBool("inCombat", false);
+                break;
+
+            case UnitState.Attack:
+                //navAgent.angularSpeed = 500;
+                if (_EM.enemies.Count == 0)
+                {
+                    state = UnitState.Idle;
+                }
+                if (distanceToClosestEnemy >= detectionRadius)
+                {
+                    if (hitByArrow == false)
+                        state = UnitState.Moving;
+                }
+                if (unitType == UnitType.GoblinUnit)
+                {
+                    navAgent.stoppingDistance = 50;
+                }
+                //else
+                //{
+                //    navAgent.stoppingDistance = stoppingDistance;
+                //}
+                if (unitType == UnitType.DryadUnit)
+                {
+                    navAgent.stoppingDistance = 20;
+                }
+                if (_EM.enemies.Count != 0)
+                {
+                    if (distanceToClosestEnemy < detectionRadius)
+                    {
+                        navAgent.SetDestination(closestEnemy.transform.position);
+                        SmoothFocusOnEnemy();
+                    }
+                    else
+                    {
+                        if (hitByArrow == true)
+                        {
+                            navAgent.SetDestination(closestEnemy.transform.position);
+                            SmoothFocusOnEnemy();
+                        }
+                    }
+                }
+                //animator.SetBool("inCombat", true);
+
+                break;
+            case UnitState.Moving:
+                if (isMovingCheck == false)
+                {
+                    isMovingCheck = true;
+                    StartCoroutine(WaitForIsMovingCheck());
+                }
+                if (unitType == UnitType.LeshyUnit)
+                {
+                    if (Vector3.Distance(pointer.transform.position, transform.position) <= 11)
+                    {
+                        state = UnitState.Idle;
+                    }
+                }
+                else
+                {
+                    if (Vector3.Distance(pointer.transform.position, transform.position) <= 5)
+                    {
+                        state = UnitState.Idle;
+                    }
+                }
+                if (unitType == UnitType.GoblinUnit || unitType == UnitType.DryadUnit)
+                {
+                    navAgent.stoppingDistance = 4;
+                }
+                if (combatMode == CombatMode.AttackMove)
+                {
+                    if (distanceToClosestEnemy < detectionRadius)
+                    {
+                        state = UnitState.Attack;
+                    }
+                }
+                break;
+            case UnitState.Track:
+                //navAgent.angularSpeed = 500;
+                if (trackTarget != null)
+                {
+                    navAgent.SetDestination(trackTarget.transform.position);
+                    if (unitType == UnitType.GoblinUnit)
+                    {
+                        if (Vector3.Distance(transform.position, trackTarget.transform.position) <= 30)
+                        {
+                            state = UnitState.Attack;
+                        }
+                    }
+                    else
+                    {
+                        if (Vector3.Distance(transform.position, trackTarget.transform.position) <= 10)
+                        {
+                            state = UnitState.Attack;
+                        }
+                    }
+
+                }
+                else
+                {
+                    state = UnitState.Idle;
+                }
+                break;
+        }
+        yield return new WaitForSeconds(tickRate);
+        StartCoroutine(Tick());
+    }
     public void PlayFootstepSound()
     {
         PlaySound(_SM.GetForestFootstepSound());
@@ -395,6 +520,8 @@ public class Unit : GameBehaviour
         yield return new WaitForSeconds(1);
         hitByArrow = false;
         detectionRadius = detectionRadius / 2;
+        state = UnitState.Moving;
+        navAgent.SetDestination(transform.position);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -512,6 +639,13 @@ public class Unit : GameBehaviour
         {
             TakeDamage(100);
         }
+        if (other.tag == "Rune")
+        {
+            if (unitType != UnitType.GolemUnit)
+            {
+                healingParticle.SetActive(true);
+            }
+        }
     }
     private void OnTriggerExit(Collider other)
     {
@@ -531,6 +665,10 @@ public class Unit : GameBehaviour
         {
             isOutOfBounds = true;
         }
+        if (unitType != UnitType.GolemUnit)
+        {
+            healingParticle.SetActive(false);
+        }
     }
     private void OnTriggerStay(Collider other)
     {
@@ -549,16 +687,17 @@ public class Unit : GameBehaviour
             {
                 if (_UM.rune)
                 {
-                    health += 8 * Time.deltaTime;
+                    health += _RPlace.healRate * 2 * Time.deltaTime;
                 }
                 else
                 {
-                    health += 4 * Time.deltaTime;
+                    health += _RPlace.healRate * Time.deltaTime;
                 }
                 slider.value = slider.value = CalculateHealth();
             }
         }
     }
+
     public void TakeDamage(float damage)
     {
         state = UnitState.Attack;

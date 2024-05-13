@@ -18,6 +18,7 @@ public class StartCamera : GameBehaviour
     }
     IEnumerator WaitToTurnOnUI()
     {
+
         yield return new WaitForSeconds(10);
         foreach (GameObject go in uiElements)
         {
@@ -27,11 +28,13 @@ public class StartCamera : GameBehaviour
     }
     void Start()
     {
-        if(isStartCam)
+
+        if (isStartCam)
         {
             StartCoroutine(WaitToTurnOnUI());
             foreach (GameObject go in uiElements)
             {
+                print("trying");
                 go.SetActive(false);
             }
             switch (_GM.level)

@@ -187,6 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f733ac703e650749b182426d3399a8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  invincible: 1
   type: 1
   seconds: 0.5
   health: 0
@@ -350,7 +351,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9579f69b9ff51a24d9f21212bdb067f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outline: {fileID: 0}
+  outline: {fileID: 6831773827517063397}
+  timerLength: 0
+  isInvincible: 1
 --- !u!1 &4402727615912702409
 GameObject:
   m_ObjectHideFlags: 0
@@ -714,6 +717,7 @@ GameObject:
   - component: {fileID: 3752566487643987066}
   - component: {fileID: 6547436221229493461}
   - component: {fileID: 111406389464332802}
+  - component: {fileID: 4729497148005219565}
   m_Layer: 3
   m_Name: MapSprite
   m_TagString: Untagged
@@ -730,7 +734,7 @@ Transform:
   m_GameObject: {fileID: 7390977567186504090}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 13.8402605, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 3.7221723, y: 3.7221723, z: 3.7221723}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8129506673264042084}
@@ -786,6 +790,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4729497148005219565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7390977567186504090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f028e87966e69f546b173a1aba4cfec6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &709787909675334
 PrefabInstance:
   m_ObjectHideFlags: 0

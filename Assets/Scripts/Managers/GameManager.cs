@@ -369,6 +369,11 @@ public class GameManager : Singleton<GameManager>
             }
         }
     }
+
+    void OnGameWin()
+    {
+        
+    }
     private void OnEnable()
     {
         GameEvents.OnUnitKilled += OnUnitKilled;
@@ -384,6 +389,7 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnWaveOver += OnWaveOver;
         GameEvents.OnStartNextRound += OnStartNextRound;
         GameEvents.OnContinueButton += OnContinueButton;
+        GameEvents.OnGameWin += OnGameWin;
     }
 
     private void OnDisable()
@@ -401,5 +407,6 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnWaveOver -= OnWaveOver;
         GameEvents.OnStartNextRound -= OnStartNextRound;
         GameEvents.OnContinueButton -= OnContinueButton;
+        GameEvents.OnGameWin -= OnGameWin;
     }
 }

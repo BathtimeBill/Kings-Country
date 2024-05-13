@@ -205,7 +205,7 @@ GameObject:
   - component: {fileID: 1071894615424627095}
   - component: {fileID: 1071894615424627093}
   - component: {fileID: 3556136993276625024}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SelectionCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2178,7 +2178,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 137
+  m_VersionIndex: 140
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2260,7 +2260,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1071894615424627091}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
   m_Name: 
@@ -2399,6 +2399,7 @@ MonoBehaviour:
   defendSprite: {fileID: 21300000, guid: 021aa7092ae516e4a9c156f7049ca959, type: 3}
   defendPosition: {x: 0, y: 0, z: 0}
   unitSpeed: 0
+  tickRate: 0
   health: 0
   maxHealth: 0
   projectileSpeed: 1000
@@ -2427,6 +2428,7 @@ MonoBehaviour:
   rangedPrefab: {fileID: 0}
   towerPrefab: {fileID: 0}
   rangedSpawnLocation: {fileID: 0}
+  healingParticle: {fileID: 0}
   isSelected: 0
   inCombat: 0
   isMoving: 0
@@ -2434,12 +2436,14 @@ MonoBehaviour:
   isTooCloseToTower: 0
   isOutOfBounds: 0
   idleSetDest: 0
+  hitByArrow: 0
   SFXPool: {fileID: 9035299592255929110}
   soundPoolCurrent: 0
   soundPool:
   - {fileID: 7397570867915911029}
   vocalSource: {fileID: 7473041590163469640}
   spellSource: {fileID: 0}
+  isUpgraded: 0
 --- !u!195 &1071894615449563646
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2937,7 +2941,7 @@ GameObject:
   m_Component:
   - component: {fileID: 639608492404457714}
   - component: {fileID: 5784939967419192040}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3036,9 +3040,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7292482471016938310}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 20.42, z: 0}
-  m_LocalScale: {x: 2.2, y: 2.912112, z: 2.2}
+  m_LocalScale: {x: 4.22224, y: 5.5889254, z: 4.22224}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1071894615449563645}
@@ -3715,12 +3719,17 @@ MonoBehaviour:
   arrow: {fileID: 0}
   arrow2: {fileID: 0}
   weaponCollider: {fileID: 3904795701664264158}
+  weaponCollider2: {fileID: 0}
   footstepParticle: {fileID: 5382783085058185736, guid: df351d0faa5e0034da686dada662a71e,
     type: 3}
   stompParticle: {fileID: 5382783085058185736, guid: 86ac9786104e3e24489a9a1b4cf15f07,
     type: 3}
   leftFoot: {fileID: 4023020833393261540}
   rightFoot: {fileID: 2402633751833262019}
+  hand: {fileID: 0}
+  spit: {fileID: 0}
+  spitParticle: {fileID: 0}
+  spitCollider: {fileID: 0}
 --- !u!1001 &7961987496525757305
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3882,8 +3891,13 @@ MonoBehaviour:
   arrow: {fileID: 0}
   arrow2: {fileID: 0}
   weaponCollider: {fileID: 0}
+  weaponCollider2: {fileID: 0}
   footstepParticle: {fileID: 0}
   stompParticle: {fileID: 1161676898499198330, guid: c2a6be181345deb4b9d26cc3bd34027e,
     type: 3}
   leftFoot: {fileID: 7961987496525872035}
   rightFoot: {fileID: 7961987496525883967}
+  hand: {fileID: 0}
+  spit: {fileID: 0}
+  spitParticle: {fileID: 0}
+  spitCollider: {fileID: 0}

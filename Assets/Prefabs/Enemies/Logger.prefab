@@ -118,6 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf104de209843464fa6d8bf129028475, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  invincible: 1
   woodcutterType: 0
   seconds: 0.5
   health: 0
@@ -303,7 +304,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9579f69b9ff51a24d9f21212bdb067f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outline: {fileID: 0}
+  outline: {fileID: 644032064720565292}
+  timerLength: 0
+  isInvincible: 1
 --- !u!1 &3762406006303355324
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,6 +318,7 @@ GameObject:
   - component: {fileID: 591704359505938347}
   - component: {fileID: 7120348873736953444}
   - component: {fileID: 8557236866931008379}
+  - component: {fileID: 2889204463624698820}
   m_Layer: 3
   m_Name: MapSprite
   m_TagString: Untagged
@@ -387,6 +391,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2889204463624698820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3762406006303355324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f028e87966e69f546b173a1aba4cfec6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7997397239271694337
 GameObject:
   m_ObjectHideFlags: 0

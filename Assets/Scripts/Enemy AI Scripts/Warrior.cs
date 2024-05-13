@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 
 public class Warrior : GameBehaviour
 {
+    public bool invincible = true;
     [Header("Hunter Type")]
     public WarriorType type;
     [Header("Tick")]
@@ -61,6 +62,7 @@ public class Warrior : GameBehaviour
         horgr = GameObject.FindGameObjectWithTag("HorgrRally");
         speed = navAgent.speed;
         StartCoroutine(Tick());
+        StartCoroutine(WaitForInvincible());
     }
 
     IEnumerator Tick()
@@ -87,7 +89,7 @@ public class Warrior : GameBehaviour
                 horgrSwitch = false;
                 if (UnitSelection.Instance.unitList.Count == 0)
                 {
-                    navAgent.stoppingDistance = 8;
+                    navAgent.stoppingDistance = 10;
                     FindHomeTree();
                     SmoothFocusOnEnemy();
                 }
@@ -100,7 +102,7 @@ public class Warrior : GameBehaviour
                     }
                     if (closestUnit.tag == "LeshyUnit")
                     {
-                        navAgent.stoppingDistance = 6;
+                        navAgent.stoppingDistance = 8;
                     }
                     else
                     {
@@ -183,16 +185,20 @@ public class Warrior : GameBehaviour
     }
     private void SmoothFocusOnEnemy()
     {
-        if (UnitSelection.Instance.unitList.Count == 0)
+        if(closestUnit != null)
         {
-            var targetRotation = Quaternion.LookRotation(homeTree.transform.position - transform.position);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
+            if (UnitSelection.Instance.unitList.Count == 0)
+            {
+                var targetRotation = Quaternion.LookRotation(homeTree.transform.position - transform.position);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
+            }
+            else
+            {
+                var targetRotation = Quaternion.LookRotation(closestUnit.transform.position - transform.position);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
+            }
         }
-        else
-        {
-            var targetRotation = Quaternion.LookRotation(closestUnit.transform.position - transform.position);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
-        }
+
     }
     private void Setup()
     {
@@ -325,14 +331,23 @@ public class Warrior : GameBehaviour
     }
     public void TakeDamage(float damage)
     {
-        state = EnemyState.Attack;
-        audioSource.clip = _SM.GetGruntSounds();
-        audioSource.pitch = Random.Range(0.8f, 1.2f);
-        audioSource.Play();
-        GameObject bloodParticle;
-        bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
-        health -= damage;
-        Die();
+        if(!invincible)
+        {
+            state = EnemyState.Attack;
+            audioSource.clip = _SM.GetGruntSounds();
+            audioSource.pitch = Random.Range(0.8f, 1.2f);
+            audioSource.Play();
+            GameObject bloodParticle;
+            bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
+            health -= damage;
+            Die();
+        }
+    }
+    IEnumerator WaitForInvincible()
+    {
+        invincible = true;
+        yield return new WaitForSeconds(5);
+        invincible = false;
     }
     private void Die()
     {

@@ -26,7 +26,10 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip[] skessaVocals;
     public AudioClip[] goblinVocals;
     public AudioClip[] fidhainVocals;
-    
+    [Header("Death Sounds")]
+    public AudioClip[] satyrDeathVocals;
+    public AudioClip[] orcusDeathVocals;
+    public AudioClip[] leshyDeathVocals;
     [Header("Footstep Sounds")]
     public AudioClip[] humanFootsteps;
     public AudioClip[] forestFootsteps;
@@ -90,6 +93,22 @@ public class SoundManager : Singleton<SoundManager>
         soundPool[soundPoolCurrent].clip = _clip;
         soundPool[soundPoolCurrent].Play();
     }
+
+    public AudioClip GetSatyrDeathSound()
+    {
+        return satyrDeathVocals[Random.Range(0, satyrDeathVocals.Length)];
+    }
+    public AudioClip GetOrcusDeathSound()
+    {
+        return orcusDeathVocals[Random.Range(0, orcusDeathVocals.Length)];
+    }
+    public AudioClip GetLeshyDeathSound()
+    {
+        return leshyDeathVocals[Random.Range(0, leshyDeathVocals.Length)];
+    }
+
+
+
     public AudioClip GetWhooshSounds()
     {
         return whooshSounds[Random.Range(0, whooshSounds.Length)];
