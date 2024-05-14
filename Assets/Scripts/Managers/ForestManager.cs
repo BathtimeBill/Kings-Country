@@ -45,8 +45,7 @@ public class ForestManager : Singleton<ForestManager>
     //This function checks how many animals are in the scene.
     public int CheckWildlife()
     {
-        int wildlife = GameObject.FindGameObjectsWithTag("Wildlife").Length;
-        return wildlife;
+        return GameObject.FindGameObjectsWithTag("Wildlife").Length;
     }
 
     //This checks how many trees are in the scene and adjusts the spawn rate of the wildlife accordingly.
@@ -85,6 +84,8 @@ public class ForestManager : Singleton<ForestManager>
         Vector3 finalPosition = hit.position;
         Instantiate(spawnableAnimals[rnd], hit.position, transform.rotation);
         Instantiate(wildlifeSpawnParticle, hit.position, transform.rotation);
+
+        GameEvents.ReportOnWildlifeValueChanged(CheckWildlife());
     }
 
     //At the start of the game, rocks are spawned in procedurally with a random scale and rotation.
@@ -101,66 +102,11 @@ public class ForestManager : Singleton<ForestManager>
         rock.transform.localScale = Vector3.one * rndScale;
     }
 
-    //This coroutine spawns different animals in based on how many animals are already in the scene. Starting with rabbits, then deer, and finally, boar. It loops for the duration of the game.
-    IEnumerator SpawnWildlife()
-    {
-        CheckTreesForWildlife();
-        
-
-        if (_GM.wildlife < 6)
-        {
-            if(spawnableAnimals.Count == 0)
-            {
-                spawnableAnimals.Add(rabbit);
-            }
-            WildlifeInstantiate();
-            _GM.wildlife = CheckWildlife();
-        }
-        if(_GM.wildlife >= 6 && _GM.wildlife < 15)
-        {
-            if (spawnableAnimals.Count == 1)
-            {
-                spawnableAnimals.Add(deer);
-            }
-            WildlifeInstantiate();
-            _GM.wildlife = CheckWildlife();
-        }
-        if (_GM.wildlife >= 15)
-        {
-            if (spawnableAnimals.Count == 2)
-            {
-                spawnableAnimals.Add(boar);
-            }
-            WildlifeInstantiate();
-            _GM.wildlife = CheckWildlife();
-        }
-
-        _UI.CheckWildlifeUI();
-        if(_UM.fertileSoil)
-        {
-            yield return new WaitForSeconds(Random.Range(minSpawnRate / 2, maxSpawnRate / 2));
-        }
-        else
-        {
-            yield return new WaitForSeconds(Random.Range(minSpawnRate, maxSpawnRate));
-        }
-
-        StartCoroutine(SpawnWildlife());
-    }
-
     //After an animal is killed, this waits until the end of the frame to update the UI.
     private void OnWildlifeKilled()
     {
-        StartCoroutine(WaitToCheckWildlife());
+        GameEvents.ReportOnWildlifeValueChanged(CheckWildlife());
     }
-
-    IEnumerator WaitToCheckWildlife()
-    {
-        yield return new WaitForSeconds(0.1f);
-        _GM.wildlife = CheckWildlife();
-        _UI.CheckWildlifeUI();
-    }
-
 
     private void OnContinueButton()
     {
@@ -169,8 +115,7 @@ public class ForestManager : Singleton<ForestManager>
             CheckTreesForWildlife();
             WildlifeInstantiate();
         }
-        _GM.wildlife = CheckWildlife();
-        StartCoroutine(WaitToCheckWildlife());
+        GameEvents.ReportOnWildlifeValueChanged(CheckWildlife());
     }
     private void OnWaveOver()
     {

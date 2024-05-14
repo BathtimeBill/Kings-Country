@@ -5,6 +5,7 @@ public static class GameEvents
 {
     public static event Action OnUnitKilled = null;
 
+    public static event Action<int> OnWildlifeValueChange = null;
     public static event Action OnWildlifeKilled = null;
     public static event Action OnTreePlaced = null;
     public static event Action OnTreeDestroyed = null;
@@ -15,7 +16,7 @@ public static class GameEvents
 
     public static event Action OnStormerPlaced = null;
 
-    public static event Action OnBeaconPlaced = null;
+    public static event Action OnFyrePlaced = null;
 
     public static event Action OnBeaconDestroyed = null;
     public static event Action OnRuneDestroyed = null;
@@ -233,9 +234,9 @@ public static class GameEvents
     {
         OnBeaconDestroyed?.Invoke();
     }
-    public static void ReportOnBeaconPlaced()
+    public static void ReportOnFyrePlaced()
     {
-        OnBeaconPlaced?.Invoke();
+        OnFyrePlaced?.Invoke();
     }
     public static void ReportOnRuneDestroyed()
     {
@@ -263,6 +264,10 @@ public static class GameEvents
         OnUnitMove?.Invoke();
     }
 
+    public static void ReportOnWildlifeValueChanged(int _value)
+    {
+        OnWildlifeValueChange?.Invoke(_value);
+    }
     public static void ReportOnWildlifeKilled()
     {
         OnWildlifeKilled?.Invoke();

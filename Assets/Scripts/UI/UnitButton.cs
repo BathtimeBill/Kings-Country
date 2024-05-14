@@ -17,6 +17,7 @@ public class UnitButton : InteractableButton, IPointerEnterHandler, IPointerExit
     public UnitButtonManager buttonManager;
     float fadeTime = 0.3f;
     float fadeToValue = 0.2f;
+    Tweener fadeTweener;
     //Button button;
 
     public void Start()
@@ -48,12 +49,14 @@ public class UnitButton : InteractableButton, IPointerEnterHandler, IPointerExit
 
     public void FadeInButton()
     {
-        canvasGroup.DOFade(1, fadeTime);
+        KillTweener(fadeTweener);
+        fadeTweener = canvasGroup.DOFade(1, fadeTime);
     }
 
     public void FadeOutButton()
     {
-        canvasGroup.DOFade(fadeToValue, fadeTime);
+        KillTweener(fadeTweener);
+        fadeTweener = canvasGroup.DOFade(fadeToValue, fadeTime);
     }
 
 
@@ -61,12 +64,18 @@ public class UnitButton : InteractableButton, IPointerEnterHandler, IPointerExit
     {
         icon.sprite = unitData.icon;
         title.text = unitData.unitName;
-        cost.text = unitData.stats.cost.ToString();
+        cost.text = unitData.stats.price.ToString();
         
         if(tooltip != null)
         {
             tooltip.SetValues(unitData.name, unitData.description);
         }
+    }
+
+    void KillTweener(Tweener _tweener)
+    {
+        if(_tweener != null) 
+           _tweener.Kill();
     }
 
     #region Editor

@@ -6,17 +6,29 @@ public class ToolButton : MonoBehaviour
 {
     public Tool tool;
     public Image icon;
+    public Image cooldownFill;
     Button button;
 
     public void Start()
     {
         button = GetComponent<Button>();
         button.onClick.AddListener(() => PressedButton());
+        CooldownFill(0);
     }
 
     void PressedButton()
     {
         GameEvents.ReportOnToolButtonPressed(tool);
+    }
+
+    public void SetInteractable(bool _interactable)
+    {
+        button.interactable = _interactable;
+    }
+
+    public void CooldownFill(float _timeRemaining)
+    {
+        cooldownFill.fillAmount = _timeRemaining;
     }
 
     public void SetupButton()

@@ -8,7 +8,9 @@ public class InfoBox : MonoBehaviour
 {
     public CanvasGroup canvasGroup;
     public TMP_Text description;
-    public TMP_Text stats;
+    public TMP_Text healthStat;
+    public TMP_Text damageStat;
+    public TMP_Text speedStat;
     public string defaultText = "";
 
     private void Start()
@@ -16,15 +18,19 @@ public class InfoBox : MonoBehaviour
         OnButtonExit();
     }
 
-    public void OnButtonHover(string _description, string _stats)
+    public void OnButtonHover(string _description, Stats _stats)
     {
         description.text = _description;
-        stats.text = _stats;
+        healthStat.text = _stats.health.ToString();
+        damageStat.text = _stats.damage.ToString();
+        speedStat.text = _stats.speed.ToString();
     }
 
     public void OnButtonExit()
     {
         description.text = defaultText;
-        stats.text = "";
+        healthStat.text = "-";
+        damageStat.text = "-";
+        speedStat.text = "-";
     }
 }

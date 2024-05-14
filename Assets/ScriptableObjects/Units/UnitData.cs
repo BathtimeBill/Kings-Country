@@ -11,9 +11,10 @@ public class UnitData : ScriptableObject
     public string description;
     public Stats stats;
     public Sprite icon;
-    public string GetStats()
+
+    public Stats GetStats()
     {
-        return "<sprite name=\"IconHealth\">" + stats.health + " <sprite name=\"IconAttack\">" + stats.attack + " <sprite name=\"IconSpeed\">" + stats.speed;
+        return stats;
     }
 }
 
@@ -21,8 +22,7 @@ public class UnitData : ScriptableObject
 public class Stats
 {
     public int health;
-    public int attack;
-    public int defence;
+    public int damage;
     public int speed;
-    public int cost;
+    public int price;
 }

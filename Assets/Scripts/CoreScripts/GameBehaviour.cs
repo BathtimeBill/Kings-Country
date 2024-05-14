@@ -16,7 +16,6 @@ public class GameBehaviour : MonoBehaviour
     protected static SoundManager _SM { get { return SoundManager.instance; } }
     protected static TreePlacement _TPlace { get { return TreePlacement.instance; } }
     protected static RunePlacement _RPlace { get { return RunePlacement.instance; } }
-    protected static BeaconPlacement _BPlace { get { return BeaconPlacement.instance; } }
     protected static StormerPlacement _SPlace { get { return StormerPlacement.instance; } }
 
     protected static ForestManager _FM { get { return ForestManager.instance; } }
@@ -50,7 +49,7 @@ public enum PerkID
 public enum ToolID
 {
     Rune,
-    FyreBeacon,
+    Fyre,
     Stormer
 }
 public enum Upgrade
@@ -83,7 +82,7 @@ public enum PlayMode
     DefaultMode,
     TreeMode,
     RuneMode,
-    BeaconMode,
+    FyreMode,
     StormerMode,
 }
 public enum EnemyState

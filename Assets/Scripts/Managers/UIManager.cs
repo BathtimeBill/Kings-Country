@@ -32,28 +32,13 @@ public class UIManager : Singleton<UIManager>
 
     public bool settingsOpen;
 
+    public float fyreTimeLeft;
+    public float fyreMaxTimeLeft;
+    public bool fyreAvailable;
 
-
-
-    public Slider beaconCooldownSlider;
-    public GameObject beaconCooldownSliderObject;
-    public float beaconTimeLeft;
-    public float beaconMaxTimeLeft;
-
-
-    public bool beaconPlaced;
-
-    public Slider stormerCooldownSlider;
-    public GameObject stormerCooldownSliderObject;
     public float stormerTimeLeft;
     public float stormerMaxTimeLeft;
-
-
-
-
     public bool stormerPlaced;
-
-
 
     public GameObject transformText;
 
@@ -65,13 +50,12 @@ public class UIManager : Singleton<UIManager>
     public GameObject deathCameraRotator;
 
     [Header("Tools")]
+    public ToolButton fyreTool;
+    public ToolButton stormerTool;
+    public ToolButton runeTool;
+
     public int fyreCost;
     public int stormerCost;
-
-    public GameObject treeToolSelectionBox;
-    public GameObject runeToolSelectionBox;
-    public GameObject beaconToolSelectionBox;
-    public GameObject stormerToolSelectionBox;
 
     public Sprite usableTreeTool;
     public Sprite unusableTreeTool;
@@ -145,46 +129,34 @@ public class UIManager : Singleton<UIManager>
         CheckPopulousUI();
         CheckWave();
         CheckUnitPrices();
-        beaconTimeLeft = 0;
+        fyreTimeLeft = 0;
         stormerTimeLeft = 0;
         StartCoroutine(CheckToolAvailability());
+
+        //HandleFyreButton();
+        fyreTool.SetInteractable(_GM.FyreAvailable());
     }
 
 
     void Update()
     {
         maegenText.text = _GM.maegen.ToString();
+        FyreCheck();
 
-        if (beaconPlaced)
-        {
-            beaconTimeLeft += 1 * Time.deltaTime;
-            beaconCooldownSlider.value = CalculateCooldownTimeLeft(beaconTimeLeft, beaconMaxTimeLeft);
-            beaconToolImage.sprite = unusableBeaconTool;
-            if (beaconTimeLeft >= beaconMaxTimeLeft)
-            {
-                beaconToolImage.sprite = usableBeaconTool;
-                beaconCooldownSliderObject.SetActive(false);
-                beaconPlaced = false;
-                beaconTimeLeft = 0;
-            }
-        }
         if (stormerPlaced)
         {
-            stormerTimeLeft += 1 * Time.deltaTime;
-            stormerCooldownSlider.value = CalculateCooldownTimeLeft(stormerTimeLeft, stormerMaxTimeLeft);
-            stormerToolImage.sprite = unusableStormerTool;
-            if (stormerTimeLeft >= stormerMaxTimeLeft)
+            stormerTimeLeft = stormerMaxTimeLeft;
+            if (stormerTimeLeft >= 0)
             {
-                stormerToolImage.sprite = usableStormerTool;
-                stormerCooldownSliderObject.SetActive(false);
-                stormerTimeLeft = 0;
+                stormerTimeLeft -= 1 * Time.deltaTime;
+                stormerTool.CooldownFill(MathX.MapTo01(stormerTimeLeft, 0, stormerMaxTimeLeft));
+            }
+            else
+            {
                 stormerPlaced = false;
+                stormerTool.SetInteractable(true);
             }
         }
-        //if(Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    GameEvents.ReportOnGameOver();
-        //}
     }
 
     private void CheckUnitPrices()
@@ -336,6 +308,8 @@ public class UIManager : Singleton<UIManager>
     {
         wildlifeText.text = _GM.wildlife.ToString();
     }
+
+    #region error messages
     public void SetErrorMessageTooClose()
     {
         errorText.text = "";
@@ -397,16 +371,12 @@ public class UIManager : Singleton<UIManager>
     {
         errorText.text = "";
     }
+    #endregion
 
-    public void OnBeaconPlaced()
-    {
-        beaconCooldownSliderObject.SetActive(true);
-        beaconPlaced = true;
-    }
+    
 
     public void OnStormerPlaced()
     {
-        stormerCooldownSliderObject.SetActive(true);
         stormerPlaced = true;
     }
     public void OnWaveOver()
@@ -424,88 +394,6 @@ public class UIManager : Singleton<UIManager>
         collectMaegenButton.SetActive(false);
         settingsOpen = false;
         //StartCoroutine(WaitToCheckForToolButtons());
-    }
-    IEnumerator WaitToCheckForToolButtons()
-    {
-        yield return new WaitForSeconds(1);
-        if (_GM.runes.Count == 0)
-        {
-            if (_GM.maegen < 2 || _GM.wildlife < 5)
-            {
-                runeToolButton.interactable = false;
-                runeToolImage.sprite = unusableRuneTool;
-            }
-            if (_GM.maegen >= 2 && _GM.wildlife >= 5)
-            {
-                runeToolButton.interactable = true;
-                runeToolImage.sprite = usableRuneTool;
-            }
-        }
-        if(_GM.runes.Count == 1)
-        {
-            if (_GM.maegen < 4 || _GM.wildlife < 7)
-            {
-                runeToolButton.interactable = false;
-                runeToolImage.sprite = unusableRuneTool;
-            }
-            if (_GM.maegen >= 4 && _GM.wildlife >= 7)
-            {
-                runeToolButton.interactable = true;
-                runeToolImage.sprite = usableRuneTool;
-            }
-        }
-        if (_GM.runes.Count == 2)
-        {
-            if (_GM.maegen < 8 || _GM.wildlife < 10)
-            {
-                runeToolButton.interactable = false;
-                runeToolImage.sprite = unusableRuneTool;
-            }
-            if (_GM.maegen >= 8 && _GM.wildlife >= 10)
-            {
-                runeToolButton.interactable = true;
-                runeToolImage.sprite = usableRuneTool;
-            }
-        }
-        if (_GM.runes.Count == 3)
-        {
-            if (_GM.maegen < 16 || _GM.wildlife < 15)
-            {
-                runeToolButton.interactable = false;
-                runeToolImage.sprite = unusableRuneTool;
-            }
-            if (_GM.maegen >= 16 && _GM.wildlife >= 15)
-            {
-                runeToolButton.interactable = true;
-                runeToolImage.sprite = usableRuneTool;
-            }
-        }
-        if (_GM.runes.Count > 3)
-        {
-            runeToolButton.interactable = false;
-            runeToolImage.sprite = unusableRuneTool;
-        }
-
-        if(_GM.wildlife >= 10)
-        {
-            beaconToolButton.interactable = true;
-            beaconToolImage.sprite = usableBeaconTool;
-        }
-        else
-        {
-            beaconToolButton.interactable = false;
-            beaconToolImage.sprite = unusableBeaconTool;
-        }
-        if(_GM.wildlife >= 20)
-        {
-            stormerToolButton.interactable = true;
-            stormerToolImage.sprite= usableStormerTool;
-        }
-        else
-        {
-            stormerToolButton.interactable = false;
-            stormerToolImage.sprite = unusableStormerTool;
-        }
     }
 
     private void OnStartNextRound()
@@ -621,106 +509,83 @@ public class UIManager : Singleton<UIManager>
     IEnumerator CheckToolAvailability()
     {
         yield return new WaitForSeconds(0.5f);
-        HandleRuneButton();
-        HandleFyreButton();
-        HandleStormerButton();
+        //HandleRuneButton();
+        //HandleFyreButton();
+        //HandleStormerButton();
         StartCoroutine(CheckToolAvailability());
 
     }
 
-
-
-    private void HandleRuneButton()
+    public void MouseCancel()
     {
-        if (_GM.runes.Count == 0)
-        {
-            if (_GM.maegen < _RPlace.maegenCost1 || _GM.wildlife < _RPlace.wildlifeCost1)
-            {
-                runeToolButton.interactable = false;
-                runeToolImage.sprite = unusableRuneTool;
-            }
-            if (_GM.maegen >= _RPlace.maegenCost1 && _GM.wildlife >= _RPlace.wildlifeCost1)
-            {
-                runeToolButton.interactable = true;
-                runeToolImage.sprite = usableRuneTool;
-            }
-        }
-        if (_GM.runes.Count == 1)
-        {
-            if (_GM.maegen < _RPlace.maegenCost2 || _GM.wildlife < _RPlace.wildlifeCost2)
-            {
-                runeToolButton.interactable = false;
-                runeToolImage.sprite = unusableRuneTool;
-            }
-            if (_GM.maegen >= _RPlace.maegenCost2 && _GM.wildlife >= _RPlace.wildlifeCost2)
-            {
-                runeToolButton.interactable = true;
-                runeToolImage.sprite = usableRuneTool;
-            }
-        }
-        if (_GM.runes.Count == 2)
-        {
-            if (_GM.maegen < _RPlace.maegenCost3 || _GM.wildlife < _RPlace.wildlifeCost3)
-            {
-                runeToolButton.interactable = false;
-                runeToolImage.sprite = unusableRuneTool;
-            }
-            if (_GM.maegen >= _RPlace.maegenCost3 && _GM.wildlife >= _RPlace.wildlifeCost3)
-            {
-                runeToolButton.interactable = true;
-                runeToolImage.sprite = usableRuneTool;
-            }
-        }
-        if (_GM.runes.Count == 3)
-        {
-            if (_GM.maegen < _RPlace.maegenCost4 || _GM.wildlife < _RPlace.wildlifeCost4)
-            {
-                runeToolButton.interactable = false;
-                runeToolImage.sprite = unusableRuneTool;
-            }
-            if (_GM.maegen >= _RPlace.maegenCost4 && _GM.wildlife >= _RPlace.wildlifeCost4)
-            {
-                runeToolButton.interactable = true;
-                runeToolImage.sprite = usableRuneTool;
-            }
-        }
-        if (_GM.runes.Count > 3)
-        {
-            runeToolButton.interactable = true;
-            runeToolImage.sprite = usableRuneTool;
-        }
+        maegenCost.SetActive(false);
+        wildlifeCost.SetActive(false);
     }
-    private void HandleFyreButton()
+
+    public void OnFyrePlaced()
     {
-        if(_GM.wildlife < _UI.fyreCost)
+        fyreTimeLeft = fyreMaxTimeLeft;
+        fyreTool.SetInteractable(false);
+        fyreAvailable = false;
+    }
+
+    private void FyreCheck()
+    {
+        if (!fyreAvailable)
         {
-            beaconToolButton.interactable = false;
-            beaconToolImage.sprite = unusableBeaconTool;
-        }
-        else
-        {
-            if(beaconCooldownSlider.gameObject.activeInHierarchy == false)
+            if (fyreTimeLeft >= 0)
             {
-                beaconToolButton.interactable = true;
-                beaconToolImage.sprite = usableBeaconTool;
+                fyreTimeLeft -= Time.deltaTime;
+                fyreTool.CooldownFill(MathX.MapTo01(fyreTimeLeft, 0, fyreMaxTimeLeft));
+            }
+            else
+            {
+                fyreAvailable = true;
+                fyreTool.SetInteractable(true);
             }
         }
     }
-
     private void HandleStormerButton()
     {
-        if(_GM.wildlife < _UI.stormerCost)
-        {
-            stormerToolButton.interactable = false;
-            stormerToolImage.sprite = unusableStormerTool;
-        }
-        else
-        {
-            stormerToolButton.interactable = true;
-            stormerToolImage.sprite = usableStormerTool;
-        }
+        stormerTool.SetInteractable(_GM.wildlife >= _UI.stormerCost);
+        //if(_GM.wildlife < _UI.stormerCost)
+        //{
+        //    stormerTool.SetInteractable(false);
+        //    stormerToolButton.interactable = false;
+        //    stormerToolImage.sprite = unusableStormerTool;
+        //}
+        //else
+        //{
+        //    stormerTool.SetInteractable(true);
+        //    stormerToolButton.interactable = true;
+        //    stormerToolImage.sprite = usableStormerTool;
+        //}
     }
 
+    private void OnToolButtonPressed(Tool _tool)
+    {
+        /*maegenCost.SetActive(true);
+        wildlifeCost.SetActive(true);
+        switch (_tool.id)
+        {
+            case ToolID.Stormer:
+                wildlifeCostText.text = "20";
+                maegenCostText.text = "0";
+                break;
+            case ToolID.Fyre:
+                //HandleFyreButton();
+                break;
+            case ToolID.Rune:
+                maegenCostText.text = "";
+                wildlifeCostText.text = "";
+                break;
+        }*/
+    }
+
+    private void OnWildlifeValueChange(int _value)
+    {
+        wildlifeText.text = _value.ToString();
+    }
 
     private void OnEnable()
     {
@@ -728,7 +593,7 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnDefendSelected += OnDefendSelected;
         GameEvents.OnGameOver += OnGameOver;
         GameEvents.OnGameWin += OnGameWin;
-        GameEvents.OnBeaconPlaced += OnBeaconPlaced;
+        GameEvents.OnFyrePlaced += OnFyrePlaced;
         GameEvents.OnStormerPlaced += OnStormerPlaced;
         GameEvents.OnWaveOver += OnWaveOver;
         GameEvents.OnContinueButton += OnContinueButton;
@@ -747,6 +612,9 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnPopulousUpgrade += OnPopulousUpgrade;
         GameEvents.OnWinfallUpgrade += OnWinfallUpgrade;
         GameEvents.OnHomeTreeUpgrade += OnHomeTreeUpgrade;
+
+        GameEvents.OnToolButtonPressed += OnToolButtonPressed;
+        GameEvents.OnWildlifeValueChange += OnWildlifeValueChange;
     }
 
     private void OnDisable()
@@ -755,7 +623,7 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnAttackSelected -= OnAttackSelected;
         GameEvents.OnGameOver -= OnGameOver;
         GameEvents.OnGameWin -= OnGameWin;
-        GameEvents.OnBeaconPlaced -= OnBeaconPlaced;
+        GameEvents.OnFyrePlaced -= OnFyrePlaced;
         GameEvents.OnStormerPlaced -= OnStormerPlaced;
         GameEvents.OnWaveOver -= OnWaveOver;
         GameEvents.OnContinueButton -= OnContinueButton;
@@ -773,5 +641,8 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnPopulousUpgrade -= OnPopulousUpgrade;
         GameEvents.OnWinfallUpgrade -= OnWinfallUpgrade;
         GameEvents.OnHomeTreeUpgrade -= OnHomeTreeUpgrade;
+
+        GameEvents.OnToolButtonPressed -= OnToolButtonPressed;
+        GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange;
     }
 }

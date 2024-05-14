@@ -9,5 +9,7 @@ public class Tool : ScriptableObject
     public string toolName;
     public string toolDescription;
     public Sprite toolIcon;
+    public int cost;
+    public int upgradeLevel;
     public bool unlocked;
 }

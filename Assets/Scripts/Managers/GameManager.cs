@@ -38,10 +38,15 @@ public class GameManager : Singleton<GameManager>
     public int maxMaegen;
 
     [Header("Runes")]
+    public Tool runesTool;
     public List<GameObject> runes;
 
-    [Header("Beacons")]
+    [Header("Fyre")]
+    public Tool fyreTool;
     public GameObject[] beacons;
+
+    [Header("Stormer")]
+    public Tool stormerTool;
 
     [Header("Unit Health")]
     public float satyrHealth;
@@ -224,15 +229,22 @@ public class GameManager : Singleton<GameManager>
         _SM.PlaySound(_SM.waveBeginSound);
     }
 
+    public bool FyreAvailable()
+    {
+        return wildlife >= fyreTool.cost;
+    }
+
+    public bool StormerAvailable()
+    {
+        return wildlife >= stormerTool.cost;
+    }
+
     //Checks the scene for how many Runes are present.
     public void CheckRunes()
     {
         runes = GameObject.FindGameObjectsWithTag("RuneObject").ToList<GameObject>();
     }
-    public void CheckBeacons()
-    {
-        beacons = GameObject.FindGameObjectsWithTag("Beacon");
-    }
+
     //Checks the scene for how many player units are present.
     public int CheckPopulous()
     {
@@ -290,15 +302,7 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForEndOfFrame();
         CheckRunes();
     }
-    public void OnBeaconDestroyed()
-    {
-        StartCoroutine(WaitForBeaconCheck());
-    }
-    IEnumerator WaitForBeaconCheck()
-    {
-        yield return new WaitForEndOfFrame();
-        CheckBeacons();
-    }
+
     private void OnPopulousUpgrade()
     {
         maxPopulous += 5;
@@ -382,7 +386,6 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnTreeDestroyed += OnTreeDestroy;
         GameEvents.OnJarnnefiUpgrade += OnJarnnefiUpgrade;
         GameEvents.OnRuneDestroyed += OnRuneDestroyed;
-        GameEvents.OnBeaconDestroyed += OnBeaconDestroyed;
         GameEvents.OnPopulousUpgrade += OnPopulousUpgrade;
         GameEvents.OnTreeHit += OnTreeHit;
         GameEvents.OnWildlifeKilled += OnWildlifeKilled;
@@ -400,7 +403,6 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnTreeDestroyed -= OnTreeDestroy;
         GameEvents.OnJarnnefiUpgrade -= OnJarnnefiUpgrade;
         GameEvents.OnRuneDestroyed -= OnRuneDestroyed;
-        GameEvents.OnBeaconDestroyed -= OnBeaconDestroyed;
         GameEvents.OnPopulousUpgrade -= OnPopulousUpgrade;
         GameEvents.OnTreeHit -= OnTreeHit;
         GameEvents.OnWildlifeKilled -= OnWildlifeKilled;

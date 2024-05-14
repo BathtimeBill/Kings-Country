@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerControls : Singleton<PlayerControls>
@@ -87,11 +86,6 @@ public class PlayerControls : Singleton<PlayerControls>
             treePlacement.SetActive(true);
             beaconPlacement.SetActive(false);
             treePercentageModifier.SetActive(true);
-            //_UI.homeTreePanel.SetActive(false);
-            _UI.treeToolSelectionBox.SetActive(true);
-            _UI.runeToolSelectionBox.SetActive(false);
-            _UI.beaconToolSelectionBox.SetActive(false);
-            _UI.stormerToolSelectionBox.SetActive(false);
             _UI.maegenCost.SetActive(true);
             _UI.wildlifeCost.SetActive(false);
         }
@@ -108,55 +102,18 @@ public class PlayerControls : Singleton<PlayerControls>
     {
         _GM.playmode = PlayMode.RuneMode;
         runePlacement.SetActive(true);
-        treePlacement.SetActive(false);
-        stormerPlacement.SetActive(false);
-        beaconPlacement.SetActive(false);
-        treePercentageModifier.SetActive(false);
-        //_UI.homeTreePanel.SetActive(false);
-        _UI.runeToolSelectionBox.SetActive(true);
-        _UI.stormerToolSelectionBox.SetActive(false);
-        _UI.treeToolSelectionBox.SetActive(false);
-        _UI.beaconToolSelectionBox.SetActive(false);
-        _UI.maegenCost.SetActive(true);
-        _UI.wildlifeCost.SetActive(true);
     }
 
-    private void SelectBeaconMode()
+    private void SelectFyreMode()
     {
-        _GM.playmode = PlayMode.BeaconMode;
+        _GM.playmode = PlayMode.FyreMode;
         beaconPlacement.SetActive(true);
-        stormerPlacement.SetActive(false);
-        runePlacement.SetActive(false);
-        treePlacement.SetActive(false);
-        treePercentageModifier.SetActive(false);
-        //_UI.homeTreePanel.SetActive(false);
-        _UI.beaconToolSelectionBox.SetActive(true);
-        _UI.stormerToolSelectionBox.SetActive(false);
-        _UI.treeToolSelectionBox.SetActive(false);
-        _UI.runeToolSelectionBox.SetActive(false);
-        _UI.maegenCost.SetActive(true);
-        _UI.wildlifeCost.SetActive(true);
-        _UI.maegenCostText.text = "";
-        _UI.wildlifeCostText.text = _UI.fyreCost.ToString();
     }    
 
     private void SelectStormerMode()
     {
         _GM.playmode = PlayMode.StormerMode;
         stormerPlacement.SetActive(true);
-        beaconPlacement.SetActive(false);
-        runePlacement.SetActive(false);
-        treePlacement.SetActive(false);
-        treePercentageModifier.SetActive(false);
-        //_UI.homeTreePanel.SetActive(false);
-        _UI.stormerToolSelectionBox.SetActive(true);
-        _UI.beaconToolSelectionBox.SetActive(false);
-        _UI.treeToolSelectionBox.SetActive(false);
-        _UI.runeToolSelectionBox.SetActive(false);
-        _UI.maegenCost.SetActive(true);
-        _UI.wildlifeCost.SetActive(true);
-        _UI.wildlifeCostText.text = "20";
-        _UI.maegenCostText.text = "0";
     }
 
     private void DeslectAllModes()
@@ -167,61 +124,14 @@ public class PlayerControls : Singleton<PlayerControls>
         stormerPlacement.SetActive(false);
         beaconPlacement.SetActive(false);
         treePercentageModifier.SetActive(false);
-        _UI.treeToolSelectionBox.SetActive(false);
-        _UI.runeToolSelectionBox.SetActive(false);
-        _UI.stormerToolSelectionBox.SetActive(false);
-        _UI.beaconToolSelectionBox.SetActive(false);
-        _UI.maegenCost.SetActive(false);
-        _UI.wildlifeCost.SetActive(false);
     }
 
     public void ClickOnTreeMode()
     {
+        DeslectAllModes();
         if (_GM.playmode != PlayMode.TreeMode)
         {
             SelectTreeMode();
-            _UI.audioSource.clip = _SM.buttonClickSound;
-            _UI.audioSource.Play();
-        }
-        else
-        {
-            DeslectAllModes();
-        }
-    }
-
-    public void ClickOnRuneMode()
-    {
-        if (_GM.playmode != PlayMode.RuneMode)
-        {
-            SelectRuneMode();
-            _UI.audioSource.clip = _SM.buttonClickSound;
-            _UI.audioSource.Play();
-        }
-        else
-        {
-            DeslectAllModes();
-        }
-    }
-
-    public void ClickOnBeaconMode()
-    {
-        if (_GM.playmode != PlayMode.BeaconMode)
-        {
-            SelectBeaconMode();
-            _UI.audioSource.clip = _SM.buttonClickSound;
-            _UI.audioSource.Play();
-        }
-        else
-        {
-            DeslectAllModes();
-        }
-    }
-
-    public void ClickOnStormerMode()
-    {
-        if (_GM.playmode != PlayMode.StormerMode)
-        {
-            SelectStormerMode();
             _UI.audioSource.clip = _SM.buttonClickSound;
             _UI.audioSource.Play();
         }
@@ -446,9 +356,6 @@ public class PlayerControls : Singleton<PlayerControls>
                     _UI.horgrPanel.SetActive(false);
                     _UI.maegenCost.SetActive(false);
                     _UI.wildlifeCost.SetActive(false);
-                    _UI.runeToolSelectionBox.SetActive(false);
-                    _UI.treeToolSelectionBox.SetActive(false);
-                    _UI.beaconToolSelectionBox.SetActive(false);
                     _UI.audioSource.clip = _SM.openMenuSound;
                     _UI.audioSource.Play();
                     GameEvents.ReportOnHorgrDeselected();
@@ -470,133 +377,122 @@ public class PlayerControls : Singleton<PlayerControls>
 
             if (Input.GetMouseButtonDown(0))
             {
-                if (_UI.mouseOverUI == false)
+                if (_UI.mouseOverUI )
+                    return;
+                
+                if (_GM.playmode == PlayMode.TreeMode)
                 {
-                    if (_GM.playmode == PlayMode.TreeMode)
+                    if (_GM.trees.Count < _GM.maxTrees)
                     {
-                        if (_GM.trees.Count < _GM.maxTrees)
+                        if (_TPlace.canPlace == true)
                         {
-                            if (_TPlace.canPlace == true)
-                            {
-                                GameObject treeInstance;
-                                GameObject cantDestroy;
-                                Vector3 randomSize = new Vector3(1, Random.Range(minScale, maxScale), 1);
-                                treeInstance = Instantiate(treePrefab, treePlacement.transform.position, treePlacement.transform.rotation);
-                                treeInstance.transform.localScale = randomSize;
-                                treeInstance.GetComponent<Tree>().energyMultiplier = _TPlace.maegenPerWave;
-                                cantDestroy = Instantiate(cantPlace, treePlacement.transform.position, treePlacement.transform.rotation);
-                                Destroy(cantDestroy, 15);
-                                GameEvents.ReportOnTreePlaced();
-                                worldAudioSource = treeInstance.GetComponent<AudioSource>();
-                                worldAudioSource.clip = _SM.GetTreeGrowSound();
-                                worldAudioSource.Play();
-                            }
-                            if (_TPlace.tooFarAway == true)
-                            {
-                                _UI.SetErrorMessageTooFar();
-                                Error();
-                            }
-                            if (_TPlace.insufficientMaegen == true)
-                            {
-                                _UI.SetErrorMessageInsufficientMaegen();
-                                Error();
-                            }
+                            GameObject treeInstance;
+                            GameObject cantDestroy;
+                            Vector3 randomSize = new Vector3(1, Random.Range(minScale, maxScale), 1);
+                            treeInstance = Instantiate(treePrefab, treePlacement.transform.position, treePlacement.transform.rotation);
+                            treeInstance.transform.localScale = randomSize;
+                            treeInstance.GetComponent<Tree>().energyMultiplier = _TPlace.maegenPerWave;
+                            cantDestroy = Instantiate(cantPlace, treePlacement.transform.position, treePlacement.transform.rotation);
+                            Destroy(cantDestroy, 15);
+                            GameEvents.ReportOnTreePlaced();
+                            worldAudioSource = treeInstance.GetComponent<AudioSource>();
+                            worldAudioSource.clip = _SM.GetTreeGrowSound();
+                            worldAudioSource.Play();
                         }
-                        else
+                        if (_TPlace.tooFarAway == true)
                         {
-                            _UI.SetErrorMessageTooManyTrees();
+                            _UI.SetErrorMessageTooFar();
                             Error();
                         }
-
-
-                    }
-                    if (_GM.playmode == PlayMode.RuneMode)
-                    {
-                        if (_RPlace.canPlace == true)
+                        if (_TPlace.insufficientMaegen == true)
                         {
-                            GameObject runeInstance;
-                            runeInstance = Instantiate(runePrefab, runePlacement.transform.position, runePlacement.transform.rotation);
-                            if(_GM.runes.Count == 0)
-                            {
-                                _GM.maegen -= _RPlace.maegenCost1;
-                            }
-                            if (_GM.runes.Count == 1)
-                            {
-                                _GM.maegen -= _RPlace.maegenCost2;
-                            }
-                            if (_GM.runes.Count == 2)
-                            {
-                                _GM.maegen -= _RPlace.maegenCost3;
-                            }
-                            if (_GM.runes.Count == 3)
-                            {
-                                _GM.maegen -= _RPlace.maegenCost4;
-                            }
-                            _GM.CheckRunes();
-                        }
-                        if (_RPlace.canPlace == false)
-                        {
-                            _UI.SetErrorMessageCannotPlace();
+                            _UI.SetErrorMessageInsufficientMaegen();
                             Error();
                         }
                     }
-                    if (_GM.playmode == PlayMode.BeaconMode)
+                    else
                     {
-                        if (_BPlace.canPlace == true)
-                        {
-                            if (_UM.beacon)
-                            {
-                                Instantiate(explosion2, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
-                            }
-                            else
-                            {
-                                Instantiate(explosion, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
-                            }
-
-                            _GM.CheckBeacons();
-                            GameEvents.ReportOnBeaconPlaced();
-                        }
-                        if (_BPlace.canPlace == false)
-                        {
-                            if (_UI.beaconPlaced)
-                            {
-                                _UI.SetErrorMessageBeaconCooldown();
-                                Error();
-                            }
-                            else
-                            {
-                                _UI.SetErrorMessageInsufficientResources();
-                                Error();
-                            }
-                        }
-                    }
-                    if (_GM.playmode == PlayMode.StormerMode)
-                    {
-                        if (_SPlace.canPlace == true)
-                        {
-                            GameEvents.ReportOnStormerPlaced();
-                        }
-                        else
-                        {
-                            if (_UI.stormerPlaced == false)
-                            {
-                                _UI.SetErrorMessageInsufficientResources();
-                                Error();
-                            }
-                            else
-                            {
-                                _UI.SetErrorMessageBeaconCooldown();
-                                Error();
-                            }
-
-                        }
-                    }
-                    if (_GM.playmode == PlayMode.DefaultMode)
-                    {
-                        RaycastClick();
+                        _UI.SetErrorMessageTooManyTrees();
+                        Error();
                     }
                 }
+                //Runes
+                if (_GM.playmode == PlayMode.RuneMode)
+                {
+                    if (_RPlace.canPlace == true)
+                    {
+                        GameObject runeInstance;
+                        runeInstance = Instantiate(runePrefab, runePlacement.transform.position, runePlacement.transform.rotation);
+                        if(_GM.runes.Count == 0)
+                        {
+                            _GM.maegen -= _RPlace.maegenCost1;
+                        }
+                        if (_GM.runes.Count == 1)
+                        {
+                            _GM.maegen -= _RPlace.maegenCost2;
+                        }
+                        if (_GM.runes.Count == 2)
+                        {
+                            _GM.maegen -= _RPlace.maegenCost3;
+                        }
+                        if (_GM.runes.Count == 3)
+                        {
+                            _GM.maegen -= _RPlace.maegenCost4;
+                        }
+                        _GM.CheckRunes();
+                    }
+                    if (_RPlace.canPlace == false)
+                    {
+                        _UI.SetErrorMessageCannotPlace();
+                        Error();
+                    }
+                }
+                //Fyre
+                if (_GM.playmode == PlayMode.FyreMode)
+                {
+                    if (_GM.FyreAvailable() && _UI.fyreAvailable)
+                    {
+                        if (_UM.beacon)
+                        {
+                            Instantiate(explosion2, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
+                        }
+                        else
+                        {
+                            Instantiate(explosion, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
+                        }
 
+                        beaconPlacement.SetActive(false);
+                        DeslectAllModes();
+                        GameEvents.ReportOnFyrePlaced();
+                    }
+                }
+                //Stormer
+                if (_GM.playmode == PlayMode.StormerMode)
+                {
+                    if (_SPlace.canPlace == true)
+                    {
+                        GameEvents.ReportOnStormerPlaced();
+                    }
+                    else
+                    {
+                        if (_UI.stormerPlaced == false)
+                        {
+                            _UI.SetErrorMessageInsufficientResources();
+                            Error();
+                        }
+                        else
+                        {
+                            _UI.SetErrorMessageBeaconCooldown();
+                            Error();
+                        }
+
+                    }
+                }
+                //Default
+                if (_GM.playmode == PlayMode.DefaultMode)
+                {
+                    RaycastClick();
+                }
             }
 
             if (Input.GetMouseButtonDown(1))
@@ -608,14 +504,7 @@ public class PlayerControls : Singleton<PlayerControls>
                 runePlacement.SetActive(false);
                 beaconPlacement.SetActive(false);
                 treePercentageModifier.SetActive(false);
-                _UI.maegenCost.SetActive(false);
-                _UI.wildlifeCost.SetActive(false);
-                _UI.runeToolSelectionBox.SetActive(false);
-                _UI.stormerToolSelectionBox.SetActive(false);
-                _UI.treeToolSelectionBox.SetActive(false);
-                _UI.beaconToolSelectionBox.SetActive(false);
-
-
+                _UI.MouseCancel();
             }
 
             if (Input.GetKeyDown(KeyCode.F4))
@@ -665,7 +554,7 @@ public class PlayerControls : Singleton<PlayerControls>
                 runePlacement.transform.position = hitPoint.point;
                 runePlacement.SetActive(true);
             }
-            if (_GM.playmode == PlayMode.BeaconMode)
+            if (_GM.playmode == PlayMode.FyreMode)
             {
                 beaconPlacement.transform.position = hitPoint.point;
                 beaconPlacement.SetActive(true);
@@ -784,15 +673,38 @@ public class PlayerControls : Singleton<PlayerControls>
     {
         canPressEscape = false;
     }
+
+    private void OnToolButtonPressed(Tool _tool)
+    {
+        _SM.PlaySound(_SM.buttonClickSound);
+        DeslectAllModes();
+        switch (_tool.id)
+        {
+            case ToolID.Stormer:
+                if (_GM.playmode != PlayMode.StormerMode)
+                    SelectStormerMode();
+                break;
+            case ToolID.Fyre:
+                if (_GM.playmode != PlayMode.FyreMode)
+                    SelectFyreMode();
+                break;
+            case ToolID.Rune:
+                if (_GM.playmode != PlayMode.FyreMode)
+                    SelectRuneMode();
+                break;
+        }
+    }
     private void OnEnable()
     {
         GameEvents.OnUnitMove += OnUnitMove;
         GameEvents.OnGameWin += OnGameWin;
+        GameEvents.OnToolButtonPressed += OnToolButtonPressed;
     }
 
     private void OnDisable()
     {
         GameEvents.OnUnitMove -= OnUnitMove;
         GameEvents.OnGameWin -= OnGameWin;
+        GameEvents.OnToolButtonPressed -= OnToolButtonPressed;
     }
 }
