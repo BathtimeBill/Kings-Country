@@ -140,7 +140,7 @@ public class GameManager : Singleton<GameManager>
     void Start()
     {
         Time.timeScale = 1;
-        maegen = startingMaegen;
+        IncreaseMaegen(startingMaegen);
         currentWave = 0;
         playmode = PlayMode.DefaultMode;
         gameState = GameState.Pause;
