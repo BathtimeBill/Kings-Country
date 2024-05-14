@@ -687,11 +687,11 @@ public class Unit : GameBehaviour
             {
                 if (_UM.rune)
                 {
-                    health += _RPlace.healRate * 2 * Time.deltaTime;
+                    health += _GM.runeHealRate * 2 * Time.deltaTime;
                 }
                 else
                 {
-                    health += _RPlace.healRate * Time.deltaTime;
+                    health += _GM.runeHealRate * Time.deltaTime;
                 }
                 slider.value = slider.value = CalculateHealth();
             }

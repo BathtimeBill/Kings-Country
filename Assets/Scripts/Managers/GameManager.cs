@@ -27,7 +27,10 @@ public class GameManager : Singleton<GameManager>
     public bool canFinishWave;
     public bool downTime;
 
-
+    [Header("Buildings Cooldown")]
+    public float treeCooldown;
+    public float hutCooldown;
+    public float horgrCooldown;
 
     [Header("Player Resources")]
     public int maegen;
@@ -39,7 +42,10 @@ public class GameManager : Singleton<GameManager>
 
     [Header("Runes")]
     public Tool runesTool;
+    public int[] runesMaegenCost;
+    public int[] runesWildlifeCost;
     public List<GameObject> runes;
+    public float runeHealRate = 12;
 
     [Header("Fyre")]
     public Tool fyreTool;
@@ -125,6 +131,12 @@ public class GameManager : Singleton<GameManager>
     private FilmGrain grain;
     private ChromaticAberration chromaticAberration;
 
+    public bool fyreAvailable => wildlife >= fyreTool.cost;
+    public bool stormerAvailable => wildlife >= stormerTool.cost;
+    public bool runesAvailable => wildlife >= runesWildlifeCost[runesCount] && maegen >= runesMaegenCost[runesCount] && !atMaxRuins;
+    public bool atMaxRuins => runesCount == runesMaegenCost.Length;
+    public int runesCount => runes.Count;
+
     void Start()
     {
         Time.timeScale = 1;
@@ -182,6 +194,18 @@ public class GameManager : Singleton<GameManager>
         Time.timeScale = 3;
     }
 
+    public void IncreaseMaegen(int _value)
+    {
+        maegen += _value;
+        _UI.UpdateMaegenText(maegen);
+    }
+
+    public void DecreaseMaegen(int _value)
+    {
+        maegen -= _value;
+        _UI.UpdateMaegenText(maegen);
+    }
+
     //The wave system is managed by two coroutines. The 'agro' wave lasts 1 minute, during which enemies are spawned in (EnemyManager) and then a break period of 4 mins. 
     IEnumerator ManageWaveAgro()
     {
@@ -229,14 +253,9 @@ public class GameManager : Singleton<GameManager>
         _SM.PlaySound(_SM.waveBeginSound);
     }
 
-    public bool FyreAvailable()
+    public void AddRune(GameObject _rune)
     {
-        return wildlife >= fyreTool.cost;
-    }
-
-    public bool StormerAvailable()
-    {
-        return wildlife >= stormerTool.cost;
+        runes.Add(_rune);
     }
 
     //Checks the scene for how many Runes are present.
@@ -295,12 +314,7 @@ public class GameManager : Singleton<GameManager>
     //When a rune has been depleted, we wait until the end of the frame and update the rune count and UI.
     public void OnRuneDestroyed()
     {
-        StartCoroutine(WaitForRuneCheck());
-    }
-    IEnumerator WaitForRuneCheck()
-    {
-        yield return new WaitForEndOfFrame();
-        CheckRunes();
+       
     }
 
     private void OnPopulousUpgrade()

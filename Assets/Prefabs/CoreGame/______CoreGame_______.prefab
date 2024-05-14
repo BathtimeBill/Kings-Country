@@ -26098,6 +26098,8 @@ MonoBehaviour:
   maxPopulous: 10
   maxMaegen: 10000
   runesTool: {fileID: 11400000, guid: 150ce8bffb70d65418c3d6f2024eb825, type: 2}
+  runesMaegenCost: 0100000003000000060000000b000000
+  runesWildlifeCost: 02000000050000000a00000013000000
   runes: []
   fyreTool: {fileID: 11400000, guid: 99ec04805d5592243bd3485c9ddfec0e, type: 2}
   beacons: []
@@ -27118,12 +27120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 526785997624d4c4c80c1c612273e299, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroy: 0
-  canPlace: 0
-  mesh: {fileID: 8290771808437254150}
-  insufficientMaegen: 0
-  canPlaceMat: {fileID: 2100000, guid: ab0907dbdd4fb034db86e18f60a187f6, type: 2}
-  cannotPlaceMat: {fileID: 2100000, guid: 6c0c90cbfa059564186d53b76c4203e1, type: 2}
 --- !u!1 &8290771809991188286
 GameObject:
   m_ObjectHideFlags: 0
@@ -29152,7 +29148,7 @@ PrefabInstance:
     - target: {fileID: 1305649631322353990, guid: 60ab1fbcdd0169a438b4e457a48d54fc,
         type: 3}
       propertyPath: m_VersionIndex
-      value: 566
+      value: 563
       objectReference: {fileID: 0}
     - target: {fileID: 1626587583096563602, guid: 60ab1fbcdd0169a438b4e457a48d54fc,
         type: 3}
@@ -30013,6 +30009,36 @@ PrefabInstance:
       propertyPath: cannotPlaceMat
       value: 
       objectReference: {fileID: 2100000, guid: 4b6a881d05d5d434caa474e3acec47bb, type: 2}
+    - target: {fileID: 1928755477144634835, guid: e32c36184534e524db25e5e725e38285,
+        type: 3}
+      propertyPath: maegenCost.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1928755477144634835, guid: e32c36184534e524db25e5e725e38285,
+        type: 3}
+      propertyPath: wildlifeCost.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1928755477144634835, guid: e32c36184534e524db25e5e725e38285,
+        type: 3}
+      propertyPath: maegenCost.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1928755477144634835, guid: e32c36184534e524db25e5e725e38285,
+        type: 3}
+      propertyPath: maegenCost.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1928755477144634835, guid: e32c36184534e524db25e5e725e38285,
+        type: 3}
+      propertyPath: maegenCost.Array.data[2]
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1928755477144634835, guid: e32c36184534e524db25e5e725e38285,
+        type: 3}
+      propertyPath: maegenCost.Array.data[3]
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 4228275542997588766, guid: e32c36184534e524db25e5e725e38285,
         type: 3}
       propertyPath: m_Enabled

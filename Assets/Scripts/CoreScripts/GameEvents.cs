@@ -14,9 +14,10 @@ public static class GameEvents
     public static event Action OnUnitArrivedAtHut = null;
     public static event Action OnTreeHit = null;
 
-    public static event Action OnStormerPlaced = null;
-
     public static event Action OnFyrePlaced = null;
+    public static event Action OnStormerPlaced = null;
+    public static event Action OnRunePlaced = null;
+
 
     public static event Action OnBeaconDestroyed = null;
     public static event Action OnRuneDestroyed = null;
@@ -54,6 +55,7 @@ public static class GameEvents
 
     public static event Action OnAttackSelected = null;
     public static event Action OnDefendSelected = null;
+    public static event Action OnFormationSelected = null;
 
     public static event Action OnHomeTreeSelected = null;
     public static event Action OnHorgrSelected = null;
@@ -141,6 +143,10 @@ public static class GameEvents
     public static void ReportOnDefendSelected()
     {
         OnDefendSelected?.Invoke();
+    }
+    public static void ReportOnFormationSelected()
+    {
+        OnFormationSelected?.Invoke();
     }
     public static void ReportOnEnemyKilled()
     {
@@ -237,6 +243,10 @@ public static class GameEvents
     public static void ReportOnFyrePlaced()
     {
         OnFyrePlaced?.Invoke();
+    }
+    public static void ReportOnRunePlaced()
+    {
+        OnRunePlaced?.Invoke();
     }
     public static void ReportOnRuneDestroyed()
     {

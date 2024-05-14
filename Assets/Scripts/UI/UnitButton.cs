@@ -4,47 +4,47 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using System.Collections;
 
-public class UnitButton : InteractableButton, IPointerEnterHandler, IPointerExitHandler
+public class UnitButton : InteractableButton
 {
     public UnitData unitData;
     public Image icon;
+    public Image cooldownFill;
     public TMP_Text title;
     public TMP_Text cost;
-    public InfoBox infoBox;
     public Tooltip tooltip;
     public CanvasGroup canvasGroup;
-    public UnitButtonManager buttonManager;
+    public UnitPanel unitPanel;
     float fadeTime = 0.3f;
     float fadeToValue = 0.2f;
     Tweener fadeTweener;
-    //Button button;
 
-    public void Start()
+    public override void Start()
     {
         base.Start();
-        //button = GetComponent<Button>();
         button.onClick.AddListener(() => PressedButton());
     }
 
     void PressedButton()
     {
         GameEvents.ReportOnUnitButtonPressed(unitData);
+        unitPanel.StartCooldowns();
     }
 
-    public void HoverButton()
+    public void Cooldown(float _timeLeft)
     {
-        infoBox.OnButtonHover(unitData.description, unitData.GetStats());
+        cooldownFill.fillAmount = MathX.MapTo01(_timeLeft, 0, _GM.treeCooldown);
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public override void OnPointerEnter(PointerEventData eventData)
     {
-        buttonManager.PointerEnter(this);
+        unitPanel.PointerEnter(this);
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public override void OnPointerExit(PointerEventData eventData)
     {
-        buttonManager.PointerExit();
+        unitPanel.PointerExit();
     }
 
     public void FadeInButton()

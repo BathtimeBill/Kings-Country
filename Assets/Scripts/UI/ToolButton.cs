@@ -1,17 +1,20 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using UnityEngine.EventSystems;
 
-public class ToolButton : MonoBehaviour
+public class ToolButton : InteractableButton
 {
     public Tool tool;
     public Image icon;
     public Image cooldownFill;
-    Button button;
+    public TMP_Text meagenPrice;
+    public ToolPanelManager toolButtonManager;
 
-    public void Start()
+    public override void Start()
     {
-        button = GetComponent<Button>();
+        base.Start();
         button.onClick.AddListener(() => PressedButton());
         CooldownFill(0);
     }
@@ -29,6 +32,16 @@ public class ToolButton : MonoBehaviour
     public void CooldownFill(float _timeRemaining)
     {
         cooldownFill.fillAmount = _timeRemaining;
+    }
+
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+        toolButtonManager.PointerEnter(this);
+    }
+
+    public override void OnPointerExit(PointerEventData eventData)
+    {
+        toolButtonManager.PointerExit();
     }
 
     public void SetupButton()

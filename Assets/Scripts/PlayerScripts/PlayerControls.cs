@@ -419,7 +419,18 @@ public class PlayerControls : Singleton<PlayerControls>
                 //Runes
                 if (_GM.playmode == PlayMode.RuneMode)
                 {
-                    if (_RPlace.canPlace == true)
+                    if(_GM.runesAvailable)
+                    {
+                        GameObject runeInstance;
+                        runeInstance = Instantiate(runePrefab, runePlacement.transform.position, runePlacement.transform.rotation);
+                        _GM.DecreaseMaegen(_GM.runesMaegenCost[_GM.runesCount]);
+                        _GM.AddRune(runeInstance);
+                        DeslectAllModes();
+                        GameEvents.ReportOnRunePlaced();
+                    }
+
+
+                    /*if (_RPlace.canPlace == true)
                     {
                         GameObject runeInstance;
                         runeInstance = Instantiate(runePrefab, runePlacement.transform.position, runePlacement.transform.rotation);
@@ -445,12 +456,12 @@ public class PlayerControls : Singleton<PlayerControls>
                     {
                         _UI.SetErrorMessageCannotPlace();
                         Error();
-                    }
+                    }*/
                 }
                 //Fyre
                 if (_GM.playmode == PlayMode.FyreMode)
                 {
-                    if (_GM.FyreAvailable() && _UI.fyreAvailable)
+                    if (_GM.fyreAvailable && _UI.fyreAvailable)
                     {
                         if (_UM.beacon)
                         {
@@ -469,7 +480,7 @@ public class PlayerControls : Singleton<PlayerControls>
                 //Stormer
                 if (_GM.playmode == PlayMode.StormerMode)
                 {
-                    if (_GM.StormerAvailable() && _UI.stormerAvailable)
+                    if (_GM.stormerAvailable && _UI.stormerAvailable)
                     {
                         stormerPlacement.SetActive(false);
                         DeslectAllModes();
@@ -672,7 +683,7 @@ public class PlayerControls : Singleton<PlayerControls>
                     SelectFyreMode();
                 break;
             case ToolID.Rune:
-                if (_GM.playmode != PlayMode.FyreMode)
+                if (_GM.playmode != PlayMode.RuneMode)
                     SelectRuneMode();
                 break;
         }

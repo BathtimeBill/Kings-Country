@@ -32,14 +32,6 @@ public class UIManager : Singleton<UIManager>
 
     public bool settingsOpen;
 
-    public float fyreTimeLeft;
-    public float fyreMaxTimeLeft;
-    public bool fyreAvailable;
-
-    public float stormerTimeLeft;
-    public float stormerMaxTimeLeft;
-    public bool stormerAvailable;
-
     public GameObject transformText;
 
     public AudioSource audioSource;
@@ -51,11 +43,23 @@ public class UIManager : Singleton<UIManager>
 
     [Header("Tools")]
     public ToolButton fyreTool;
-    public ToolButton stormerTool;
-    public ToolButton runeTool;
-
     public int fyreCost;
+    public float fyreTimeLeft;
+    public float fyreMaxTimeLeft;
+    public bool fyreAvailable;
+
+    public ToolButton stormerTool;
     public int stormerCost;
+    public float stormerTimeLeft;
+    public float stormerMaxTimeLeft;
+    public bool stormerAvailable;
+
+    public ToolButton runeTool;
+    public float runeTimeLeft;
+    public float runeMaxTimeLeft;
+    public bool runeAvailable;
+    
+    
 
     public Sprite usableTreeTool;
     public Sprite unusableTreeTool;
@@ -123,7 +127,6 @@ public class UIManager : Singleton<UIManager>
 
     void Start()
     {
-        //StartCoroutine(WaitToCheckForToolButtons());
         CheckTreeUI();
         CheckWildlifeUI();
         CheckPopulousUI();
@@ -132,17 +135,24 @@ public class UIManager : Singleton<UIManager>
         fyreTimeLeft = 0;
         stormerTimeLeft = 0;
 
-        //HandleFyreButton();
-        fyreTool.SetInteractable(_GM.FyreAvailable());
-        stormerTool.SetInteractable(_GM.StormerAvailable());
+        fyreTool.SetInteractable(_GM.fyreAvailable);
+        stormerTool.SetInteractable(_GM.stormerAvailable);
+        runeTool.SetInteractable(_GM.runesAvailable);
+
+        formationObject = GameObject.FindGameObjectWithTag("Destination");
     }
 
 
     void Update()
     {
-        maegenText.text = _GM.maegen.ToString();
         FyreCheck();
         StormerCheck();
+        RuneCheck();
+    }
+
+    public void UpdateMaegenText(int _value)
+    {
+        maegenText.text = _value.ToString();
     }
 
     private void CheckUnitPrices()
@@ -156,9 +166,8 @@ public class UIManager : Singleton<UIManager>
         golemPriceText.text = _GM.golemPrice.ToString();
         dryadPriceText.text = _GM.dryadPrice.ToString();
 }
-    public void FormationButtonPressed()
+    public void OnFormationSelected()
     {
-        _SM.PlaySound(_SM.formationSound);
         if(!largeFormationSelected)
         {
             formationObject.transform.localScale = Vector3.one * 16;
@@ -456,26 +465,6 @@ public class UIManager : Singleton<UIManager>
         collectMaegenButton.SetActive(false);
     }
 
-    public void SelectAttack()
-    {
-        GameEvents.ReportOnAttackSelected();
-        _SM.PlaySound(_SM.attackSound);
-
-    }
-    public void SelectDefend()
-    {
-        GameEvents.ReportOnDefendSelected();
-        _SM.PlaySound(_SM.defendSound);
-    }
-    public void OnAttackSelected()
-    {
-        
-    }
-    public void OnDefendSelected()
-    {
-
-    }
-
     public void MouseCancel()
     {
         maegenCost.SetActive(false);
@@ -531,28 +520,34 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    private void OnToolButtonPressed(Tool _tool)
+    public void OnRunePlaced()
     {
-        /*maegenCost.SetActive(true);
-        wildlifeCost.SetActive(true);
-        switch (_tool.id)
+        runeTimeLeft = runeMaxTimeLeft;
+        runeTool.SetInteractable(false);
+        runeAvailable = false;
+        //print(_GM.runesCount + " = " + _GM.runesMaegenCost.Length);
+    }
+
+    private void RuneCheck()
+    {
+        if (!runeAvailable)
         {
-            case ToolID.Stormer:
-                wildlifeCostText.text = "20";
-                maegenCostText.text = "0";
-                break;
-            case ToolID.Fyre:
-                //HandleFyreButton();
-                break;
-            case ToolID.Rune:
-                maegenCostText.text = "";
-                wildlifeCostText.text = "";
-                break;
-        }*/
+            if (runeTimeLeft >= 0)
+            {
+                runeTimeLeft -= Time.deltaTime;
+                runeTool.CooldownFill(MathX.MapTo01(runeTimeLeft, 0, runeMaxTimeLeft));
+            }
+            else
+            {
+                if (_GM.runesAvailable)
+                {
+                    runeAvailable = true;
+                    runeTool.SetInteractable(true);
+                }
+            }
+        }
     }
     #endregion
-
-
 
     private void OnWildlifeValueChange(int _value)
     {
@@ -561,12 +556,11 @@ public class UIManager : Singleton<UIManager>
 
     private void OnEnable()
     {
-        GameEvents.OnAttackSelected += OnAttackSelected;
-        GameEvents.OnDefendSelected += OnDefendSelected;
         GameEvents.OnGameOver += OnGameOver;
         GameEvents.OnGameWin += OnGameWin;
         GameEvents.OnFyrePlaced += OnFyrePlaced;
         GameEvents.OnStormerPlaced += OnStormerPlaced;
+        GameEvents.OnRunePlaced += OnRunePlaced;
         GameEvents.OnWaveOver += OnWaveOver;
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnStartNextRound += OnStartNextRound;
@@ -585,18 +579,17 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnWinfallUpgrade += OnWinfallUpgrade;
         GameEvents.OnHomeTreeUpgrade += OnHomeTreeUpgrade;
 
-        GameEvents.OnToolButtonPressed += OnToolButtonPressed;
         GameEvents.OnWildlifeValueChange += OnWildlifeValueChange;
+        GameEvents.OnFormationSelected += OnFormationSelected;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnDefendSelected -= OnDefendSelected;
-        GameEvents.OnAttackSelected -= OnAttackSelected;
         GameEvents.OnGameOver -= OnGameOver;
         GameEvents.OnGameWin -= OnGameWin;
         GameEvents.OnFyrePlaced -= OnFyrePlaced;
         GameEvents.OnStormerPlaced -= OnStormerPlaced;
+        GameEvents.OnRunePlaced -= OnRunePlaced;
         GameEvents.OnWaveOver -= OnWaveOver;
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnJustStragglers -= OnJustStragglers;
@@ -614,7 +607,7 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnWinfallUpgrade -= OnWinfallUpgrade;
         GameEvents.OnHomeTreeUpgrade -= OnHomeTreeUpgrade;
 
-        GameEvents.OnToolButtonPressed -= OnToolButtonPressed;
         GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange;
+        GameEvents.OnFormationSelected -= OnFormationSelected;
     }
 }

@@ -50,6 +50,12 @@ public enum ToolID
     Fyre,
     Stormer
 }
+public enum CombatID
+{
+    Attack,
+    Defend,
+    Formation
+}
 public enum Upgrade
 {
     BarkSkin,

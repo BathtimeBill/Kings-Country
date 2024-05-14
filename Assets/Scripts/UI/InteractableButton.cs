@@ -1,13 +1,14 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InteractableButton : MonoBehaviour
+public class InteractableButton : GameBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [HideInInspector]
     public Button button;
 
-    public void Start()
+    public virtual void Start()
     {
         button = GetComponent<Button>();
     }
@@ -16,6 +17,10 @@ public class InteractableButton : MonoBehaviour
     {
         //button.colors.highlightedColor = UICharInfo.
     }
+
+    public virtual void OnPointerEnter(PointerEventData eventData){}
+
+    public virtual void OnPointerExit(PointerEventData eventData){}
 
     #region Editor
 #if UNITY_EDITOR
