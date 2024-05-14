@@ -26091,6 +26091,9 @@ MonoBehaviour:
   agroWave: 0
   canFinishWave: 0
   downTime: 0
+  treeCooldown: 5
+  hutCooldown: 5
+  horgrCooldown: 5
   maegen: 0
   maxTrees: 40
   wildlife: 50
@@ -26101,6 +26104,7 @@ MonoBehaviour:
   runesMaegenCost: 0100000003000000060000000b000000
   runesWildlifeCost: 02000000050000000a00000013000000
   runes: []
+  runeHealRate: 12
   fyreTool: {fileID: 11400000, guid: 99ec04805d5592243bd3485c9ddfec0e, type: 2}
   beacons: []
   stormerTool: {fileID: 11400000, guid: f69c1a8a30ebad64383ec6d8bca8e819, type: 2}
@@ -29148,7 +29152,7 @@ PrefabInstance:
     - target: {fileID: 1305649631322353990, guid: 60ab1fbcdd0169a438b4e457a48d54fc,
         type: 3}
       propertyPath: m_VersionIndex
-      value: 563
+      value: 554
       objectReference: {fileID: 0}
     - target: {fileID: 1626587583096563602, guid: 60ab1fbcdd0169a438b4e457a48d54fc,
         type: 3}
