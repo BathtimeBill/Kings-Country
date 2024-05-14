@@ -69,8 +69,7 @@ public class PlayerControls : Singleton<PlayerControls>
 
     private void SelectTreeMode()
     {
-
-        if(_GM.downTime)
+        if(_GM.peaceTime)
         {
             if(_TUTM.isTutorial)
             {
@@ -81,18 +80,9 @@ public class PlayerControls : Singleton<PlayerControls>
             }
 
             _GM.playmode = PlayMode.TreeMode;
-            runePlacement.SetActive(false);
-            stormerPlacement.SetActive(false);
             treePlacement.SetActive(true);
-            beaconPlacement.SetActive(false);
             treePercentageModifier.SetActive(true);
-            _UI.maegenCost.SetActive(true);
-            _UI.wildlifeCost.SetActive(false);
-        }
-        else
-        {
-            _UI.SetErrorMessageCantPlaceTrees();
-            Error();
+            //_UI.maegenCost.SetActive(true);
         }
         _TPlace.canPlace = true;
         _TPlace.gameObject.GetComponent<Renderer>().material = _TPlace.canPlaceMat;
@@ -124,21 +114,6 @@ public class PlayerControls : Singleton<PlayerControls>
         stormerPlacement.SetActive(false);
         beaconPlacement.SetActive(false);
         treePercentageModifier.SetActive(false);
-    }
-
-    public void ClickOnTreeMode()
-    {
-        DeslectAllModes();
-        if (_GM.playmode != PlayMode.TreeMode)
-        {
-            SelectTreeMode();
-            _UI.audioSource.clip = _SM.buttonClickSound;
-            _UI.audioSource.Play();
-        }
-        else
-        {
-            DeslectAllModes();
-        }
     }
 
     public void MouseOverMap()
@@ -398,6 +373,7 @@ public class PlayerControls : Singleton<PlayerControls>
                             worldAudioSource = treeInstance.GetComponent<AudioSource>();
                             worldAudioSource.clip = _SM.GetTreeGrowSound();
                             worldAudioSource.Play();
+                            _GM.DecreaseMaegen(_TPlace.maegenCost);
                         }
                         if (_TPlace.tooFarAway == true)
                         {
@@ -428,35 +404,6 @@ public class PlayerControls : Singleton<PlayerControls>
                         DeslectAllModes();
                         GameEvents.ReportOnRunePlaced();
                     }
-
-
-                    /*if (_RPlace.canPlace == true)
-                    {
-                        GameObject runeInstance;
-                        runeInstance = Instantiate(runePrefab, runePlacement.transform.position, runePlacement.transform.rotation);
-                        if(_GM.runes.Count == 0)
-                        {
-                            _GM.maegen -= _RPlace.maegenCost1;
-                        }
-                        if (_GM.runes.Count == 1)
-                        {
-                            _GM.maegen -= _RPlace.maegenCost2;
-                        }
-                        if (_GM.runes.Count == 2)
-                        {
-                            _GM.maegen -= _RPlace.maegenCost3;
-                        }
-                        if (_GM.runes.Count == 3)
-                        {
-                            _GM.maegen -= _RPlace.maegenCost4;
-                        }
-                        _GM.CheckRunes();
-                    }
-                    if (_RPlace.canPlace == false)
-                    {
-                        _UI.SetErrorMessageCannotPlace();
-                        Error();
-                    }*/
                 }
                 //Fyre
                 if (_GM.playmode == PlayMode.FyreMode)
@@ -531,6 +478,8 @@ public class PlayerControls : Singleton<PlayerControls>
         errorAnimator.SetTrigger("Error");
         audioSource.Play();
     }
+
+    #region Raycasting
     public void RayCast()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -649,6 +598,7 @@ public class PlayerControls : Singleton<PlayerControls>
             _UI.hutPanel.SetActive(false);
         }
     }
+    #endregion
 
     public void OnUnitMove()
     {
@@ -685,6 +635,10 @@ public class PlayerControls : Singleton<PlayerControls>
             case ToolID.Rune:
                 if (_GM.playmode != PlayMode.RuneMode)
                     SelectRuneMode();
+                break;
+            case ToolID.Tree:
+                if(_GM.playmode != PlayMode.TreeMode)
+                    SelectTreeMode();
                 break;
         }
     }

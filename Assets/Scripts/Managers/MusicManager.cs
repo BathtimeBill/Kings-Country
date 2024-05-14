@@ -92,7 +92,7 @@ public class MusicManager : Singleton<MusicManager>
         GameEvents.OnGameWin += OnGameWin;
         GameEvents.OnWaveOver += OnWaveOver;
         GameEvents.OnContinueButton += OnContinueButton;
-        GameEvents.OnStartNextRound += OnStartNextRound;
+        GameEvents.OnWaveBegin += OnStartNextRound;
     }
 
     private void OnDisable()
@@ -101,6 +101,6 @@ public class MusicManager : Singleton<MusicManager>
         GameEvents.OnGameWin -= OnGameWin;
         GameEvents.OnWaveOver -= OnWaveOver;
         GameEvents.OnContinueButton -= OnContinueButton;
-        GameEvents.OnStartNextRound -= OnStartNextRound;
+        GameEvents.OnWaveBegin -= OnStartNextRound;
     }
 }

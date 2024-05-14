@@ -18,8 +18,6 @@ public static class GameEvents
     public static event Action OnStormerPlaced = null;
     public static event Action OnRunePlaced = null;
 
-
-    public static event Action OnBeaconDestroyed = null;
     public static event Action OnRuneDestroyed = null;
 
     public static event Action OnGameOver = null;
@@ -28,9 +26,9 @@ public static class GameEvents
     public static event Action OnJustStragglers = null;
     public static event Action OnCollectMaegenButton = null;
 
+    public static event Action OnWaveBegin = null;
     public static event Action OnWaveOver = null;
     public static event Action OnContinueButton = null;
-    public static event Action OnStartNextRound = null;
 
     public static event Action OnWispDestroy = null;
 
@@ -188,10 +186,7 @@ public static class GameEvents
     {
         OnTowerUpgrade?.Invoke();
     }
-    public static void ReportOnStartNextRound()
-    {
-        OnStartNextRound?.Invoke();
-    }
+    
     public static void ReportOnUpgradeSelected()
     {
         OnUpgradeSelected?.Invoke();
@@ -199,6 +194,10 @@ public static class GameEvents
     public static void ReportOnContinueButton()
     {
         OnContinueButton?.Invoke();
+    }
+    public static void ReportOnWaveBegin()
+    {
+        OnWaveBegin?.Invoke();
     }
     public static void ReportOnWaveOver()
     {
@@ -236,10 +235,7 @@ public static class GameEvents
     {
         OnPopulousUpgrade?.Invoke();
     }
-    public static void ReportOnBeaconDestroyed()
-    {
-        OnBeaconDestroyed?.Invoke();
-    }
+
     public static void ReportOnFyrePlaced()
     {
         OnFyrePlaced?.Invoke();

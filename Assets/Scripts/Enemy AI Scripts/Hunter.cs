@@ -598,10 +598,7 @@ public class Hunter : GameBehaviour
     //    fyreBeacon = GameObject.FindGameObjectWithTag("Beacon");
     //    state = EnemyState.Beacon;
     //}
-    private void OnBeaconDestroyed()
-    {
-        state = EnemyState.Work;
-    }
+
     private void OnArrivedAtHut()
     {
         state = EnemyState.Attack;
@@ -609,15 +606,11 @@ public class Hunter : GameBehaviour
 
     private void OnEnable()
     {
-        //GameEvents.OnBeaconPlaced += OnBeaconPlaced;
-        GameEvents.OnBeaconDestroyed += OnBeaconDestroyed;
         GameEvents.OnUnitArrivedAtHut += OnArrivedAtHut;
     }
 
     private void OnDisable()
     {
-        //GameEvents.OnBeaconPlaced -= OnBeaconPlaced;
-        GameEvents.OnBeaconDestroyed -= OnBeaconDestroyed;
         GameEvents.OnUnitArrivedAtHut -= OnArrivedAtHut;
     }
 }

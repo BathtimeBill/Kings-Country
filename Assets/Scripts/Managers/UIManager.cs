@@ -58,27 +58,10 @@ public class UIManager : Singleton<UIManager>
     public float runeTimeLeft;
     public float runeMaxTimeLeft;
     public bool runeAvailable;
-    
-    
 
-    public Sprite usableTreeTool;
-    public Sprite unusableTreeTool;
-    public Sprite usableRuneTool;
-    public Sprite unusableRuneTool;
-    public Sprite usableBeaconTool;
-    public Sprite unusableBeaconTool;
-    public Sprite usableStormerTool;
-    public Sprite unusableStormerTool;
+    public ToolButton treeTool;
 
-    public Image treeToolImage;
-    public Image runeToolImage;
-    public Image beaconToolImage;
-    public Image stormerToolImage;
-
-    public Button runeToolButton;
-    public Button beaconToolButton;
-    public Button stormerToolButton;
-
+    [Header("Misc")]
     public GameObject maegenCost;
     public TMP_Text maegenCostText;
     public GameObject wildlifeCost;
@@ -206,10 +189,7 @@ public class UIManager : Singleton<UIManager>
     {
         transformText.SetActive(false);
     }
-    float CalculateCooldownTimeLeft(float _timeLeft, float _maxTime)
-    {
-        return _timeLeft / _maxTime;
-    }
+
     public void OnGameOver()
     {
         audioSource.clip = _SM.gameOverSound;
@@ -382,22 +362,14 @@ public class UIManager : Singleton<UIManager>
     public void OnContinueButton()
     {
         waveOverPanel.SetActive(false);
-        treeToolImage.sprite = usableTreeTool;
         collectMaegenButton.SetActive(false);
         settingsOpen = false;
-        //StartCoroutine(WaitToCheckForToolButtons());
+        treeTool.SetInteractable(true);
     }
 
-    private void OnStartNextRound()
+    private void OnWaveBegin()
     {
-        if (treeToolImage != null) 
-        {
-            treeToolImage.sprite = unusableTreeTool; 
-        }
-        else
-        {
-            Debug.LogWarning("Image component is null. Make sure it is assigned.");
-        }
+        treeTool.SetInteractable(false);
     }
 
 
@@ -563,7 +535,7 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnRunePlaced += OnRunePlaced;
         GameEvents.OnWaveOver += OnWaveOver;
         GameEvents.OnContinueButton += OnContinueButton;
-        GameEvents.OnStartNextRound += OnStartNextRound;
+        GameEvents.OnWaveBegin += OnWaveBegin;
         GameEvents.OnJustStragglers += OnJustStragglers;
 
         GameEvents.OnBorkrskinnUpgrade += OnBorkrskinnUpgrade;
@@ -592,6 +564,7 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnRunePlaced -= OnRunePlaced;
         GameEvents.OnWaveOver -= OnWaveOver;
         GameEvents.OnContinueButton -= OnContinueButton;
+        GameEvents.OnWaveBegin -= OnWaveBegin;
         GameEvents.OnJustStragglers -= OnJustStragglers;
 
         GameEvents.OnBorkrskinnUpgrade -= OnBorkrskinnUpgrade;

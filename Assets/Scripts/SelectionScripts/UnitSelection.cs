@@ -435,7 +435,7 @@ public class UnitSelection : GameBehaviour
                 //unit.transform.GetChild(0).gameObject.SetActive(false);
                 containsHuldra = false;
                 _UI.DisableTowerText();
-                if (_GM.downTime == false)
+                if (_GM.peaceTime == false)
                 {
                     _GM.boundry.SetActive(false);
                 }
@@ -452,7 +452,7 @@ public class UnitSelection : GameBehaviour
         //unit.transform.GetChild(0).gameObject.SetActive(false);
         containsHuldra = false;
         _UI.DisableTowerText();
-        if(_GM.downTime == false)
+        if(_GM.peaceTime == false)
         {
             _GM.boundry.SetActive(false);
         }

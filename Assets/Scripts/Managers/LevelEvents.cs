@@ -233,10 +233,10 @@ public class LevelEvents : GameBehaviour
     }
     private void OnEnable()
     {
-        GameEvents.OnStartNextRound += OnStartNextRound;
+        GameEvents.OnWaveBegin += OnStartNextRound;
     }
     private void OnDisable()
     {
-        GameEvents.OnStartNextRound -= OnStartNextRound;
+        GameEvents.OnWaveBegin -= OnStartNextRound;
     }
 }

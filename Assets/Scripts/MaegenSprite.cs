@@ -49,11 +49,11 @@ public class MaegenSprite : GameBehaviour
             Instantiate(collectMaegenParticle, transform.position, transform.rotation);
             if(_GM.maegen<_GM.maxMaegen)
             {
-                _GM.maegen++;
+                _GM.IncreaseMaegen(1);
             }
             else
             {
-                _GM.maegen = _GM.maxMaegen;
+                _GM.IncreaseMaegen(0);
             }
             GameEvents.ReportOnWispDestroy();
             Destroy(gameObject);

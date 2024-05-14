@@ -36,11 +36,15 @@ public class ToolButton : InteractableButton
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
+        if (toolButtonManager == null)
+            return;
         toolButtonManager.PointerEnter(this);
     }
 
     public override void OnPointerExit(PointerEventData eventData)
     {
+        if (toolButtonManager == null)
+            return;
         toolButtonManager.PointerExit();
     }
 

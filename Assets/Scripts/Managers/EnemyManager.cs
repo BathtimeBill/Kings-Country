@@ -173,8 +173,7 @@ public class EnemyManager : Singleton<EnemyManager>
             GameEvents.ReportOnWaveOver();
             _GM.canFinishWave = false;
             _UI.nextRoundButton.interactable = true;
-            _GM.downTime = true;
-            _UI.treeToolImage.sprite = _UI.usableTreeTool;
+            _GM.peaceTime = true;
             StopCoroutine(CheckForEnemiesLeft());
         }
 
@@ -374,7 +373,7 @@ public class EnemyManager : Singleton<EnemyManager>
         GameEvents.OnEnemyKilled += OnEnemyKilled;
         //GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnCollectMaegenButton += OnCollectMaegenButton;
-        GameEvents.OnStartNextRound += OnStartNextRound;
+        GameEvents.OnWaveBegin += OnStartNextRound;
 
     }
 
@@ -383,6 +382,6 @@ public class EnemyManager : Singleton<EnemyManager>
         GameEvents.OnEnemyKilled -= OnEnemyKilled;
         //GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnCollectMaegenButton -= OnCollectMaegenButton;
-        GameEvents.OnStartNextRound -= OnStartNextRound;
+        GameEvents.OnWaveBegin -= OnStartNextRound;
     }
 }

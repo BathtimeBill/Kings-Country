@@ -552,30 +552,4 @@ public class Logger : GameBehaviour
         print("Finding Home Tree");
         navAgent.SetDestination(homeTree.transform.position);
     }
-    //private void OnBeaconPlaced()
-    //{
-    //    if(woodcutterType != WoodcutterType.LogCutter)
-    //    {
-    //        fyreBeacon = GameObject.FindGameObjectWithTag("Beacon");
-    //        state = EnemyState.Beacon;
-    //    }
-    //}
-    private void OnBeaconDestroyed()
-    {
-        if (woodcutterType != WoodcutterType.LogCutter)
-        {
-            state = EnemyState.Work;
-        }
-    }
-    private void OnEnable()
-    {
-        //GameEvents.OnBeaconPlaced += OnBeaconPlaced;
-        GameEvents.OnBeaconDestroyed += OnBeaconDestroyed;
-    }
-
-    private void OnDisable()
-    {
-        //GameEvents.OnBeaconPlaced -= OnBeaconPlaced;
-        GameEvents.OnBeaconDestroyed -= OnBeaconDestroyed;
-    }
 }

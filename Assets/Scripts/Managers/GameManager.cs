@@ -25,7 +25,7 @@ public class GameManager : Singleton<GameManager>
     public int breakWaveLenth;
     public bool agroWave;
     public bool canFinishWave;
-    public bool downTime;
+    public bool peaceTime;
 
     [Header("Buildings Cooldown")]
     public float treeCooldown;
@@ -147,7 +147,7 @@ public class GameManager : Singleton<GameManager>
         trees.AddRange(GameObject.FindGameObjectsWithTag("Tree"));
         StartCoroutine(EndOfIntroCamera());
         _UI.CheckTreeUI();
-        downTime = true;
+        peaceTime = true;
     }
     IEnumerator EndOfIntroCamera()
     {
@@ -210,8 +210,7 @@ public class GameManager : Singleton<GameManager>
     IEnumerator ManageWaveAgro()
     {
         _UI.nextRoundButton.interactable = false;
-        _UI.treeToolImage.sprite = _UI.unusableTreeTool;
-        _GM.downTime = false;
+        _GM.peaceTime = false;
         agroWave = true;
         currentWave++;
         _UI.TriggerWaveTextAnimation();
@@ -249,7 +248,7 @@ public class GameManager : Singleton<GameManager>
     {
         StartCoroutine(ManageWaveAgro());
         StartCoroutine(WaitForCanFinishWave());
-        GameEvents.ReportOnStartNextRound();
+        GameEvents.ReportOnWaveBegin();
         _SM.PlaySound(_SM.waveBeginSound);
     }
 
@@ -404,7 +403,7 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnTreeHit += OnTreeHit;
         GameEvents.OnWildlifeKilled += OnWildlifeKilled;
         GameEvents.OnWaveOver += OnWaveOver;
-        GameEvents.OnStartNextRound += OnStartNextRound;
+        GameEvents.OnWaveBegin += OnStartNextRound;
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnGameWin += OnGameWin;
     }
@@ -421,7 +420,7 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnTreeHit -= OnTreeHit;
         GameEvents.OnWildlifeKilled -= OnWildlifeKilled;
         GameEvents.OnWaveOver -= OnWaveOver;
-        GameEvents.OnStartNextRound -= OnStartNextRound;
+        GameEvents.OnWaveBegin -= OnStartNextRound;
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnGameWin -= OnGameWin;
     }

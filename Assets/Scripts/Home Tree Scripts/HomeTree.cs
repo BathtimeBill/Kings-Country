@@ -38,7 +38,7 @@ public class HomeTree : GameBehaviour
         {
             if(_GM.populous < _GM.maxPopulous)
             {
-                _GM.maegen -= _GM.satyrPrice;
+                _GM.DecreaseMaegen(_GM.satyrPrice);
                 Instantiate(satyr, spawnLocation.transform.position, spawnLocation.transform.rotation);
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _UI.CheckPopulousUI();
@@ -63,7 +63,7 @@ public class HomeTree : GameBehaviour
         {
             if(_GM.populous < _GM.maxPopulous)
             {
-                _GM.maegen -= _GM.orcusPrice;
+                _GM.DecreaseMaegen(_GM.orcusPrice);
                 Instantiate(orcus, spawnLocation.transform.position, spawnLocation.transform.rotation);
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _UI.CheckPopulousUI();
@@ -88,7 +88,7 @@ public class HomeTree : GameBehaviour
         {
             if(_GM.populous < _GM.maxPopulous)
             {
-                _GM.maegen -= _GM.leshyPrice;
+                _GM.DecreaseMaegen(_GM.leshyPrice);
                 Instantiate(leshy, spawnLocation.transform.position, spawnLocation.transform.rotation);
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _UI.CheckPopulousUI();
@@ -194,6 +194,23 @@ public class HomeTree : GameBehaviour
         GameEvents.OnHomeTreeSelected += OnHomeTreeSelected;
         GameEvents.OnWinfallUpgrade += OnWinfallUpgrade;
         GameEvents.OnHomeTreeUpgrade += OnHomeTreeUpgrade;
+        GameEvents.OnUnitButtonPressed += OnUnitButtonPressed;
+    }
+
+    private void OnUnitButtonPressed(UnitData _unitData)
+    {
+        switch(_unitData.id)
+        {
+            case UnitID.SatyrUnit:
+                SpawnSatyr();
+                break;
+            case UnitID.OrcusUnit:
+                SpawnOrcus();
+                break;
+            case UnitID.LeshyUnit:
+                SpawnLeshy();
+                break;
+        }
     }
 
     private void OnDisable()
@@ -202,5 +219,6 @@ public class HomeTree : GameBehaviour
         GameEvents.OnHomeTreeSelected -= OnHomeTreeSelected;
         GameEvents.OnWinfallUpgrade -= OnWinfallUpgrade;
         GameEvents.OnHomeTreeUpgrade -= OnHomeTreeUpgrade;
+        GameEvents.OnUnitButtonPressed -= OnUnitButtonPressed;
     }
 }

@@ -74,11 +74,11 @@ public class DogManager : GameBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnStartNextRound += OnStartNextRound;
+        GameEvents.OnWaveBegin += OnStartNextRound;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnStartNextRound -= OnStartNextRound;
+        GameEvents.OnWaveBegin -= OnStartNextRound;
     }
 }

@@ -482,7 +482,7 @@ public class TutorialManager : Singleton<TutorialManager>
     private void OnEnable()
     {
         GameEvents.OnNextTutorial += OnNextTutorial;
-        GameEvents.OnStartNextRound += OnStartNextRound;
+        GameEvents.OnWaveBegin += OnStartNextRound;
         GameEvents.OnWaveOver += OnWaveOver;
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnGameWin += OnGameWin;
@@ -494,7 +494,7 @@ public class TutorialManager : Singleton<TutorialManager>
     private void OnDisable()
     {
         GameEvents.OnNextTutorial -= OnNextTutorial;
-        GameEvents.OnStartNextRound -= OnStartNextRound;
+        GameEvents.OnWaveBegin -= OnStartNextRound;
         GameEvents.OnWaveOver -= OnWaveOver;
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnGameWin -= OnGameWin;

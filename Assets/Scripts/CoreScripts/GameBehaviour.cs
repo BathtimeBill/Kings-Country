@@ -48,7 +48,8 @@ public enum ToolID
 {
     Rune,
     Fyre,
-    Stormer
+    Stormer,
+    Tree
 }
 public enum CombatID
 {
