@@ -16,8 +16,6 @@ public class GameBehaviour : MonoBehaviour
     protected static SoundManager _SM { get { return SoundManager.instance; } }
     protected static TreePlacement _TPlace { get { return TreePlacement.instance; } }
     protected static RunePlacement _RPlace { get { return RunePlacement.instance; } }
-    protected static StormerPlacement _SPlace { get { return StormerPlacement.instance; } }
-
     protected static ForestManager _FM { get { return ForestManager.instance; } }
     protected static TooltipManager _Tool { get { return TooltipManager.instance; } }
     protected static WaveManager _WM { get { return WaveManager.instance; } }

@@ -469,23 +469,11 @@ public class PlayerControls : Singleton<PlayerControls>
                 //Stormer
                 if (_GM.playmode == PlayMode.StormerMode)
                 {
-                    if (_SPlace.canPlace == true)
+                    if (_GM.StormerAvailable() && _UI.stormerAvailable)
                     {
+                        stormerPlacement.SetActive(false);
+                        DeslectAllModes();
                         GameEvents.ReportOnStormerPlaced();
-                    }
-                    else
-                    {
-                        if (_UI.stormerPlaced == false)
-                        {
-                            _UI.SetErrorMessageInsufficientResources();
-                            Error();
-                        }
-                        else
-                        {
-                            _UI.SetErrorMessageBeaconCooldown();
-                            Error();
-                        }
-
                     }
                 }
                 //Default
@@ -498,12 +486,7 @@ public class PlayerControls : Singleton<PlayerControls>
             if (Input.GetMouseButtonDown(1))
             {
                 targetPointer.transform.position = targetDest.transform.position;
-                _GM.playmode = PlayMode.DefaultMode;
-                treePlacement.SetActive(false);
-                stormerPlacement.SetActive(false);
-                runePlacement.SetActive(false);
-                beaconPlacement.SetActive(false);
-                treePercentageModifier.SetActive(false);
+                DeslectAllModes();
                 _UI.MouseCancel();
             }
 

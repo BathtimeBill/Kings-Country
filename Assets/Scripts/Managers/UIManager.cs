@@ -38,7 +38,7 @@ public class UIManager : Singleton<UIManager>
 
     public float stormerTimeLeft;
     public float stormerMaxTimeLeft;
-    public bool stormerPlaced;
+    public bool stormerAvailable;
 
     public GameObject transformText;
 
@@ -131,10 +131,10 @@ public class UIManager : Singleton<UIManager>
         CheckUnitPrices();
         fyreTimeLeft = 0;
         stormerTimeLeft = 0;
-        StartCoroutine(CheckToolAvailability());
 
         //HandleFyreButton();
         fyreTool.SetInteractable(_GM.FyreAvailable());
+        stormerTool.SetInteractable(_GM.StormerAvailable());
     }
 
 
@@ -142,21 +142,7 @@ public class UIManager : Singleton<UIManager>
     {
         maegenText.text = _GM.maegen.ToString();
         FyreCheck();
-
-        if (stormerPlaced)
-        {
-            stormerTimeLeft = stormerMaxTimeLeft;
-            if (stormerTimeLeft >= 0)
-            {
-                stormerTimeLeft -= 1 * Time.deltaTime;
-                stormerTool.CooldownFill(MathX.MapTo01(stormerTimeLeft, 0, stormerMaxTimeLeft));
-            }
-            else
-            {
-                stormerPlaced = false;
-                stormerTool.SetInteractable(true);
-            }
-        }
+        StormerCheck();
     }
 
     private void CheckUnitPrices()
@@ -375,10 +361,7 @@ public class UIManager : Singleton<UIManager>
 
     
 
-    public void OnStormerPlaced()
-    {
-        stormerPlaced = true;
-    }
+
     public void OnWaveOver()
     {
         if(_GM.currentWave!= _WM.winLevel)
@@ -406,19 +389,6 @@ public class UIManager : Singleton<UIManager>
         {
             Debug.LogWarning("Image component is null. Make sure it is assigned.");
         }
-
-        //if(horgrPanel.activeInHierarchy)
-        //{
-        //    horgrPanel.gameObject.SetActive(false);
-        //}
-        //if (hutPanel.activeInHierarchy)
-        //{
-        //    hutPanel.gameObject.SetActive(false);
-        //}
-        //if (homeTreePanel.activeInHierarchy)
-        //{
-        //    homeTreePanel.gameObject.SetActive(false);
-        //}
     }
 
 
@@ -506,22 +476,13 @@ public class UIManager : Singleton<UIManager>
 
     }
 
-    IEnumerator CheckToolAvailability()
-    {
-        yield return new WaitForSeconds(0.5f);
-        //HandleRuneButton();
-        //HandleFyreButton();
-        //HandleStormerButton();
-        StartCoroutine(CheckToolAvailability());
-
-    }
-
     public void MouseCancel()
     {
         maegenCost.SetActive(false);
         wildlifeCost.SetActive(false);
     }
 
+    #region Tools
     public void OnFyrePlaced()
     {
         fyreTimeLeft = fyreMaxTimeLeft;
@@ -545,21 +506,29 @@ public class UIManager : Singleton<UIManager>
             }
         }
     }
-    private void HandleStormerButton()
+
+    public void OnStormerPlaced()
     {
-        stormerTool.SetInteractable(_GM.wildlife >= _UI.stormerCost);
-        //if(_GM.wildlife < _UI.stormerCost)
-        //{
-        //    stormerTool.SetInteractable(false);
-        //    stormerToolButton.interactable = false;
-        //    stormerToolImage.sprite = unusableStormerTool;
-        //}
-        //else
-        //{
-        //    stormerTool.SetInteractable(true);
-        //    stormerToolButton.interactable = true;
-        //    stormerToolImage.sprite = usableStormerTool;
-        //}
+        stormerTimeLeft = stormerMaxTimeLeft;
+        stormerTool.SetInteractable(false);
+        stormerAvailable = false;
+    }
+
+    private void StormerCheck()
+    {
+        if (!stormerAvailable)
+        {
+            if (stormerTimeLeft >= 0)
+            {
+                stormerTimeLeft -= Time.deltaTime;
+                stormerTool.CooldownFill(MathX.MapTo01(stormerTimeLeft, 0, stormerMaxTimeLeft));
+            }
+            else
+            {
+                stormerAvailable = true;
+                stormerTool.SetInteractable(true);
+            }
+        }
     }
 
     private void OnToolButtonPressed(Tool _tool)
@@ -581,6 +550,9 @@ public class UIManager : Singleton<UIManager>
                 break;
         }*/
     }
+    #endregion
+
+
 
     private void OnWildlifeValueChange(int _value)
     {
