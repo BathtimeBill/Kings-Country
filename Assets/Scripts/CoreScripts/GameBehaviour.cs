@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameBehaviour : MonoBehaviour
+public class GameBehaviour : BV.Behaviour
 {
     protected static GameManager _GM { get { return GameManager.instance; } }
     protected static HorgrManager _HM { get { return HorgrManager.instance; } }
@@ -26,13 +26,6 @@ public class GameBehaviour : MonoBehaviour
     protected static OverWorldManager _OM { get { return OverWorldManager.instance; } }
     protected static SceneManagement _SCENE { get { return SceneManagement.instance; } }
     protected static PerkManager _PERK { get { return PerkManager.instance; } }
-
-    public void KillTweener(Tweener tweener)
-    {
-        if (tweener != null)
-            tweener.Kill();
-    }
-
 }
 
 
