@@ -18,9 +18,11 @@ public class InteractableButton : GameBehaviour, IPointerEnterHandler, IPointerE
         //button.colors.highlightedColor = UICharInfo.
     }
 
-    public virtual void OnPointerEnter(PointerEventData eventData){}
+    public virtual void OnPointerEnter(PointerEventData eventData) {}
 
-    public virtual void OnPointerExit(PointerEventData eventData){}
+    public virtual void OnPointerExit(PointerEventData eventData) {}
+
+    public virtual void OnPointerClick(PointerEventData eventData) {}
 
     #region Editor
 #if UNITY_EDITOR

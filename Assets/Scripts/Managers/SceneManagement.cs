@@ -75,34 +75,9 @@ public class SceneManagement : Singleton<SceneManagement>
     }
     public void RestartLevel()
     {
-        SceneManager.LoadScene("Level" + ConvertLevelNumber());
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    private int ConvertLevelNumber()
-    {
-        int levelNumber = 0;
-        if (_GM.level == LevelNumber.One)
-        {
-            levelNumber = 1;
-        }
-        if (_GM.level == LevelNumber.Two)
-        {
-            levelNumber = 2;
-        }
-        if (_GM.level == LevelNumber.Three)
-        {
-            levelNumber = 3;
-        }
-        if (_GM.level == LevelNumber.Four)
-        {
-            levelNumber = 4;
-        }
-        if (_GM.level == LevelNumber.Five)
-        {
-            levelNumber = 5;
-        }
-        return levelNumber;
-    }
     public void LoadMainMenu()
     {
         SceneManager.LoadScene(titleName);

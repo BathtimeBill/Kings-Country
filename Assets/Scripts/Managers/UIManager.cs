@@ -24,10 +24,10 @@ public class UIManager : Singleton<UIManager>
     public GameObject homeTreeUpgradePanel;
     public GameObject horgrPanel;
     public GameObject hutPanel;
-    public GameObject GameOverPanel;
+    
     public GameObject pausePanel;
     public GameObject settingsPanel;
-    public GameObject winPanel;
+    
     public GameObject eldyrButton;
     public GameObject ObjectiveText;
 
@@ -70,11 +70,10 @@ public class UIManager : Singleton<UIManager>
 
     [Header("Waves")]
     public TMP_Text waveTitleText;
-    public GameObject waveOverPanel;
+    
     public Animator waveTextAnimator;
     public Button nextRoundButton;
     public Button treetoolButton;
-    public GameObject collectMaegenButton;
 
     [Header("Wave End Stats")]
     public CanvasGroup waveResultsPanel;
@@ -91,6 +90,12 @@ public class UIManager : Singleton<UIManager>
     public TMP_Text totalMaegenDropsText;
     public TMP_Text penaltyText;
     public Button continueButton;
+
+    [Header("Win Phase Panels")]
+    public GameObject wavePanel;
+    public GameObject winPanel;
+    public GameObject finalScorePanel;
+    public GameObject gameOverPanel;
 
     [Header("Upgrade")]
     public UpgradePanel upgradePanel;
@@ -143,6 +148,7 @@ public class UIManager : Singleton<UIManager>
     Tweener waveScoreTweener;
     Tweener upgradeButtonTweener;
     Tweener continueTweener;
+    Tweener winPhasePanelTweener;
 
     void Start()
     {
@@ -160,7 +166,10 @@ public class UIManager : Singleton<UIManager>
 
         formationObject = GameObject.FindGameObjectWithTag("Destination");
 
-        ResetWinPanel();
+        ResetPanel(wavePanel);
+        ResetPanel(winPanel);
+        ResetPanel(finalScorePanel);
+        ResetPanel(gameOverPanel);
         TurnOffIcons();
     }
 
@@ -249,7 +258,7 @@ public class UIManager : Singleton<UIManager>
     {
         audioSource.clip = _SM.gameOverSound;
         audioSource.Play();
-        GameOverPanel.SetActive(true);
+        gameOverPanel.SetActive(true);
         Time.timeScale = 4;
         deathCameraRotator.SetActive(true);
         _GM.gameState = GameState.Pause;
@@ -419,34 +428,28 @@ public class UIManager : Singleton<UIManager>
         //    GameEvents.ReportOnGameWin();
         //    return;
         //}
+        ResetPanel(wavePanel);
         upgradePanel.transform.localScale = Vector3.one * 2;
         upgradePanel.canvasGroup.alpha = 0;
         upgradeButton1.SetInteractable(false);
         upgradeButton2.SetInteractable(false);
         continueButton.interactable = false;
-        waveOverPanel.SetActive(true);
-
-        waveResultsPanel.alpha = 0;
-        waveResultsPanel.transform.localScale = Vector3.one * 2;
-
-        ShowWaveEndStats();
-
-
-    }
-
-    private void ShowWaveEndStats()
-    {
         treeResultCanvas.alpha = 0;
         maegenBonusCanvas.alpha = 0;
         maegenTotalCanvas.alpha = 0;
         wildlifeResultCanvas.alpha = 0;
+        waveResultsPanel.alpha = 0;
+        waveResultsPanel.transform.localScale = Vector3.one * 2;
 
-        waveOverPanel.transform.DOLocalMoveX(panelShowPositionX, panelTweenTime).SetEase(panelEase).SetUpdate(true);
-        //animator.SetTrigger("PanelEnter");
+        SetWaveEndStats();
+    }
+
+    private void SetWaveEndStats()
+    {
+        TweenInPanel(wavePanel);
         _SM.PlaySound(_SM.waveOverSound);
         _SM.PlaySound(_SM.menuDragSound);
         waveTitleText.text = "Wave " + _GM.currentWave.ToString() + " is complete!";
-
 
         totalTrees = _GM.trees.Count;
         totalMaegenDrops = GameObject.FindGameObjectsWithTag("MaegenDrop").Length;
@@ -510,7 +513,6 @@ public class UIManager : Singleton<UIManager>
     {
         upgradeButton1.SetInteractable(false);
         upgradeButton2.SetInteractable(false);
-        //_UM.AddUpgrade()
         _icon.GetComponentInChildren<Image>().color = UISettings.highlightedColor;
         _icon.transform.localScale = Vector3.one * 3;
         _icon.SetActive(true);
@@ -518,7 +520,7 @@ public class UIManager : Singleton<UIManager>
         _icon.GetComponentInChildren<Image>().DOColor(UISettings.upgradeIconsColor, 0.5f).SetUpdate(true));
         continueButton.interactable = true;
         KillTweener(continueTweener);
-        continueTweener = continueButton.transform.DOScale(Vector3.one * buttonPulseScale, buttonPulseSpeed).SetUpdate(true).SetLoops(-1);
+        continueTweener = continueButton.transform.DOScale(Vector3.one * buttonPulseScale, buttonPulseSpeed).SetUpdate(true).SetLoops(-1).SetDelay(3);
     }
 
     private int GetTreeBonusTotal()
@@ -534,19 +536,32 @@ public class UIManager : Singleton<UIManager>
 
     public void OnContinueButton()
     {
-        waveOverPanel.transform.DOLocalMoveX(panelEndPositionX, panelTweenTime).SetEase(panelEase).OnComplete(()=> ResetWinPanel()).SetUpdate(true);
-        collectMaegenButton.SetActive(false);
+        TweenOutPanel(wavePanel);
         settingsOpen = false;
         treeTool.SetInteractable(true);
-    }
-
-    void ResetWinPanel()
-    {
-        waveOverPanel.transform.DOLocalMoveX(panelStartPositionX, 0).SetUpdate(true);
-        waveOverPanel.SetActive(false);
-        KillTweener(continueTweener);
+        KillTweener(continueTweener); 
         continueButton.transform.localScale = Vector3.one;
     }
+
+    void ResetPanel(GameObject _panel)
+    {
+        _panel.SetActive(false);
+        _panel.transform.DOLocalMoveX(panelStartPositionX, 0).SetUpdate(true);
+    }
+
+    void TweenInPanel(GameObject _panel)
+    {
+        _panel.SetActive(true);
+        KillTweener(winPhasePanelTweener);
+        winPhasePanelTweener = _panel.transform.DOLocalMoveX(panelShowPositionX, panelTweenTime).SetEase(panelEase).SetUpdate(true);
+    }
+
+    void TweenOutPanel(GameObject _panel)
+    {
+        KillTweener(winPhasePanelTweener);
+        winPhasePanelTweener = _panel.transform.DOLocalMoveX(panelEndPositionX, panelTweenTime).SetEase(panelEase).OnComplete(() => ResetPanel(_panel)).SetUpdate(true);
+    }
+
 
     #endregion
 
@@ -619,12 +634,12 @@ public class UIManager : Singleton<UIManager>
     }
     private void OnJustStragglers()
     {
-        collectMaegenButton.SetActive(true);
+        //collectMaegenButton.SetActive(true);
     }
     public void CollectMaegen()
     {
-        GameEvents.ReportOnCollectMaegenButton();
-        collectMaegenButton.SetActive(false);
+        //GameEvents.ReportOnCollectMaegenButton();
+       // collectMaegenButton.SetActive(false);
     }
 
     public void MouseCancel()
