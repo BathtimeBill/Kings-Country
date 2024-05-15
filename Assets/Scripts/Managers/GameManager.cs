@@ -278,20 +278,20 @@ public class GameManager : Singleton<GameManager>
     //Updates the the count for how many trees exist and updates the UI.
     private void OnTreePlaced()
     {
-        //trees = GameObject.FindGameObjectsWithTag("Tree");
-        if (_TPlace.maegenPerWave <= 1)
-        {
-            maegen -= 2;
-        }
-        if (_TPlace.maegenPerWave == 2)
-        {
-            maegen -= 3;
-        }
-        if (_TPlace.maegenPerWave == 3)
-        {
-            maegen -= 4;
-        }
-        _UI.CheckTreeUI();
+        ////trees = GameObject.FindGameObjectsWithTag("Tree");
+        //if (_TPlace.maegenPerWave <= 1)
+        //{
+        //    maegen -= 2;
+        //}
+        //if (_TPlace.maegenPerWave == 2)
+        //{
+        //    maegen -= 3;
+        //}
+        //if (_TPlace.maegenPerWave == 3)
+        //{
+        //    maegen -= 4;
+        //}
+        //_UI.CheckTreeUI();
     }
 
     //When a tree is destroyed, we wait one frame and update the tree count and UI.

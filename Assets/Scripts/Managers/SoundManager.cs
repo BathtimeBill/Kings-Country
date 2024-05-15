@@ -41,6 +41,7 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip transitionToNightSound;
     public AudioClip transitionToDaySound;
     public AudioClip buttonClickSound;
+    public AudioClip buttonHoverSound;
     public AudioClip gameOverSound;
     public AudioClip upgradeSound;
     public AudioClip openMenuSound;
