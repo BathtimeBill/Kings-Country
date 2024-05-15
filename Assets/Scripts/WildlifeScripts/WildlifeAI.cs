@@ -187,7 +187,7 @@ public class WildlifeAI : GameBehaviour
         {
             case WildlifeType.Rabbit:
                 navAgent.speed = 1.5f;
-                if(_UM.fertileSoil)
+                if(_UM.hasUpgrade(UpgradeID.Fertile))
                 {
                     maxHealth = 50;
                 }
@@ -200,7 +200,7 @@ public class WildlifeAI : GameBehaviour
 
             case WildlifeType.Deer:
                 navAgent.speed = 2;
-                if (_UM.fertileSoil)
+                if (_UM.hasUpgrade(UpgradeID.Fertile))
                 {
                     maxHealth = 160;
                 }
@@ -213,7 +213,7 @@ public class WildlifeAI : GameBehaviour
 
             case WildlifeType.Boar:
                 navAgent.speed = 2;
-                if (_UM.fertileSoil)
+                if (_UM.hasUpgrade(UpgradeID.Fertile))
                 {
                     maxHealth = 200;
                 }

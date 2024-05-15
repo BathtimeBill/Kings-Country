@@ -206,7 +206,7 @@ public class Tree : GameBehaviour
         }
         if(runeBuff == true)
         {
-            if(_UM.rune)
+            if(_UM.hasUpgrade(UpgradeID.Rune))
             {
                 _GM.maegen += 8;
                 Instantiate(maegen8, transform.position, Quaternion.Euler(-90f, 0, 0));

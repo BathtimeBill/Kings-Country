@@ -120,7 +120,7 @@ public class ForestManager : Singleton<ForestManager>
     private void OnWaveOver()
     {
         totalTrees = _GM.trees.Count;
-        if (_UM.fertileSoil)
+        if (_UM.hasUpgrade(UpgradeID.Fertile))
         {
             numberOfWildlifeToSpawn = totalTrees / 3f;
         }

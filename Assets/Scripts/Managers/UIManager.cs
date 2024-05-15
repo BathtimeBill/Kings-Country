@@ -137,9 +137,12 @@ public class UIManager : Singleton<UIManager>
     public float panelStartPositionX;
     public float panelEndPositionX;
     public float panelShowPositionX;
+    public float buttonPulseScale = 1.2f;
+    public float buttonPulseSpeed = 1f;
 
     Tweener waveScoreTweener;
     Tweener upgradeButtonTweener;
+    Tweener continueTweener;
 
     void Start()
     {
@@ -157,9 +160,7 @@ public class UIManager : Singleton<UIManager>
 
         formationObject = GameObject.FindGameObjectWithTag("Destination");
 
-        waveOverPanel.transform.DOLocalMoveX(panelStartPositionX, 0);
-        waveOverPanel.SetActive(false);
-
+        ResetWinPanel();
         TurnOffIcons();
     }
 
@@ -497,13 +498,11 @@ public class UIManager : Singleton<UIManager>
 
 
         }
-        print("before");
         upgradePanel.canvasGroup.DOFade(1, 0.8f).SetUpdate(true);
-        upgradePanel.transform.DOScale(Vector3.one, 1).SetUpdate(true).SetEase(boxEase).OnComplete(() =>
+        upgradePanel.transform.DOScale(Vector3.one, 0.6f).SetUpdate(true).SetEase(boxEase).OnComplete(() =>
         { 
             upgradeButton1.SetInteractable(true);
             upgradeButton2.SetInteractable(true);
-            print("Finished");
         });
     }
 
@@ -515,9 +514,11 @@ public class UIManager : Singleton<UIManager>
         _icon.GetComponentInChildren<Image>().color = UISettings.highlightedColor;
         _icon.transform.localScale = Vector3.one * 3;
         _icon.SetActive(true);
-        _icon.transform.DOScale(Vector3.one, 0.8f).SetLoops(3).SetUpdate(true).OnComplete(() =>
+        _icon.transform.DOScale(Vector3.one, 1).SetLoops(3).SetUpdate(true).OnComplete(() =>
         _icon.GetComponentInChildren<Image>().DOColor(UISettings.upgradeIconsColor, 0.5f).SetUpdate(true));
         continueButton.interactable = true;
+        KillTweener(continueTweener);
+        continueTweener = continueButton.transform.DOScale(Vector3.one * buttonPulseScale, buttonPulseSpeed).SetUpdate(true).SetLoops(-1);
     }
 
     private int GetTreeBonusTotal()
@@ -533,10 +534,18 @@ public class UIManager : Singleton<UIManager>
 
     public void OnContinueButton()
     {
-        waveOverPanel.transform.DOLocalMoveX(panelEndPositionX, panelTweenTime).SetEase(panelEase).OnComplete(()=> waveOverPanel.SetActive(false)).SetUpdate(true);
+        waveOverPanel.transform.DOLocalMoveX(panelEndPositionX, panelTweenTime).SetEase(panelEase).OnComplete(()=> ResetWinPanel()).SetUpdate(true);
         collectMaegenButton.SetActive(false);
         settingsOpen = false;
         treeTool.SetInteractable(true);
+    }
+
+    void ResetWinPanel()
+    {
+        waveOverPanel.transform.DOLocalMoveX(panelStartPositionX, 0).SetUpdate(true);
+        waveOverPanel.SetActive(false);
+        KillTweener(continueTweener);
+        continueButton.transform.localScale = Vector3.one;
     }
 
     #endregion
@@ -548,8 +557,6 @@ public class UIManager : Singleton<UIManager>
 
     public void OnUpgradeSelected(UpgradeID upgradeID)
     {
-        print("Upgrade Selected");
-        _UM.AddUpgrade(upgradeID);
         switch (upgradeID)
         {
             case UpgradeID.BarkSkin: 

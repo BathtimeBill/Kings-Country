@@ -410,7 +410,7 @@ public class PlayerControls : Singleton<PlayerControls>
                 {
                     if (_GM.fyreAvailable && _UI.fyreAvailable)
                     {
-                        if (_UM.beacon)
+                        if (_UM.hasUpgrade(UpgradeID.Fyre))
                         {
                             Instantiate(explosion2, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
                         }

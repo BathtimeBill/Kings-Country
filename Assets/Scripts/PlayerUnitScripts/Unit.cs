@@ -685,7 +685,7 @@ public class Unit : GameBehaviour
         {
             if(unitType != UnitID.GolemUnit)
             {
-                if (_UM.rune)
+                if (_UM.hasUpgrade(UpgradeID.Rune))
                 {
                     health += _GM.runeHealRate * 2 * Time.deltaTime;
                 }
@@ -831,12 +831,12 @@ public class Unit : GameBehaviour
         switch (unitType)
         {
             case UnitID.SatyrUnit:
-                if(_UM.borkrskinn && _PERK.satyrPerk == false)
+                if(_UM.hasUpgrade(UpgradeID.BarkSkin) && _PERK.satyrPerk == false)
                 {
                     maxHealth = _GM.GetPercentageIncrease(_GM.satyrHealth, 0.3f);
                 }
 
-                if(_UM.flugafotr && _PERK.satyrPerk == false)
+                if(_UM.hasUpgrade(UpgradeID.FlyFoot) && _PERK.satyrPerk == false)
                 {
                     navAgent.speed = _GM.GetPercentageIncrease(_GM.satyrSpeed, 0.3f); 
                 }
@@ -846,24 +846,24 @@ public class Unit : GameBehaviour
                 break;
 
             case UnitID.LeshyUnit:
-                if (_UM.borkrskinn && _PERK.leshyPerk == false)
+                if (_UM.hasUpgrade(UpgradeID.BarkSkin) && _PERK.leshyPerk == false)
                 {
                     maxHealth = _GM.GetPercentageIncrease(_GM.leshyHealth, 0.3f);
                 }
 
-                if (_UM.flugafotr && _PERK.leshyPerk == false)
+                if (_UM.hasUpgrade(UpgradeID.FlyFoot) && _PERK.leshyPerk == false)
                 {
                     navAgent.speed = _GM.GetPercentageIncrease(_GM.leshySpeed, 0.3f);
                 }
                 detectionRadius = 50;
                 break;
             case UnitID.OrcusUnit:
-                if (_UM.borkrskinn && _PERK.orcusPerk == false)
+                if (_UM.hasUpgrade(UpgradeID.BarkSkin) && _PERK.orcusPerk == false)
                 {
                     maxHealth = _GM.GetPercentageIncrease(_GM.orcusHealth, 0.3f);
                 }
 
-                if (_UM.flugafotr && _PERK.orcusPerk == false)
+                if (_UM.hasUpgrade(UpgradeID.FlyFoot) && _PERK.orcusPerk == false)
                 {
                     navAgent.speed = _GM.GetPercentageIncrease(_GM.orcusSpeed, 0.3f);
                 }
@@ -871,43 +871,43 @@ public class Unit : GameBehaviour
 
                 break;
             case UnitID.VolvaUnit:
-                if (_UM.borkrskinn && _PERK.skessaPerk == false)
+                if (_UM.hasUpgrade(UpgradeID.BarkSkin) && _PERK.skessaPerk == false)
                 {
                     maxHealth = _GM.GetPercentageIncrease(_GM.skessaHealth, 0.3f);
                 }
 
-                if (_UM.flugafotr && _PERK.skessaPerk == false)
+                if (_UM.hasUpgrade(UpgradeID.FlyFoot) && _PERK.skessaPerk == false)
                 {
                     navAgent.speed = _GM.GetPercentageIncrease(_GM.skessaSpeed, 0.3f);
                 }
                 detectionRadius = 50;
                 break;
             case UnitID.HuldraUnit:
-                if (_UM.borkrskinn && _PERK.huldraPerk == false)
+                if (_UM.hasUpgrade(UpgradeID.BarkSkin) && _PERK.huldraPerk == false)
                 {
                     maxHealth = _GM.GetPercentageIncrease(_GM.huldraHealth, 0.3f);
                 }
 
-                if (_UM.flugafotr && _PERK.huldraPerk == false)
+                if (_UM.hasUpgrade(UpgradeID.FlyFoot) && _PERK.huldraPerk == false)
                 {
                     navAgent.speed = _GM.GetPercentageIncrease(_GM.huldraSpeed, 0.3f);
                 }
                 detectionRadius = 50;
                 break;
             case UnitID.GoblinUnit:
-                if (_UM.borkrskinn && _PERK.goblinPerk == false)
+                if (_UM.hasUpgrade(UpgradeID.BarkSkin) && _PERK.goblinPerk == false)
                 {
                     maxHealth = _GM.GetPercentageIncrease(_GM.goblinHealth, 0.3f);
                 }
 
-                if (_UM.flugafotr && _PERK.goblinPerk == false)
+                if (_UM.hasUpgrade(UpgradeID.FlyFoot) && _PERK.goblinPerk == false)
                 {
                     navAgent.speed = _GM.GetPercentageIncrease(_GM.goblinSpeed, 0.3f);
                 }
                 detectionRadius = 50;
                 break;
             case UnitID.Tower:
-                if (_UM.borkrskinn)
+                if (_UM.hasUpgrade(UpgradeID.BarkSkin))
                 {
                     health = 130;
                     maxHealth = 130;
@@ -915,12 +915,12 @@ public class Unit : GameBehaviour
 
                 break;
             case UnitID.GolemUnit:
-                if (_UM.borkrskinn && _PERK.golemPerk == false)
+                if (_UM.hasUpgrade(UpgradeID.BarkSkin) && _PERK.golemPerk == false)
                 {
                     maxHealth = _GM.GetPercentageIncrease(_GM.golemHealth, 0.3f);
                 }
 
-                if (_UM.flugafotr && _PERK.golemPerk == false)
+                if (_UM.hasUpgrade(UpgradeID.FlyFoot) && _PERK.golemPerk == false)
                 {
                     navAgent.speed = _GM.GetPercentageIncrease(_GM.golemSpeed, 0.3f);
                 }
@@ -928,12 +928,12 @@ public class Unit : GameBehaviour
 
                 break;
             case UnitID.DryadUnit:
-                if (_UM.borkrskinn && _PERK.fidhainPerk == false)
+                if (_UM.hasUpgrade(UpgradeID.FlyFoot) && _PERK.fidhainPerk == false)
                 {
                     maxHealth = _GM.GetPercentageIncrease(_GM.dryadHealth, 0.3f);
                 }
 
-                if (_UM.flugafotr && _PERK.fidhainPerk == false)
+                if (_UM.hasUpgrade(UpgradeID.FlyFoot) && _PERK.fidhainPerk == false)
                 {
                     navAgent.speed = _GM.GetPercentageIncrease(_GM.dryadSpeed, 0.3f);
                 }

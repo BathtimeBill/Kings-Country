@@ -17,12 +17,14 @@ public class UpgradeButton : InteractableButton
 
     void PressedButton()
     {
+        upgradePanel.SendUpgradeId(upgrade.id);
         GameEvents.ReportOnUpgradeSelected(upgrade.id);
     }
 
     public void SetUpgrade(UpgradeID _id)
     {
         upgrade = _UM.GetUpgrade(_id);
+        upgradePanel.upgradeOptions.Add(_id);
         icon.sprite = upgrade.icon;
     }
 
