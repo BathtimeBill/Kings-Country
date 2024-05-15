@@ -229,7 +229,7 @@ public class Tree : GameBehaviour
     private void OnContinueButton()
     {
         StartCoroutine(WispSpawnDelay());
-        godRays.SetActive(true);
+        //godRays.SetActive(true);
         //int i = 0;
         //while (i < energyMultiplier)
         //{
@@ -267,7 +267,7 @@ public class Tree : GameBehaviour
 
     public void OnWaveBegin()
     {
-        godRays.SetActive(false);
+        //godRays.SetActive(false);
     }
 
     private void OnEnable()

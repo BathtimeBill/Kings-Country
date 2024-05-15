@@ -67,10 +67,12 @@ public class Stormer : GameBehaviour
     {
         TurnOnRain();
         StartCoroutine(SpawnLightning());
+        _SM.weatherAudioSource.volume = 1;
         _SM.weatherAudioSource.clip = _SM.rainSound;
         _SM.weatherAudioSource.Play();
         yield return new WaitForSeconds(stormerLength);
         TurnOffRain();
+        _SM.weatherAudioSource.volume = 0.5f;
         _SM.weatherAudioSource.clip = _SM.forestSoundDay;
         _SM.weatherAudioSource.Play();
         StopAllCoroutines();
