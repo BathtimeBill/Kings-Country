@@ -10,7 +10,7 @@ public class ToolButton : InteractableButton
     public Image icon;
     public Image cooldownFill;
     public TMP_Text meagenPrice;
-    public ToolPanelManager toolButtonManager;
+    public ToolPanel toolButtonManager;
 
     public override void Start()
     {

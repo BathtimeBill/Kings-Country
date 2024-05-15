@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UpgradeButtons : GameBehaviour
 {
-    public Upgrade upgradeType;
+    public UpgradeID upgradeType;
     void Start()
     {
         
@@ -18,66 +18,66 @@ public class UpgradeButtons : GameBehaviour
 
     public void ButtonPressed()
     {
-        GameEvents.ReportOnUpgradeSelected();
+        //GameEvents.ReportOnUpgradeSelected();
         switch (upgradeType)
         {
-            case Upgrade.BarkSkin:
-                GameEvents.ReportOnBorkrskinnUpgrade();
+            case UpgradeID.BarkSkin:
+                //GameEvents.ReportOnBorkrskinnUpgrade();
                 _UM.borkrskinn = true;
                 break;
 
-            case Upgrade.FlyFoot:
-                GameEvents.ReportOnFlugafotrUpgrade();
+            case UpgradeID.FlyFoot:
+                //GameEvents.ReportOnFlugafotrUpgrade();
                 _UM.flugafotr = true;
                 break;
 
-            case Upgrade.Power:
-                GameEvents.ReportOnJarnnefiUpgrade();
+            case UpgradeID.Power:
+                //GameEvents.ReportOnJarnnefiUpgrade();
                 _UM.jarnnefi = true;
                 break;
 
-            case Upgrade.Tower:
-                GameEvents.ReportOnTowerUpgrade();
+            case UpgradeID.Tower:
+                //GameEvents.ReportOnTowerUpgrade();
                 _UM.tower = true;
                 break;
 
-            case Upgrade.Rune:
-                GameEvents.ReportOnRuneUpgrade();
+            case UpgradeID.Rune:
+                //GameEvents.ReportOnRuneUpgrade();
                 _UM.rune = true;
                 break;
 
-            case Upgrade.Beacon:
-                GameEvents.ReportOnBeaconUpgrade();
+            case UpgradeID.Fyre:
+                //GameEvents.ReportOnBeaconUpgrade();
                 _UM.beacon = true;
                 break;
 
-            case Upgrade.Stormer:
-                GameEvents.ReportOnStormerUpgrade();
+            case UpgradeID.Stormer:
+                //GameEvents.ReportOnStormerUpgrade();
                 _UM.stormer = true;
                 break;
 
-            case Upgrade.Tree:
-                GameEvents.ReportOnTreeUpgrade();
+            case UpgradeID.Tree:
+                //GameEvents.ReportOnTreeUpgrade();
                 _UM.tree = true;
                 break;
 
-            case Upgrade.Fertile:
+            case UpgradeID.Fertile:
                 GameEvents.ReportOnFertileSoilUpgrade();
                 _UM.fertileSoil = true;
                 break;
 
-            case Upgrade.Populous:
+            case UpgradeID.Populous:
                 GameEvents.ReportOnPopulousUpgrade();
                 _UM.populous = true;
                 break;
 
-            case Upgrade.Winfall:
-                GameEvents.ReportOnWinfallUpgrade();
+            case UpgradeID.Winfall:
+                //GameEvents.ReportOnWinfallUpgrade();
                 _UM.winfall = true;
                 break;
 
-            case Upgrade.HomeTree:
-                GameEvents.ReportOnHomeTreeUpgrade();
+            case UpgradeID.HomeTree:
+                //GameEvents.ReportOnHomeTreeUpgrade();
                 _UM.homeTree = true;
                 break;
         }

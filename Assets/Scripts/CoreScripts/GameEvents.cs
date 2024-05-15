@@ -49,7 +49,7 @@ public static class GameEvents
     public static event Action OnWinfallUpgrade = null;
     public static event Action OnHomeTreeUpgrade = null;
 
-    public static event Action OnUpgradeSelected = null;
+    public static event Action<UpgradeID> OnUpgradeSelected = null;
 
     public static event Action OnAttackSelected = null;
     public static event Action OnDefendSelected = null;
@@ -166,7 +166,7 @@ public static class GameEvents
     {
         OnGameWin?.Invoke();
     }
-    public static void ReportOnHomeTreeUpgrade()
+    /*public static void ReportOnHomeTreeUpgrade()
     {
         OnHomeTreeUpgrade?.Invoke();
     }
@@ -185,11 +185,26 @@ public static class GameEvents
     public static void ReportOnTowerUpgrade()
     {
         OnTowerUpgrade?.Invoke();
-    }
+    }*/
     
-    public static void ReportOnUpgradeSelected()
+    public static void ReportOnUpgradeSelected(UpgradeID _id)
     {
-        OnUpgradeSelected?.Invoke();
+        OnUpgradeSelected?.Invoke(_id);
+        switch(_id)
+        {
+            case UpgradeID.BarkSkin:    OnBorkrskinnUpgrade?.Invoke(); break;
+            case UpgradeID.Tower:       OnTowerUpgrade?.Invoke(); break;
+            case UpgradeID.Power:       OnJarnnefiUpgrade?.Invoke(); break;
+            case UpgradeID.Rune:        OnRuneUpgrade?.Invoke(); break;
+            case UpgradeID.Stormer:     OnStormerUpgrade?.Invoke(); break;
+            case UpgradeID.Fertile:     OnFertileSoilUpgrade?.Invoke(); break;
+            case UpgradeID.FlyFoot:     OnFlugafotrUpgrade?.Invoke(); break;
+            case UpgradeID.Fyre:        OnBeaconUpgrade?.Invoke(); break;
+            case UpgradeID.HomeTree:    OnHomeTreeUpgrade?.Invoke(); break;
+            case UpgradeID.Populous:    OnPopulousUpgrade?.Invoke(); break;
+            case UpgradeID.Winfall:     OnWinfallUpgrade?.Invoke(); break;
+            case UpgradeID.Tree:        OnTreeUpgrade?.Invoke(); break;
+        }
     }
     public static void ReportOnContinueButton()
     {

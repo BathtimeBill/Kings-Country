@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class WaveManager : Singleton<WaveManager>
+public class WaveEnd : Singleton<WaveEnd>
 {
     public TMP_Text waveTitleText;
     public GameObject testButton;
@@ -115,48 +115,47 @@ public class WaveManager : Singleton<WaveManager>
     }
     public void OnWaveOver()
     {
-        if(_GM.currentWave != winLevel)
-        {
-            if (upgradeButtonList.Count > 1)
-            {
-                continueButton.interactable = false;
-                StartCoroutine(ActivateTextGroups());
-                arrayNumber = GetRandomUpgrade();
-
-                animator.SetTrigger("PanelEnter");
-                _SM.PlaySound(_SM.waveOverSound);
-                _SM.PlaySound(_SM.menuDragSound);
-                waveTitleText.text = "Wave " + _GM.currentWave.ToString() + " is complete!";
-                GameObject go1 = Instantiate(upgradeButtonList[arrayNumber], slot1.transform.position, slot1.transform.rotation);
-                go1.transform.SetParent(slot1.transform, false);
-                go1.transform.position = slot1.transform.position;
-                //upgradeButtonList.Remove(go1);
-                arrayNumber2 = GetRandom();
-                GameObject go2 = Instantiate(upgradeButtonList[arrayNumber2], slot2.transform.position, slot2.transform.rotation);
-                go2.transform.SetParent(slot2.transform, false);
-                go2.transform.position = slot2.transform.position;
-                //upgradeButtonList.Remove(go2);
-                slot1Button = go1.GetComponent<Button>();
-                slot2Button = go2.GetComponent<Button>();
-                slot1Button.interactable = true;
-                slot2Button.interactable = true;
-                slot1Obj = go1;
-                slot2Obj = go2;
-
-                totalTrees = _GM.trees.Count;
-                totalMaegenDrops = GameObject.FindGameObjectsWithTag("MaegenDrop").Length;
-                totalMaegen = totalTrees + totalMaegenDrops + GetTreeBonusTotal();
-
-                penaltyText.text = "+" + _FM.numberOfWildlifeToSpawn.ToString();
-                totalTreesText.text = totalTrees.ToString();
-                treeBonusText.text = "(+" +  GetTreeBonusTotal().ToString() + ")";
-                totalMaegenDropsText.text = totalMaegenDrops.ToString();
-                totalMaegenText.text = "+" + totalMaegen.ToString();
-            }
-        }
-        else
+        if(_GM.currentWave == winLevel)
         {
             GameEvents.ReportOnGameWin();
+            return;
+        }
+
+        if (upgradeButtonList.Count > 1)
+        {
+            continueButton.interactable = false;
+            StartCoroutine(ActivateTextGroups());
+            arrayNumber = GetRandomUpgrade();
+
+            animator.SetTrigger("PanelEnter");
+            _SM.PlaySound(_SM.waveOverSound);
+            _SM.PlaySound(_SM.menuDragSound);
+            waveTitleText.text = "Wave " + _GM.currentWave.ToString() + " is complete!";
+            GameObject go1 = Instantiate(upgradeButtonList[arrayNumber], slot1.transform.position, slot1.transform.rotation);
+            go1.transform.SetParent(slot1.transform, false);
+            go1.transform.position = slot1.transform.position;
+            //upgradeButtonList.Remove(go1);
+            arrayNumber2 = GetRandom();
+            GameObject go2 = Instantiate(upgradeButtonList[arrayNumber2], slot2.transform.position, slot2.transform.rotation);
+            go2.transform.SetParent(slot2.transform, false);
+            go2.transform.position = slot2.transform.position;
+            //upgradeButtonList.Remove(go2);
+            slot1Button = go1.GetComponent<Button>();
+            slot2Button = go2.GetComponent<Button>();
+            slot1Button.interactable = true;
+            slot2Button.interactable = true;
+            slot1Obj = go1;
+            slot2Obj = go2;
+
+            totalTrees = _GM.trees.Count;
+            totalMaegenDrops = GameObject.FindGameObjectsWithTag("MaegenDrop").Length;
+            totalMaegen = totalTrees + totalMaegenDrops + GetTreeBonusTotal();
+
+            penaltyText.text = "+" + _FM.numberOfWildlifeToSpawn.ToString();
+            totalTreesText.text = totalTrees.ToString();
+            treeBonusText.text = "(+" +  GetTreeBonusTotal().ToString() + ")";
+            totalMaegenDropsText.text = totalMaegenDrops.ToString();
+            totalMaegenText.text = "+" + totalMaegen.ToString();
         }
 
     }
@@ -203,7 +202,7 @@ public class WaveManager : Singleton<WaveManager>
 
         totalTextGroup.SetActive(false);
     }
-    public void OnUpgradeSelected()
+    public void OnUpgradeSelected(UpgradeID _id)
     {
         _SM.PlaySound(_SM.upgradeSound);
         if(mouseOverSlot1)
@@ -223,14 +222,14 @@ public class WaveManager : Singleton<WaveManager>
 
     private void OnEnable()
     {
-        GameEvents.OnWaveOver += OnWaveOver;
+        //GameEvents.OnWaveOver += OnWaveOver;
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnUpgradeSelected += OnUpgradeSelected;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnWaveOver -= OnWaveOver;
+        //GameEvents.OnWaveOver -= OnWaveOver;
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnUpgradeSelected -= OnUpgradeSelected;
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ToolPanelManager : MonoBehaviour
+public class ToolPanel : MonoBehaviour
 {
     [Header("Info Box")]
     public CanvasGroup canvasGroup;

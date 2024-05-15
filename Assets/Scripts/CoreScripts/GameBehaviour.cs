@@ -19,7 +19,7 @@ public class GameBehaviour : MonoBehaviour
     protected static RunePlacement _RPlace { get { return RunePlacement.instance; } }
     protected static ForestManager _FM { get { return ForestManager.instance; } }
     protected static TooltipManager _Tool { get { return TooltipManager.instance; } }
-    protected static WaveManager _WM { get { return WaveManager.instance; } }
+    protected static WaveEnd _WM { get { return WaveEnd.instance; } }
     protected static SpyManager _SPYM { get { return SpyManager.instance; } }
     protected static SaveData _SAVE { get { return SaveData.instance; } }
     protected static ScoreManager _SCORE { get { return ScoreManager.instance; } }
@@ -67,14 +67,14 @@ public enum CombatID
     Defend,
     Formation
 }
-public enum Upgrade
+public enum UpgradeID
 {
     BarkSkin,
     FlyFoot,
     Power,
     Tower,
     Rune,
-    Beacon,
+    Fyre,
     Stormer,
     Tree,
     Fertile,

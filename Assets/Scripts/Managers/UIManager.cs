@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.Analytics;
+using DG.Tweening;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -68,11 +68,32 @@ public class UIManager : Singleton<UIManager>
     public TMP_Text wildlifeCostText;
 
     [Header("Waves")]
+    public TMP_Text waveTitleText;
+    public GameObject waveOverPanel;
     public Animator waveTextAnimator;
     public Button nextRoundButton;
-    public GameObject waveOverPanel;
     public Button treetoolButton;
     public GameObject collectMaegenButton;
+
+    [Header("Wave End Stats")]
+    public CanvasGroup treeResultCanvas;
+    public CanvasGroup maegenBonusCanvas;
+    public CanvasGroup maegenTotalCanvas;
+    public CanvasGroup wildlifeResultCanvas;
+    public int totalMaegen;
+    public int totalTrees;
+    public int totalMaegenDrops;
+    public TMP_Text totalMaegenText;
+    public TMP_Text totalTreesText;
+    public TMP_Text treeBonusText;
+    public TMP_Text totalMaegenDropsText;
+    public TMP_Text penaltyText;
+    public Button continueButton;
+
+    [Header("Upgrade")]
+    public UpgradePanel upgradePanel;
+    public UpgradeButton upgradeButton1;
+    public UpgradeButton upgradeButton2;
 
     [Header("Current Upgrade Panel")]
     public GameObject barkSkin;
@@ -107,6 +128,15 @@ public class UIManager : Singleton<UIManager>
     public TMP_Text golemPriceText;
     public TMP_Text dryadPriceText;
 
+    [Header("Panel Tweening")]
+    public Ease panelEase = Ease.InOutSine;
+    public float panelTweenTime = 0.5f;
+    public float panelStartPositionX;
+    public float panelEndPositionX;
+    public float panelShowPositionX;
+
+    Tweener waveScoreTweener;
+    Tweener upgradeButtonTweener;
 
     void Start()
     {
@@ -123,6 +153,8 @@ public class UIManager : Singleton<UIManager>
         runeTool.SetInteractable(_GM.runesAvailable);
 
         formationObject = GameObject.FindGameObjectWithTag("Destination");
+
+        waveOverPanel.transform.DOLocalMoveX(panelStartPositionX, 0);
     }
 
 
@@ -353,15 +385,109 @@ public class UIManager : Singleton<UIManager>
 
     public void OnWaveOver()
     {
-        if(_GM.currentWave!= _WM.winLevel)
-        {
-            waveOverPanel.SetActive(true);
-            settingsOpen = true;
-        }
+        //if(_GM.currentWave!= _WM.winLevel)
+        //{
+        //    waveOverPanel.SetActive(true);
+        //    settingsOpen = true;
+        //}
+
+        //if (_GM.currentWave == winLevel)
+        //{
+        //    GameEvents.ReportOnGameWin();
+        //    return;
+        //}
+        upgradePanel.transform.localScale = Vector3.one * 2;
+        upgradePanel.canvasGroup.alpha = 0;
+        continueButton.interactable = false;
+
+        ShowWaveEndStats();
+
+
     }
+
+    private void ShowWaveEndStats()
+    {
+        treeResultCanvas.alpha = 0;
+        maegenBonusCanvas.alpha = 0;
+        maegenTotalCanvas.alpha = 0;
+        wildlifeResultCanvas.alpha = 0;
+
+        waveOverPanel.transform.DOLocalMoveX(panelShowPositionX, panelTweenTime).SetEase(panelEase).SetUpdate(true);
+        //animator.SetTrigger("PanelEnter");
+        _SM.PlaySound(_SM.waveOverSound);
+        _SM.PlaySound(_SM.menuDragSound);
+        waveTitleText.text = "Wave " + _GM.currentWave.ToString() + " is complete!";
+
+
+        totalTrees = _GM.trees.Count;
+        totalMaegenDrops = GameObject.FindGameObjectsWithTag("MaegenDrop").Length;
+        totalMaegen = totalTrees + totalMaegenDrops + GetTreeBonusTotal();
+
+        penaltyText.text = "+" + _FM.numberOfWildlifeToSpawn.ToString();
+        totalTreesText.text = totalTrees.ToString();
+        treeBonusText.text = "(+" + GetTreeBonusTotal().ToString() + ")";
+        totalMaegenDropsText.text = totalMaegenDrops.ToString();
+        totalMaegenText.text = "+" + totalMaegen.ToString();
+
+        StartCoroutine(ActivateTextGroups());
+
+        ShowUpgradeButtons();
+    }
+
+    void ShowUpgradeButtons()
+    {
+        if (_UM.availableUpgrades.Count > 1)
+        {
+            UpgradeID upgrade1 = _UM.GetRandomUpgrade();
+            _UM.RemoveUpgrade(upgrade1);
+            UpgradeID upgrade2 = _UM.GetRandomUpgrade();
+            _UM.RemoveUpgrade(upgrade2);
+
+            upgradeButton1.SetUpgrade(upgrade1);
+            upgradeButton2.SetUpgrade(upgrade2);
+
+             
+        }
+        upgradePanel.canvasGroup.DOFade(1, 0.8f);
+        upgradePanel.transform.DOScale(Vector3.one, 1);
+
+
+    }
+
+
+    IEnumerator ActivateTextGroups()
+    {
+        Debug.Log("Bringing in text groups");
+        yield return new WaitForSecondsRealtime(1.6f);
+        _SM.PlaySound(_SM.textGroupSound);
+        treeResultCanvas.alpha = 1;//.DOFade(1, panelTweenTime).SetUpdate(true); 
+        yield return new WaitForSecondsRealtime(panelTweenTime + 0.1f);
+        maegenBonusCanvas.alpha = 1;//DOFade(1, panelTweenTime).SetUpdate(true);
+        _SM.PlaySound(_SM.textGroupSound);
+        yield return new WaitForSecondsRealtime(panelTweenTime + 0.1f);
+        _SM.PlaySound(_SM.textGroupSound);
+        maegenTotalCanvas.alpha = 1;//DOFade(1, panelTweenTime).SetUpdate(true);
+        yield return new WaitForSecondsRealtime(panelTweenTime + 0.1f);
+        _SM.PlaySound(_SM.textGroupSound);
+        wildlifeResultCanvas.alpha = 1;//DOFade(1, panelTweenTime).SetUpdate(true);
+        yield return new WaitForSecondsRealtime(panelTweenTime + 1f);
+        ShowUpgradeButtons();
+    }
+
+    private int GetTreeBonusTotal()
+    {
+        int treeBonus = 0;
+        foreach (GameObject i in _GM.trees)
+        {
+            treeBonus = treeBonus + i.GetComponent<Tree>().energyMultiplier;
+        }
+        int totalTreeBonus = treeBonus - totalTrees;
+        return totalTreeBonus;
+    }
+
     public void OnContinueButton()
     {
-        waveOverPanel.SetActive(false);
+        waveOverPanel.transform.DOLocalMoveX(panelEndPositionX, panelTweenTime).SetEase(panelEase).OnComplete(()=> waveOverPanel.SetActive(false)).SetUpdate(true);
         collectMaegenButton.SetActive(false);
         settingsOpen = false;
         treeTool.SetInteractable(true);
@@ -372,6 +498,10 @@ public class UIManager : Singleton<UIManager>
         treeTool.SetInteractable(false);
     }
 
+    public void OnUpgradeSelected(UpgradeID upgradeID)
+    {
+        
+    }
 
 
     private void OnBorkrskinnUpgrade()
@@ -538,6 +668,8 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnWaveBegin += OnWaveBegin;
         GameEvents.OnJustStragglers += OnJustStragglers;
 
+        GameEvents.OnUpgradeSelected += OnUpgradeSelected;
+
         GameEvents.OnBorkrskinnUpgrade += OnBorkrskinnUpgrade;
         GameEvents.OnFlugafotrUpgrade += OnFlugafotrUpgrade;
         GameEvents.OnJarnnefiUpgrade += OnJarnnefiUpgrade;
@@ -566,6 +698,8 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnWaveBegin -= OnWaveBegin;
         GameEvents.OnJustStragglers -= OnJustStragglers;
+
+        GameEvents.OnUpgradeSelected -= OnUpgradeSelected;
 
         GameEvents.OnBorkrskinnUpgrade -= OnBorkrskinnUpgrade;
         GameEvents.OnFlugafotrUpgrade -= OnFlugafotrUpgrade;

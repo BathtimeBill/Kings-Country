@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5133883013062268917
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7781335964318616300}
+  - component: {fileID: 8062296253106437132}
+  m_Layer: 0
+  m_Name: UpgradeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7781335964318616300
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5133883013062268917}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8062296253106437132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5133883013062268917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0d2d1bf1fa3f8346b47e20621ed0f93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroy: 0
+  upgrades:
+  - id: 0
+    name: Bark Skin
+    description: Increases the health of all current and future units by 30%
+    icon: {fileID: 21300000, guid: 021aa7092ae516e4a9c156f7049ca959, type: 3}
+  - id: 1
+    name: Fly Foot
+    description: Increases the speed of all current and future units by 30%
+    icon: {fileID: 21300000, guid: bb02246bdda436e4594ca22136153e12, type: 3}
+  - id: 2
+    name: Damage Increase
+    description: Increases the damage of all current and future units by 30%
+    icon: {fileID: 21300000, guid: c5cd52a4f3d0bc744a6182db1ed6818d, type: 3}
+  - id: 3
+    name: Tower
+    description: Increase the tower's health and damage by 50%
+    icon: {fileID: 21300000, guid: 26409e1278001f74b931c072b1108cc5, type: 3}
+  - id: 4
+    name: Rune Upgrade
+    description: Doubles the rate at which your units are healed by the rune. Runes
+      will also last for two rounds.
+    icon: {fileID: 21300000, guid: 1e49dd923403b4a4bafd9ccdfa445cbd, type: 3}
+  - id: 5
+    name: Fyre Upgrade
+    description: Doubles the damage and radius of the Fyre Tool.
+    icon: {fileID: 21300000, guid: a0986efd1692395499e9a9c1f19bf5e5, type: 3}
+  - id: 6
+    name: Stormer Upgrade
+    description: Increases the length of the Stormer ability by 100%
+    icon: {fileID: 21300000, guid: 50f96c7031d50b74fb58eb3846d32361, type: 3}
+  - id: 7
+    name: Tree Upgrade
+    description: Every tree produces 2 maegen at the end of each wave.
+    icon: {fileID: 21300000, guid: 2cce37e84c44a8846902cf086c6807c2, type: 3}
+  - id: 8
+    name: Fertile Soil
+    description: Increases the rate at which wildlife spawns. 1 wildlife for every
+      3 trees at the end of each wave.
+    icon: {fileID: 21300000, guid: 021aa7092ae516e4a9c156f7049ca959, type: 3}
+  - id: 9
+    name: Populous
+    description: Increases the population cap for your units by 5.
+    icon: {fileID: 21300000, guid: 811663a05c548974ab6bb70e51b7de13, type: 3}
+  - id: 10
+    name: Maegen Windfall
+    description: Recieve 15 maegen.
+    icon: {fileID: 21300000, guid: 5f46ac87cf9625746a8f8195c65c00c5, type: 3}
+  - id: 11
+    name: Home Tree Tower
+    description: Allows the Home Tree to shoot projectiles to defend itself.
+    icon: {fileID: 21300000, guid: 9bef5a66fb0940a43a26bde58c375d11, type: 3}
+  borkrskinn: 0
+  jarnnefi: 0
+  flugafotr: 0
+  rune: 0
+  beacon: 0
+  stormer: 0
+  fertileSoil: 0
+  populous: 0
+  tower: 0
+  tree: 0
+  winfall: 0
+  homeTree: 0

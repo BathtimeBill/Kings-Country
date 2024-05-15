@@ -5,35 +5,51 @@ using UnityEngine;
 
 public class UpgradeManager : Singleton<UpgradeManager>
 {
+    [BV.EnumList(typeof(UpgradeID))]
+    public List<Upgrade> upgrades;
+
+    public List<UpgradeID> availableUpgrades;
+
     public bool borkrskinn;
-    public GameObject borkrskinnCheck;
-    public Button borkrskinnButton;
     public bool jarnnefi;
-    public GameObject jarnnefiCheck;
-    public Button jarnnefiButton;
     public bool flugafotr;
-    public GameObject flugafotrCheck;
-    public Button flugafotrButton;
     public bool rune;
-    public GameObject runeCheck;
-    public Button runeButton;
     public bool beacon;
-    public GameObject beaconCheck;
-    public Button beaconButton;
     public bool stormer;
-    public GameObject stormerCheck;
-    public Button stormerButton;
     public bool fertileSoil;
-    public GameObject fertileSoilCheck;
-    public Button fertileSoilButton;
     public bool populous = false;
-    public GameObject populousCheck;
-    public Button populousButton;
     public bool tower;
     public bool tree;
     public bool winfall;
     public bool homeTree;
 
+    private void Start()
+    {
+        for(int i=0; i<upgrades.Count;i++)
+        {
+            availableUpgrades.Add(upgrades[i].id);
+        }
+    }
+
+    public void RemoveUpgrade(UpgradeID upgradeID)
+    {
+        availableUpgrades.Remove(upgradeID);
+    }
+
+    public void AddUpgrade(UpgradeID upgradeID)
+    {
+        availableUpgrades.Add(upgradeID);
+    }
+
+    public UpgradeID GetRandomUpgrade()
+    {
+        return ListX.GetRandomItemFromList(availableUpgrades);
+    }
+
+    public Upgrade GetUpgrade(UpgradeID upgradeID)
+    {
+        return upgrades.Find(x => x.id == upgradeID);
+    }
 
     public void BorkrskinnUpgrade()
     {
@@ -53,10 +69,8 @@ public class UpgradeManager : Singleton<UpgradeManager>
         if (jarnnefi == false && _GM.maegen > 599)
         {
             _GM.maegen -= 600;
-            jarnnefiButton.interactable = false;
             jarnnefi = true;
             GameEvents.ReportOnJarnnefiUpgrade();
-            jarnnefiCheck.SetActive(true);
             _UI.audioSource.clip = _SM.upgradeSound;
             _UI.audioSource.Play();
         }
@@ -71,10 +85,8 @@ public class UpgradeManager : Singleton<UpgradeManager>
         if (flugafotr == false && _GM.maegen > 599)
         {
             _GM.maegen -= 600;
-            flugafotrButton.interactable = false;
             flugafotr = true;
             GameEvents.ReportOnFlugafotrUpgrade();
-            flugafotrCheck.SetActive(true);
             _UI.audioSource.clip = _SM.upgradeSound;
             _UI.audioSource.Play();
         }
@@ -94,8 +106,6 @@ public class UpgradeManager : Singleton<UpgradeManager>
                 Debug.Log("Populous upgrade");
                 _GM.maegen -= 1200;
                 populous = true;
-                populousButton.interactable = false;
-                populousCheck.SetActive(true);
                 _UI.audioSource.clip = _SM.upgradeSound;
                 _UI.audioSource.Play();
                 GameEvents.ReportOnPopulousUpgrade();
@@ -113,10 +123,8 @@ public class UpgradeManager : Singleton<UpgradeManager>
         if (rune == false && _GM.maegen > 1199)
         {
             _GM.maegen -= 1200;
-            runeButton.interactable = false;
             rune = true;
             GameEvents.ReportOnRuneUpgrade();
-            runeCheck.SetActive(true);
             _UI.audioSource.clip = _SM.upgradeSound;
             _UI.audioSource.Play();
         }
@@ -132,10 +140,8 @@ public class UpgradeManager : Singleton<UpgradeManager>
         if(beacon == false && _GM.maegen > 799)
         {
             _GM.maegen -= 800;
-            beaconButton.interactable = false;
             beacon = true;
             GameEvents.ReportOnBeaconUpgrade();
-            beaconCheck.SetActive(true);
             _UI.audioSource.clip = _SM.upgradeSound;
             _UI.audioSource.Play();
         }
@@ -151,8 +157,6 @@ public class UpgradeManager : Singleton<UpgradeManager>
         if(fertileSoil == false && _GM.maegen > 999)
         {
             _GM.maegen -= 1000;
-            fertileSoilButton.interactable = false;
-            fertileSoilCheck.SetActive(true);
             fertileSoil = true;
             GameEvents.ReportOnFertileSoilUpgrade();
             _UI.audioSource.clip = _SM.upgradeSound;
@@ -164,4 +168,15 @@ public class UpgradeManager : Singleton<UpgradeManager>
             _PC.Error();
         }
     }
+
+
+}
+
+[System.Serializable]
+public class Upgrade
+{
+    public UpgradeID id;
+    public string name;
+    public string description;
+    public Sprite icon;
 }
