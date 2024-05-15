@@ -137,6 +137,8 @@ public class GameManager : Singleton<GameManager>
     public bool atMaxRuins => runesCount == runesMaegenCost.Length;
     public int runesCount => runes.Count;
 
+    public bool skipIntro;
+
     void Start()
     {
         Time.timeScale = 1;
@@ -145,7 +147,7 @@ public class GameManager : Singleton<GameManager>
         playmode = PlayMode.DefaultMode;
         gameState = GameState.Pause;
         trees.AddRange(GameObject.FindGameObjectsWithTag("Tree"));
-        StartCoroutine(EndOfIntroCamera());
+        if(!skipIntro) StartCoroutine(EndOfIntroCamera());
         _UI.CheckTreeUI();
         peaceTime = true;
     }
