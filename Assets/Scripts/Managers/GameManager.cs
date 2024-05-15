@@ -249,7 +249,7 @@ public class GameManager : Singleton<GameManager>
         StartCoroutine(ManageWaveAgro());
         StartCoroutine(WaitForCanFinishWave());
         GameEvents.ReportOnWaveBegin();
-        _SM.PlaySound(_SM.waveBeginSound);
+        //_SM.PlaySound(_SM.waveBeginSound);
     }
 
     public void AddRune(GameObject _rune)

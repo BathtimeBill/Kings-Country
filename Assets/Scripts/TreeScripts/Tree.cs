@@ -25,6 +25,7 @@ public class Tree : GameBehaviour
     public bool runeBuff = false;
     public Animator animator;
     public GameObject chopParticle;
+    public GameObject godRays;
 
     [Header("Forest Decor")]
     public int amountOfDecor;
@@ -228,6 +229,7 @@ public class Tree : GameBehaviour
     private void OnContinueButton()
     {
         StartCoroutine(WispSpawnDelay());
+        godRays.SetActive(true);
         //int i = 0;
         //while (i < energyMultiplier)
         //{
@@ -263,15 +265,22 @@ public class Tree : GameBehaviour
         energyMultiplier = energyMultiplier * 2;
     }
 
+    public void OnWaveBegin()
+    {
+        godRays.SetActive(false);
+    }
+
     private void OnEnable()
     {
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnTreeUpgrade += OnTreeUpgrade;
+        GameEvents.OnWaveBegin += OnWaveBegin;
     }
 
     private void OnDisable()
     {
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnTreeUpgrade -= OnTreeUpgrade;
+        GameEvents.OnWaveBegin -= OnWaveBegin;
     }
 }

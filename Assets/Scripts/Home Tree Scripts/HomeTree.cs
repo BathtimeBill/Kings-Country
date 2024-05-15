@@ -20,6 +20,7 @@ public class HomeTree : GameBehaviour
     public AudioSource audioSource;
     private AudioClip audioclip;
     public GameObject homeTreeTower;
+    public GameObject godRay;
     void Start()
     {
         maxHealth = 250;
@@ -128,36 +129,36 @@ public class HomeTree : GameBehaviour
     {
         if (other.tag == "Axe1")
         {
-            TakeDamage(10);
+            TakeDamage(10, other.transform.position);
             other.enabled = false;
         }
         if (other.tag == "Axe2")
         {
-            TakeDamage(20);
+            TakeDamage(20, other.transform.position);
             other.enabled = false;
         }
         if (other.tag == "Sword2")
         {
-            TakeDamage(35);
+            TakeDamage(35, other.transform.position);
             other.enabled = false;
         }
         if (other.tag == "Sword3")
         {
-            TakeDamage(50);
+            TakeDamage(50, other.transform.position);
             other.enabled = false;
         }
         if(other.tag == "LordWeapon")
         {
-            TakeDamage(50);
+            TakeDamage(50, other.transform.position);
             other.enabled = false;
         }
     }
     //Manages the amount of damage taken by an enemy weapon. Updates the health slider, plays an impact sound, and checks to see if the Home Tree is dead.
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Vector3 spawn)
     {
         audioSource.clip = _SM.GetChopSounds();
         audioSource.Play();
-        Instantiate(hitParticle, particleSpawnPoint.transform.position, transform.rotation);
+        Instantiate(hitParticle, spawn, transform.rotation);
         health -= damage;
         slider.value = slider.value = CalculateHealth();
         if(health < 1)
@@ -188,14 +189,7 @@ public class HomeTree : GameBehaviour
     {
         selectionCircle.SetActive(false);
     }
-    private void OnEnable()
-    {
-        GameEvents.OnHomeTreeDeselected += OnHomeTreeDeselected;
-        GameEvents.OnHomeTreeSelected += OnHomeTreeSelected;
-        GameEvents.OnWinfallUpgrade += OnWinfallUpgrade;
-        GameEvents.OnHomeTreeUpgrade += OnHomeTreeUpgrade;
-        GameEvents.OnUnitButtonPressed += OnUnitButtonPressed;
-    }
+
 
     private void OnUnitButtonPressed(UnitData _unitData)
     {
@@ -213,12 +207,22 @@ public class HomeTree : GameBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        GameEvents.OnHomeTreeDeselected += OnHomeTreeDeselected;
+        GameEvents.OnHomeTreeSelected += OnHomeTreeSelected;
+        GameEvents.OnWinfallUpgrade += OnWinfallUpgrade;
+        GameEvents.OnHomeTreeUpgrade += OnHomeTreeUpgrade;
+        GameEvents.OnUnitButtonPressed += OnUnitButtonPressed;
+    }
     private void OnDisable()
     {
+
         GameEvents.OnHomeTreeDeselected -= OnHomeTreeDeselected;
         GameEvents.OnHomeTreeSelected -= OnHomeTreeSelected;
         GameEvents.OnWinfallUpgrade -= OnWinfallUpgrade;
         GameEvents.OnHomeTreeUpgrade -= OnHomeTreeUpgrade;
         GameEvents.OnUnitButtonPressed -= OnUnitButtonPressed;
     }
+
 }

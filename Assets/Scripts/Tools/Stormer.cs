@@ -71,7 +71,7 @@ public class Stormer : GameBehaviour
         _SM.weatherAudioSource.Play();
         yield return new WaitForSeconds(stormerLength);
         TurnOffRain();
-        _SM.weatherAudioSource.clip = _SM.forestSound;
+        _SM.weatherAudioSource.clip = _SM.forestSoundDay;
         _SM.weatherAudioSource.Play();
         StopAllCoroutines();
     }

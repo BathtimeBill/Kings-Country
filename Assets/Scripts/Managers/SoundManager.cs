@@ -38,6 +38,8 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip[] flapSounds;
     public AudioClip[] golemFootsteps;
     [Header("UI Sounds")]
+    public AudioClip transitionToNightSound;
+    public AudioClip transitionToDaySound;
     public AudioClip buttonClickSound;
     public AudioClip gameOverSound;
     public AudioClip upgradeSound;
@@ -65,7 +67,8 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip summonSound;
     [Header("Ambience and Lightning")]
     public AudioClip[] lightningSounds;
-    public AudioClip forestSound;
+    public AudioClip forestSoundDay;
+    public AudioClip forestSoundNight;
     public AudioClip rainSound;
     public AudioSource weatherAudioSource;
     public AudioClip stormerSummonSound;
