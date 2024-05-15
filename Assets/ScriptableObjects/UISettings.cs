@@ -5,4 +5,7 @@ public class UISettings : ScriptableObject
 {
     public Color highlightedColor;
     public Color cooldownColor;
+    public Color upgradeIconsColor;
+    public Color titleColor;
+    public Color descriptionColor;
 }

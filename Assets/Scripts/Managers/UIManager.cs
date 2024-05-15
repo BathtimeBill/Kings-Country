@@ -7,6 +7,7 @@ using DG.Tweening;
 
 public class UIManager : Singleton<UIManager>
 {
+    public UISettings UISettings;
     public TMP_Text maegenText;
     public TMP_Text treesText;
     public TMP_Text wildlifeText;
@@ -76,6 +77,7 @@ public class UIManager : Singleton<UIManager>
     public GameObject collectMaegenButton;
 
     [Header("Wave End Stats")]
+    public CanvasGroup waveResultsPanel;
     public CanvasGroup treeResultCanvas;
     public CanvasGroup maegenBonusCanvas;
     public CanvasGroup maegenTotalCanvas;
@@ -101,7 +103,7 @@ public class UIManager : Singleton<UIManager>
     public GameObject power;
     public GameObject tower;
     public GameObject rune;
-    public GameObject beacon;
+    public GameObject fyre;
     public GameObject stormer;
     public GameObject tree;
     public GameObject fertile;
@@ -130,6 +132,7 @@ public class UIManager : Singleton<UIManager>
 
     [Header("Panel Tweening")]
     public Ease panelEase = Ease.InOutSine;
+    public Ease boxEase = Ease.InExpo;
     public float panelTweenTime = 0.5f;
     public float panelStartPositionX;
     public float panelEndPositionX;
@@ -155,6 +158,25 @@ public class UIManager : Singleton<UIManager>
         formationObject = GameObject.FindGameObjectWithTag("Destination");
 
         waveOverPanel.transform.DOLocalMoveX(panelStartPositionX, 0);
+        waveOverPanel.SetActive(false);
+
+        TurnOffIcons();
+    }
+
+    private void TurnOffIcons()
+    {
+        barkSkin.SetActive(false);
+        flyFoot.SetActive(false);
+        power.SetActive(false);
+        tower.SetActive(false);
+        rune.SetActive(false);
+        fyre.SetActive(false);
+        stormer.SetActive(false);
+        tree.SetActive(false);
+        fertile.SetActive(false);
+        populous.SetActive(false);
+        windfall.SetActive(false);
+        homeTree.SetActive(false);
     }
 
 
@@ -207,7 +229,7 @@ public class UIManager : Singleton<UIManager>
     public void ContinueButton()
     {
         GameEvents.ReportOnContinueButton();
-        waveOverPanel.SetActive(false);
+        //waveOverPanel.SetActive(false);
     }
     public void TriggerWaveTextAnimation()
     {
@@ -380,7 +402,7 @@ public class UIManager : Singleton<UIManager>
     }
     #endregion
 
-    
+    #region Wave Over
 
 
     public void OnWaveOver()
@@ -398,7 +420,13 @@ public class UIManager : Singleton<UIManager>
         //}
         upgradePanel.transform.localScale = Vector3.one * 2;
         upgradePanel.canvasGroup.alpha = 0;
+        upgradeButton1.SetInteractable(false);
+        upgradeButton2.SetInteractable(false);
         continueButton.interactable = false;
+        waveOverPanel.SetActive(true);
+
+        waveResultsPanel.alpha = 0;
+        waveResultsPanel.transform.localScale = Vector3.one * 2;
 
         ShowWaveEndStats();
 
@@ -430,33 +458,14 @@ public class UIManager : Singleton<UIManager>
         totalMaegenText.text = "+" + totalMaegen.ToString();
 
         StartCoroutine(ActivateTextGroups());
-
-        ShowUpgradeButtons();
     }
-
-    void ShowUpgradeButtons()
-    {
-        if (_UM.availableUpgrades.Count > 1)
-        {
-            UpgradeID upgrade1 = _UM.GetRandomUpgrade();
-            _UM.RemoveUpgrade(upgrade1);
-            UpgradeID upgrade2 = _UM.GetRandomUpgrade();
-            _UM.RemoveUpgrade(upgrade2);
-
-            upgradeButton1.SetUpgrade(upgrade1);
-            upgradeButton2.SetUpgrade(upgrade2);
-
-             
-        }
-        upgradePanel.canvasGroup.DOFade(1, 0.8f);
-        upgradePanel.transform.DOScale(Vector3.one, 1);
-
-
-    }
-
 
     IEnumerator ActivateTextGroups()
     {
+        yield return new WaitForSecondsRealtime(1f);
+        waveResultsPanel.DOFade(1, 0.4f).SetUpdate(true);
+        waveResultsPanel.transform.DOScale(Vector3.one, 0.6f).SetUpdate(true).SetEase(boxEase);
+
         Debug.Log("Bringing in text groups");
         yield return new WaitForSecondsRealtime(1.6f);
         _SM.PlaySound(_SM.textGroupSound);
@@ -472,6 +481,43 @@ public class UIManager : Singleton<UIManager>
         wildlifeResultCanvas.alpha = 1;//DOFade(1, panelTweenTime).SetUpdate(true);
         yield return new WaitForSecondsRealtime(panelTweenTime + 1f);
         ShowUpgradeButtons();
+    }
+
+    void ShowUpgradeButtons()
+    {
+        if (_UM.availableUpgrades.Count > 1)
+        {
+            UpgradeID upgrade1 = _UM.GetRandomUpgrade();
+            _UM.RemoveUpgrade(upgrade1);
+            UpgradeID upgrade2 = _UM.GetRandomUpgrade();
+            _UM.RemoveUpgrade(upgrade2);
+
+            upgradeButton1.SetUpgrade(upgrade1);
+            upgradeButton2.SetUpgrade(upgrade2);
+
+
+        }
+        print("before");
+        upgradePanel.canvasGroup.DOFade(1, 0.8f).SetUpdate(true);
+        upgradePanel.transform.DOScale(Vector3.one, 1).SetUpdate(true).SetEase(boxEase).OnComplete(() =>
+        { 
+            upgradeButton1.SetInteractable(true);
+            upgradeButton2.SetInteractable(true);
+            print("Finished");
+        });
+    }
+
+    private void TweenUpgradeIcon(GameObject _icon)
+    {
+        upgradeButton1.SetInteractable(false);
+        upgradeButton2.SetInteractable(false);
+        //_UM.AddUpgrade()
+        _icon.GetComponentInChildren<Image>().color = UISettings.highlightedColor;
+        _icon.transform.localScale = Vector3.one * 3;
+        _icon.SetActive(true);
+        _icon.transform.DOScale(Vector3.one, 0.8f).SetLoops(3).SetUpdate(true).OnComplete(() =>
+        _icon.GetComponentInChildren<Image>().DOColor(UISettings.upgradeIconsColor, 0.5f).SetUpdate(true));
+        continueButton.interactable = true;
     }
 
     private int GetTreeBonusTotal()
@@ -493,6 +539,8 @@ public class UIManager : Singleton<UIManager>
         treeTool.SetInteractable(true);
     }
 
+    #endregion
+
     private void OnWaveBegin()
     {
         treeTool.SetInteractable(false);
@@ -500,58 +548,63 @@ public class UIManager : Singleton<UIManager>
 
     public void OnUpgradeSelected(UpgradeID upgradeID)
     {
-        
-    }
+        print("Upgrade Selected");
+        _UM.AddUpgrade(upgradeID);
+        switch (upgradeID)
+        {
+            case UpgradeID.BarkSkin: 
+                barkSkin.SetActive(true);
+                TweenUpgradeIcon(barkSkin);
+                break;
+            case UpgradeID.FlyFoot: 
+                flyFoot.SetActive(true);
+                TweenUpgradeIcon(flyFoot);
+                break;
+            case UpgradeID.Tower: 
+                tower.SetActive(true);
+                TweenUpgradeIcon(tower);
+                break;
+            case UpgradeID.Power: 
+                power.SetActive(true);
+                TweenUpgradeIcon(power);
+                break;
+            case UpgradeID.Rune:
+                rune.SetActive(true);
+                TweenUpgradeIcon(rune);
+                break;
+            case UpgradeID.Fyre:
+                fyre.SetActive(true);
+                TweenUpgradeIcon(fyre);
+                break;
+            case UpgradeID.Stormer:
+                stormer.SetActive(true);
+                TweenUpgradeIcon(stormer);
+                break;
+            case UpgradeID.Tree:
+                tree.SetActive(true);
+                TweenUpgradeIcon(tree);
+                break;
+            case UpgradeID.Fertile:
+                fertile.SetActive(true);
+                TweenUpgradeIcon(fertile);
+                break;
+            case UpgradeID.Populous:
+                populous.SetActive(true);
+                TweenUpgradeIcon(populous);
+                break;
+            case UpgradeID.Winfall:
+                windfall.SetActive(true);
+                TweenUpgradeIcon(windfall);
+                break;
+            case UpgradeID.HomeTree:
+                homeTree.SetActive(true);
+                TweenUpgradeIcon(homeTree);
+                break;
+        }
 
+    }
+    
 
-    private void OnBorkrskinnUpgrade()
-    {
-        barkSkin.SetActive(true);
-    }
-    private void OnFlugafotrUpgrade()
-    {
-        flyFoot.SetActive(true);
-    }
-    private void OnJarnnefiUpgrade()
-    {
-        power.SetActive(true);
-    }
-    private void OnTowerUpgrade()
-    {
-        tower.SetActive(true);
-    }
-    private void OnRuneUpgrade()
-    {
-        rune.SetActive(true);
-    }
-    private void OnBeaconUpgrade()
-    {
-        beacon.SetActive(true);
-    }
-    private void OnStormerUpgrade()
-    {
-        stormer.SetActive(true);
-    }
-    private void OnTreeUpgrade()
-    {
-        tree.SetActive(true);
-    }
-    private void OnFertileSoilUpgrade()
-    {
-        fertile.SetActive(true);
-    }
-    private void OnPopulousUpgrade()
-    {
-        populous.SetActive(true);
-    }
-    private void OnWinfallUpgrade()
-    {
-        windfall.SetActive(true);
-    }
-    private void OnHomeTreeUpgrade()
-    {
-        homeTree.SetActive(true);
-    }
     private void OnGameWin()
     {
         winPanel.SetActive(true);
@@ -670,19 +723,6 @@ public class UIManager : Singleton<UIManager>
 
         GameEvents.OnUpgradeSelected += OnUpgradeSelected;
 
-        GameEvents.OnBorkrskinnUpgrade += OnBorkrskinnUpgrade;
-        GameEvents.OnFlugafotrUpgrade += OnFlugafotrUpgrade;
-        GameEvents.OnJarnnefiUpgrade += OnJarnnefiUpgrade;
-        GameEvents.OnTowerUpgrade += OnTowerUpgrade;
-        GameEvents.OnRuneUpgrade += OnRuneUpgrade;
-        GameEvents.OnBeaconUpgrade += OnBeaconUpgrade;
-        GameEvents.OnStormerUpgrade += OnStormerUpgrade;
-        GameEvents.OnTreeUpgrade += OnTreeUpgrade;
-        GameEvents.OnFertileSoilUpgrade += OnFertileSoilUpgrade;
-        GameEvents.OnPopulousUpgrade += OnPopulousUpgrade;
-        GameEvents.OnWinfallUpgrade += OnWinfallUpgrade;
-        GameEvents.OnHomeTreeUpgrade += OnHomeTreeUpgrade;
-
         GameEvents.OnWildlifeValueChange += OnWildlifeValueChange;
         GameEvents.OnFormationSelected += OnFormationSelected;
     }
@@ -700,19 +740,6 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnJustStragglers -= OnJustStragglers;
 
         GameEvents.OnUpgradeSelected -= OnUpgradeSelected;
-
-        GameEvents.OnBorkrskinnUpgrade -= OnBorkrskinnUpgrade;
-        GameEvents.OnFlugafotrUpgrade -= OnFlugafotrUpgrade;
-        GameEvents.OnJarnnefiUpgrade -= OnJarnnefiUpgrade;
-        GameEvents.OnTowerUpgrade -= OnTowerUpgrade;
-        GameEvents.OnRuneUpgrade -= OnRuneUpgrade;
-        GameEvents.OnBeaconUpgrade -= OnBeaconUpgrade;
-        GameEvents.OnStormerUpgrade -= OnStormerUpgrade;
-        GameEvents.OnTreeUpgrade -= OnTreeUpgrade;
-        GameEvents.OnFertileSoilUpgrade -= OnFertileSoilUpgrade;
-        GameEvents.OnPopulousUpgrade -= OnPopulousUpgrade;
-        GameEvents.OnWinfallUpgrade -= OnWinfallUpgrade;
-        GameEvents.OnHomeTreeUpgrade -= OnHomeTreeUpgrade;
 
         GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange;
         GameEvents.OnFormationSelected -= OnFormationSelected;

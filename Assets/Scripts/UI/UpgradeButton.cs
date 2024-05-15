@@ -17,7 +17,6 @@ public class UpgradeButton : InteractableButton
 
     void PressedButton()
     {
-        upgradePanel.SetSelected(this.gameObject);
         GameEvents.ReportOnUpgradeSelected(upgrade.id);
     }
 

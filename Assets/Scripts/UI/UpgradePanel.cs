@@ -9,7 +9,6 @@ public class UpgradePanel : GameBehaviour
     public TMP_Text title;
     public TMP_Text description;
     public string defaultText = "";
-    public GameObject selectedButton;
 
     public void PointerEnter(UpgradeButton _upgradeButton)
     {
@@ -22,10 +21,5 @@ public class UpgradePanel : GameBehaviour
     {
         title.text = "";
         description.text = "";
-    }
-
-    public void SetSelected(GameObject _go)
-    {
-        selectedButton = _go;
     }
 }
