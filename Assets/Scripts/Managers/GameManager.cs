@@ -176,6 +176,7 @@ public class GameManager : Singleton<GameManager>
     }
     public void SetGame()
     {
+        print("SET GAME!");
         _GM.boundry.SetActive(true);
         maxMaegen = _UI.totalMaegen + maegen;
         gameState = GameState.Build;
@@ -363,6 +364,7 @@ public class GameManager : Singleton<GameManager>
     public void OnContinueButton()
     {
         Time.timeScale = 1;
+        gameState = GameState.Build;
         SetGame();
     }
     //public void OnCollectMaegenButton()
@@ -371,7 +373,7 @@ public class GameManager : Singleton<GameManager>
     //}
     private void OnWaveBegin()
     {
-        SetGame();
+        gameState = GameState.Play;
         boundry.SetActive(false);
     }
     private void OnWispDestroy()
