@@ -47,7 +47,7 @@ public class CameraController : GameBehaviour
 
     private void Update()
     {
-        if(_GM.gameState == GameState.Play)
+        if(hasInput)
         {
             HandleMovementInput();
             HandleMouseInput();

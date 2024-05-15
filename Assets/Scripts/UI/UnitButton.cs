@@ -29,6 +29,7 @@ public class UnitButton : InteractableButton
     void PressedButton()
     {
         GameEvents.ReportOnUnitButtonPressed(unitData);
+        if(_GM.gameState != GameState.Build)
         unitPanel.StartCooldowns();
     }
 

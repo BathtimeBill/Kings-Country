@@ -54,7 +54,7 @@ public class DayNightSwitch : GameBehaviour
 
     public void OnContinueButton()
     {
-        MoonIntensityTween(0.7f, duration);
+        MoonIntensityTween(0.3f, duration);
         TweenSunRotation(nightRotation, duration);
         AmbientLightIntensityTween(nightLight, duration);
         TweenAmbientColour(nightColor, duration);

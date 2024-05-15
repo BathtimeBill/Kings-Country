@@ -61,7 +61,7 @@ public class PlayerControls : Singleton<PlayerControls>
 
     private void FixedUpdate()
     {
-        if (_GM.gameState == GameState.Play)
+        if (hasInput)
         {
             RayCast();
         }
@@ -161,7 +161,7 @@ public class PlayerControls : Singleton<PlayerControls>
         }
 
 
-        if (_GM.gameState == GameState.Play)
+        if (hasInput)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
@@ -450,7 +450,7 @@ public class PlayerControls : Singleton<PlayerControls>
 
             if (Input.GetKeyDown(KeyCode.F4))
             {
-                if (_GM.gameState == GameState.Play)
+                if (hasInput)
                 {
                     _GM.SpeedGame();
                 }
@@ -458,9 +458,9 @@ public class PlayerControls : Singleton<PlayerControls>
             }
             if (Input.GetKeyDown(KeyCode.F3))
             {
-                if (_GM.gameState == GameState.Play)
+                if (hasInput)
                 {
-                    _GM.PlayGame();
+                    _GM.SetGame();
                 }
 
             }

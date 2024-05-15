@@ -145,7 +145,7 @@ public class GameManager : Singleton<GameManager>
         IncreaseMaegen(startingMaegen);
         currentWave = 0;
         playmode = PlayMode.DefaultMode;
-        gameState = GameState.Pause;
+        SetGame();
         trees.AddRange(GameObject.FindGameObjectsWithTag("Tree"));
         if(!skipIntro) StartCoroutine(EndOfIntroCamera());
         _UI.CheckTreeUI();
@@ -174,8 +174,11 @@ public class GameManager : Singleton<GameManager>
     {
         Time.timeScale = 0;
     }
-    public void PlayGame()
+    public void SetGame()
     {
+        _GM.boundry.SetActive(true);
+        maxMaegen = _UI.totalMaegen + maegen;
+        gameState = GameState.Build;
         timeAudioSource.clip = _SM.timeStopSound;
         timeAudioSource.Play();
         globalVolume.profile.TryGet(out grain);
@@ -359,18 +362,16 @@ public class GameManager : Singleton<GameManager>
     }
     public void OnContinueButton()
     {
-        gameState = GameState.Play;
         Time.timeScale = 1;
-        _GM.boundry.SetActive(true);
-        maxMaegen = _WM.totalMaegen + maegen;
-        PlayGame();
+        SetGame();
     }
     //public void OnCollectMaegenButton()
     //{
     //    StopCoroutine(CheckForCollectMaegen());
     //}
-    private void OnStartNextRound()
+    private void OnWaveBegin()
     {
+        SetGame();
         boundry.SetActive(false);
     }
     private void OnWispDestroy()
@@ -405,7 +406,7 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnTreeHit += OnTreeHit;
         GameEvents.OnWildlifeKilled += OnWildlifeKilled;
         GameEvents.OnWaveOver += OnWaveOver;
-        GameEvents.OnWaveBegin += OnStartNextRound;
+        GameEvents.OnWaveBegin += OnWaveBegin;
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnGameWin += OnGameWin;
     }
@@ -422,7 +423,7 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnTreeHit -= OnTreeHit;
         GameEvents.OnWildlifeKilled -= OnWildlifeKilled;
         GameEvents.OnWaveOver -= OnWaveOver;
-        GameEvents.OnWaveBegin -= OnStartNextRound;
+        GameEvents.OnWaveBegin -= OnWaveBegin;
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnGameWin -= OnGameWin;
     }

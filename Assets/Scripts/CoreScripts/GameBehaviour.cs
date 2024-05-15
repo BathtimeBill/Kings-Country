@@ -26,6 +26,8 @@ public class GameBehaviour : BV.Behaviour
     protected static OverWorldManager _OM { get { return OverWorldManager.instance; } }
     protected static SceneManagement _SCENE { get { return SceneManagement.instance; } }
     protected static PerkManager _PERK { get { return PerkManager.instance; } }
+
+    public bool hasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build;
 }
 
 
@@ -84,6 +86,8 @@ public enum GameState
 {
     Play,
     Pause,
+    Build,
+    Win,
 }
 public enum PlayMode
 {
