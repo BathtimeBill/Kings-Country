@@ -133,7 +133,7 @@ public class HorgrManager : Singleton<HorgrManager>
             {
                 Instantiate(huldra, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.maegen -= _GM.huldraPrice;
+                _GM.DecreaseMaegen(_GM.huldraPrice);
                 _UI.CheckPopulousUI();
                 if(_TUTM.isTutorial && _TUTM.tutorialStage == 12)
                 {
@@ -161,7 +161,7 @@ public class HorgrManager : Singleton<HorgrManager>
             {
                 Instantiate(golem, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.maegen -= _GM.golemPrice;
+                _GM.DecreaseMaegen(_GM.golemPrice);
                 _UI.CheckPopulousUI();
             }
             else
@@ -182,13 +182,30 @@ public class HorgrManager : Singleton<HorgrManager>
         enemyOwns = false;
     }
 
+
+    private void OnUnitButtonPressed(UnitData _unitData)
+    {
+        switch (_unitData.id)
+        {
+            case UnitID.HuldraUnit:
+                SpawnHuldraManager();
+                break;
+            case UnitID.GolemUnit:
+                SpawnGolemManager();
+                break;
+        }
+    }
+
+
     private void OnEnable()
     {
         GameEvents.OnContinueButton += OnContinueButton;
+        GameEvents.OnUnitButtonPressed += OnUnitButtonPressed;
     }
 
     private void OnDisable()
     {
         GameEvents.OnContinueButton -= OnContinueButton;
+        GameEvents.OnUnitButtonPressed -= OnUnitButtonPressed;
     }
 }

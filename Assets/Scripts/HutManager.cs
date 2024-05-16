@@ -94,7 +94,7 @@ public class HutManager : Singleton<HutManager>
             {
                 Instantiate(skessa, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.maegen -= _GM.skessaPrice;
+                _GM.DecreaseMaegen(_GM.skessaPrice);
                 _UI.CheckPopulousUI();
             }
             else
@@ -118,7 +118,7 @@ public class HutManager : Singleton<HutManager>
             {
                 Instantiate(goblin, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.maegen -= _GM.goblinPrice;
+                _GM.DecreaseMaegen(_GM.goblinPrice);
                 _UI.CheckPopulousUI();
             }
             else
@@ -141,7 +141,7 @@ public class HutManager : Singleton<HutManager>
             {
                 Instantiate(fidhain, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.maegen -= _GM.dryadPrice;
+                _GM.DecreaseMaegen(_GM.dryadPrice);
                 _UI.CheckPopulousUI();
             }
             else
@@ -163,13 +163,32 @@ public class HutManager : Singleton<HutManager>
         enemyOwns = false;
     }
 
+
+    private void OnUnitButtonPressed(UnitData _unitData)
+    {
+        switch (_unitData.id)
+        {
+            case UnitID.VolvaUnit:
+                SpawnSkessaManager();
+                break;
+            case UnitID.GoblinUnit:
+                SpawnGoblinManager();
+                break;
+            case UnitID.DryadUnit:
+                SpawnFidhainManager();
+                break;
+        }
+    }
+
     private void OnEnable()
     {
         GameEvents.OnContinueButton += OnContinueButton;
+        GameEvents.OnUnitButtonPressed += OnUnitButtonPressed;
     }
 
     private void OnDisable()
     {
         GameEvents.OnContinueButton -= OnContinueButton;
+        GameEvents.OnUnitButtonPressed -= OnUnitButtonPressed;
     }
 }

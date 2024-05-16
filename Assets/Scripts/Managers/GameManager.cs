@@ -177,7 +177,7 @@ public class GameManager : Singleton<GameManager>
     public void SetGame()
     {
         print("SET GAME!");
-        _GM.boundry.SetActive(true);
+        //_GM.boundry.SetActive(true);
         maxMaegen = _UI.totalMaegen + maegen;
         gameState = GameState.Build;
         timeAudioSource.clip = _SM.timeStopSound;
@@ -374,7 +374,7 @@ public class GameManager : Singleton<GameManager>
     private void OnWaveBegin()
     {
         gameState = GameState.Play;
-        boundry.SetActive(false);
+        //boundry.SetActive(false);
     }
     private void OnWispDestroy()
     {
