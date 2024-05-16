@@ -74,6 +74,7 @@ public static class GameEvents
     public static event Action OnPerkButtonPressed = null;
     public static event Action<Tool> OnToolButtonPressed = null;
     public static event Action<UnitData> OnUnitButtonPressed = null;
+    public static event Action OnGroundClicked = null;
 
     public static void ReportOnGameStateChanged(GameState _gameState)
     {
@@ -305,5 +306,10 @@ public static class GameEvents
     public static void ReportOnTreeDestroy()
     {
         OnTreeDestroyed?.Invoke();
+    }
+
+    public static void ReportOnGroundClicked()
+    {
+        OnGroundClicked?.Invoke();
     }
 }

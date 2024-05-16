@@ -514,65 +514,49 @@ public class PlayerControls : Singleton<PlayerControls>
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hitPoint;
-        if (Physics.Raycast(ray, out hitPoint) && hitPoint.collider.tag == "Home Tree")
+        if (Physics.Raycast(ray, out hitPoint))
         {
-            if (_GM.playmode == PlayMode.DefaultMode)
-            {
-                _UI.homeTreePanel.SetActive(true);
-                _UI.horgrPanel.SetActive(false);
-                _UI.hutPanel.SetActive(false);
 
-                GameEvents.ReportOnHomeTreeSelected();
-                GameEvents.ReportOnHutDeselected();
-                GameEvents.ReportOnHorgrDeselected();
-                if (_TUTM.isTutorial)
+            if(hitPoint.collider.tag == "Home Tree")
+            {
+                if (_GM.playmode == PlayMode.DefaultMode)
                 {
-                    if (_TUTM.tutorialStage == 3)
+                    _SM.PlaySound(_SM.openMenuSound);
+                    GameEvents.ReportOnHomeTreeSelected();
+                    GameEvents.ReportOnHutDeselected();
+                    GameEvents.ReportOnHorgrDeselected();
+                    if (_TUTM.isTutorial)
                     {
-                        GameEvents.ReportOnNextTutorial();
+                        if (_TUTM.tutorialStage == 3)
+                        {
+                            GameEvents.ReportOnNextTutorial();
+                        }
                     }
                 }
             }
-
-            _UI.audioSource.clip = _SM.openMenuSound;
-            _UI.audioSource.Play();
-        }
-        if (Physics.Raycast(ray, out hitPoint) && hitPoint.collider.tag == "Horgr")
-        {
-            Debug.Log("Clicked on Horgr");
-            if (_GM.playmode == PlayMode.DefaultMode)
-                _UI.horgrPanel.SetActive(true);
-            _UI.hutPanel.SetActive(false);
-            _UI.homeTreePanel.SetActive(false);
-            _UI.audioSource.clip = _SM.openMenuSound;
-            _UI.audioSource.Play();
-            GameEvents.ReportOnHorgrSelected();
-            GameEvents.ReportOnHomeTreeDeselected();
-            GameEvents.ReportOnHutDeselected();
-        }
-        if (Physics.Raycast(ray, out hitPoint) && hitPoint.collider.tag == "Hut")
-        {
-            Debug.Log("Clicked on Hut");
-            if (_GM.playmode == PlayMode.DefaultMode)
-                _UI.hutPanel.SetActive(true);
-            _UI.homeTreePanel.SetActive(false);
-            _UI.horgrPanel.SetActive(false);
-            _UI.audioSource.clip = _SM.openMenuSound;
-            _UI.audioSource.Play();
-            GameEvents.ReportOnHutSelected();
-            GameEvents.ReportOnHomeTreeDeselected();
-            GameEvents.ReportOnHorgrDeselected();
-        }
-        if (Physics.Raycast(ray, out hitPoint) && hitPoint.collider.tag == "Ground")
-        {
-            if (_GM.playmode == PlayMode.DefaultMode)
-            GameEvents.ReportOnHorgrDeselected();
-            GameEvents.ReportOnHomeTreeDeselected();
-            GameEvents.ReportOnHutDeselected();
-            _UI.mouseOverUI = false;
-            _UI.homeTreePanel.SetActive(false);
-            _UI.horgrPanel.SetActive(false);
-            _UI.hutPanel.SetActive(false);
+            if (hitPoint.collider.tag == "Horgr")
+            {
+                _SM.PlaySound(_SM.openMenuSound);
+                GameEvents.ReportOnHorgrSelected();
+                GameEvents.ReportOnHomeTreeDeselected();
+                GameEvents.ReportOnHutDeselected();
+            }
+            if (hitPoint.collider.tag == "Hut")
+            {
+                _SM.PlaySound(_SM.openMenuSound);
+                GameEvents.ReportOnHutSelected();
+                GameEvents.ReportOnHomeTreeDeselected();
+                GameEvents.ReportOnHorgrDeselected();
+            }
+            if (hitPoint.collider.gameObject.layer == LayerMask.NameToLayer("Environment"))
+            {
+                if (_UI.mouseOverUI)
+                    return;
+                GameEvents.ReportOnHorgrDeselected();
+                GameEvents.ReportOnHomeTreeDeselected();
+                GameEvents.ReportOnHutDeselected();
+                GameEvents.ReportOnGroundClicked();
+            }
         }
     }
     #endregion

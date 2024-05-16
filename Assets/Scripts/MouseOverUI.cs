@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class MouseOverUI : GameBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -12,13 +9,13 @@ public class MouseOverUI : GameBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         mouse_over = true;
         _UI.mouseOverUI = true;
-        Debug.Log("Mouse enter");
+        //Debug.Log("Mouse enter");
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         mouse_over = false;
-            _UI.mouseOverUI = false;
-        Debug.Log("Mouse exit");
+        _UI.mouseOverUI = false;
+        //Debug.Log("Mouse exit");
     }
 }
