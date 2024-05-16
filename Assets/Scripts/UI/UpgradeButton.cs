@@ -30,7 +30,8 @@ public class UpgradeButton : InteractableButton
 
     public void SetInteractable(bool _interactable)
     {
-        button.interactable = _interactable;
+        if(button !=null)
+            button.interactable = _interactable;
     }
 
     public override void OnPointerEnter(PointerEventData eventData)

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public static class GameEvents
 {
+
+    public static event Action<GameState> OnGameStateChanged = null;
     public static event Action OnUnitKilled = null;
 
     public static event Action<int> OnWildlifeValueChange = null;
@@ -73,7 +75,10 @@ public static class GameEvents
     public static event Action<Tool> OnToolButtonPressed = null;
     public static event Action<UnitData> OnUnitButtonPressed = null;
 
-
+    public static void ReportOnGameStateChanged(GameState _gameState)
+    {
+        OnGameStateChanged?.Invoke(_gameState);
+    }
     public static void ReportOnPerkButtonPressed()
     {
         OnPerkButtonPressed?.Invoke();

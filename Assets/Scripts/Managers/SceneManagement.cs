@@ -39,12 +39,6 @@ public class SceneManagement : Singleton<SceneManagement>
     public GameObject[] selectionBarLocations;
     public GameObject selectionBar;
 
-
-    private void Start()
-    {
-        Time.timeScale = 1.0f;
-    }
-
     public void CloseLevelSelectScreen()
     {
         levelSelectScreen.SetActive(false);
@@ -80,7 +74,7 @@ public class SceneManagement : Singleton<SceneManagement>
 
     public void ResumeLevel()
     {
-
+        _GM.ChangeGameState(_GM.previousState);
     }
 
     public void LoadMainMenu()

@@ -28,6 +28,7 @@ public class GameBehaviour : BV.Behaviour
     protected static PerkManager _PERK { get { return PerkManager.instance; } }
 
     public bool hasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build;
+    public bool isPaused => _GM.gameState == GameState.Pause;
 }
 
 
@@ -88,6 +89,7 @@ public enum GameState
     Pause,
     Build,
     Win,
+    Intro,
 }
 public enum PlayMode
 {

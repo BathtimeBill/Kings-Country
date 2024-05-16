@@ -56,7 +56,6 @@ public class PlayerControls : Singleton<PlayerControls>
     private void Start()
     {
         treeTooClose = false;
-        StartCoroutine(WaitToEnableEscapeButton());
     }
 
     private void FixedUpdate()
@@ -127,45 +126,30 @@ public class PlayerControls : Singleton<PlayerControls>
 
     private void Update()
     {
-        if(canPressEscape)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (hasInput)
             {
+                _GM.previousState = _GM.gameState;
+                _GM.ChangeGameState(GameState.Pause);
+                _UI.TogglePanel(_UI.pausePanel, true);
+                return;
+            }
 
-                if (_UI.settingsOpen)
-                {
-                    return;
-                }
-                if (_UI.areYouSurePanel.gameObject.activeInHierarchy == true)
-                {
-                    return;
-                }
+            if (isPaused)
+            {
+                if (_UI.warningPanel == null)
+                    _GM.ChangeGameState(_GM.previousState);
                 else
-                {
-                    if (_UI.pausePanel.gameObject.activeInHierarchy == false)
-                    {
-                        _GM.isPaused = true;
-                        _GM.gameState = GameState.Pause;
-                        _UI.pausePanel.SetActive(true);
-                        Time.timeScale = 0;
-                    }
-                    else
-                    {
-                        _GM.isPaused = false;
-                        _GM.gameState = GameState.Play;
-                        _UI.pausePanel.SetActive(false);
-                        Time.timeScale = 1;
-                    }
-                }
+                    _UI.TurnOffWarningPanel();
             }
         }
 
-
         if (hasInput)
         {
+            #region group control
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-
                 if (canGroup)
                 {
                     UnitSelection.Instance.Group1();
@@ -303,6 +287,7 @@ public class PlayerControls : Singleton<PlayerControls>
                     _SM.PlaySound(_SM.controlGroupSelect);
                 }
             }
+            #endregion
 
             if (Input.GetKeyDown(KeyCode.LeftControl))
             {
@@ -346,8 +331,6 @@ public class PlayerControls : Singleton<PlayerControls>
                     _UI.audioSource.Play();
                     GameEvents.ReportOnHomeTreeDeselected();
                 }
-
-
             }
 
             if (Input.GetMouseButtonDown(0))
@@ -467,12 +450,6 @@ public class PlayerControls : Singleton<PlayerControls>
         }
     }
 
-    IEnumerator WaitToEnableEscapeButton()
-    {
-        canPressEscape = false;
-        yield return new WaitForSeconds(10);
-        canPressEscape = true;
-    }
     public void Error()
     {
         errorAnimator.SetTrigger("Error");
@@ -612,12 +589,6 @@ public class PlayerControls : Singleton<PlayerControls>
         targetPointerGraphics.SetActive(false);
     }
 
-
-    void OnGameWin()
-    {
-        canPressEscape = false;
-    }
-
     private void OnToolButtonPressed(Tool _tool)
     {
         _SM.PlaySound(_SM.buttonClickSound);
@@ -645,14 +616,12 @@ public class PlayerControls : Singleton<PlayerControls>
     private void OnEnable()
     {
         GameEvents.OnUnitMove += OnUnitMove;
-        GameEvents.OnGameWin += OnGameWin;
         GameEvents.OnToolButtonPressed += OnToolButtonPressed;
     }
 
     private void OnDisable()
     {
         GameEvents.OnUnitMove -= OnUnitMove;
-        GameEvents.OnGameWin -= OnGameWin;
         GameEvents.OnToolButtonPressed -= OnToolButtonPressed;
     }
 }

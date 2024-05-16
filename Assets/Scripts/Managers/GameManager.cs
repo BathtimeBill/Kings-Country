@@ -13,8 +13,8 @@ public class GameManager : Singleton<GameManager>
     public LevelNumber level;
     public PlayMode playmode;
     public GameState gameState;
+    public GameState previousState;
     public List<GameObject> trees;
-    public bool isPaused;
     public int startingMaegen;
     public GameObject boundry;
     public GameObject introCam;
@@ -147,7 +147,8 @@ public class GameManager : Singleton<GameManager>
         playmode = PlayMode.DefaultMode;
         SetGame();
         trees.AddRange(GameObject.FindGameObjectsWithTag("Tree"));
-        if(!skipIntro) StartCoroutine(EndOfIntroCamera());
+        if(!skipIntro) 
+            StartCoroutine(EndOfIntroCamera());
         _UI.CheckTreeUI();
         peaceTime = true;
     }
@@ -156,6 +157,7 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForSeconds(10);
         introCam.SetActive(false);
         gameState = GameState.Play;
+        GameEvents.ReportOnGameStateChanged(gameState);
     }
 
     private void Update()
@@ -170,10 +172,34 @@ public class GameManager : Singleton<GameManager>
         return f;
     }
 
-    public void PauseGame()
+    public void ChangeGameState(GameState _gameState)
     {
-        Time.timeScale = 0;
+        gameState = _gameState;
+        switch(gameState)
+        {
+            case GameState.Intro:
+                Time.timeScale = 1;
+                break;
+            case GameState.Build:
+                Time.timeScale = 1;
+                _UI.TogglePanel(_UI.pausePanel, false);
+                break;
+            case GameState.Play:
+                Time.timeScale = 1;
+                _UI.TogglePanel(_UI.pausePanel, false);
+                break;
+            case GameState.Pause:
+                Time.timeScale = 0;
+                _UI.TogglePanel(_UI.pausePanel, true);
+                break;
+            case GameState.Win:
+                Time.timeScale = 1;
+                break;
+
+        }
+        GameEvents.ReportOnGameStateChanged(_gameState);
     }
+
     public void SetGame()
     {
         print("SET GAME!");
@@ -187,7 +213,6 @@ public class GameManager : Singleton<GameManager>
         chromaticAberration.intensity.value = 0;
         grain.intensity.value = 0;
         Time.timeScale = 1;
-
     }
     public void SpeedGame()
     {
@@ -356,15 +381,13 @@ public class GameManager : Singleton<GameManager>
     {
         canFinishWave = false;
         agroWave = false;
-        gameState = GameState.Pause;
-        Time.timeScale = 0;
+        ChangeGameState(GameState.Win);
         GameEvents.ReportOnRuneDestroyed();
 
     }
     public void OnContinueButton()
     {
-        Time.timeScale = 1;
-        gameState = GameState.Build;
+        ChangeGameState(GameState.Build);
         SetGame();
     }
     //public void OnCollectMaegenButton()

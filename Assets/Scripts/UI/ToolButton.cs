@@ -26,7 +26,8 @@ public class ToolButton : InteractableButton
 
     public void SetInteractable(bool _interactable)
     {
-        button.interactable = _interactable;
+        if(button != null)
+            button.interactable = _interactable;
     }
 
     public void CooldownFill(float _timeRemaining)

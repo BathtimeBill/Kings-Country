@@ -24,22 +24,20 @@ public class UIManager : Singleton<UIManager>
     public GameObject homeTreeUpgradePanel;
     public GameObject horgrPanel;
     public GameObject hutPanel;
-    
+
+    [Header("Pause")]
     public GameObject pausePanel;
     public GameObject settingsPanel;
+    [HideInInspector]
+    public GameObject warningPanel; //Used for escape pausing. Auto set.
     
     public GameObject eldyrButton;
     public GameObject ObjectiveText;
-
-    public bool settingsOpen;
 
     public GameObject transformText;
 
     public AudioSource audioSource;
     public AudioSource warningAudioSource;
-
-    public GameObject areYouSurePanel;
-
     public GameObject deathCameraRotator;
 
     [Header("Tools")]
@@ -256,12 +254,13 @@ public class UIManager : Singleton<UIManager>
 
     public void OnGameOver()
     {
+        TweenInPanel(gameOverPanel);
         audioSource.clip = _SM.gameOverSound;
         audioSource.Play();
         gameOverPanel.SetActive(true);
         Time.timeScale = 4;
         deathCameraRotator.SetActive(true);
-        _GM.gameState = GameState.Pause;
+        //_GM.gameState = GameState.Pause;
     }    
 
     public void OpenUpgradeMenu()
@@ -279,16 +278,7 @@ public class UIManager : Singleton<UIManager>
         audioSource.clip = _SM.buttonClickSound;
         audioSource.Play();
     }
-    public void OpenSettingsPanel()
-    {
-        settingsPanel.SetActive(true);
-        settingsOpen = true;
-    }
-    public void CloseSettingsPanel()
-    {
-        settingsPanel.SetActive(false);
-        settingsOpen = false;
-    }
+
     public void CloseHomeTreeMenu()
     {
         homeTreePanel.SetActive(false);
@@ -310,11 +300,24 @@ public class UIManager : Singleton<UIManager>
         audioSource.Play();
         GameEvents.ReportOnHutDeselected();
     }
-    public void OpenWinPanel()
+
+    public void TogglePanel(GameObject _panel, bool _on)
     {
-        winPanel.SetActive(true);
-        Time.timeScale = 0;
-        _GM.gameState = GameState.Pause;
+        _panel.SetActive(_on);
+    }
+
+    //Used for when we use the escape key to go back
+    public void TurnOffWarningPanel()
+    {
+        if (warningPanel != null)
+        {
+            warningPanel.SetActive(false);
+            warningPanel = null;
+        }
+    }
+    public void SetWarningPanel(GameObject _warningPanel)
+    {
+        warningPanel = _warningPanel;
     }
 
     public void CheckWave()
@@ -441,7 +444,7 @@ public class UIManager : Singleton<UIManager>
 
     private void SetWaveEndStats()
     {
-        //TweenInPanel(wavePanel);
+        TweenInPanel(wavePanel);
         _SM.PlaySound(_SM.waveOverSound);
         _SM.PlaySound(_SM.menuDragSound);
         waveTitleText.text = "Wave " + _GM.currentWave.ToString() + " is complete!";
@@ -534,7 +537,6 @@ public class UIManager : Singleton<UIManager>
     public void OnContinueButton()
     {
         TweenOutPanel(wavePanel);
-        settingsOpen = false;
         treeTool.SetInteractable(true);
         KillTweener(continueTweener); 
         continueButton.transform.localScale = Vector3.one;
@@ -627,7 +629,6 @@ public class UIManager : Singleton<UIManager>
     private void OnGameWin()
     {
         winPanel.SetActive(true);
-        Time.timeScale = 0f;
     }
     private void OnJustStragglers()
     {
