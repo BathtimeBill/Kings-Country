@@ -78,6 +78,13 @@ public enum UpgradeID
     Winfall,
     HomeTree,
 }
+
+public enum BaseID
+{
+    HomeTree,
+    Hut,
+    Hogyr
+}
 public enum TreeType
 {
     Pine,

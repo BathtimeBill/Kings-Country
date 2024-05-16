@@ -26,6 +26,8 @@ public class UIManager : Singleton<UIManager>
     public GameObject hutPanel;
 
     [Header("Pause")]
+    public CanvasGroup inGameCanvas;
+    public CanvasGroup pauseBlackoutPanel;
     public GameObject pausePanel;
     public GameObject settingsPanel;
     [HideInInspector]
@@ -147,6 +149,7 @@ public class UIManager : Singleton<UIManager>
     Tweener upgradeButtonTweener;
     Tweener continueTweener;
     Tweener winPhasePanelTweener;
+    Tweener inGameCanvasTweener;
 
     void Start()
     {
@@ -198,6 +201,11 @@ public class UIManager : Singleton<UIManager>
     public void UpdateMaegenText(int _value)
     {
         maegenText.text = _value.ToString();
+    }
+
+    private void OnGameStateChanged(GameState gameState)
+    {
+        throw new System.NotImplementedException();
     }
 
     private void CheckUnitPrices()
@@ -731,6 +739,7 @@ public class UIManager : Singleton<UIManager>
 
     private void OnEnable()
     {
+        GameEvents.OnGameStateChanged += OnGameStateChanged;
         GameEvents.OnGameOver += OnGameOver;
         GameEvents.OnGameWin += OnGameWin;
         GameEvents.OnFyrePlaced += OnFyrePlaced;
@@ -747,8 +756,11 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnFormationSelected += OnFormationSelected;
     }
 
+    
+
     private void OnDisable()
     {
+        GameEvents.OnGameStateChanged -= OnGameStateChanged;
         GameEvents.OnGameOver -= OnGameOver;
         GameEvents.OnGameWin -= OnGameWin;
         GameEvents.OnFyrePlaced -= OnFyrePlaced;
