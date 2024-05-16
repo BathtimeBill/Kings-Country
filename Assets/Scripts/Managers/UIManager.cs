@@ -417,17 +417,12 @@ public class UIManager : Singleton<UIManager>
 
     public void OnWaveOver()
     {
-        //if(_GM.currentWave!= _WM.winLevel)
-        //{
-        //    waveOverPanel.SetActive(true);
-        //    settingsOpen = true;
-        //}
-
-        //if (_GM.currentWave == winLevel)
+        //if (_GM.currentWave == _GM.winLevel)
         //{
         //    GameEvents.ReportOnGameWin();
         //    return;
         //}
+
         ResetPanel(wavePanel);
         upgradePanel.transform.localScale = Vector3.one * 2;
         upgradePanel.canvasGroup.alpha = 0;
@@ -446,7 +441,7 @@ public class UIManager : Singleton<UIManager>
 
     private void SetWaveEndStats()
     {
-        TweenInPanel(wavePanel);
+        //TweenInPanel(wavePanel);
         _SM.PlaySound(_SM.waveOverSound);
         _SM.PlaySound(_SM.menuDragSound);
         waveTitleText.text = "Wave " + _GM.currentWave.ToString() + " is complete!";
@@ -496,6 +491,8 @@ public class UIManager : Singleton<UIManager>
             UpgradeID upgrade2 = _UM.GetRandomUpgrade();
             _UM.RemoveUpgrade(upgrade2);
 
+            print(upgradeButton1.name);
+            print(upgradeButton2.name);
             upgradeButton1.SetUpgrade(upgrade1);
             upgradeButton2.SetUpgrade(upgrade2);
 

@@ -78,17 +78,14 @@ public class SceneManagement : Singleton<SceneManagement>
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    public void ResumeLevel()
+    {
+
+    }
+
     public void LoadMainMenu()
     {
         SceneManager.LoadScene(titleName);
-    }
-    public void AreYouSureOpen()
-    {
-        areYouSurePanel.SetActive(true);
-    }
-    public void AreYouSureClose()
-    {
-        areYouSurePanel.SetActive(false);
     }
 
     //Quit Button
