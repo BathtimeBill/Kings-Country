@@ -6,6 +6,10 @@ public class TogglePanel : GameBehaviour
 {
     public GameObject unitPanel;
 
+    public GameObject homeTreeButton;
+    public GameObject hutButton;
+    public GameObject horgrButton;
+
     public CanvasGroup homeTreePanel;
     public CanvasGroup hutPanel;
     public CanvasGroup horgrPanel;
@@ -19,6 +23,12 @@ public class TogglePanel : GameBehaviour
     private void Start()
     {
         unitPanel.transform.DOMoveY(hidePos, 0);
+
+        homeTreeButton.SetActive(_LEVEL.getCurrentLevel.availableBuildings.Contains(BuildingID.HomeTree));
+
+        hutButton.SetActive(_LEVEL.getCurrentLevel.availableBuildings.Contains(BuildingID.Hut));
+
+        horgrButton.SetActive(_LEVEL.getCurrentLevel.availableBuildings.Contains(BuildingID.Hogyr));
     }
 
     public void ShowPanel(BuildingID _baseID)

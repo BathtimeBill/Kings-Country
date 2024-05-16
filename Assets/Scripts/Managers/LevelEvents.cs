@@ -43,7 +43,6 @@ public class LevelEvents : GameBehaviour
         }
 
         //LEVEL 2//
-
         if (_GM.level == LevelNumber.Two && _GM.currentWave == 2)
         {
             int dice = Random.Range(1, 6);
