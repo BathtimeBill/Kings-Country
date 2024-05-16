@@ -360,7 +360,7 @@ public class UnitSelection : GameBehaviour
     IEnumerator WaitToCheckForUnits()
     {
         yield return new WaitForEndOfFrame();
-        CheckForUnits();
+        //CheckForUnits();
     }
     private void CheckForUnits()
     {
