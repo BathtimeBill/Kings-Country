@@ -32,6 +32,7 @@ public class UIManager : Singleton<UIManager>
     public GameObject settingsPanel;
     [HideInInspector]
     public GameObject warningPanel; //Used for escape pausing. Auto set.
+    public GameObject unitsPanel;
     
     public GameObject eldyrButton;
     public GameObject ObjectiveText;
@@ -150,6 +151,7 @@ public class UIManager : Singleton<UIManager>
     Tweener continueTweener;
     Tweener winPhasePanelTweener;
     Tweener inGameCanvasTweener;
+    Tweener blackoutCanvasTweener;
 
     void Start()
     {
@@ -203,9 +205,32 @@ public class UIManager : Singleton<UIManager>
         maegenText.text = _value.ToString();
     }
 
-    private void OnGameStateChanged(GameState gameState)
+    private void OnGameStateChanged(GameState _gameState)
     {
-        throw new System.NotImplementedException();
+        switch(_gameState)
+        {
+            case GameState.Pause:
+                KillTweener(inGameCanvasTweener);
+                inGameCanvas.interactable = false;
+                inGameCanvasTweener = inGameCanvas.DOFade(0, 0.2f).SetUpdate(true);
+                KillTweener(blackoutCanvasTweener);
+                blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
+                break;
+            case GameState.Play:
+                KillTweener(inGameCanvasTweener);
+                inGameCanvas.interactable = true;
+                inGameCanvasTweener = inGameCanvas.DOFade(1, 0.2f).SetUpdate(true);
+                KillTweener(blackoutCanvasTweener);
+                blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0, 0.2f).SetUpdate(true);
+                break;
+            case GameState.Build:
+                KillTweener(inGameCanvasTweener);
+                inGameCanvas.interactable = true;
+                inGameCanvasTweener = inGameCanvas.DOFade(1, 0.2f).SetUpdate(true);
+                KillTweener(blackoutCanvasTweener);
+                blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0, 0.2f).SetUpdate(true);
+                break;
+        }
     }
 
     private void CheckUnitPrices()

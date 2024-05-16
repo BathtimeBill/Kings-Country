@@ -13,7 +13,9 @@ public class ToggleButton : GameBehaviour, IPointerEnterHandler, IPointerExitHan
     Toggle toggle;
     public void Start()
     {
-        toggle.onValueChanged.AddListener((bool on) => PressedToggle(on));
+        toggle = GetComponent<Toggle>();
+        if(toggle != null )
+            toggle.onValueChanged.AddListener((bool on) => PressedToggle(on));
     }
 
     void PressedToggle(bool _on)

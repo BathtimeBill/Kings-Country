@@ -10,18 +10,18 @@ public class TogglePanel : MonoBehaviour
 
     private void Start()
     {
-        canvasGroup.gameObject.SetActive(false);
+        //canvasGroup.gameObject.SetActive(false);
     }
 
     public void PointerEnter(ToggleButton _toggleButton)
     {
-        canvasGroup.gameObject.SetActive(true);
+        //canvasGroup.gameObject.SetActive(true);
         titleText.text = _toggleButton.title;
         descriptionText.text = _toggleButton.description;
     }
 
     public void PointerExit()
     {
-        canvasGroup.gameObject.SetActive(false);
+        //canvasGroup.gameObject.SetActive(false);
     }
 }
