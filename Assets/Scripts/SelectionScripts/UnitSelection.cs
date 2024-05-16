@@ -348,7 +348,7 @@ public class UnitSelection : GameBehaviour
         {
             Debug.Log("A Huldra is selected");
             _UI.EnableTowerText();
-            _GM.boundry.SetActive(true);
+            //_GM.boundry.SetActive(true);
         }
         else
         {
@@ -437,7 +437,7 @@ public class UnitSelection : GameBehaviour
                 _UI.DisableTowerText();
                 if (_GM.peaceTime == false)
                 {
-                    _GM.boundry.SetActive(false);
+                    //_GM.boundry.SetActive(false);
                 }
             }
             StartCoroutine(WaitToCheckForUnits());
@@ -454,7 +454,7 @@ public class UnitSelection : GameBehaviour
         _UI.DisableTowerText();
         if(_GM.peaceTime == false)
         {
-            _GM.boundry.SetActive(false);
+            //_GM.boundry.SetActive(false);
         }
         unitSelected.Remove(unitToDeselect);
     }

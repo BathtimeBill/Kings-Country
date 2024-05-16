@@ -75,7 +75,6 @@ public class Unit : GameBehaviour
 
     void Start()
     {
-        isOutOfBounds = true;
         soundPool = SFXPool.GetComponents<AudioSource>();
         pointer = GameObject.FindGameObjectWithTag("Pointer");
         ApplyPerks();
@@ -623,10 +622,10 @@ public class Unit : GameBehaviour
         {
             isTooCloseToTower = true;
         }
-        if (other.tag == "Boundry")
-        {
-            isOutOfBounds = false;
-        }
+        //if (other.tag == "Boundry")
+        //{
+        //    isOutOfBounds = false;
+        //}
         if (other.tag == "LordWeapon")
         {
             TakeDamage(_GM.lordDamage);
@@ -661,10 +660,10 @@ public class Unit : GameBehaviour
         {
             isTooCloseToTower = false;
         }
-        if (other.tag == "Boundry")
-        {
-            isOutOfBounds = true;
-        }
+        //if (other.tag == "Boundry")
+        //{
+        //    isOutOfBounds = true;
+        //}
         if (unitType != UnitID.GolemUnit)
         {
             healingParticle.SetActive(false);
