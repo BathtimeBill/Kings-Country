@@ -21,21 +21,21 @@ public class TogglePanel : GameBehaviour
         unitPanel.transform.DOMoveY(hidePos, 0);
     }
 
-    public void ShowPanel(BaseID _baseID)
+    public void ShowPanel(BuildingID _baseID)
     {
         switch(_baseID) 
         {
-            case BaseID.HomeTree:
+            case BuildingID.HomeTree:
                 ShowPanel(homeTreePanel, true);
                 ShowPanel(hutPanel, false);
                 ShowPanel(horgrPanel, false);
                 break;
-            case BaseID.Hut:
+            case BuildingID.Hut:
                 ShowPanel(homeTreePanel, false);
                 ShowPanel(hutPanel, true);
                 ShowPanel(horgrPanel, false);
                 break;
-            case BaseID.Hogyr:
+            case BuildingID.Hogyr:
                 ShowPanel(homeTreePanel, false);
                 ShowPanel(hutPanel, false);
                 ShowPanel(horgrPanel, true);
@@ -60,15 +60,15 @@ public class TogglePanel : GameBehaviour
 
     private void OnHomeTreeSelected()
     {
-        ShowPanel(BaseID.HomeTree);
+        ShowPanel(BuildingID.HomeTree);
     }
     private void OnHutSelected()
     {
-        ShowPanel(BaseID.Hut);
+        ShowPanel(BuildingID.Hut);
     }
     private void OnHorgrSelected()
     {
-        ShowPanel(BaseID.Hogyr);
+        ShowPanel(BuildingID.Hogyr);
     }
     private void OnGroundClicked()
     {

@@ -19697,7 +19697,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1768619529
 Transform:
   m_ObjectHideFlags: 0
@@ -25177,6 +25177,7 @@ MonoBehaviour:
     DrengAmount: 2
     BezerkerAmount: 0
     KnightAmount: 0
+  spawnAmounts: []
   loggerAmount: 0
   lumberjackAmount: 0
   watheAmount: 0
@@ -26491,13 +26492,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroy: 0
+  levelSettings: {fileID: 11400000, guid: 0aedf258117e4644b9e8aacd8947faf4, type: 2}
   tutorial: 0
   gameTime: 0
   level: 1
   playmode: 0
   gameState: 2
+  previousState: 0
   trees: []
-  isPaused: 0
   startingMaegen: 25
   boundry: {fileID: 1768619526}
   introCam: {fileID: 8290771809939871231}
@@ -26583,6 +26585,7 @@ MonoBehaviour:
   timeAudioSource: {fileID: 8290771809704057418}
   globalVolume: {fileID: 8290771808677669567}
   skipIntro: 1
+  thisLevel: 0
 --- !u!114 &8290771809704057417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29627,7 +29630,7 @@ PrefabInstance:
     - target: {fileID: 1305649631322353990, guid: 60ab1fbcdd0169a438b4e457a48d54fc,
         type: 3}
       propertyPath: m_VersionIndex
-      value: 581
+      value: 590
       objectReference: {fileID: 0}
     - target: {fileID: 1626587583096563602, guid: 60ab1fbcdd0169a438b4e457a48d54fc,
         type: 3}

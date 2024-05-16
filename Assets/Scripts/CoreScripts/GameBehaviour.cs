@@ -19,16 +19,18 @@ public class GameBehaviour : BV.Behaviour
     protected static RunePlacement _RPlace { get { return RunePlacement.instance; } }
     protected static ForestManager _FM { get { return ForestManager.instance; } }
     protected static TooltipManager _Tool { get { return TooltipManager.instance; } }
-    protected static WaveEnd _WM { get { return WaveEnd.instance; } }
     protected static SpyManager _SPYM { get { return SpyManager.instance; } }
     protected static SaveData _SAVE { get { return SaveData.instance; } }
     protected static ScoreManager _SCORE { get { return ScoreManager.instance; } }
     protected static OverWorldManager _OM { get { return OverWorldManager.instance; } }
     protected static SceneManagement _SCENE { get { return SceneManagement.instance; } }
     protected static PerkManager _PERK { get { return PerkManager.instance; } }
+    protected static LevelManager _LEVEL { get { return LevelManager.instance; } }
 
     public bool hasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build;
     public bool isPaused => _GM.gameState == GameState.Pause;
+
+    public bool gameFinished => _GM.gameState == GameState.Finish;
 }
 
 
@@ -79,7 +81,7 @@ public enum UpgradeID
     HomeTree,
 }
 
-public enum BaseID
+public enum BuildingID
 {
     HomeTree,
     Hut,
@@ -97,6 +99,7 @@ public enum GameState
     Build,
     Win,
     Intro,
+    Finish,
 }
 public enum PlayMode
 {
@@ -140,6 +143,14 @@ public enum UnitID
     Tower,
     SpitTower,
 }
+
+public enum LevelID
+{
+    Ironwood,
+    WormturnRoad,
+    JotenheimPass,
+}
+
 public enum WildlifeType
 {
     Rabbit,

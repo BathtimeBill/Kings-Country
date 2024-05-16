@@ -7,7 +7,8 @@ public class EnemyManager : Singleton<EnemyManager>
 {
     public List<GameObject> enemies;
     public List<GameObject> spawnPoints;
-    public List<Wave> waves;
+
+    public List<SpawnAmounts> spawnAmounts;
 
     [Header("Waves")]
     public int loggerAmount;
@@ -192,7 +193,15 @@ public class EnemyManager : Singleton<EnemyManager>
 
     private void CheckWave()
     {
-        if(_GM.currentWave <= 1)
+        //loggerAmount = spawnAmounts[_GM.currentWave].loggerAmount;
+        //lumberjackAmount = spawnAmounts[_GM.currentWave].lumberjackAmount;
+        //watheAmount = spawnAmounts[_GM.currentWave].watheAmount;
+        //longbowAmount = spawnAmounts[_GM.currentWave].longbowAmount;
+        //crossbowAmount = spawnAmounts[_GM.currentWave].crossbowAmount;
+        //drengAmount = spawnAmounts[_GM.currentWave].drengAmount;
+        //bezerkerAmount = spawnAmounts[_GM.currentWave].bezerkerAmount;
+        //knightAmount = spawnAmounts[_GM.currentWave].knightAmount;
+        if (_GM.currentWave <= 1)
         {
             loggerAmount = LoggerAmount1;
             lumberjackAmount = LumberjackAmount1;
@@ -384,4 +393,17 @@ public class EnemyManager : Singleton<EnemyManager>
         GameEvents.OnCollectMaegenButton -= OnCollectMaegenButton;
         GameEvents.OnWaveBegin -= OnStartNextRound;
     }
+}
+
+[System.Serializable]   
+public class SpawnAmounts
+{
+    public int loggerAmount;
+    public int lumberjackAmount;
+    public int watheAmount;
+    public int longbowAmount;
+    public int crossbowAmount;
+    public int drengAmount;
+    public int bezerkerAmount;
+    public int knightAmount;
 }

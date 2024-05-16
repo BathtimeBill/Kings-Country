@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class ToggleButton : GameBehaviour
 {
-    public BaseID baseID;
+    public BuildingID baseID;
     public Image image;
     public string title;
     public string description;

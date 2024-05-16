@@ -205,7 +205,6 @@ public class GameManager : Singleton<GameManager>
         print("SET GAME!");
         //_GM.boundry.SetActive(true);
         maxMaegen = _UI.totalMaegen + maegen;
-        gameState = GameState.Build;
         timeAudioSource.clip = _SM.timeStopSound;
         timeAudioSource.Play();
         globalVolume.profile.TryGet(out grain);
@@ -244,6 +243,7 @@ public class GameManager : Singleton<GameManager>
         _GM.peaceTime = false;
         agroWave = true;
         currentWave++;
+
         _UI.TriggerWaveTextAnimation();
         _UI.CheckWave();
         yield return new WaitForSeconds(agroWaveLength);
@@ -379,11 +379,20 @@ public class GameManager : Singleton<GameManager>
 
     public void OnWaveOver()
     {
-        canFinishWave = false;
-        agroWave = false;
-        ChangeGameState(GameState.Win);
-        GameEvents.ReportOnRuneDestroyed();
-
+        print(currentWave + " / " + _LEVEL.maxWave);
+        if(currentWave == _LEVEL.maxWave)
+        {
+            SetGame();
+            GameEvents.ReportOnGameWin();
+            ChangeGameState(GameState.Finish);
+        }
+        else
+        {
+            canFinishWave = false;
+            agroWave = false;
+            ChangeGameState(GameState.Win);
+            GameEvents.ReportOnRuneDestroyed();
+        }
     }
     public void OnContinueButton()
     {

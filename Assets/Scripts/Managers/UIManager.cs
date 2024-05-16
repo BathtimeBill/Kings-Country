@@ -230,6 +230,14 @@ public class UIManager : Singleton<UIManager>
                 KillTweener(blackoutCanvasTweener);
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0, 0.2f).SetUpdate(true);
                 break;
+            case GameState.Finish:
+                print("FFF");
+                KillTweener(inGameCanvasTweener);
+                inGameCanvas.interactable = false;
+                inGameCanvasTweener = inGameCanvas.DOFade(0, 0.2f).SetUpdate(true);
+                KillTweener(blackoutCanvasTweener);
+                blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
+                break;
         }
     }
 
@@ -453,26 +461,29 @@ public class UIManager : Singleton<UIManager>
 
     public void OnWaveOver()
     {
-        //if (_GM.currentWave == _GM.winLevel)
-        //{
-        //    GameEvents.ReportOnGameWin();
-        //    return;
-        //}
+        ExecuteNextFrame(() =>
+        {
+            if (gameFinished)
+            {
+                return;
+            }
 
-        ResetPanel(wavePanel);
-        upgradePanel.transform.localScale = Vector3.one * 2;
-        upgradePanel.canvasGroup.alpha = 0;
-        upgradeButton1.SetInteractable(false);
-        upgradeButton2.SetInteractable(false);
-        continueButton.interactable = false;
-        treeResultCanvas.alpha = 0;
-        maegenBonusCanvas.alpha = 0;
-        maegenTotalCanvas.alpha = 0;
-        wildlifeResultCanvas.alpha = 0;
-        waveResultsPanel.alpha = 0;
-        waveResultsPanel.transform.localScale = Vector3.one * 2;
+            ResetPanel(wavePanel);
+            upgradePanel.transform.localScale = Vector3.one * 2;
+            upgradePanel.canvasGroup.alpha = 0;
+            upgradeButton1.SetInteractable(false);
+            upgradeButton2.SetInteractable(false);
+            continueButton.interactable = false;
+            treeResultCanvas.alpha = 0;
+            maegenBonusCanvas.alpha = 0;
+            maegenTotalCanvas.alpha = 0;
+            wildlifeResultCanvas.alpha = 0;
+            waveResultsPanel.alpha = 0;
+            waveResultsPanel.transform.localScale = Vector3.one * 2;
 
-        SetWaveEndStats();
+            SetWaveEndStats();
+        });
+
     }
 
     private void SetWaveEndStats()
@@ -661,7 +672,7 @@ public class UIManager : Singleton<UIManager>
 
     private void OnGameWin()
     {
-        winPanel.SetActive(true);
+        TweenInPanel(winPanel);
     }
     private void OnJustStragglers()
     {
@@ -671,6 +682,13 @@ public class UIManager : Singleton<UIManager>
     {
         //GameEvents.ReportOnCollectMaegenButton();
        // collectMaegenButton.SetActive(false);
+    }
+
+    //Button Presses from Inspector
+    public void ShowResultsPanel()
+    {
+        winPanel.GetComponentInChildren<Button>().interactable = false;
+        TweenInPanel(finalScorePanel);
     }
 
     public void MouseCancel()
