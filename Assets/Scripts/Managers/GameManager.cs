@@ -41,18 +41,18 @@ public class GameManager : Singleton<GameManager>
     public int maxMaegen;
 
     [Header("Runes")]
-    public Tool runesTool;
+    public ToolData runesTool;
     public int[] runesMaegenCost;
     public int[] runesWildlifeCost;
     public List<GameObject> runes;
     public float runeHealRate = 12;
 
     [Header("Fyre")]
-    public Tool fyreTool;
+    public ToolData fyreTool;
     public GameObject[] beacons;
 
     [Header("Stormer")]
-    public Tool stormerTool;
+    public ToolData stormerTool;
 
     [Header("Unit Health")]
     public float satyrHealth;
@@ -131,8 +131,8 @@ public class GameManager : Singleton<GameManager>
     private FilmGrain grain;
     private ChromaticAberration chromaticAberration;
 
-    public bool fyreAvailable => wildlife >= fyreTool.cost;
-    public bool stormerAvailable => wildlife >= stormerTool.cost;
+    public bool fyreAvailable => _TOOL.CanUseTool(ToolID.Fyre);
+    public bool stormerAvailable => _TOOL.CanUseTool(ToolID.Stormer);
     public bool runesAvailable => wildlife >= runesWildlifeCost[runesCount] && maegen >= runesMaegenCost[runesCount] && !atMaxRuins;
     public bool atMaxRuins => runesCount == runesMaegenCost.Length;
     public int runesCount => runes.Count;
@@ -227,12 +227,14 @@ public class GameManager : Singleton<GameManager>
     public void IncreaseMaegen(int _value)
     {
         maegen += _value;
+        GameEvents.ReportOnMaegenChange(maegen);
         _UI.UpdateMaegenText(maegen);
     }
 
     public void DecreaseMaegen(int _value)
     {
         maegen -= _value;
+        GameEvents.ReportOnMaegenChange(maegen);
         _UI.UpdateMaegenText(maegen);
     }
 
@@ -243,8 +245,6 @@ public class GameManager : Singleton<GameManager>
         _GM.peaceTime = false;
         agroWave = true;
         currentWave++;
-
-        _UI.TriggerWaveTextAnimation();
         _UI.CheckWave();
         yield return new WaitForSeconds(agroWaveLength);
         agroWave = false;

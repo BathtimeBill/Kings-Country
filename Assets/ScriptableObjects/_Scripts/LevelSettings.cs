@@ -12,6 +12,7 @@ public class Level
     public LevelID levelID;
     public LevelNumber number;
     public List<BuildingID> availableBuildings;
+    public List<ToolID> availableTrees;
     public List<WoodcutterType> availableLoggers;
     public List<HunterType> availableHunters;
     public List<WarriorType> availableWarriors;

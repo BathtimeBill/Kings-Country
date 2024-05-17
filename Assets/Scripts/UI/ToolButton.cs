@@ -6,11 +6,11 @@ using UnityEngine.EventSystems;
 
 public class ToolButton : InteractableButton
 {
-    public Tool tool;
+    public ToolID toolID;
     public Image icon;
     public Image cooldownFill;
     public TMP_Text meagenPrice;
-    public ToolPanel toolButtonManager;
+    public ToolPanel toolPanel;
 
     public override void Start()
     {
@@ -21,13 +21,18 @@ public class ToolButton : InteractableButton
 
     void PressedButton()
     {
-        GameEvents.ReportOnToolButtonPressed(tool);
+        GameEvents.ReportOnToolButtonPressed(toolID);
     }
 
     public void SetInteractable(bool _interactable)
     {
-        if(button != null)
-            button.interactable = _interactable;
+        if (button == null)
+            return;
+
+        button.interactable = _interactable;
+
+        if(GetComponent<Coffee.UIExtensions.ShinyEffectForUGUI>() != null)
+            GetComponent<Coffee.UIExtensions.ShinyEffectForUGUI>().enabled = _interactable;
     }
 
     public void CooldownFill(float _timeRemaining)
@@ -37,22 +42,22 @@ public class ToolButton : InteractableButton
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
-        if (toolButtonManager == null)
+        if (toolPanel == null)
             return;
-        toolButtonManager.PointerEnter(this);
+        toolPanel.PointerEnter(this);
     }
 
     public override void OnPointerExit(PointerEventData eventData)
     {
-        if (toolButtonManager == null)
+        if (toolPanel == null)
             return;
-        toolButtonManager.PointerExit();
+        toolPanel.PointerExit();
     }
 
     public void SetupButton()
     {
-        icon.sprite = tool.toolIcon;
-        name = tool.toolName + "ToolButton";
+        icon.sprite = _TOOL.GetTool(toolID).toolIcon;
+        //name = tool.toolName + "ToolButton";
     }
 
     #region Editor

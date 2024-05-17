@@ -6,9 +6,6 @@ using UnityEngine;
 public class UnitPanel : GameBehaviour
 {
     public UnitButton[] unitButtons;
-
-
-
     public CanvasGroup canvasGroup;
     public TMP_Text description;
     public TMP_Text healthStat;
@@ -31,7 +28,7 @@ public class UnitPanel : GameBehaviour
     {
         for (int i = 0; i < unitButtons.Length; i++)
         {
-            unitButtons[i].button.interactable = true;
+            unitButtons[i].button.interactable = unitButtons[i].unitData.stats.price <= _GM.maegen;
         }
     }
 

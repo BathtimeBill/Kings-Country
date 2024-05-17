@@ -139,7 +139,7 @@ public class UIManager : Singleton<UIManager>
     [Header("Panel Tweening")]
     public Ease panelEase = Ease.InOutSine;
     public Ease boxEase = Ease.InExpo;
-    public float panelTweenTime = 0.5f;
+    public float statsinTweenTime = 0.5f;
     public float panelStartPositionX;
     public float panelEndPositionX;
     public float panelShowPositionX;
@@ -152,6 +152,9 @@ public class UIManager : Singleton<UIManager>
     Tweener winPhasePanelTweener;
     Tweener inGameCanvasTweener;
     Tweener blackoutCanvasTweener;
+
+    public string dayMessage = "Day";
+    public string nightMessage = "Night";
 
     void Start()
     {
@@ -174,6 +177,7 @@ public class UIManager : Singleton<UIManager>
         ResetPanel(finalScorePanel);
         ResetPanel(gameOverPanel);
         TurnOffIcons();
+        waveText.text = nightMessage;
     }
 
     private void TurnOffIcons()
@@ -231,7 +235,6 @@ public class UIManager : Singleton<UIManager>
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0, 0.2f).SetUpdate(true);
                 break;
             case GameState.Finish:
-                print("FFF");
                 KillTweener(inGameCanvasTweener);
                 inGameCanvas.interactable = false;
                 inGameCanvasTweener = inGameCanvas.DOFade(0, 0.2f).SetUpdate(true);
@@ -363,7 +366,8 @@ public class UIManager : Singleton<UIManager>
 
     public void CheckWave()
     {
-        waveText.text = "Wave: " + _GM.currentWave.ToString();
+        waveText.text = dayMessage + ": " + _GM.currentWave.ToString() + "/" + _LEVEL.maxWave;
+        TriggerWaveTextAnimation();
     }
 
     public void CheckEldyr()
@@ -491,7 +495,7 @@ public class UIManager : Singleton<UIManager>
         TweenInPanel(wavePanel);
         _SM.PlaySound(_SM.waveOverSound);
         _SM.PlaySound(_SM.menuDragSound);
-        waveTitleText.text = "Wave " + _GM.currentWave.ToString() + " is complete!";
+        waveTitleText.text = dayMessage + " " + _GM.currentWave.ToString() + " is complete!";
 
         totalTrees = _GM.trees.Count;
         totalMaegenDrops = GameObject.FindGameObjectsWithTag("MaegenDrop").Length;
@@ -516,16 +520,16 @@ public class UIManager : Singleton<UIManager>
         yield return new WaitForSecondsRealtime(1.6f);
         _SM.PlaySound(_SM.textGroupSound);
         treeResultCanvas.alpha = 1;//.DOFade(1, panelTweenTime).SetUpdate(true); 
-        yield return new WaitForSecondsRealtime(panelTweenTime + 0.1f);
+        yield return new WaitForSecondsRealtime(statsinTweenTime);
         maegenBonusCanvas.alpha = 1;//DOFade(1, panelTweenTime).SetUpdate(true);
         _SM.PlaySound(_SM.textGroupSound);
-        yield return new WaitForSecondsRealtime(panelTweenTime + 0.1f);
+        yield return new WaitForSecondsRealtime(statsinTweenTime);
         _SM.PlaySound(_SM.textGroupSound);
         maegenTotalCanvas.alpha = 1;//DOFade(1, panelTweenTime).SetUpdate(true);
-        yield return new WaitForSecondsRealtime(panelTweenTime + 0.1f);
+        yield return new WaitForSecondsRealtime(statsinTweenTime);
         _SM.PlaySound(_SM.textGroupSound);
         wildlifeResultCanvas.alpha = 1;//DOFade(1, panelTweenTime).SetUpdate(true);
-        yield return new WaitForSecondsRealtime(panelTweenTime + 1f);
+        yield return new WaitForSecondsRealtime(statsinTweenTime);
         ShowUpgradeButtons();
     }
 
@@ -584,6 +588,7 @@ public class UIManager : Singleton<UIManager>
         treeTool.SetInteractable(true);
         KillTweener(continueTweener); 
         continueButton.transform.localScale = Vector3.one;
+        waveText.text = nightMessage;
     }
 
     void ResetPanel(GameObject _panel)
@@ -596,13 +601,13 @@ public class UIManager : Singleton<UIManager>
     {
         _panel.SetActive(true);
         KillTweener(winPhasePanelTweener);
-        winPhasePanelTweener = _panel.transform.DOLocalMoveX(panelShowPositionX, panelTweenTime).SetEase(panelEase).SetUpdate(true);
+        winPhasePanelTweener = _panel.transform.DOLocalMoveX(panelShowPositionX, statsinTweenTime).SetEase(panelEase).SetUpdate(true);
     }
 
     void TweenOutPanel(GameObject _panel)
     {
         KillTweener(winPhasePanelTweener);
-        winPhasePanelTweener = _panel.transform.DOLocalMoveX(panelEndPositionX, panelTweenTime).SetEase(panelEase).OnComplete(() => ResetPanel(_panel)).SetUpdate(true);
+        winPhasePanelTweener = _panel.transform.DOLocalMoveX(panelEndPositionX, statsinTweenTime).SetEase(panelEase).OnComplete(() => ResetPanel(_panel)).SetUpdate(true);
     }
 
 
@@ -716,8 +721,8 @@ public class UIManager : Singleton<UIManager>
             }
             else
             {
-                fyreAvailable = true;
-                fyreTool.SetInteractable(true);
+                fyreAvailable = _TOOL.CanUseTool(ToolID.Fyre);
+                fyreTool.SetInteractable(_TOOL.CanUseTool(ToolID.Fyre));
             }
         }
     }
@@ -740,8 +745,8 @@ public class UIManager : Singleton<UIManager>
             }
             else
             {
-                stormerAvailable = true;
-                stormerTool.SetInteractable(true);
+                stormerAvailable = _TOOL.CanUseTool(ToolID.Stormer);
+                stormerTool.SetInteractable(_TOOL.CanUseTool(ToolID.Stormer));
             }
         }
     }

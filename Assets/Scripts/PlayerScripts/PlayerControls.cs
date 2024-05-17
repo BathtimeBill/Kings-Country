@@ -573,11 +573,11 @@ public class PlayerControls : Singleton<PlayerControls>
         targetPointerGraphics.SetActive(false);
     }
 
-    private void OnToolButtonPressed(Tool _tool)
+    private void OnToolButtonPressed(ToolID _toolID)
     {
         _SM.PlaySound(_SM.buttonClickSound);
         DeslectAllModes();
-        switch (_tool.id)
+        switch (_toolID)
         {
             case ToolID.Stormer:
                 if (_GM.playmode != PlayMode.StormerMode)

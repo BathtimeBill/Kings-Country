@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Tool", menuName = "BGG/Tool", order = 2)]
-public class Tool : ScriptableObject
+public class ToolData : ScriptableObject
 {
     public ToolID id;
     public string toolName;
     public string toolDescription;
     public Sprite toolIcon;
-    public int cost;
+    public int maegenPrice;
+    public int wildlifePrice;
     public int upgradeLevel;
     public bool unlocked;
 }

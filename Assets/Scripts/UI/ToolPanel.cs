@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ToolPanel : MonoBehaviour
+public class ToolPanel : GameBehaviour
 {
     [Header("Info Box")]
     public CanvasGroup canvasGroup;
@@ -21,9 +21,10 @@ public class ToolPanel : MonoBehaviour
     public void PointerEnter(ToolButton _toolButton)
     {
         canvasGroup.gameObject.SetActive(true);
-        titleText.text = _toolButton.tool.toolName;
-        descriptionText.text = _toolButton.tool.toolDescription;
-        maegenPriceText.text = _toolButton.tool.cost.ToString();
+        titleText.text = _TOOL.GetTool(_toolButton.toolID).toolName;
+        descriptionText.text = _TOOL.GetTool(_toolButton.toolID).toolDescription;
+        maegenPriceText.text = _TOOL.GetTool(_toolButton.toolID).maegenPrice.ToString();
+        wildlifePriceText.text = _TOOL.GetTool(_toolButton.toolID).wildlifePrice.ToString();
     }
 
     public void PointerExit()

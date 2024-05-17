@@ -79,6 +79,24 @@ public class UnitButton : InteractableButton
            _tweener.Kill();
     }
 
+    private void OnMaegenChange(int _amount)
+    {
+        button.interactable = unitData.stats.price <= _amount;
+        cost.color = unitData.stats.price > _amount ? Color.red : Color.white;
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnMaegenChange += OnMaegenChange;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnMaegenChange -= OnMaegenChange;
+    }
+
+   
+
     #region Editor
 #if UNITY_EDITOR
     [CustomEditor(typeof(UnitButton))]

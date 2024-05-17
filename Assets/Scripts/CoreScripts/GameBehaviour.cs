@@ -26,6 +26,7 @@ public class GameBehaviour : BV.Behaviour
     protected static SceneManagement _SCENE { get { return SceneManagement.instance; } }
     protected static PerkManager _PERK { get { return PerkManager.instance; } }
     protected static LevelManager _LEVEL { get { return LevelManager.instance; } }
+    protected static ToolManager _TOOL { get { return ToolManager.instance; } }
 
     public bool hasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build;
     public bool isPaused => _GM.gameState == GameState.Pause;
@@ -57,7 +58,9 @@ public enum ToolID
     Rune,
     Fyre,
     Stormer,
-    Tree
+    Tree,
+    Willow,
+    Ficus
 }
 public enum CombatID
 {

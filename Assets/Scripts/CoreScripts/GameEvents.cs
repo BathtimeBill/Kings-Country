@@ -72,9 +72,10 @@ public static class GameEvents
     public static event Action OnSpySpawned = null;
 
     public static event Action OnPerkButtonPressed = null;
-    public static event Action<Tool> OnToolButtonPressed = null;
+    public static event Action<ToolID> OnToolButtonPressed = null;
     public static event Action<UnitData> OnUnitButtonPressed = null;
     public static event Action OnGroundClicked = null;
+    public static event Action<int> OnMaegenChange = null;
 
     public static void ReportOnGameStateChanged(GameState _gameState)
     {
@@ -84,9 +85,9 @@ public static class GameEvents
     {
         OnPerkButtonPressed?.Invoke();
     }
-    public static void ReportOnToolButtonPressed(Tool _tool)
+    public static void ReportOnToolButtonPressed(ToolID _toolID)
     {
-        OnToolButtonPressed?.Invoke(_tool);
+        OnToolButtonPressed?.Invoke(_toolID);
     }
     public static void ReportOnUnitButtonPressed(UnitData _unit)
     {
@@ -311,5 +312,10 @@ public static class GameEvents
     public static void ReportOnGroundClicked()
     {
         OnGroundClicked?.Invoke();
+    }
+
+    public static void ReportOnMaegenChange(int _amount)
+    {
+        OnMaegenChange?.Invoke(_amount);
     }
 }
