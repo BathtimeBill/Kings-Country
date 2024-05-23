@@ -179,6 +179,9 @@ public class SaveData : Singleton<SaveData>
     }
     public void Load()
     {
+        if (saveManager == null)
+            return;
+
         PlayerProfile loadedData = saveManager.LoadGameData();
         if(loadedData != null)
         {
