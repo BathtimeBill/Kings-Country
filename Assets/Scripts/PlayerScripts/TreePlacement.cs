@@ -20,15 +20,12 @@ public class TreePlacement : Singleton<TreePlacement>
     private float resultNumber;
     public int maegenPerWave;
     public int maegenCost;
-    public TextMeshProUGUI percentageText;
-    public TextMeshProUGUI resultText;
-
 
 
     void Start()
     {
         myRenderers = GetComponentsInChildren<Renderer>();
-        myMaterials = GetComponentsInChildren<Material>();
+       // myMaterials = GetComponentsInChildren<Material>();
         SetMaterials(canPlaceMat);
         canPlace = true;
     }
@@ -49,31 +46,26 @@ public class TreePlacement : Singleton<TreePlacement>
         }
         else
         {
-            distanceFromTree = 67;
+            distanceFromTree = 67; //TODO change to from home tree?
         }
 
-        percentagePanel.transform.position = Input.mousePosition;
+        _UI.treePercentageModifier.transform.position = Input.mousePosition;
         energyMultiplier = 1f / 100 * distanceFromTree;
         resultNumber = 5 / energyMultiplier;
-        if(distanceFromTree > 0 && distanceFromTree < 33)
+        if(distanceFromTree > 0 && distanceFromTree <= 33)
         {
             maegenPerWave = 1;
-            _UI.maegenCostText.text = "2";
         }
-        if (distanceFromTree > 32 && distanceFromTree < 66)
+        if (distanceFromTree > 33 && distanceFromTree <= 66)
         {
             maegenPerWave = 2;
-            _UI.maegenCostText.text = "3";
         }
-        if (distanceFromTree > 65 && distanceFromTree <= 100)
+        if (distanceFromTree > 66 && distanceFromTree <= 100)
         {
             maegenPerWave = 3;
-            _UI.maegenCostText.text = "4";
         }
         maegenCost = maegenPerWave + 1;
-        percentageText.text = energyMultiplier.ToString("0.0" + "%");
-        resultText.text = maegenPerWave.ToString() + " Maegen every wave.<br>Cost: " + maegenCost + " Maegen";
-
+        _UI.ChangeTreePercentagePanel(energyMultiplier, maegenPerWave, maegenCost);
         if (distanceFromTree >= 100 && tooFarAway == false)
         {
             tooFarAway = true;

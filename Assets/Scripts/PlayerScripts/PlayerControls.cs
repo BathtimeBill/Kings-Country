@@ -79,7 +79,6 @@ public class PlayerControls : Singleton<PlayerControls>
 
             _GM.playmode = PlayMode.TreeMode;
             treePlacement.SetActive(true);
-            //_UI.maegenCost.SetActive(true);
             _UI.ShowTreeModifier(true);
         }
         _TPlace.canPlace = true;

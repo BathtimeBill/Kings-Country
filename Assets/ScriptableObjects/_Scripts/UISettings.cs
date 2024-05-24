@@ -8,4 +8,5 @@ public class UISettings : ScriptableObject
     public Color upgradeIconsColor;
     public Color titleColor;
     public Color descriptionColor;
+    public Gradient treePercentageGradient;
 }

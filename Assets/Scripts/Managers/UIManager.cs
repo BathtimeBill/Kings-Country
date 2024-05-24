@@ -64,12 +64,9 @@ public class UIManager : Singleton<UIManager>
 
     public ToolButton treeTool;
     public CanvasGroup treePercentageModifier;
-
-    [Header("Misc")]
-    public GameObject maegenCost;
-    public TMP_Text maegenCostText;
-    public GameObject wildlifeCost;
-    public TMP_Text wildlifeCostText;
+    public TMP_Text treePercentageText;
+    public TMP_Text treeResultText;
+    public TMP_Text treeCostText;
 
     [Header("Waves")]
     public TMP_Text waveTitleText;
@@ -78,7 +75,7 @@ public class UIManager : Singleton<UIManager>
     public Button nextRoundButton;
     public Button treetoolButton;
 
-    [Header("Wave End Stats")]
+    [Header("Day End Stats")]
     public CanvasGroup waveResultsPanel;
     public CanvasGroup treeResultCanvas;
     public CanvasGroup maegenBonusCanvas;
@@ -728,8 +725,6 @@ public class UIManager : Singleton<UIManager>
 
     public void MouseCancel()
     {
-        maegenCost.SetActive(false);
-        wildlifeCost.SetActive(false);
     }
 
     #region Tools
@@ -807,6 +802,14 @@ public class UIManager : Singleton<UIManager>
                 }
             }
         }
+    }
+
+    public void ChangeTreePercentagePanel(float _percentage, int _perDay, int _price)
+    {
+        treePercentageText.text = _percentage.ToString("0.0" + "%");
+        treePercentageText.color = UISettings.treePercentageGradient.Evaluate(_percentage);
+        treeResultText.text = "Every night, get " + _perDay.ToString() + "  <color=#D3C965><sprite name=\"MaegenIcon\">";
+        treeCostText.text = _price.ToString();
     }
     #endregion
 
