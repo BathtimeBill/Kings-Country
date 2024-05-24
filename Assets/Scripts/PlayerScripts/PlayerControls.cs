@@ -7,7 +7,6 @@ public class PlayerControls : Singleton<PlayerControls>
     public GameObject targetDest;
     public Camera cam;
     public Camera mapCam;
-    public GameObject playerCamera;
     public GameObject targetPointer;
     public GameObject targetPointerGraphics;
     public Material brightYellowMat;
@@ -51,9 +50,12 @@ public class PlayerControls : Singleton<PlayerControls>
     public Vector2 hotSpot = Vector2.zero;
     public Vector2 hotSpotEnemy;
 
+    private CameraController cameraController;
+
 
     private void Start()
     {
+        cameraController = GetComponent<CameraController>();
         treeTooClose = false;
     }
 
@@ -395,10 +397,12 @@ public class PlayerControls : Singleton<PlayerControls>
                         if (_UM.hasUpgrade(UpgradeID.Fyre))
                         {
                             Instantiate(explosion2, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
+                            cameraController.CameraShake(_SETTINGS.cameraShake.fyreShakeIntensity * 2);
                         }
                         else
                         {
                             Instantiate(explosion, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
+                            cameraController.CameraShake(_SETTINGS.cameraShake.fyreShakeIntensity);
                         }
 
                         beaconPlacement.SetActive(false);
@@ -414,6 +418,7 @@ public class PlayerControls : Singleton<PlayerControls>
                         stormerPlacement.SetActive(false);
                         DeslectAllModes();
                         GameEvents.ReportOnStormerPlaced();
+                        cameraController.CameraShake(_SETTINGS.cameraShake.stormerShakeIntensity);
                     }
                 }
                 //Default

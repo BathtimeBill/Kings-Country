@@ -8,7 +8,6 @@ using Unity.VisualScripting;
 
 public class UIManager : Singleton<UIManager>
 {
-    public UISettings UISettings;
     public TMP_Text maegenText;
     public TMP_Text treesText;
     public TMP_Text wildlifeText;
@@ -565,11 +564,11 @@ public class UIManager : Singleton<UIManager>
     {
         upgradeButton1.SetInteractable(false);
         upgradeButton2.SetInteractable(false);
-        _icon.GetComponentInChildren<Image>().color = UISettings.highlightedColor;
+        _icon.GetComponentInChildren<Image>().color = _SETTINGS.colours.highlightedColor;
         _icon.transform.localScale = Vector3.one * 3;
         _icon.SetActive(true);
         _icon.transform.DOScale(Vector3.one, 1).SetLoops(3).SetUpdate(true).OnComplete(() =>
-        _icon.GetComponentInChildren<Image>().DOColor(UISettings.upgradeIconsColor, 0.5f).SetUpdate(true));
+        _icon.GetComponentInChildren<Image>().DOColor(_SETTINGS.colours.upgradeIconsColor, 0.5f).SetUpdate(true));
         continueButton.interactable = true;
         KillTweener(continueTweener);
         continueTweener = continueButton.transform.DOScale(Vector3.one * buttonPulseScale, buttonPulseSpeed).SetUpdate(true).SetLoops(-1).SetDelay(3);
@@ -746,8 +745,8 @@ public class UIManager : Singleton<UIManager>
             }
             else
             {
-                fyreAvailable = _TOOL.CanUseTool(ToolID.Fyre);
-                fyreTool.SetInteractable(_TOOL.CanUseTool(ToolID.Fyre));
+                fyreAvailable = _DATA.CanUseTool(ToolID.Fyre);
+                fyreTool.SetInteractable(_DATA.CanUseTool(ToolID.Fyre));
             }
         }
     }
@@ -770,8 +769,8 @@ public class UIManager : Singleton<UIManager>
             }
             else
             {
-                stormerAvailable = _TOOL.CanUseTool(ToolID.Stormer);
-                stormerTool.SetInteractable(_TOOL.CanUseTool(ToolID.Stormer));
+                stormerAvailable = _DATA.CanUseTool(ToolID.Stormer);
+                stormerTool.SetInteractable(_DATA.CanUseTool(ToolID.Stormer));
             }
         }
     }
@@ -807,7 +806,7 @@ public class UIManager : Singleton<UIManager>
     public void ChangeTreePercentagePanel(float _percentage, int _perDay, int _price)
     {
         treePercentageText.text = _percentage.ToString("0.0" + "%");
-        treePercentageText.color = UISettings.treePercentageGradient.Evaluate(_percentage);
+        treePercentageText.color = _SETTINGS.colours.treePercentageGradient.Evaluate(_percentage);
         treeResultText.text = "Every night, get " + _perDay.ToString() + "  <color=#D3C965><sprite name=\"MaegenIcon\">";
         treeCostText.text = _price.ToString();
     }

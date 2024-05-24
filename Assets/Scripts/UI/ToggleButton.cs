@@ -24,7 +24,7 @@ public class ToggleButton : GameBehaviour
             return;
         }
 
-        image.color = _UI.UISettings.titleColor;
+        image.color = _SETTINGS.colours.titleColor;
         togglePanel.ShowPanel(this.baseID);
     }
 

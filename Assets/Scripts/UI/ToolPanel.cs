@@ -21,10 +21,10 @@ public class ToolPanel : GameBehaviour
     public void PointerEnter(ToolButton _toolButton)
     {
         canvasGroup.gameObject.SetActive(true);
-        titleText.text = _TOOL.GetTool(_toolButton.toolID).toolName;
-        descriptionText.text = _TOOL.GetTool(_toolButton.toolID).toolDescription;
-        maegenPriceText.text = _TOOL.GetTool(_toolButton.toolID).maegenPrice.ToString();
-        wildlifePriceText.text = _TOOL.GetTool(_toolButton.toolID).wildlifePrice.ToString();
+        titleText.text = _DATA.GetTool(_toolButton.toolID).toolName;
+        descriptionText.text = _DATA.GetTool(_toolButton.toolID).toolDescription;
+        maegenPriceText.text = _DATA.GetTool(_toolButton.toolID).maegenPrice.ToString();
+        wildlifePriceText.text = _DATA.GetTool(_toolButton.toolID).wildlifePrice.ToString();
     }
 
     public void PointerExit()

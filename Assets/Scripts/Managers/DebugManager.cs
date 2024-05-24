@@ -9,5 +9,8 @@ public class DebugManager : GameBehaviour
             GameEvents.ReportOnWaveOver();
             //GameEvents.ReportOnGameWin();
         }
+
+        if (Input.GetKeyDown(KeyCode.L))
+            _FM.WildlifeInstantiate();
     }
 }

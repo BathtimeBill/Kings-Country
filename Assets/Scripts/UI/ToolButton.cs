@@ -56,7 +56,7 @@ public class ToolButton : InteractableButton
 
     public void SetupButton()
     {
-        icon.sprite = _TOOL.GetTool(toolID).toolIcon;
+        icon.sprite = _DATA.GetTool(toolID).toolIcon;
         //name = tool.toolName + "ToolButton";
     }
 

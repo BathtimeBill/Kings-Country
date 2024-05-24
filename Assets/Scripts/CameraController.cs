@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class CameraController : GameBehaviour
 {
@@ -175,5 +176,10 @@ public class CameraController : GameBehaviour
         {
             transform.Translate(scrollDirection * normalSpeed * Time.deltaTime, Space.World);
         }
+    }
+
+    public void CameraShake(float _shakeIntensity)
+    {
+        transform.DOShakeRotation(1.5f, new Vector3(_shakeIntensity, _shakeIntensity, _shakeIntensity), _SETTINGS.cameraShake.shakeVibrato, _SETTINGS.cameraShake.shakeRandomness, true);
     }
 }

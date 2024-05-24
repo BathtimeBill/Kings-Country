@@ -26,12 +26,14 @@ public class GameBehaviour : BV.Behaviour
     protected static SceneManagement _SCENE { get { return SceneManagement.instance; } }
     protected static PerkManager _PERK { get { return PerkManager.instance; } }
     protected static LevelManager _LEVEL { get { return LevelManager.instance; } }
-    protected static ToolManager _TOOL { get { return ToolManager.instance; } }
+    protected static GameData _DATA { get { return GameData.instance; } }
 
     public bool hasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build;
     public bool isPaused => _GM.gameState == GameState.Pause;
 
     public bool gameFinished => _GM.gameState == GameState.Finish;
+
+    public Settings _SETTINGS => _DATA.settings;
 }
 
 

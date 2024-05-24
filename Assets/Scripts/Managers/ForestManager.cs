@@ -43,6 +43,7 @@ public class ForestManager : Singleton<ForestManager>
     }
 
     //This function checks how many animals are in the scene.
+    //TODO when one spawns in, just increment the int value
     public int CheckWildlife()
     {
         return GameObject.FindGameObjectsWithTag("Wildlife").Length;

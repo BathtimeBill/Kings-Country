@@ -131,8 +131,8 @@ public class GameManager : Singleton<GameManager>
     private FilmGrain grain;
     private ChromaticAberration chromaticAberration;
 
-    public bool fyreAvailable => _TOOL.CanUseTool(ToolID.Fyre);
-    public bool stormerAvailable => _TOOL.CanUseTool(ToolID.Stormer);
+    public bool fyreAvailable => _DATA.CanUseTool(ToolID.Fyre);
+    public bool stormerAvailable => _DATA.CanUseTool(ToolID.Stormer);
     public bool runesAvailable => wildlife >= runesWildlifeCost[runesCount] && maegen >= runesMaegenCost[runesCount] && !atMaxRuins;
     public bool atMaxRuins => runesCount == runesMaegenCost.Length;
     public int runesCount => runes.Count;
@@ -365,18 +365,6 @@ public class GameManager : Singleton<GameManager>
         timeSinceAttack = 0;
     }
 
-    public void OnWildlifeKilled()
-    {
-        if (timeSinceWildlifeKilled > 30)
-        {
-            _UI.SetErrorMessageYourWildlifeIsUnderAttack();
-            _PC.Error();
-            _UI.warningAudioSource.clip = _SM.warningSound;
-            _UI.warningAudioSource.Play();
-        }
-        timeSinceWildlifeKilled = 0;
-    }
-
     public void OnWaveOver()
     {
         print(currentWave + " / " + _LEVEL.maxWave);
@@ -428,6 +416,24 @@ public class GameManager : Singleton<GameManager>
     {
         
     }
+
+    public void OnWildlifeKilled()
+    {
+        if (timeSinceWildlifeKilled > 30)
+        {
+            _UI.SetErrorMessageYourWildlifeIsUnderAttack();
+            _PC.Error();
+            _UI.warningAudioSource.clip = _SM.warningSound;
+            _UI.warningAudioSource.Play();
+        }
+        timeSinceWildlifeKilled = 0;
+    }
+
+    private void OnWildlifeValueChange(int _value)
+    {
+        wildlife = _value;
+    }
+
     private void OnEnable()
     {
         GameEvents.OnUnitKilled += OnUnitKilled;
@@ -438,12 +444,15 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnRuneDestroyed += OnRuneDestroyed;
         GameEvents.OnPopulousUpgrade += OnPopulousUpgrade;
         GameEvents.OnTreeHit += OnTreeHit;
-        GameEvents.OnWildlifeKilled += OnWildlifeKilled;
         GameEvents.OnWaveOver += OnWaveOver;
         GameEvents.OnWaveBegin += OnWaveBegin;
         GameEvents.OnContinueButton += OnContinueButton;
-        GameEvents.OnGameWin += OnGameWin;
+        GameEvents.OnGameWin += OnGameWin; 
+        GameEvents.OnWildlifeKilled += OnWildlifeKilled;
+        GameEvents.OnWildlifeValueChange += OnWildlifeValueChange;
     }
+
+    
 
     private void OnDisable()
     {
@@ -455,10 +464,11 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnRuneDestroyed -= OnRuneDestroyed;
         GameEvents.OnPopulousUpgrade -= OnPopulousUpgrade;
         GameEvents.OnTreeHit -= OnTreeHit;
-        GameEvents.OnWildlifeKilled -= OnWildlifeKilled;
         GameEvents.OnWaveOver -= OnWaveOver;
         GameEvents.OnWaveBegin -= OnWaveBegin;
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnGameWin -= OnGameWin;
+        GameEvents.OnWildlifeKilled -= OnWildlifeKilled;
+        GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange;
     }
 }
