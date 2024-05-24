@@ -226,16 +226,16 @@ public class GameManager : Singleton<GameManager>
 
     public void IncreaseMaegen(int _value)
     {
+        _UI.UpdateMaegenText(maegen, maegen + _value);
         maegen += _value;
         GameEvents.ReportOnMaegenChange(maegen);
-        _UI.UpdateMaegenText(maegen);
     }
 
     public void DecreaseMaegen(int _value)
     {
+        _UI.UpdateMaegenText(maegen, maegen - _value);
         maegen -= _value;
         GameEvents.ReportOnMaegenChange(maegen);
-        _UI.UpdateMaegenText(maegen);
     }
 
     //The wave system is managed by two coroutines. The 'agro' wave lasts 1 minute, during which enemies are spawned in (EnemyManager) and then a break period of 4 mins. 

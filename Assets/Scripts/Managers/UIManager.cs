@@ -15,7 +15,8 @@ public class UIManager : Singleton<UIManager>
     public TMP_Text waveText;
     public TMP_Text errorText;
 
-
+    [Header("Bottom")]
+    public TMP_Text unitPanelMaegenText;
     public GameObject combatOptionsPanel;
     public bool mouseOverCombatOptions;
     public GameObject menuPanel;
@@ -137,6 +138,8 @@ public class UIManager : Singleton<UIManager>
     [Header("Panel Tweening")]
     public Ease panelEase = Ease.InOutSine;
     public Ease boxEase = Ease.InExpo;
+    public Ease maegenEase = Ease.OutExpo;
+    public float maegenTweenTime = 1f;
     public float statsinTweenTime = 0.5f;
     public float canvasFadeTime = 0.2f;
     public float panelStartPositionX;
@@ -152,6 +155,7 @@ public class UIManager : Singleton<UIManager>
     Tweener inGameCanvasTweener;
     Tweener blackoutCanvasTweener;
     Tweener fadeTweener;
+    Tweener maegenTweener, maegenColourTweener;
 
     public string dayMessage = "Day";
     public string nightMessage = "Night";
@@ -207,10 +211,22 @@ public class UIManager : Singleton<UIManager>
         RuneCheck();
     }
 
-    public void UpdateMaegenText(int _value)
+    public void UpdateMaegenText(int _oldValue, int _newValue)
     {
-        maegenText.text = _value.ToString();
+        KillTweener(maegenTweener);
+        KillTweener(maegenColourTweener);
+        int total = _oldValue;
+        maegenTweener = DOTween.To(() => total, x => total = x, _newValue, maegenTweenTime).SetEase(maegenEase).OnUpdate(() =>
+        {
+            maegenText.text = total.ToString();
+            unitPanelMaegenText.text = total.ToString();
+        });
+        maegenText.color = Color.green;
+        unitPanelMaegenText.color = Color.green;
+        maegenText.DOColor(Color.white, maegenTweenTime).SetEase(maegenEase);
+        unitPanelMaegenText.DOColor(Color.white, maegenTweenTime).SetEase(maegenEase);
     }
+
 
     private void OnGameStateChanged(GameState _gameState)
     {
@@ -629,6 +645,8 @@ public class UIManager : Singleton<UIManager>
         KillTweener(fadeTweener);
         fadeTweener = _canvas.DOFade(0, canvasFadeTime).OnComplete(()=> _canvas.gameObject.SetActive(false));
     }
+
+
 
     public void ShowTreeModifier(bool _show)
     {

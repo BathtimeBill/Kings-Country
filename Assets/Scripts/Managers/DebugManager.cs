@@ -12,5 +12,8 @@ public class DebugManager : GameBehaviour
 
         if (Input.GetKeyDown(KeyCode.L))
             _FM.WildlifeInstantiate();
+
+        if (Input.GetKeyDown(KeyCode.M))
+            _GM.IncreaseMaegen(6);
     }
 }
