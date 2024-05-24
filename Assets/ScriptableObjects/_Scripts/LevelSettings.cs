@@ -4,6 +4,7 @@ using System.Collections.Generic;
 [CreateAssetMenu(fileName = "Level Settings", menuName = "BGG/Level Settings", order = 6)]
 public class LevelSettings : ScriptableObject
 {
+    [BV.EnumList(typeof(LevelID))]
     public List<Level> levels;
 }
 [System.Serializable]

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -62,6 +63,7 @@ public class UIManager : Singleton<UIManager>
     public bool runeAvailable;
 
     public ToolButton treeTool;
+    public CanvasGroup treePercentageModifier;
 
     [Header("Misc")]
     public GameObject maegenCost;
@@ -140,6 +142,7 @@ public class UIManager : Singleton<UIManager>
     public Ease panelEase = Ease.InOutSine;
     public Ease boxEase = Ease.InExpo;
     public float statsinTweenTime = 0.5f;
+    public float canvasFadeTime = 0.2f;
     public float panelStartPositionX;
     public float panelEndPositionX;
     public float panelShowPositionX;
@@ -152,6 +155,7 @@ public class UIManager : Singleton<UIManager>
     Tweener winPhasePanelTweener;
     Tweener inGameCanvasTweener;
     Tweener blackoutCanvasTweener;
+    Tweener fadeTweener;
 
     public string dayMessage = "Day";
     public string nightMessage = "Night";
@@ -178,6 +182,9 @@ public class UIManager : Singleton<UIManager>
         ResetPanel(gameOverPanel);
         TurnOffIcons();
         waveText.text = nightMessage;
+
+        treePercentageModifier.alpha = 0f;
+        treePercentageModifier.gameObject.SetActive(false);
     }
 
     private void TurnOffIcons()
@@ -608,6 +615,29 @@ public class UIManager : Singleton<UIManager>
     {
         KillTweener(winPhasePanelTweener);
         winPhasePanelTweener = _panel.transform.DOLocalMoveX(panelEndPositionX, statsinTweenTime).SetEase(panelEase).OnComplete(() => ResetPanel(_panel)).SetUpdate(true);
+    }
+
+    void FadeInPanel(CanvasGroup _canvas)
+    {
+        if (_canvas == null) return;
+
+        _canvas.gameObject.SetActive(true);
+        KillTweener(fadeTweener);
+            fadeTweener = _canvas.DOFade(1, canvasFadeTime);
+    }
+
+    void FadeOutPanel(CanvasGroup _canvas)
+    {
+        if (_canvas == null) return;
+
+        KillTweener(fadeTweener);
+        fadeTweener = _canvas.DOFade(0, canvasFadeTime).OnComplete(()=> _canvas.gameObject.SetActive(false));
+    }
+
+    public void ShowTreeModifier(bool _show)
+    {
+        if (_show) FadeInPanel(treePercentageModifier);
+        else FadeOutPanel(treePercentageModifier);
     }
 
 

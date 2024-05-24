@@ -19,7 +19,6 @@ public class PlayerControls : Singleton<PlayerControls>
     [Header("Tree Tool")]
     public bool treeTooClose;
     public GameObject treePlacement;
-    public GameObject treePercentageModifier;
     public GameObject cantPlace;
     public GameObject treePrefab;
     public float minScale;
@@ -80,8 +79,8 @@ public class PlayerControls : Singleton<PlayerControls>
 
             _GM.playmode = PlayMode.TreeMode;
             treePlacement.SetActive(true);
-            treePercentageModifier.SetActive(true);
             //_UI.maegenCost.SetActive(true);
+            _UI.ShowTreeModifier(true);
         }
         _TPlace.canPlace = true;
         _TPlace.gameObject.GetComponent<Renderer>().material = _TPlace.canPlaceMat;
@@ -112,7 +111,7 @@ public class PlayerControls : Singleton<PlayerControls>
         runePlacement.SetActive(false);
         stormerPlacement.SetActive(false);
         beaconPlacement.SetActive(false);
-        treePercentageModifier.SetActive(false);
+        _UI.ShowTreeModifier(false);
     }
 
     public void MouseOverMap()
@@ -303,6 +302,7 @@ public class PlayerControls : Singleton<PlayerControls>
             //}
             if (Input.GetKeyDown(KeyCode.Tab))
             {
+                /*
                 if (_UI.homeTreePanel.gameObject.activeInHierarchy == false)
                 {
                     _GM.playmode = PlayMode.DefaultMode;
@@ -330,7 +330,7 @@ public class PlayerControls : Singleton<PlayerControls>
                     _UI.audioSource.clip = _SM.closeMenuSound;
                     _UI.audioSource.Play();
                     GameEvents.ReportOnHomeTreeDeselected();
-                }
+                }*/
             }
 
             if (Input.GetMouseButtonDown(0))
