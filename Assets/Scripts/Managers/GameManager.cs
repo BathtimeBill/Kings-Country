@@ -8,6 +8,9 @@ using UnityEngine.Rendering.Universal;
 
 public class GameManager : Singleton<GameManager>
 {
+    [Header("Level Related")]
+    public LevelID thisLevel;
+
     public bool tutorial;
     public float gameTime = 0;
     public LevelNumber level;

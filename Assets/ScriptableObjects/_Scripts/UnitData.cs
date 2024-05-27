@@ -11,6 +11,7 @@ public class UnitData : ScriptableObject
     public string description;
     public Stats stats;
     public Sprite icon;
+    public Sprite mapIcon;
 
     public Stats GetStats()
     {

@@ -8,9 +8,13 @@ public class InteractableButton : GameBehaviour, IPointerEnterHandler, IPointerE
     [HideInInspector]
     public Button button;
 
-    public virtual void Start()
+    void Awake()
     {
         button = GetComponent<Button>();
+    }
+    public virtual void Start()
+    {
+
     }
 
     public void SetupButton()

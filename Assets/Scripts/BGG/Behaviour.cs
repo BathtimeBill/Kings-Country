@@ -261,5 +261,19 @@ namespace BV
             if (_tweener != null)
                 _tweener.Kill();
         }
+
+        public void FadeInPanel(CanvasGroup _canvasGroup, float _tweenTime = 0.5f)
+        {
+            _canvasGroup.DOFade(1, _tweenTime);
+            _canvasGroup.interactable = true;
+            _canvasGroup.blocksRaycasts = true;
+        }
+
+        public void FadeOutPanel(CanvasGroup _canvasGroup, float _tweenTime = 0.5f)
+        {
+            _canvasGroup.DOFade(0, _tweenTime);
+            _canvasGroup.interactable = false;
+            _canvasGroup.blocksRaycasts = false;
+        }
     }
 }

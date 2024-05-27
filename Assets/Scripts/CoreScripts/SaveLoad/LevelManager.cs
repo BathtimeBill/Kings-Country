@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class LevelManager : Singleton<LevelManager>
 {
-    public LevelNumber level;
-    public LevelSettings levelSettings;
     public LevelID currentLevel;
 
-    public Level getCurrentLevel => levelSettings.levels.Find(x => x.levelID == currentLevel);
+    public Level getCurrentLevel => _DATA.levelSettings.levels.Find(x => x.levelID == currentLevel);
 
     public int maxWave => getCurrentLevel.waves;
 
