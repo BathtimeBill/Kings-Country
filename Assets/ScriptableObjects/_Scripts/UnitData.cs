@@ -12,6 +12,7 @@ public class UnitData : ScriptableObject
     public Stats stats;
     public Sprite icon;
     public Sprite mapIcon;
+    public AudioClip[] voiceSounds;
 
     public Stats GetStats()
     {

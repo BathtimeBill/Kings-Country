@@ -15,5 +15,11 @@ public class DebugManager : GameBehaviour
 
         if (Input.GetKeyDown(KeyCode.M))
             _GM.IncreaseMaegen(6);
+
+        if(Input.GetKeyDown(KeyCode.U))
+        {
+            if(FindObjectOfType<UnitUpgrades>())
+                FindObjectOfType<UnitUpgrades>().ToggleCanvasPosition();
+        }
     }
 }

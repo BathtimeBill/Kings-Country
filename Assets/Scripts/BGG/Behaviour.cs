@@ -251,29 +251,5 @@ namespace BV
             obj.name = (!String.IsNullOrEmpty(name) ? name : "container");
             return obj;
         }
-
-		/// <summary>
-		/// Kills a tweener that may be active
-		/// </summary>
-		/// <param name="_tweener">The tweener to kill</param>
-		public void KillTweener(Tweener _tweener)
-        {
-            if (_tweener != null)
-                _tweener.Kill();
-        }
-
-        public void FadeInPanel(CanvasGroup _canvasGroup, float _tweenTime = 0.5f)
-        {
-            _canvasGroup.DOFade(1, _tweenTime);
-            _canvasGroup.interactable = true;
-            _canvasGroup.blocksRaycasts = true;
-        }
-
-        public void FadeOutPanel(CanvasGroup _canvasGroup, float _tweenTime = 0.5f)
-        {
-            _canvasGroup.DOFade(0, _tweenTime);
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
-        }
     }
 }

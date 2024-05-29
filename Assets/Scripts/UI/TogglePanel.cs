@@ -57,7 +57,7 @@ public class TogglePanel : GameBehaviour
 
     void TweenPanel(bool _show)
     {
-        KillTweener(panelTweener);
+        TweenX.KillTweener(panelTweener);
         panelTweener = unitPanel.transform.DOMoveY(_show ? showPos : hidePos, tweenTime).SetEase(ease).SetUpdate(true);
     }
 

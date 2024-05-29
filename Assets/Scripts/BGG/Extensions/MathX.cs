@@ -240,7 +240,7 @@ public static class MathX
     }
 
     /// <summary>
-    /// Gets a percentage of a vale
+    /// Gets a percentage of a value
     /// </summary>
     /// <param name="_initialValue">The value to get a percentage from</param>
     /// <param name="_percentage">The percentage to take off the main value</param>
@@ -250,6 +250,32 @@ public static class MathX
         float temp = _initialValue / 100f;
         float reverse = 100f - _percentage;
         temp *= reverse;
+        return temp;
+    }
+
+    /// <summary>
+    /// Increases a value by a set percentage
+    /// </summary>
+    /// <param name="_initialValue">The initial value to change</param>
+    /// <param name="_increase">The percentage to increase the inital value by</param>
+    /// <returns>A value increased by a set percentage</returns>
+    static public float GetPercentageIncrease(float _initialValue, float _increase)
+    {
+        float temp = _initialValue / 100f;
+        temp *= _increase;
+        return _initialValue + temp;
+    }
+
+    /// <summary>
+    /// Gets the percentage change value of a value
+    /// </summary>
+    /// <param name="_initialValue">The value to check</param>
+    /// <param name="_increase">The percentage to increase the inital value by</param>
+    /// <returns>The amount in a percentage the value has changed</returns>
+    static public float GetPercentageChange(float _initialValue, float _increase)
+    {
+        float temp = _initialValue / 100f;
+        temp *= _increase;
         return temp;
     }
 }

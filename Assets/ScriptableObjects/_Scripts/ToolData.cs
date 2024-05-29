@@ -11,6 +11,7 @@ public class ToolData : ScriptableObject
     public Sprite toolIcon;
     public int maegenPrice;
     public int wildlifePrice;
+    public float cooldownTime = 5;
     public int upgradeLevel;
     public bool unlocked;
 }

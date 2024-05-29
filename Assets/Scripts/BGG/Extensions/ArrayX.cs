@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public static class ArrayX 
 {
@@ -56,5 +57,17 @@ public static class ArrayX
             return ResizeArray(original, rows, cols);
         else
             return original;
+    }
+
+    /// <summary>
+    /// Gets a random item from an array
+    /// </summary>
+    /// <typeparam name="T">The type of array we are passing in</typeparam>
+    /// <param name="_array">The array of items</param>
+    /// <returns></returns>
+    static public T GetRandomItemFromArray<T>(T[] _array)
+    {
+        int index = UnityEngine.Random.Range(0, _array.Length);
+        return _array[index];
     }
 }

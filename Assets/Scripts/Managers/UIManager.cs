@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
-using Unity.VisualScripting;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -48,18 +47,15 @@ public class UIManager : Singleton<UIManager>
     public ToolButton fyreTool;
     public int fyreCost;
     public float fyreTimeLeft;
-    public float fyreMaxTimeLeft;
     public bool fyreAvailable;
 
     public ToolButton stormerTool;
     public int stormerCost;
     public float stormerTimeLeft;
-    public float stormerMaxTimeLeft;
     public bool stormerAvailable;
 
     public ToolButton runeTool;
     public float runeTimeLeft;
-    public float runeMaxTimeLeft;
     public bool runeAvailable;
 
     public ToolButton treeTool;
@@ -213,8 +209,8 @@ public class UIManager : Singleton<UIManager>
 
     public void UpdateMaegenText(int _oldValue, int _newValue)
     {
-        KillTweener(maegenTweener);
-        KillTweener(maegenColourTweener);
+        TweenX.KillTweener(maegenTweener);
+        TweenX.KillTweener(maegenColourTweener);
         int total = _oldValue;
         maegenTweener = DOTween.To(() => total, x => total = x, _newValue, maegenTweenTime).SetEase(maegenEase).OnUpdate(() =>
         {
@@ -233,31 +229,31 @@ public class UIManager : Singleton<UIManager>
         switch(_gameState)
         {
             case GameState.Pause:
-                KillTweener(inGameCanvasTweener);
+                TweenX.KillTweener(inGameCanvasTweener);
                 inGameCanvas.interactable = false;
                 inGameCanvasTweener = inGameCanvas.DOFade(0, 0.2f).SetUpdate(true);
-                KillTweener(blackoutCanvasTweener);
+                TweenX.KillTweener(blackoutCanvasTweener);
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
                 break;
             case GameState.Play:
-                KillTweener(inGameCanvasTweener);
+                TweenX.KillTweener(inGameCanvasTweener);
                 inGameCanvas.interactable = true;
                 inGameCanvasTweener = inGameCanvas.DOFade(1, 0.2f).SetUpdate(true);
-                KillTweener(blackoutCanvasTweener);
+                TweenX.KillTweener(blackoutCanvasTweener);
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0, 0.2f).SetUpdate(true);
                 break;
             case GameState.Build:
-                KillTweener(inGameCanvasTweener);
+                TweenX.KillTweener(inGameCanvasTweener);
                 inGameCanvas.interactable = true;
                 inGameCanvasTweener = inGameCanvas.DOFade(1, 0.2f).SetUpdate(true);
-                KillTweener(blackoutCanvasTweener);
+                TweenX.KillTweener(blackoutCanvasTweener);
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0, 0.2f).SetUpdate(true);
                 break;
             case GameState.Finish:
-                KillTweener(inGameCanvasTweener);
+                TweenX.KillTweener(inGameCanvasTweener);
                 inGameCanvas.interactable = false;
                 inGameCanvasTweener = inGameCanvas.DOFade(0, 0.2f).SetUpdate(true);
-                KillTweener(blackoutCanvasTweener);
+                TweenX.KillTweener(blackoutCanvasTweener);
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
                 break;
         }
@@ -586,7 +582,7 @@ public class UIManager : Singleton<UIManager>
         _icon.transform.DOScale(Vector3.one, 1).SetLoops(3).SetUpdate(true).OnComplete(() =>
         _icon.GetComponentInChildren<Image>().DOColor(_SETTINGS.colours.upgradeIconsColor, 0.5f).SetUpdate(true));
         continueButton.interactable = true;
-        KillTweener(continueTweener);
+        TweenX.KillTweener(continueTweener);
         continueTweener = continueButton.transform.DOScale(Vector3.one * buttonPulseScale, buttonPulseSpeed).SetUpdate(true).SetLoops(-1).SetDelay(3);
     }
 
@@ -605,7 +601,7 @@ public class UIManager : Singleton<UIManager>
     {
         TweenOutPanel(wavePanel);
         treeTool.SetInteractable(true);
-        KillTweener(continueTweener); 
+        TweenX.KillTweener(continueTweener); 
         continueButton.transform.localScale = Vector3.one;
         waveText.text = nightMessage;
     }
@@ -619,13 +615,13 @@ public class UIManager : Singleton<UIManager>
     void TweenInPanel(GameObject _panel)
     {
         _panel.SetActive(true);
-        KillTweener(winPhasePanelTweener);
+        TweenX.KillTweener(winPhasePanelTweener);
         winPhasePanelTweener = _panel.transform.DOLocalMoveX(panelShowPositionX, statsinTweenTime).SetEase(panelEase).SetUpdate(true);
     }
 
     void TweenOutPanel(GameObject _panel)
     {
-        KillTweener(winPhasePanelTweener);
+        TweenX.KillTweener(winPhasePanelTweener);
         winPhasePanelTweener = _panel.transform.DOLocalMoveX(panelEndPositionX, statsinTweenTime).SetEase(panelEase).OnComplete(() => ResetPanel(_panel)).SetUpdate(true);
     }
 
@@ -634,7 +630,7 @@ public class UIManager : Singleton<UIManager>
         if (_canvas == null) return;
 
         _canvas.gameObject.SetActive(true);
-        KillTweener(fadeTweener);
+        TweenX.KillTweener(fadeTweener);
             fadeTweener = _canvas.DOFade(1, canvasFadeTime);
     }
 
@@ -642,7 +638,7 @@ public class UIManager : Singleton<UIManager>
     {
         if (_canvas == null) return;
 
-        KillTweener(fadeTweener);
+        TweenX.KillTweener(fadeTweener);
         fadeTweener = _canvas.DOFade(0, canvasFadeTime).OnComplete(()=> _canvas.gameObject.SetActive(false));
     }
 
@@ -747,7 +743,7 @@ public class UIManager : Singleton<UIManager>
     #region Tools
     public void OnFyrePlaced()
     {
-        fyreTimeLeft = fyreMaxTimeLeft;
+        fyreTimeLeft = _DATA.GetTool(ToolID.Fyre).cooldownTime;
         fyreTool.SetInteractable(false);
         fyreAvailable = false;
     }
@@ -759,7 +755,7 @@ public class UIManager : Singleton<UIManager>
             if (fyreTimeLeft >= 0)
             {
                 fyreTimeLeft -= Time.deltaTime;
-                fyreTool.CooldownFill(MathX.MapTo01(fyreTimeLeft, 0, fyreMaxTimeLeft));
+                fyreTool.CooldownFill(MathX.MapTo01(fyreTimeLeft, 0, _DATA.GetTool(ToolID.Fyre).cooldownTime));
             }
             else
             {
@@ -771,7 +767,7 @@ public class UIManager : Singleton<UIManager>
 
     public void OnStormerPlaced()
     {
-        stormerTimeLeft = stormerMaxTimeLeft;
+        stormerTimeLeft = _DATA.GetTool(ToolID.Stormer).cooldownTime;
         stormerTool.SetInteractable(false);
         stormerAvailable = false;
     }
@@ -783,7 +779,7 @@ public class UIManager : Singleton<UIManager>
             if (stormerTimeLeft >= 0)
             {
                 stormerTimeLeft -= Time.deltaTime;
-                stormerTool.CooldownFill(MathX.MapTo01(stormerTimeLeft, 0, stormerMaxTimeLeft));
+                stormerTool.CooldownFill(MathX.MapTo01(stormerTimeLeft, 0, _DATA.GetTool(ToolID.Stormer).cooldownTime));
             }
             else
             {
@@ -795,7 +791,7 @@ public class UIManager : Singleton<UIManager>
 
     public void OnRunePlaced()
     {
-        runeTimeLeft = runeMaxTimeLeft;
+        runeTimeLeft = _DATA.GetTool(ToolID.Rune).cooldownTime;
         runeTool.SetInteractable(false);
         runeAvailable = false;
         //print(_GM.runesCount + " = " + _GM.runesMaegenCost.Length);
@@ -808,7 +804,7 @@ public class UIManager : Singleton<UIManager>
             if (runeTimeLeft >= 0)
             {
                 runeTimeLeft -= Time.deltaTime;
-                runeTool.CooldownFill(MathX.MapTo01(runeTimeLeft, 0, runeMaxTimeLeft));
+                runeTool.CooldownFill(MathX.MapTo01(runeTimeLeft, 0, _DATA.GetTool(ToolID.Rune).cooldownTime));
             }
             else
             {

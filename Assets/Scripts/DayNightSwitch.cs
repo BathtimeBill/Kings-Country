@@ -30,7 +30,7 @@ public class DayNightSwitch : GameBehaviour
 
     public void TweenSunRotation(Vector3 endVector, float time)
     {
-        KillTweener(sunTweener);
+        TweenX.KillTweener(sunTweener);
         sunTweener = sun.transform.DORotate(endVector, time).SetEase(Ease.InOutSine); 
     }
 

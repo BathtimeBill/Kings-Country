@@ -6,8 +6,12 @@ public class Settings : ScriptableObject
     [Header("Camera Shakes")]
     public CameraShake cameraShake;
 
+    [Header("Tween Stuff")]
+    public Tweening tweening;
+
     [Header("Colours")]
     public Colours colours;
+
 }
 
 [System.Serializable]
@@ -29,4 +33,13 @@ public class CameraShake
     public float shakeRandomness = 90f;
     public float fyreShakeIntensity = 2.0f;
     public float stormerShakeIntensity = 3.0f;
+}
+
+[System.Serializable]
+public class Tweening
+{
+    public float UIButtonTweenTime = 0.3f;
+    public DG.Tweening.Ease UIButtonTweenEase;
+    public float titlePanelTweenTime = 0.5f;
+    public DG.Tweening.Ease titlePanelTweenEase;
 }
