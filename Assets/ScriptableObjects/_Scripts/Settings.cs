@@ -22,7 +22,12 @@ public class Colours
     public Color upgradeIconsColor;
     public Color titleColor;
     public Color descriptionColor;
+    public Color upgradeIncreaseColor;
+    public Color upgradeDecreaseColor;
     public Gradient treePercentageGradient;
+
+    public string GetIncreaseColorString => ColorX.GetColorHex(upgradeIncreaseColor);
+    public string GetDecreaseColorString => ColorX.GetColorHex(upgradeDecreaseColor);
 }
 
 [System.Serializable]

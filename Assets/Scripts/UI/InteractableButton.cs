@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InteractableButton : GameBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class InteractableButton : GameBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     [HideInInspector]
     public Button button;
@@ -27,6 +27,8 @@ public class InteractableButton : GameBehaviour, IPointerEnterHandler, IPointerE
     public virtual void OnPointerExit(PointerEventData eventData) {}
 
     public virtual void OnPointerClick(PointerEventData eventData) {}
+    public virtual void OnPointerDown(PointerEventData eventData) {}
+    public virtual void OnPointerUp(PointerEventData eventData) {}
 
     #region Editor
 #if UNITY_EDITOR

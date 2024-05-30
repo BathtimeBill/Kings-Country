@@ -425,6 +425,7 @@ public class UIManager : Singleton<UIManager>
     public void SetError(ErrorID _errorID)
     {
         string errorMessage = "";
+        AudioClip errorClip = _SM.warningSound;
         switch (_errorID)
         {
             case ErrorID.TooClose:
@@ -476,7 +477,7 @@ public class UIManager : Singleton<UIManager>
         }
 
         errorText.text = errorMessage;
-        _SM.PlaySound(_SM.warningSound);
+        _SM.PlaySound(errorClip);
         errorAnim.SetTrigger("Error");
 
         //errorTweener.Restart();

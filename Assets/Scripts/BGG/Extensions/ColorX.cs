@@ -126,4 +126,9 @@ public static class ColorX
         temp.a = _to;
         _ren.material.color = temp;
     }
+
+    static public string GetColorHex(Color _color)
+    {
+        return ColorUtility.ToHtmlStringRGBA(_color);
+    }
 }
