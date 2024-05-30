@@ -150,7 +150,7 @@ public class GameManager : Singleton<GameManager>
         playmode = PlayMode.DefaultMode;
         SetGame();
         trees.AddRange(GameObject.FindGameObjectsWithTag("Tree"));
-        if(!skipIntro) 
+        if (!skipIntro)
             StartCoroutine(EndOfIntroCamera());
         _UI.CheckTreeUI();
         peaceTime = true;
@@ -178,7 +178,7 @@ public class GameManager : Singleton<GameManager>
     public void ChangeGameState(GameState _gameState)
     {
         gameState = _gameState;
-        switch(gameState)
+        switch (gameState)
         {
             case GameState.Intro:
                 Time.timeScale = 1;
@@ -226,6 +226,12 @@ public class GameManager : Singleton<GameManager>
         grain.intensity.value = 1;
         Time.timeScale = 3;
     }
+
+    public void ToggleSpeed()
+    {
+        
+    }
+        
 
     public void IncreaseMaegen(int _value)
     {
