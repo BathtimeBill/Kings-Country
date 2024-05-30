@@ -37,8 +37,7 @@ public class HomeTree : GameBehaviour
     {
         if(_GM.maegen < _GM.satyrPrice)
         {
-            _UI.SetErrorMessageInsufficientMaegen();
-            _PC.Error();
+            _UI.SetError(ErrorID.InsufficientMaegen);
             return;
         }
 
@@ -52,8 +51,7 @@ public class HomeTree : GameBehaviour
         }
         else
         {
-            _UI.SetErrorMessageMaxPop();
-            _PC.Error();
+            _UI.SetError(ErrorID.MaxPopulation);
         }
     }
     //Checks to see if the player has enough resources and then spawns a Orcus unit in front of the Home Tree. Is called when a button is pressed in the UI.
@@ -61,8 +59,7 @@ public class HomeTree : GameBehaviour
     {
         if (_GM.maegen < _GM.orcusPrice)
         {
-            _UI.SetErrorMessageInsufficientMaegen();
-            _PC.Error();
+            _UI.SetError(ErrorID.InsufficientMaegen);
             return;
         }
 
@@ -76,8 +73,7 @@ public class HomeTree : GameBehaviour
         }
         else
         {
-            _UI.SetErrorMessageMaxPop();
-            _PC.Error();
+            _UI.SetError(ErrorID.MaxPopulation);
         }
     }
     //Checks to see if the player has enough resources and then spawns a Leshy unit in front of the Home Tree. Is called when a button is pressed in the UI.
@@ -85,14 +81,12 @@ public class HomeTree : GameBehaviour
     {
         if (_GM.maegen < _GM.leshyPrice)
         {
-            _UI.SetErrorMessageInsufficientMaegen();
-            _PC.Error();
+            _UI.SetError(ErrorID.InsufficientMaegen);
             return;
         }
 
         if(_GM.populous < _GM.maxPopulous)
         {
-            print("Max");
             _GM.DecreaseMaegen(_GM.leshyPrice);
             Instantiate(leshy, spawnLocation.transform.position, spawnLocation.transform.rotation);
             Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
@@ -101,8 +95,7 @@ public class HomeTree : GameBehaviour
         }
         else
         {
-            _UI.SetErrorMessageMaxPop();
-            _PC.Error();
+            _UI.SetError(ErrorID.MaxPopulation);
         }
 
     }

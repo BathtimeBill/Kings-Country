@@ -34,6 +34,8 @@ public class GameBehaviour : BV.Behaviour
     public bool gameFinished => _GM.gameState == GameState.Finish;
 
     public Settings _SETTINGS => _DATA.settings;
+    public Tweening _TWEENING => _DATA.settings.tweening;
+    public Colours _COLOUR => _DATA.settings.colours;
 }
 
 
@@ -196,4 +198,22 @@ public enum LevelButton
     Three,
     Four,
     Five,
+}
+
+public enum ErrorID
+{
+    TooClose,
+    TooFar,
+    InsufficientMaegen,
+    InsufficientResources,
+    MaxPopulation,
+    ToolCooldown,
+    TooManyTrees,
+    CantPlaceTrees,
+    ForestUnderAttack,
+    WildlifeUnderAttack,
+    ClaimSite,
+    TooCloseToTower,
+    OutOfBounds,
+    SpyClose
 }

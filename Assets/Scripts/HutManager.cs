@@ -99,15 +99,12 @@ public class HutManager : Singleton<HutManager>
             }
             else
             {
-                _UI.SetErrorMessageInsufficientResources();
-                _PC.Error();
-
+                _UI.SetError(ErrorID.InsufficientResources);
             }
         }
         else
         {
-            _UI.SetErrorMessageNeedToClaimHorgr();
-            _PC.Error();
+            _UI.SetError(ErrorID.ClaimSite);
         }
     }
     public void SpawnGoblinManager()
@@ -123,14 +120,12 @@ public class HutManager : Singleton<HutManager>
             }
             else
             {
-                _UI.SetErrorMessageInsufficientResources();
-                _PC.Error();
+                _UI.SetError(ErrorID.InsufficientResources);
             }
         }
         else
         {
-            _UI.SetErrorMessageNeedToClaimHorgr();
-            _PC.Error();
+            _UI.SetError(ErrorID.ClaimSite);
         }
     }
     public void SpawnFidhainManager()
@@ -146,14 +141,12 @@ public class HutManager : Singleton<HutManager>
             }
             else
             {
-                _UI.SetErrorMessageInsufficientResources();
-                _PC.Error();
+                _UI.SetError(ErrorID.InsufficientResources);
             }
         }
         else
         {
-            _UI.SetErrorMessageNeedToClaimHorgr();
-            _PC.Error();
+            _UI.SetError(ErrorID.ClaimSite);
         }
     }
 

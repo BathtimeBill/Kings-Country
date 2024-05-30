@@ -319,13 +319,11 @@ public class Unit : GameBehaviour
                 }
                 if (isTooCloseToTower == true)
                 {
-                    _UI.SetErrorMessageTooCloseToTower();
-                    _PC.Error();
+                    _UI.SetError(ErrorID.TooCloseToTower);
                 }
                 if (isOutOfBounds == true && isTooCloseToTower == false)
                 {
-                    _UI.SetErrorMessageOutOfBounds();
-                    _PC.Error();
+                    _UI.SetError(ErrorID.OutOfBounds);
                 }
             }
 

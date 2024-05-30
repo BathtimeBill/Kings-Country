@@ -173,7 +173,6 @@ public class EnemyManager : Singleton<EnemyManager>
         {
             GameEvents.ReportOnWaveOver();
             _GM.canFinishWave = false;
-            _UI.nextRoundButton.interactable = true;
             _GM.peaceTime = true;
             StopCoroutine(CheckForEnemiesLeft());
         }

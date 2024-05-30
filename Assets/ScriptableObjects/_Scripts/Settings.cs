@@ -42,4 +42,7 @@ public class Tweening
     public DG.Tweening.Ease UIButtonTweenEase;
     public float titlePanelTweenTime = 0.5f;
     public DG.Tweening.Ease titlePanelTweenEase;
+    public float errorTweenTime = 0.2f;
+    public float errorTweenDuration = 2f;
+    public DG.Tweening.Ease errorTweenEase;
 }

@@ -12,7 +12,10 @@ public class UIManager : Singleton<UIManager>
     public TMP_Text wildlifeText;
     public TMP_Text populousText;
     public TMP_Text waveText;
+
+    [Header("Error")]
     public TMP_Text errorText;
+    Animator errorAnim;
 
     [Header("Bottom")]
     public TMP_Text unitPanelMaegenText;
@@ -68,7 +71,7 @@ public class UIManager : Singleton<UIManager>
     public TMP_Text waveTitleText;
     
     public Animator waveTextAnimator;
-    public Button nextRoundButton;
+    public Button startWaveButton;
     public Button treetoolButton;
 
     [Header("Day End Stats")]
@@ -152,6 +155,7 @@ public class UIManager : Singleton<UIManager>
     Tweener blackoutCanvasTweener;
     Tweener fadeTweener;
     Tweener maegenTweener, maegenColourTweener;
+    Tweener errorTweener;
 
     public string dayMessage = "Day";
     public string nightMessage = "Night";
@@ -181,6 +185,9 @@ public class UIManager : Singleton<UIManager>
 
         treePercentageModifier.alpha = 0f;
         treePercentageModifier.gameObject.SetActive(false);
+
+        errorAnim = errorText.GetComponent<Animator>();
+        errorText.DOFade(0, 0);
     }
 
     private void TurnOffIcons()
@@ -236,6 +243,7 @@ public class UIManager : Singleton<UIManager>
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
                 break;
             case GameState.Play:
+                startWaveButton.interactable = false;
                 TweenX.KillTweener(inGameCanvasTweener);
                 inGameCanvas.interactable = true;
                 inGameCanvasTweener = inGameCanvas.DOFade(1, 0.2f).SetUpdate(true);
@@ -243,6 +251,7 @@ public class UIManager : Singleton<UIManager>
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0, 0.2f).SetUpdate(true);
                 break;
             case GameState.Build:
+                startWaveButton.interactable = true;
                 TweenX.KillTweener(inGameCanvasTweener);
                 inGameCanvas.interactable = true;
                 inGameCanvasTweener = inGameCanvas.DOFade(1, 0.2f).SetUpdate(true);
@@ -411,68 +420,131 @@ public class UIManager : Singleton<UIManager>
         wildlifeText.text = _GM.wildlife.ToString();
     }
 
+
     #region error messages
-    public void SetErrorMessageTooClose()
+    public void SetError(ErrorID _errorID)
     {
-        errorText.text = "";
-    }
-    public void SetErrorMessageTooFar()
-    {
-        errorText.text = "Too far away from the forest";
-    }
-    public void SetErrorMessageInsufficientMaegen()
-    {
-        errorText.text = "Not enough Maegen";
-    }
-    public void SetErrorMessageMaxPop()
-    {
-        errorText.text = "You are at maximum population";
+        string errorMessage = "";
+        switch (_errorID)
+        {
+            case ErrorID.TooClose:
+                errorMessage = "";
+                break;
+            case ErrorID.TooFar:
+                errorMessage = "Too far away from the forest";
+                break;
+            case ErrorID.InsufficientMaegen:
+                errorMessage = "Not enough Maegen";
+                break;
+            case ErrorID.InsufficientResources:
+                errorMessage = "Not enough resources";
+                break;
+            case ErrorID.MaxPopulation:
+                errorMessage = "You are at maximum population";
+                break;
+            case ErrorID.ToolCooldown:
+                errorMessage = "Can't place until cooldown has ended";
+                break;
+            case ErrorID.TooManyTrees:
+                errorMessage = "There are too many trees in the forest";
+                break;
+            case ErrorID.CantPlaceTrees:
+                errorMessage = "Can't place trees while the enemy is attacking";
+                break;
+            case ErrorID.ForestUnderAttack:
+                errorMessage = "Your forest is under attack!";
+                break;
+            case ErrorID.WildlifeUnderAttack:
+                errorMessage = "Your wildlife is under attack!";
+                break;
+            case ErrorID.ClaimSite:
+                errorMessage = "You need to claim this site";
+                break;
+            case ErrorID.TooCloseToTower:
+                errorMessage = "Too close to another tower";
+                break;
+            case ErrorID.OutOfBounds:
+                errorMessage = "Too far away from the Home Tree";
+                break;
+            case ErrorID.SpyClose:
+                errorMessage = "A Spy is close by!";
+                break;
+            default:
+                errorMessage = "";
+                break;
+
+        }
+
+        errorText.text = errorMessage;
+        _SM.PlaySound(_SM.warningSound);
+        errorAnim.SetTrigger("Error");
+
+        //errorTweener.Restart();
+        //errorTweener = errorText.DOFade(1, _TWEENING.errorTweenTime).SetEase(_TWEENING.errorTweenEase).OnComplete(() => errorText.DOFade(0, _TWEENING.errorTweenTime).SetEase(_TWEENING.errorTweenEase).SetDelay(_TWEENING.errorTweenDuration));
+        //TweenX.KillTweener(errorTweener);
     }
 
-    public void SetErrorMessageInsufficientResources()
-    {
-        errorText.text = "Not enough resources";
-    }
-    public void SetErrorMessageBeaconCooldown()
-    {
-        errorText.text = "Can't place until cooldown has ended";
-    }
-    public void SetErrorMessageTooManyTrees()
-    {
-        errorText.text = "There are too many trees in the forest";
-    }
-    public void SetErrorMessageYouAreUnderAttack()
-    {
-        errorText.text = "Your forest is under attack!";
-    }
-    public void SetErrorMessageYourWildlifeIsUnderAttack()
-    {
-        errorText.text = "Your wildlife is under attack!";
-    }
-    public void SetErrorMessageNeedToClaimHorgr()
-    {
-        errorText.text = "You need to claim this site";
-    }
-    public void SetErrorMessageCantPlaceTrees()
-    {
-        errorText.text = "Can't place trees while the enemy is attacking";
-    }
-    public void SetErrorMessageTooCloseToTower()
-    {
-        errorText.text = "Too close to another tower";
-    }
-    public void SetErrorMessageOutOfBounds()
-    {
-        errorText.text = "Too far away from the Home Tree";
-    }
-    public void SetErrorMessageSpy()
-    {
-        errorText.text = "A Spy is close by!";
-    }
-    public void SetErrorMessageCannotPlace()
-    {
-        errorText.text = "";
-    }
+    //public void SetErrorMessageTooClose()
+    //{
+    //    errorText.text = "";
+    //}
+    //public void SetErrorMessageTooFar()
+    //{
+    //    errorText.text = "Too far away from the forest";
+    //}
+    //public void SetErrorMessageInsufficientMaegen()
+    //{
+    //    errorText.text = "Not enough Maegen";
+    //}
+    //public void SetErrorMessageMaxPop()
+    //{
+    //    errorText.text = "You are at maximum population";
+    //}
+
+    //public void SetErrorMessageInsufficientResources()
+    //{
+    //    errorText.text = "Not enough resources";
+    //}
+    //public void SetErrorMessageBeaconCooldown()
+    //{
+    //    errorText.text = "Can't place until cooldown has ended";
+    //}
+    //public void SetErrorMessageTooManyTrees()
+    //{
+    //    errorText.text = "There are too many trees in the forest";
+    //}
+    //public void SetErrorMessageYouAreUnderAttack()
+    //{
+    //    errorText.text = "Your forest is under attack!";
+    //}
+    //public void SetErrorMessageYourWildlifeIsUnderAttack()
+    //{
+    //    errorText.text = "Your wildlife is under attack!";
+    //}
+    //public void SetErrorMessageNeedToClaimHorgr()
+    //{
+    //    errorText.text = "You need to claim this site";
+    //}
+    //public void SetErrorMessageCantPlaceTrees()
+    //{
+    //    errorText.text = "Can't place trees while the enemy is attacking";
+    //}
+    //public void SetErrorMessageTooCloseToTower()
+    //{
+    //    errorText.text = "Too close to another tower";
+    //}
+    //public void SetErrorMessageOutOfBounds()
+    //{
+    //    errorText.text = "Too far away from the Home Tree";
+    //}
+    //public void SetErrorMessageSpy()
+    //{
+    //    errorText.text = "A Spy is close by!";
+    //}
+    //public void SetErrorMessageCannotPlace()
+    //{
+    //    errorText.text = "";
+    //}
     #endregion
 
     #region Wave Over

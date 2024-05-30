@@ -28,6 +28,7 @@ public static class GameEvents
     public static event Action OnJustStragglers = null;
     public static event Action OnCollectMaegenButton = null;
 
+    public static event Action OnWaveStart = null;
     public static event Action OnWaveBegin = null;
     public static event Action OnWaveOver = null;
     public static event Action OnContinueButton = null;

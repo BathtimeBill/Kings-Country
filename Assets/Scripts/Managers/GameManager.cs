@@ -241,10 +241,17 @@ public class GameManager : Singleton<GameManager>
         GameEvents.ReportOnMaegenChange(maegen);
     }
 
+    private void OnWaveBegin()
+    {
+        ChangeGameState(GameState.Play);
+        StartCoroutine(ManageWaveAgro());
+        StartCoroutine(WaitForCanFinishWave());
+        //boundry.SetActive(false);
+    }
+
     //The wave system is managed by two coroutines. The 'agro' wave lasts 1 minute, during which enemies are spawned in (EnemyManager) and then a break period of 4 mins. 
     IEnumerator ManageWaveAgro()
     {
-        _UI.nextRoundButton.interactable = false;
         _GM.peaceTime = false;
         agroWave = true;
         currentWave++;
@@ -282,8 +289,6 @@ public class GameManager : Singleton<GameManager>
     {
         StartCoroutine(ManageWaveAgro());
         StartCoroutine(WaitForCanFinishWave());
-        GameEvents.ReportOnWaveBegin();
-        //_SM.PlaySound(_SM.waveBeginSound);
     }
 
     public void AddRune(GameObject _rune)
@@ -360,8 +365,7 @@ public class GameManager : Singleton<GameManager>
     {
         if(timeSinceAttack > 30)
         {
-            _UI.SetErrorMessageYouAreUnderAttack();
-            _PC.Error();
+            _UI.SetError(ErrorID.ForestUnderAttack);
             _UI.warningAudioSource.clip = _SM.warningSound;
             _UI.warningAudioSource.Play();
         }
@@ -394,11 +398,7 @@ public class GameManager : Singleton<GameManager>
     //{
     //    StopCoroutine(CheckForCollectMaegen());
     //}
-    private void OnWaveBegin()
-    {
-        gameState = GameState.Play;
-        //boundry.SetActive(false);
-    }
+    
     private void OnWispDestroy()
     {
         if(maegen > maxMaegen)
@@ -424,8 +424,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (timeSinceWildlifeKilled > 30)
         {
-            _UI.SetErrorMessageYourWildlifeIsUnderAttack();
-            _PC.Error();
+            _UI.SetError(ErrorID.WildlifeUnderAttack);
             _UI.warningAudioSource.clip = _SM.warningSound;
             _UI.warningAudioSource.Play();
         }

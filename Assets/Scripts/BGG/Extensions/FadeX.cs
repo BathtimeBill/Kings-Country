@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class FadeX : MonoBehaviour
 {
-    public static void FadeInPanel(CanvasGroup _canvasGroup, float _tweenTime = 0.5f)
+    public static void FadeInPanel(CanvasGroup _canvasGroup, float _tweenTime = 0.3f)
     {
         if (_canvasGroup.alpha == 1) return;
 
@@ -14,7 +14,7 @@ public class FadeX : MonoBehaviour
         _canvasGroup.blocksRaycasts = true;
     }
 
-    public static void FadeOutPanel(CanvasGroup _canvasGroup, float _tweenTime = 0.5f)
+    public static void FadeOutPanel(CanvasGroup _canvasGroup, float _tweenTime = 0.3f)
     {
         if (_canvasGroup.alpha == 0) return;
 

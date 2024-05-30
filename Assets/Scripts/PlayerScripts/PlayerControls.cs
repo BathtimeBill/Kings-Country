@@ -361,19 +361,16 @@ public class PlayerControls : Singleton<PlayerControls>
                         }
                         if (_TPlace.tooFarAway == true)
                         {
-                            _UI.SetErrorMessageTooFar();
-                            Error();
+                            _UI.SetError(ErrorID.TooFar);
                         }
                         if (_TPlace.insufficientMaegen == true)
                         {
-                            _UI.SetErrorMessageInsufficientMaegen();
-                            Error();
+                            _UI.SetError(ErrorID.InsufficientMaegen);
                         }
                     }
                     else
                     {
-                        _UI.SetErrorMessageTooManyTrees();
-                        Error();
+                        _UI.SetError(ErrorID.TooManyTrees);
                     }
                 }
                 //Runes
@@ -452,12 +449,6 @@ public class PlayerControls : Singleton<PlayerControls>
 
             }
         }
-    }
-
-    public void Error()
-    {
-        errorAnimator.SetTrigger("Error");
-        audioSource.Play();
     }
 
     #region Raycasting

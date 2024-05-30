@@ -113,15 +113,12 @@ public class HorgrManager : Singleton<HorgrManager>
             }
             else
             {
-                _UI.SetErrorMessageInsufficientResources();
-                _PC.Error();
-
+                _UI.SetError(ErrorID.InsufficientResources);
             }
         }
        else
         {
-            _UI.SetErrorMessageNeedToClaimHorgr();
-            _PC.Error();
+            _UI.SetError(ErrorID.ClaimSite);
         }
     }
     public void SpawnHuldraManager()
@@ -142,14 +139,12 @@ public class HorgrManager : Singleton<HorgrManager>
             }
             else
             {
-                _UI.SetErrorMessageInsufficientResources();
-                _PC.Error();
+                _UI.SetError(ErrorID.InsufficientResources);
             }
         }
         else
         {
-            _UI.SetErrorMessageNeedToClaimHorgr();
-            _PC.Error();
+            _UI.SetError(ErrorID.ClaimSite);
         }
     }
     public void SpawnGolemManager()
@@ -166,14 +161,12 @@ public class HorgrManager : Singleton<HorgrManager>
             }
             else
             {
-                _UI.SetErrorMessageInsufficientResources();
-                _PC.Error();
+                _UI.SetError(ErrorID.InsufficientResources);
             }
         }
         else
         {
-            _UI.SetErrorMessageNeedToClaimHorgr();
-            _PC.Error();
+            _UI.SetError(ErrorID.ClaimSite);
         }
     }
     void OnContinueButton()
