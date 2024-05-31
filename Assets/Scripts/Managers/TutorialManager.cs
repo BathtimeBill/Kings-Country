@@ -69,7 +69,7 @@ public class TutorialManager : Singleton<TutorialManager>
     //}
     void Start()
     {
-        _SAVE.Load();
+        //_SAVE.Load();
         CheckTutorial();
         StartCoroutine(WaitForStartCamera());
         //if (newTutorialButton != null)
@@ -90,14 +90,14 @@ public class TutorialManager : Singleton<TutorialManager>
             StartCoroutine(WaitForToolsTutorial());
             FirstPlayTutorial();
         }
-        if (_SAVE.lvl2Complete == false && _GM.level == LevelNumber.Two)
-        {
-            NewTutorialAvailable(7, "Witch's Hut");
-        }
-        if (_SAVE.lvl3Complete == false && _GM.level == LevelNumber.Three)
-        {
-            NewTutorialAvailable(6, "Horgr Shrine");
-        }
+        //if (_SAVE.lvl2Complete == false && _GM.level == LevelNumber.Two)
+        //{
+        //    NewTutorialAvailable(7, "Witch's Hut");
+        //}
+        //if (_SAVE.lvl3Complete == false && _GM.level == LevelNumber.Three)
+        //{
+        //    NewTutorialAvailable(6, "Horgr Shrine");
+        //}
     }
     public void FirstPlayTutorial()
     {
@@ -443,7 +443,7 @@ public class TutorialManager : Singleton<TutorialManager>
             }
         }
     }
-    void OnGameWin()
+    void OnLevelWin(LevelID _levelID, int _score, int _maegen)
     {
         firstPlay = true;
     }
@@ -485,7 +485,7 @@ public class TutorialManager : Singleton<TutorialManager>
         GameEvents.OnWaveBegin += OnStartNextRound;
         GameEvents.OnWaveOver += OnWaveOver;
         GameEvents.OnContinueButton += OnContinueButton;
-        GameEvents.OnGameWin += OnGameWin;
+        GameEvents.OnLevelWin += OnLevelWin;
         GameEvents.OnMineSpawned += OnMineSpawned;
         GameEvents.OnLordSpawned += OnLordSpawned;
         GameEvents.OnSpySpawned += OnSpySpawned;
@@ -497,7 +497,7 @@ public class TutorialManager : Singleton<TutorialManager>
         GameEvents.OnWaveBegin -= OnStartNextRound;
         GameEvents.OnWaveOver -= OnWaveOver;
         GameEvents.OnContinueButton -= OnContinueButton;
-        GameEvents.OnGameWin -= OnGameWin;
+        GameEvents.OnLevelWin -= OnLevelWin;
         GameEvents.OnMineSpawned -= OnMineSpawned;
         GameEvents.OnLordSpawned -= OnLordSpawned;
         GameEvents.OnSpySpawned -= OnSpySpawned;

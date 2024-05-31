@@ -24,11 +24,11 @@ public class TogglePanel : GameBehaviour
     {
         unitPanel.transform.DOMoveY(hidePos, 0);
 
-        homeTreeButton.SetActive(_LEVEL.getCurrentLevel.availableBuildings.Contains(BuildingID.HomeTree));
+        homeTreeButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(BuildingID.HomeTree));
 
-        hutButton.SetActive(_LEVEL.getCurrentLevel.availableBuildings.Contains(BuildingID.Hut));
+        hutButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(BuildingID.Hut));
 
-        horgrButton.SetActive(_LEVEL.getCurrentLevel.availableBuildings.Contains(BuildingID.Hogyr));
+        horgrButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(BuildingID.Hogyr));
     }
 
     public void ShowPanel(BuildingID _baseID)

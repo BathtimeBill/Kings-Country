@@ -33,10 +33,10 @@ public class OverWorldManager : Singleton<OverWorldManager>
     public IEnumerator WaitForLoadGame()
     {
         yield return new WaitForEndOfFrame();
-        _SAVE.Load();
+        //_SAVE.Load();
         yield return new WaitForEndOfFrame();
-        overWorldMaegen = _SAVE.overworldMaegen;
-        overWorldMaegenTotal = _SAVE.overworldMaegenTotal;
+        //overWorldMaegen = _SAVE.overworldMaegen;
+       // overWorldMaegenTotal = _SAVE.overworldMaegenTotal;
         maegenText.text = overWorldMaegenTotal.ToString();
     }
 
@@ -104,20 +104,20 @@ public class OverWorldManager : Singleton<OverWorldManager>
         //levelScreenshot = GameObject.FindGameObjectWithTag("LevelScreenshot").GetComponent<Image>();
         //levelDescriptionPanel = GameObject.FindGameObjectWithTag("Contents");
 }
-    private void OnGameWin()
+    private void OnLevelWin(LevelID _levelID, int _score, int _maegen)
     {
         overWorldMaegen = _GM.maegen;
         overWorldMaegenTotal += overWorldMaegen;
         hasComeFromWin = true;
-        _SAVE.OverworldSave();
+        //_SAVE.OverworldSave();
     }
     private void OnEnable()
     {
-        GameEvents.OnGameWin += OnGameWin;
+        GameEvents.OnLevelWin += OnLevelWin;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnGameWin -= OnGameWin;
+        GameEvents.OnLevelWin -= OnLevelWin;
     }
 }

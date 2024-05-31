@@ -23,7 +23,7 @@ public static class GameEvents
     public static event Action OnRuneDestroyed = null;
 
     public static event Action OnGameOver = null;
-    public static event Action OnGameWin = null;
+    public static event Action<LevelID, int, int> OnLevelWin = null;
 
     public static event Action OnJustStragglers = null;
     public static event Action OnCollectMaegenButton = null;
@@ -170,9 +170,9 @@ public static class GameEvents
     {
         OnJustStragglers?.Invoke();
     }
-    public static void ReportOnGameWin()
+    public static void ReportOnGameWin(LevelID _levelID, int _score, int _maegen)
     {
-        OnGameWin?.Invoke();
+        OnLevelWin?.Invoke(_levelID, _score, _maegen);
     }
     /*public static void ReportOnHomeTreeUpgrade()
     {

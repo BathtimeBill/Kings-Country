@@ -20,13 +20,12 @@ public class GameBehaviour : BV.Behaviour
     protected static ForestManager _FM { get { return ForestManager.instance; } }
     protected static TooltipManager _Tool { get { return TooltipManager.instance; } }
     protected static SpyManager _SPYM { get { return SpyManager.instance; } }
-    protected static SaveData _SAVE { get { return SaveData.instance; } }
-    protected static ScoreManager _SCORE { get { return ScoreManager.instance; } }
     protected static OverWorldManager _OM { get { return OverWorldManager.instance; } }
     protected static SceneManagement _SCENE { get { return SceneManagement.instance; } }
     protected static PerkManager _PERK { get { return PerkManager.instance; } }
     protected static LevelManager _LEVEL { get { return LevelManager.instance; } }
     protected static GameData _DATA { get { return GameData.instance; } }
+    protected static SaveManager _GAMESAVE { get { return SaveManager.instance; } }
 
     public bool hasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build;
     public bool isPaused => _GM.gameState == GameState.Pause;
@@ -198,6 +197,11 @@ public enum LevelButton
     Three,
     Four,
     Five,
+}
+
+public enum DifficultyRating
+{
+    OneStar, TwoStar, ThreeStar, FourStar, FiveStar,
 }
 
 public enum ErrorID

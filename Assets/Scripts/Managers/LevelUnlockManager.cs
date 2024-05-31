@@ -32,7 +32,7 @@ public class LevelUnlockManager : GameBehaviour
     IEnumerator WaitForLoadGame()
     {
         yield return new WaitForSeconds(0.1f);
-        _SAVE.Load();
+        /*_SAVE.Load();
 
         if(_SAVE.hasComeFromWin == true)
         {
@@ -51,6 +51,6 @@ public class LevelUnlockManager : GameBehaviour
         level3HighScore = _SAVE.level3Score;
         level4HighScore = _SAVE.level4Score;
         level5HighScore = _SAVE.level5Score;
-        _OM.hasComeFromWin = false;
+        _OM.hasComeFromWin = false;*/
     }
 }

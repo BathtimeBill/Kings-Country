@@ -80,7 +80,7 @@ public class MusicManager : Singleton<MusicManager>
     {
         musicPlayer.Stop();
     }
-    public void OnGameWin()
+    public void OnLevelWin(LevelID _levelID, int _score, int _maegen)
     {
         musicPlayer.Stop();
         musicPlayer.clip = winMusic;
@@ -89,7 +89,7 @@ public class MusicManager : Singleton<MusicManager>
     private void OnEnable()
     {
         GameEvents.OnGameOver += OnGameOver;
-        GameEvents.OnGameWin += OnGameWin;
+        GameEvents.OnLevelWin += OnLevelWin;
         GameEvents.OnWaveOver += OnWaveOver;
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnWaveBegin += OnStartNextRound;
@@ -98,7 +98,7 @@ public class MusicManager : Singleton<MusicManager>
     private void OnDisable()
     {
         GameEvents.OnGameOver -= OnGameOver;
-        GameEvents.OnGameWin -= OnGameWin;
+        GameEvents.OnLevelWin -= OnLevelWin;
         GameEvents.OnWaveOver -= OnWaveOver;
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnWaveBegin -= OnStartNextRound;

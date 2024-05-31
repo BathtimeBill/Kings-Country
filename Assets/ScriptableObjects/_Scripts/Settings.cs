@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Settings", menuName = "BGG/Settings", order = 1)]
@@ -12,6 +13,11 @@ public class Settings : ScriptableObject
     [Header("Colours")]
     public Colours colours;
 
+    [Header("Audio")]
+    public AudioVariables audio;
+
+    [Header("Vibration")]
+    public Vibration vibration;
 }
 
 [System.Serializable]
@@ -50,4 +56,20 @@ public class Tweening
     public float errorTweenTime = 0.2f;
     public float errorTweenDuration = 2f;
     public DG.Tweening.Ease errorTweenEase;
+}
+
+[Serializable]
+public class AudioVariables
+{
+    public float soundVolume = 1f;
+    public bool sound = true;
+    public float musicVolume = 1f;
+    public bool music = true;
+}
+
+[Serializable]
+public class Vibration
+{
+    public bool vibrateOn = true;
+    public float[] vibrateStrength; //Perfect, Great, Good
 }

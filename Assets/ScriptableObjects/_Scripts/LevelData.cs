@@ -1,22 +1,17 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "Level Settings", menuName = "BGG/Level Settings", order = 6)]
-public class LevelSettings : ScriptableObject
+[CreateAssetMenu(fileName = "Level Data", menuName = "BGG/Level Data", order = 6)]
+public class LevelData : ScriptableObject
 {
-    [BV.EnumList(typeof(LevelID))]
-    public List<Level> levels;
-}
-[System.Serializable]
-public class Level
-{
-    public LevelID levelID;
+    public LevelID id;
     public LevelNumber number;
+    public DifficultyRating difficultyRating;
     public List<BuildingID> availableBuildings;
     public List<ToolID> availableTrees;
     public List<WoodcutterType> availableLoggers;
     public List<HunterType> availableHunters;
     public List<WarriorType> availableWarriors;
     public int enemySpawnLocations;
-    public int waves;
+    public int days;
 }

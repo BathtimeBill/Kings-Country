@@ -46,11 +46,11 @@ public class SceneManagement : Singleton<SceneManagement>
     public void CloseOverworldScreen()
     {
         overworldScreen.SetActive(false);
-        _SAVE.OverworldSave();   
+        //_SAVE.OverworldSave();   
     }
     public void OpenOverworldScreen()
     {
-        _SAVE.Load();
+        //_SAVE.Load();
         StartCoroutine(_OM.WaitForLoadGame());
         overworldScreen.SetActive(true);
 
@@ -62,7 +62,7 @@ public class SceneManagement : Singleton<SceneManagement>
     }
     public void LoadScene()
     {
-        _SAVE.OverworldSave();
+        //_SAVE.OverworldSave();
         loadingScreen.SetActive(true);
         loadingOperation = SceneManager.LoadSceneAsync("Level" + selectedLevel.ToString());
         
@@ -134,7 +134,7 @@ public class SceneManagement : Singleton<SceneManagement>
             waveNumberText.text = "10";
             enemySpawnText.text = "3";
             challengeRatingText.text = "4/10";
-            highScoreText.text = "High Score: " + _SAVE.level1HighScore.ToString();
+           // highScoreText.text = "High Score: " + _SAVE.level1HighScore.ToString();
         }
         if (selectedLevel == 2)
         {
@@ -144,7 +144,7 @@ public class SceneManagement : Singleton<SceneManagement>
             waveNumberText.text = "10";
             enemySpawnText.text = "15";
             challengeRatingText.text = "5/10";
-            highScoreText.text = "High Score: " + _SAVE.level2HighScore.ToString();
+            //  highScoreText.text = "High Score: " + _SAVE.level2HighScore.ToString();
         }
     }
     //private void Update()

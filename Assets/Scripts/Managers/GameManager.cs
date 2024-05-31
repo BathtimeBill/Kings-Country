@@ -22,6 +22,10 @@ public class GameManager : Singleton<GameManager>
     public GameObject boundry;
     public GameObject introCam;
 
+    [Header("Score")]
+    public int score;
+    public int highScore;
+
     [Header("Waves")]
     public int currentWave;
     public int agroWaveLength;
@@ -380,11 +384,12 @@ public class GameManager : Singleton<GameManager>
 
     public void OnWaveOver()
     {
-        print(currentWave + " / " + _LEVEL.maxWave);
-        if(currentWave == _LEVEL.maxWave)
+        print(currentWave + " / " + _DATA.levelMaxDays);
+        if(currentWave == _DATA.levelMaxDays)
         {
             SetGame();
-            GameEvents.ReportOnGameWin();
+            GameEvents.ReportOnGameWin(_DATA.currentLevelID, score, maegen);
+            CalculateScore();
             ChangeGameState(GameState.Finish);
         }
         else
@@ -421,11 +426,6 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    void OnGameWin()
-    {
-        
-    }
-
     public void OnWildlifeKilled()
     {
         if (timeSinceWildlifeKilled > 30)
@@ -442,6 +442,40 @@ public class GameManager : Singleton<GameManager>
         wildlife = _value;
     }
 
+    //Score Stuff
+    public void CalculateScore()
+    {
+        int maegenBonus = maegen;
+        int wildlifeBonus = wildlife * 2;
+        int treeBonus = 1;
+
+        if (trees.Count > 0 && trees.Count < 10)
+        {
+            treeBonus = 1;
+        }
+        if (trees.Count > 9 && trees.Count < 20)
+        {
+            treeBonus = 1;
+        }
+        if (trees.Count > 19 && trees.Count < 30)
+        {
+            treeBonus = 2;
+        }
+        if (trees.Count > 29 && trees.Count < 40)
+        {
+            treeBonus = 3;
+        }
+        if (trees.Count == 40)
+        {
+            treeBonus = 4;
+        }
+
+        int finalScore = (maegenBonus + wildlifeBonus) * treeBonus;
+        print("Final Score: " + finalScore);
+        score = finalScore;
+        _UI.UpdateWinUI(maegenBonus, treeBonus, wildlifeBonus, finalScore);
+    }
+
     private void OnEnable()
     {
         GameEvents.OnUnitKilled += OnUnitKilled;
@@ -455,7 +489,6 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnWaveOver += OnWaveOver;
         GameEvents.OnWaveBegin += OnWaveBegin;
         GameEvents.OnContinueButton += OnContinueButton;
-        GameEvents.OnGameWin += OnGameWin; 
         GameEvents.OnWildlifeKilled += OnWildlifeKilled;
         GameEvents.OnWildlifeValueChange += OnWildlifeValueChange;
     }
@@ -475,7 +508,6 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnWaveOver -= OnWaveOver;
         GameEvents.OnWaveBegin -= OnWaveBegin;
         GameEvents.OnContinueButton -= OnContinueButton;
-        GameEvents.OnGameWin -= OnGameWin;
         GameEvents.OnWildlifeKilled -= OnWildlifeKilled;
         GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange;
     }

@@ -6,12 +6,7 @@ public class LevelManager : Singleton<LevelManager>
 {
     public LevelID currentLevel;
 
-    public Level getCurrentLevel => _DATA.levelSettings.levels.Find(x => x.levelID == currentLevel);
+    //public LevelData getCurrentLevel => _DATA.getCurrentLevel;
 
-    public int maxWave => getCurrentLevel.waves;
-
-    public string currentLevelName => StringX.SplitCamelCase(getCurrentLevel.levelID.ToString());
-
-    public int enemySpawnLocations => getCurrentLevel.enemySpawnLocations; 
-
+    //public int maxWave => getCurrentLevel.days;
 }

@@ -49,59 +49,59 @@ public class OverworldLevelButton : GameBehaviour
         switch (levelButton)
         {
             case LevelButton.One:
-                if (_SAVE.levelsUnlocked >= 1)
-                {
-                    lockedImage.SetActive(false);
+                //if (_SAVE.levelsUnlocked >= 1)
+                //{
+                //    lockedImage.SetActive(false);
 
-                }
-                if(_SAVE.lvl1Complete)
-                {
-                    buttonImage.sprite = unlockedImage;
-                }
+                //}
+                //if(_SAVE.lvl1Complete)
+                //{
+                //    buttonImage.sprite = unlockedImage;
+                //}
                 break;
         }
         switch (levelButton)
         {
             case LevelButton.Two:
-                if(_SAVE.levelsUnlocked >= 2)
-                {
-                    lockedImage.SetActive(false);
-                    //buttonImage.sprite = unlockedImage;
-                }
-                if (_SAVE.lvl2Complete)
-                {
-                    buttonImage.sprite = unlockedImage;
-                }
+                //if(_SAVE.levelsUnlocked >= 2)
+                //{
+                //    lockedImage.SetActive(false);
+                //    //buttonImage.sprite = unlockedImage;
+                //}
+                //if (_SAVE.lvl2Complete)
+                //{
+                //    buttonImage.sprite = unlockedImage;
+                //}
 
                 break;
         }
         switch (levelButton)
         {
             case LevelButton.Three:
-                if (_SAVE.levelsUnlocked >= 3)
-                {
-                    lockedImage.SetActive(false);
-                    //buttonImage.sprite = unlockedImage;
-                }
-                if (_SAVE.lvl3Complete)
-                {
-                    buttonImage.sprite = unlockedImage;
-                }
+                //if (_SAVE.levelsUnlocked >= 3)
+                //{
+                //    lockedImage.SetActive(false);
+                //    //buttonImage.sprite = unlockedImage;
+                //}
+                //if (_SAVE.lvl3Complete)
+                //{
+                //    buttonImage.sprite = unlockedImage;
+                //}
 
                 break;
         }
         switch (levelButton)
         {
             case LevelButton.Four:
-                if (_SAVE.levelsUnlocked >= 4)
-                {
-                    lockedImage.SetActive(false);
-                    //buttonImage.sprite = unlockedImage;
-                }
-                if (_SAVE.lvl4Complete)
-                {
-                    buttonImage.sprite = unlockedImage;
-                }
+                //if (_SAVE.levelsUnlocked >= 4)
+                //{
+                //    lockedImage.SetActive(false);
+                //    //buttonImage.sprite = unlockedImage;
+                //}
+                //if (_SAVE.lvl4Complete)
+                //{
+                //    buttonImage.sprite = unlockedImage;
+                //}
 
                 break;
         }
@@ -109,15 +109,15 @@ public class OverworldLevelButton : GameBehaviour
         {
             case LevelButton.Five:
 
-                if (_SAVE.levelsUnlocked >= 5)
-                {
-                    lockedImage.SetActive(false);
-                    //buttonImage.sprite = unlockedImage;
-                }
-                if (_SAVE.lvl5Complete)
-                {
-                    buttonImage.sprite = unlockedImage;
-                }
+                //if (_SAVE.levelsUnlocked >= 5)
+                //{
+                //    lockedImage.SetActive(false);
+                //    //buttonImage.sprite = unlockedImage;
+                //}
+                //if (_SAVE.lvl5Complete)
+                //{
+                //    buttonImage.sprite = unlockedImage;
+                //}
                 break;
         }
     }
@@ -134,23 +134,23 @@ public class OverworldLevelButton : GameBehaviour
         switch (levelButton)
         {
             case LevelButton.One:
-                _OM.highScoreText.text = _SAVE.level1HighScore.ToString();
+                //_OM.highScoreText.text = _SAVE.level1HighScore.ToString();
                 _SCENE.selectedLevel = 1;
                 break;
             case LevelButton.Two:
-                _OM.highScoreText.text = _SAVE.level2HighScore.ToString();
+                //_OM.highScoreText.text = _SAVE.level2HighScore.ToString();
                 _SCENE.selectedLevel = 2;
                 break;
             case LevelButton.Three:
-                _OM.highScoreText.text = _SAVE.level3HighScore.ToString();
+                //_OM.highScoreText.text = _SAVE.level3HighScore.ToString();
                 _SCENE.selectedLevel = 3;
                 break;
             case LevelButton.Four:
-                _OM.highScoreText.text = _SAVE.level4HighScore.ToString();
+                //_OM.highScoreText.text = _SAVE.level4HighScore.ToString();
                 _SCENE.selectedLevel = 4;
                 break;
             case LevelButton.Five:
-                _OM.highScoreText.text = _SAVE.level5HighScore.ToString();
+                //_OM.highScoreText.text = _SAVE.level5HighScore.ToString();
                 _SCENE.selectedLevel = 5;
                 break;
         }

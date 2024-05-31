@@ -95,6 +95,11 @@ public class UIManager : Singleton<UIManager>
     public GameObject winPanel;
     public GameObject finalScorePanel;
     public GameObject gameOverPanel;
+    public TMP_Text winMaegenText;
+    public TMP_Text winTreesText;
+    public TMP_Text winWildlifeText;
+    public TMP_Text winScoreText;
+    public TMP_Text winHighScoreText;
 
     [Header("Upgrade")]
     public UpgradePanel upgradePanel;
@@ -390,7 +395,7 @@ public class UIManager : Singleton<UIManager>
 
     public void CheckWave()
     {
-        waveText.text = dayMessage + ": " + _GM.currentWave.ToString() + "/" + _LEVEL.maxWave;
+        waveText.text = dayMessage + ": " + _GM.currentWave.ToString() + "/" + _DATA.levelMaxDays;
         TriggerWaveTextAnimation();
     }
 
@@ -788,10 +793,7 @@ public class UIManager : Singleton<UIManager>
     }
     
 
-    private void OnGameWin()
-    {
-        TweenInPanel(winPanel);
-    }
+    
     private void OnJustStragglers()
     {
         //collectMaegenButton.SetActive(true);
@@ -904,11 +906,24 @@ public class UIManager : Singleton<UIManager>
         wildlifeText.text = _value.ToString();
     }
 
+    private void OnLevelWin(LevelID _levelID, int _score, int _maegen)
+    {
+        TweenInPanel(winPanel);
+    }
+    public void UpdateWinUI(int _maegen, int _trees, int _wildlife, int _score)
+    {
+        winMaegenText.text = "+ " + _maegen.ToString();
+        winTreesText.text = _GM.trees.Count.ToString() + " (x " + _trees.ToString() + " to total score)";
+        winWildlifeText.text = "+ " + _wildlife.ToString() + " x2 = " + _wildlife * 2;
+        winScoreText.text = _score.ToString();
+        winHighScoreText.text = _GAMESAVE.GetLevelHighScore(_DATA.currentLevelID).ToString();
+    }
+
     private void OnEnable()
     {
         GameEvents.OnGameStateChanged += OnGameStateChanged;
         GameEvents.OnGameOver += OnGameOver;
-        GameEvents.OnGameWin += OnGameWin;
+        GameEvents.OnLevelWin += OnLevelWin;
         GameEvents.OnFyrePlaced += OnFyrePlaced;
         GameEvents.OnStormerPlaced += OnStormerPlaced;
         GameEvents.OnRunePlaced += OnRunePlaced;
@@ -929,7 +944,7 @@ public class UIManager : Singleton<UIManager>
     {
         GameEvents.OnGameStateChanged -= OnGameStateChanged;
         GameEvents.OnGameOver -= OnGameOver;
-        GameEvents.OnGameWin -= OnGameWin;
+        GameEvents.OnLevelWin -= OnLevelWin;
         GameEvents.OnFyrePlaced -= OnFyrePlaced;
         GameEvents.OnStormerPlaced -= OnStormerPlaced;
         GameEvents.OnRunePlaced -= OnRunePlaced;
