@@ -4,8 +4,8 @@ using UnityEngine;
 public class PerkData : ScriptableObject
 {
     public PerkID id;
-    public string perkName;
-    public string perkDescription;
+    public new string name;
+    public string description;
     public Sprite perkIcon;
     public bool unlocked;
 }

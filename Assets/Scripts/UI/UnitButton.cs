@@ -65,7 +65,7 @@ public class UnitButton : InteractableButton
     {
         icon.sprite = unitData.icon;
         title.text = unitData.unitName;
-        cost.text = unitData.stats.price.ToString();
+        cost.text = unitData.cost.ToString();
         
         if(tooltip != null)
         {
@@ -81,8 +81,8 @@ public class UnitButton : InteractableButton
 
     private void OnMaegenChange(int _amount)
     {
-        button.interactable = unitData.stats.price <= _amount;
-        cost.color = unitData.stats.price > _amount ? Color.red : Color.white;
+        button.interactable = unitData.cost <= _amount;
+        cost.color = unitData.cost > _amount ? Color.red : Color.white;
     }
 
     private void OnEnable()

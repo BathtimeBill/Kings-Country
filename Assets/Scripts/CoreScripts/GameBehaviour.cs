@@ -138,14 +138,14 @@ public enum CombatMode
 }
 public enum UnitID
 {
-    SatyrUnit,
-    OrcusUnit,
-    LeshyUnit,
-    HuldraUnit,
-    VolvaUnit,
-    GoblinUnit,
-    GolemUnit,
-    DryadUnit,
+    Satyr,
+    Orcus,
+    Leshy,
+    Huldra,
+    Skessa,
+    Goblin,
+    Golem,
+    Fidhain,
     Tower,
     SpitTower,
 }

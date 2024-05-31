@@ -281,37 +281,37 @@ public class UnitSelection : GameBehaviour
             if(unitSelected.Count != 0)
             {
                 AssignDestination();
-                if (unitSelected[0].GetComponent<Unit>().unitType == UnitID.GoblinUnit)
+                if (unitSelected[0].GetComponent<Unit>().unitType == UnitID.Goblin)
                 {
                     audioSource.clip = _SM.GetGoblinVocal();
                     audioSource.Play();
                 }
-                if (unitSelected[0].GetComponent<Unit>().unitType == UnitID.LeshyUnit)
+                if (unitSelected[0].GetComponent<Unit>().unitType == UnitID.Leshy)
                 {
                     audioSource.clip = _SM.GetLeshyVocal();
                     audioSource.Play();
                 }
-                if (unitSelected[0].GetComponent<Unit>().unitType == UnitID.OrcusUnit)
+                if (unitSelected[0].GetComponent<Unit>().unitType == UnitID.Orcus)
                 {
                     audioSource.clip = _SM.GetOrcusVocal();
                     audioSource.Play();
                 }
-                if (unitSelected[0].GetComponent<Unit>().unitType == UnitID.SatyrUnit)
+                if (unitSelected[0].GetComponent<Unit>().unitType == UnitID.Satyr)
                 {
                     audioSource.clip = _SM.GetSatyrVocal();
                     audioSource.Play();
                 }
-                if (unitSelected[0].GetComponent<Unit>().unitType == UnitID.VolvaUnit)
+                if (unitSelected[0].GetComponent<Unit>().unitType == UnitID.Skessa)
                 {
                     audioSource.clip = _SM.GetSkessaVocal();
                     audioSource.Play();
                 }
-                if (unitSelected[0].GetComponent<Unit>().unitType == UnitID.GolemUnit)
+                if (unitSelected[0].GetComponent<Unit>().unitType == UnitID.Golem)
                 {
                     audioSource.clip = _SM.GetGolemVocal();
                     audioSource.Play();
                 }
-                if (unitSelected[0].GetComponent<Unit>().unitType == UnitID.DryadUnit)
+                if (unitSelected[0].GetComponent<Unit>().unitType == UnitID.Fidhain)
                 {
                     audioSource.clip = _SM.GetFidhainVocal();
                     audioSource.Play();

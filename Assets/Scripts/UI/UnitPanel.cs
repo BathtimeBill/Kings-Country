@@ -28,7 +28,7 @@ public class UnitPanel : GameBehaviour
     {
         for (int i = 0; i < unitButtons.Length; i++)
         {
-            unitButtons[i].button.interactable = unitButtons[i].unitData.stats.price <= _GM.maegen;
+            unitButtons[i].button.interactable = unitButtons[i].unitData.cost <= _GM.maegen;
         }
     }
 
@@ -54,9 +54,9 @@ public class UnitPanel : GameBehaviour
             {
                 unitButtons[i].FadeInButton();
                 description.text = _unitButton.unitData.description;
-                healthStat.text = _unitButton.unitData.stats.health.ToString();
-                damageStat.text = _unitButton.unitData.stats.damage.ToString();
-                speedStat.text = _unitButton.unitData.stats.speed.ToString();
+                healthStat.text = _unitButton.unitData.health.ToString();
+                damageStat.text = _unitButton.unitData.damage.ToString();
+                speedStat.text = _unitButton.unitData.speed.ToString();
             }
             else
             {

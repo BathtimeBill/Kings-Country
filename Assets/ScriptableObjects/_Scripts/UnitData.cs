@@ -9,22 +9,13 @@ public class UnitData : ScriptableObject
     public string unitName;
     [TextArea(3, 5)]
     public string description;
-    public Stats stats;
-    public Sprite icon;
-    public Sprite mapIcon;
-    public AudioClip[] voiceSounds;
-
-    public Stats GetStats()
-    {
-        return stats;
-    }
-}
-
-[System.Serializable]
-public class Stats
-{
+    [Header("Stats")]
     public int health;
     public int damage;
     public int speed;
-    public int price;
+    public int cost;
+    [Header("Non Stats")]
+    public Sprite icon;
+    public Sprite mapIcon;
+    public AudioClip[] voiceSounds;
 }

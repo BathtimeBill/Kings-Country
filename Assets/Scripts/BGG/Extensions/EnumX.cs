@@ -29,6 +29,16 @@ public static class EnumX
         return -999999;
     }
     /// <summary>
+    /// Extension method to return an enum value of type T for the given string.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static T ToEnum<T>(this string value)
+    {
+        return (T)Enum.Parse(typeof(T), value, true);
+    }
+    /// <summary>
     /// Adds space between words in an enum
     /// </summary>
     /// <param name="_enum">The enum as a string</param>

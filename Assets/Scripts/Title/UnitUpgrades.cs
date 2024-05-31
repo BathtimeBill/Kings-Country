@@ -133,10 +133,10 @@ public class UnitUpgrades : GameBehaviour
 
     public void ShowStats()
     {
-        currentDamage = activeUnit.stats.damage;
-        currentHealth = activeUnit.stats.health;
-        currentSpeed = activeUnit.stats.speed;
-        currentMaegen = activeUnit.stats.price;
+        currentDamage = activeUnit.damage;
+        currentHealth = activeUnit.health;
+        currentSpeed = activeUnit.speed;
+        currentMaegen = activeUnit.cost;
 
         damageValue.text = currentDamage.ToString();
         healthValue.text = currentHealth.ToString();
