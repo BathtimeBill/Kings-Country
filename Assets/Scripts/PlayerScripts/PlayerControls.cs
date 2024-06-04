@@ -69,7 +69,7 @@ public class PlayerControls : Singleton<PlayerControls>
 
     private void SelectTreeMode()
     {
-        if(_GM.peaceTime)
+        if(buildPhase)
         {
             if(_TUTM.isTutorial)
             {

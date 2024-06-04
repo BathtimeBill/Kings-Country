@@ -29,8 +29,8 @@ public class GameBehaviour : BV.Behaviour
 
     public bool hasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build;
     public bool isPaused => _GM.gameState == GameState.Pause;
-
     public bool gameFinished => _GM.gameState == GameState.Finish;
+    public bool buildPhase => _GM.gameState == GameState.Build;
 
     public Settings _SETTINGS => _DATA.settings;
     public Tweening _TWEENING => _DATA.settings.tweening;

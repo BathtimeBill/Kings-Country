@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
 
-public class Lord : GameBehaviour
+public class Lord : Enemy
 {
     public Animator horseAnimator;
     public Animator knightAnimator;
@@ -162,22 +162,20 @@ public class Lord : GameBehaviour
         bloodParticle = Instantiate(bloodParticle1, transform.position, Quaternion.LookRotation(forward));
         health -= damage;
         slider.value = CalculateHealth();
-        Die();
+        if (health <= 0) 
+            Die();
     }
-    private void Die()
+    public override void Die()
     {
-        if (health <= 0)
-        {
-            _EM.enemies.Remove(gameObject);
-            GameObject go;
-            GameObject go2;
-            go = Instantiate(deathObject, transform.position, transform.rotation);
-            go2 = Instantiate(deathObject2, rider.transform.position, rider.transform.rotation);
-            go2.transform.localScale = rider.transform.localScale;
-            Destroy(go, 15);
-            GameEvents.ReportOnEnemyKilled();
-            Destroy(gameObject);
-        }
+        _EM.enemies.Remove(gameObject);
+        GameObject go;
+        GameObject go2;
+        go = Instantiate(deathObject, transform.position, transform.rotation);
+        go2 = Instantiate(deathObject2, rider.transform.position, rider.transform.rotation);
+        go2.transform.localScale = rider.transform.localScale;
+        Destroy(go, 15);
+        GameEvents.ReportOnEnemyKilled();
+        Destroy(gameObject);
     }
     public Transform GetClosestUnit()
     {

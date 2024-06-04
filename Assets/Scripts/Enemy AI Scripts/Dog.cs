@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Dog : GameBehaviour
+public class Dog : Enemy
 {
     Animator animator;
     NavMeshAgent agent;
@@ -92,15 +92,13 @@ public class Dog : GameBehaviour
         GameObject bloodParticle;
         bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
         health -= damage;
-        Die();
-    }
-    private void Die()
-    {
         if (health <= 0)
-        {
-            _EM.enemies.Remove(gameObject);
-            Instantiate(explosion, transform.position, transform.rotation);
-            Destroy(gameObject);
-        }
+            Die();
+    }
+    public override void Die()
+    {
+        _EM.enemies.Remove(gameObject);
+        Instantiate(explosion, transform.position, transform.rotation);
+        Destroy(gameObject);
     }
 }

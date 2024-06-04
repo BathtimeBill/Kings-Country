@@ -32,7 +32,6 @@ public class GameManager : Singleton<GameManager>
     public int breakWaveLenth;
     public bool agroWave;
     public bool canFinishWave;
-    public bool peaceTime;
 
     [Header("Buildings Cooldown")]
     public float treeCooldown;
@@ -157,7 +156,6 @@ public class GameManager : Singleton<GameManager>
         if (!skipIntro)
             StartCoroutine(EndOfIntroCamera());
         _UI.CheckTreeUI();
-        peaceTime = true;
     }
     IEnumerator EndOfIntroCamera()
     {
@@ -262,7 +260,6 @@ public class GameManager : Singleton<GameManager>
     //The wave system is managed by two coroutines. The 'agro' wave lasts 1 minute, during which enemies are spawned in (EnemyManager) and then a break period of 4 mins. 
     IEnumerator ManageWaveAgro()
     {
-        _GM.peaceTime = false;
         agroWave = true;
         currentWave++;
         _UI.CheckWave();

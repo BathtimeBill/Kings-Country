@@ -14,7 +14,7 @@ public class PickupManager : GameBehaviour
 
     IEnumerator SpawnPickups()
     {
-        if(_GM.peaceTime == false)
+        if(!buildPhase)
         {
             SpawnPickup();
         }

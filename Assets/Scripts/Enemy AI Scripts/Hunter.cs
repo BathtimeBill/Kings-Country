@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
 
-public class Hunter : GameBehaviour
+public class Hunter : Enemy
 {
     public bool invincible = true;
     [Header("Hunter Type")]
@@ -423,7 +423,8 @@ public class Hunter : GameBehaviour
             GameObject bloodParticle;
             bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
             health -= damage;
-            Die();
+            if (health <= 0)
+                Die();
         }
     }
     IEnumerator WaitForInvincible()
@@ -432,27 +433,26 @@ public class Hunter : GameBehaviour
         yield return new WaitForSeconds(5);
         invincible = false;
     }
-    private void Die()
+    public override void Die()
     {
         bool isColliding = false;
-        if (health <= 0)
+
+        _EM.enemies.Remove(gameObject);
+        if (_HUTM.enemies.Contains(gameObject))
         {
-            _EM.enemies.Remove(gameObject);
-            if (_HUTM.enemies.Contains(gameObject))
-            {
-                _HUTM.enemies.Remove(gameObject);
-            }
-            DropMaegen();
-            if (!isColliding)
-            {
-                isColliding = true;
-                GameObject go;
-                go = Instantiate(deathObject, transform.position, transform.rotation);
-                Destroy(go, 15);
-            }
-            GameEvents.ReportOnEnemyKilled();
-            Destroy(gameObject);
+            _HUTM.enemies.Remove(gameObject);
         }
+        DropMaegen();
+        if (!isColliding)
+        {
+            isColliding = true;
+            GameObject go;
+            go = Instantiate(deathObject, transform.position, transform.rotation);
+            Destroy(go, 15);
+        }
+        GameEvents.ReportOnEnemyKilled();
+        Destroy(gameObject);
+
     }
     private void DropMaegen()
     {

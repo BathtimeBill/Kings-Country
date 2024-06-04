@@ -155,6 +155,7 @@ public class EnemyManager : Singleton<EnemyManager>
     public int BezerkerAmount15;
     public int KnightAmount15;
 
+    public bool allEnemiesDead => enemies.Count == 0;
 
     //void Update()
     //{
@@ -166,6 +167,26 @@ public class EnemyManager : Singleton<EnemyManager>
         CheckWave();
     }
 
+    public IEnumerator KillAllEnemies()
+    {
+        //int enemyCount = enemies.Count;
+        for(int i=0; i< enemies.Count; i++)
+        {
+            if (enemies[i].GetComponent<Enemy>() != null)
+                enemies[i].GetComponent<Enemy>().Die();
+            yield return new WaitForEndOfFrame();
+        }
+        CheckEnemiesLeft();
+    }
+
+    private void CheckEnemiesLeft()
+    {
+        if (!allEnemiesDead)
+            return;
+
+        GameEvents.ReportOnWaveOver();
+    }
+
     IEnumerator CheckForEnemiesLeft()
     {
         yield return new WaitForEndOfFrame();
@@ -173,7 +194,6 @@ public class EnemyManager : Singleton<EnemyManager>
         {
             GameEvents.ReportOnWaveOver();
             _GM.canFinishWave = false;
-            _GM.peaceTime = true;
             StopCoroutine(CheckForEnemiesLeft());
         }
 
@@ -182,7 +202,8 @@ public class EnemyManager : Singleton<EnemyManager>
 
     private void OnEnemyKilled()
     {
-        StartCoroutine(CheckForEnemiesLeft());
+        CheckEnemiesLeft ();
+        //StartCoroutine(CheckForEnemiesLeft());
     }
 
     private void OnCollectMaegenButton()

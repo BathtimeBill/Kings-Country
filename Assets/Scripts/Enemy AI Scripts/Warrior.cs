@@ -4,7 +4,7 @@ using UnityEngine.AI;
 using UnityEngine;
 using Unity.VisualScripting;
 
-public class Warrior : GameBehaviour
+public class Warrior : Enemy
 {
     public bool invincible = true;
     [Header("Hunter Type")]
@@ -340,7 +340,8 @@ public class Warrior : GameBehaviour
             GameObject bloodParticle;
             bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
             health -= damage;
-            Die();
+            if (health <= 0)
+                Die();
         }
     }
     IEnumerator WaitForInvincible()
@@ -349,27 +350,24 @@ public class Warrior : GameBehaviour
         yield return new WaitForSeconds(5);
         invincible = false;
     }
-    private void Die()
+    public override void Die()
     {
         bool isColliding = false;
-        if (health <= 0)
+        _EM.enemies.Remove(gameObject);
+        if (_HM.enemies.Contains(gameObject))
         {
-            _EM.enemies.Remove(gameObject);
-            if (_HM.enemies.Contains(gameObject))
-            {
-                _HM.enemies.Remove(gameObject);
-            }
-            DropMaegen();
-            if (!isColliding)
-            {
-                isColliding = true;
-                GameObject go;
-                go = Instantiate(deathObject, transform.position, transform.rotation);
-                Destroy(go, 15);
-            }
-            GameEvents.ReportOnEnemyKilled();
-            Destroy(gameObject);
+            _HM.enemies.Remove(gameObject);
         }
+        DropMaegen();
+        if (!isColliding)
+        {
+            isColliding = true;
+            GameObject go;
+            go = Instantiate(deathObject, transform.position, transform.rotation);
+            Destroy(go, 15);
+        }
+        GameEvents.ReportOnEnemyKilled();
+        Destroy(gameObject);
     }
     private void DropMaegen()
     {

@@ -4,7 +4,7 @@ using UnityEngine.AI;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
-public class Logger : GameBehaviour
+public class Logger : Enemy
 {
     public bool invincible = true;
     [Header("Woodcutter Type")]
@@ -392,7 +392,8 @@ public class Logger : GameBehaviour
             GameObject bloodParticle;
             bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
             health -= damage;
-            Die();
+            if (health <= 0)
+                Die();
         }
     }
     IEnumerator WaitForInvincible()
@@ -401,23 +402,20 @@ public class Logger : GameBehaviour
         yield return new WaitForSeconds(5);
         invincible = false;
     }
-    private void Die()
+    public override void Die()
     {
         bool isColliding = false;
-        if(health <= 0)
+        _EM.enemies.Remove(gameObject);
+        DropMaegen();
+        if (!isColliding)
         {
-            _EM.enemies.Remove(gameObject);
-            DropMaegen();
-            if (!isColliding)
-            {
-                isColliding = true;
-                GameObject go;
-                go = Instantiate(deadLogger, transform.position, transform.rotation);
-                Destroy(go, 15);
-            }
-            GameEvents.ReportOnEnemyKilled();
-            Destroy(gameObject);
+            isColliding = true;
+            GameObject go;
+            go = Instantiate(deadLogger, transform.position, transform.rotation);
+            Destroy(go, 15);
         }
+        GameEvents.ReportOnEnemyKilled();
+        Destroy(gameObject);
     }
     private void DropMaegen()
     {

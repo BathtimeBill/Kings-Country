@@ -435,10 +435,6 @@ public class UnitSelection : GameBehaviour
                 //unit.transform.GetChild(0).gameObject.SetActive(false);
                 containsHuldra = false;
                 _UI.DisableTowerText();
-                if (_GM.peaceTime == false)
-                {
-                    //_GM.boundry.SetActive(false);
-                }
             }
             StartCoroutine(WaitToCheckForUnits());
             unitSelected.Clear();
@@ -452,10 +448,6 @@ public class UnitSelection : GameBehaviour
         //unit.transform.GetChild(0).gameObject.SetActive(false);
         containsHuldra = false;
         _UI.DisableTowerText();
-        if(_GM.peaceTime == false)
-        {
-            //_GM.boundry.SetActive(false);
-        }
         unitSelected.Remove(unitToDeselect);
     }
 

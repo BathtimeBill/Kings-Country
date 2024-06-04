@@ -4,7 +4,7 @@ using UnityEngine.AI;
 using UnityEngine;
 using Unity.Burst.CompilerServices;
 
-public class Spy : GameBehaviour
+public class Spy : Enemy
 {
     [Header("Stats")]
     public float health;
@@ -114,17 +114,15 @@ public class Spy : GameBehaviour
         GameObject bloodParticle;
         bloodParticle = Instantiate(bloodParticle1, transform.position, transform.rotation);
         health -= damage;
-        Die();
-    }
-    private void Die()
-    {
         if (health <= 0)
-        {
-            _EM.enemies.Remove(gameObject);
-            GameObject go;
-            go = Instantiate(deathObject, transform.position, transform.rotation);
-            Destroy(go, 15);
-            Destroy(gameObject);
-        }
+            Die();
+    }
+    public override void Die()
+    {
+        _EM.enemies.Remove(gameObject);
+        GameObject go;
+        go = Instantiate(deathObject, transform.position, transform.rotation);
+        Destroy(go, 15);
+        Destroy(gameObject);
     }
 }

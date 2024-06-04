@@ -10,6 +10,9 @@ public class DebugManager : GameBehaviour
             //GameEvents.ReportOnGameWin();
         }
 
+        if(Input.GetKeyDown(KeyCode.K))
+            StartCoroutine(_EM.KillAllEnemies());
+
         if (Input.GetKeyDown(KeyCode.L))
             _FM.WildlifeInstantiate();
 
