@@ -102,11 +102,11 @@ public class UIManager : Singleton<UIManager>
     public TMP_Text winHighScoreText;
 
     [Header("Upgrade")]
-    public UpgradePanel upgradePanel;
-    public UpgradeButton upgradeButton1;
-    public UpgradeButton upgradeButton2;
+    public PerkPanel upgradePanel;
+    public PerkButton upgradeButton1;
+    public PerkButton upgradeButton2;
 
-    [Header("Current Upgrade Panel")]
+    [Header("Current Perk Panel")]
     public GameObject barkSkin;
     public GameObject flyFoot;
     public GameObject power;
@@ -628,17 +628,17 @@ public class UIManager : Singleton<UIManager>
 
     void ShowUpgradeButtons()
     {
-        if (_UM.availableUpgrades.Count > 1)
+        if (_PERK.CanObtainPerk)
         {
-            UpgradeID upgrade1 = _UM.GetRandomUpgrade();
-            _UM.RemoveUpgrade(upgrade1);
-            UpgradeID upgrade2 = _UM.GetRandomUpgrade();
-            _UM.RemoveUpgrade(upgrade2);
+            PerkID perk1 = _PERK.GetRandomPerk();
+            _PERK.RemovePerk(perk1);
+            PerkID perk2 = _PERK.GetRandomPerk();
+            _PERK.RemovePerk(perk2);
 
             print(upgradeButton1.name);
             print(upgradeButton2.name);
-            upgradeButton1.SetUpgrade(upgrade1);
-            upgradeButton2.SetUpgrade(upgrade2);
+            upgradeButton1.SetUpgrade(perk1);
+            upgradeButton2.SetUpgrade(perk2);
 
 
         }
@@ -736,55 +736,55 @@ public class UIManager : Singleton<UIManager>
         treeTool.SetInteractable(false);
     }
 
-    public void OnUpgradeSelected(UpgradeID upgradeID)
+    public void OnPerkSelected(PerkID perkID)
     {
-        switch (upgradeID)
+        switch (perkID)
         {
-            case UpgradeID.BarkSkin: 
+            case PerkID.BarkSkin: 
                 barkSkin.SetActive(true);
                 TweenUpgradeIcon(barkSkin);
                 break;
-            case UpgradeID.FlyFoot: 
+            case PerkID.FlyFoot: 
                 flyFoot.SetActive(true);
                 TweenUpgradeIcon(flyFoot);
                 break;
-            case UpgradeID.Tower: 
+            case PerkID.Tower: 
                 tower.SetActive(true);
                 TweenUpgradeIcon(tower);
                 break;
-            case UpgradeID.Power: 
+            case PerkID.Power: 
                 power.SetActive(true);
                 TweenUpgradeIcon(power);
                 break;
-            case UpgradeID.Rune:
+            case PerkID.Rune:
                 rune.SetActive(true);
                 TweenUpgradeIcon(rune);
                 break;
-            case UpgradeID.Fyre:
+            case PerkID.Fyre:
                 fyre.SetActive(true);
                 TweenUpgradeIcon(fyre);
                 break;
-            case UpgradeID.Stormer:
+            case PerkID.Stormer:
                 stormer.SetActive(true);
                 TweenUpgradeIcon(stormer);
                 break;
-            case UpgradeID.Tree:
+            case PerkID.Tree:
                 tree.SetActive(true);
                 TweenUpgradeIcon(tree);
                 break;
-            case UpgradeID.Fertile:
+            case PerkID.Fertile:
                 fertile.SetActive(true);
                 TweenUpgradeIcon(fertile);
                 break;
-            case UpgradeID.Populous:
+            case PerkID.Populous:
                 populous.SetActive(true);
                 TweenUpgradeIcon(populous);
                 break;
-            case UpgradeID.Winfall:
+            case PerkID.Winfall:
                 windfall.SetActive(true);
                 TweenUpgradeIcon(windfall);
                 break;
-            case UpgradeID.HomeTree:
+            case PerkID.HomeTree:
                 homeTree.SetActive(true);
                 TweenUpgradeIcon(homeTree);
                 break;
@@ -932,7 +932,7 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnWaveBegin += OnWaveBegin;
         GameEvents.OnJustStragglers += OnJustStragglers;
 
-        GameEvents.OnUpgradeSelected += OnUpgradeSelected;
+        GameEvents.OnUpgradeSelected += OnPerkSelected;
 
         GameEvents.OnWildlifeValueChange += OnWildlifeValueChange;
         GameEvents.OnFormationSelected += OnFormationSelected;
@@ -953,7 +953,7 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnWaveBegin -= OnWaveBegin;
         GameEvents.OnJustStragglers -= OnJustStragglers;
 
-        GameEvents.OnUpgradeSelected -= OnUpgradeSelected;
+        GameEvents.OnUpgradeSelected -= OnPerkSelected;
 
         GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange;
         GameEvents.OnFormationSelected -= OnFormationSelected;

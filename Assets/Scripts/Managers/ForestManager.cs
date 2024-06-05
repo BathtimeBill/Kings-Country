@@ -121,7 +121,7 @@ public class ForestManager : Singleton<ForestManager>
     private void OnWaveOver()
     {
         totalTrees = _GM.trees.Count;
-        if (_UM.hasUpgrade(UpgradeID.Fertile))
+        if (_PERK.HasPerk(PerkID.Fertile))
         {
             numberOfWildlifeToSpawn = totalTrees / 3f;
         }

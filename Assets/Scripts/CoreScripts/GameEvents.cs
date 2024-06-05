@@ -51,7 +51,7 @@ public static class GameEvents
     public static event Action OnWinfallUpgrade = null;
     public static event Action OnHomeTreeUpgrade = null;
 
-    public static event Action<UpgradeID> OnUpgradeSelected = null;
+    public static event Action<PerkID> OnUpgradeSelected = null;
 
     public static event Action OnAttackSelected = null;
     public static event Action OnDefendSelected = null;
@@ -194,23 +194,23 @@ public static class GameEvents
         OnTowerUpgrade?.Invoke();
     }*/
     
-    public static void ReportOnUpgradeSelected(UpgradeID _id)
+    public static void ReportOnUpgradeSelected(PerkID _id)
     {
         OnUpgradeSelected?.Invoke(_id);
         switch(_id)
         {
-            case UpgradeID.BarkSkin:    OnBorkrskinnUpgrade?.Invoke(); break;
-            case UpgradeID.Tower:       OnTowerUpgrade?.Invoke(); break;
-            case UpgradeID.Power:       OnJarnnefiUpgrade?.Invoke(); break;
-            case UpgradeID.Rune:        OnRuneUpgrade?.Invoke(); break;
-            case UpgradeID.Stormer:     OnStormerUpgrade?.Invoke(); break;
-            case UpgradeID.Fertile:     OnFertileSoilUpgrade?.Invoke(); break;
-            case UpgradeID.FlyFoot:     OnFlugafotrUpgrade?.Invoke(); break;
-            case UpgradeID.Fyre:        OnBeaconUpgrade?.Invoke(); break;
-            case UpgradeID.HomeTree:    OnHomeTreeUpgrade?.Invoke(); break;
-            case UpgradeID.Populous:    OnPopulousUpgrade?.Invoke(); break;
-            case UpgradeID.Winfall:     OnWinfallUpgrade?.Invoke(); break;
-            case UpgradeID.Tree:        OnTreeUpgrade?.Invoke(); break;
+            case PerkID.BarkSkin:    OnBorkrskinnUpgrade?.Invoke(); break;
+            case PerkID.Tower:       OnTowerUpgrade?.Invoke(); break;
+            case PerkID.Power:       OnJarnnefiUpgrade?.Invoke(); break;
+            case PerkID.Rune:        OnRuneUpgrade?.Invoke(); break;
+            case PerkID.Stormer:     OnStormerUpgrade?.Invoke(); break;
+            case PerkID.Fertile:     OnFertileSoilUpgrade?.Invoke(); break;
+            case PerkID.FlyFoot:     OnFlugafotrUpgrade?.Invoke(); break;
+            case PerkID.Fyre:        OnBeaconUpgrade?.Invoke(); break;
+            case PerkID.HomeTree:    OnHomeTreeUpgrade?.Invoke(); break;
+            case PerkID.Populous:    OnPopulousUpgrade?.Invoke(); break;
+            case PerkID.Winfall:     OnWinfallUpgrade?.Invoke(); break;
+            case PerkID.Tree:        OnTreeUpgrade?.Invoke(); break;
         }
     }
     public static void ReportOnContinueButton()

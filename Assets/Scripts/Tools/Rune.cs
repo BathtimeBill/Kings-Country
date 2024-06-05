@@ -10,7 +10,7 @@ public class Rune : GameBehaviour
 
     public void OnWaveOver()
     {
-        if(!_UM.hasUpgrade(UpgradeID.Rune))
+        if(!_PERK.HasPerk(PerkID.Rune))
             Destroy(gameObject);
     }
 

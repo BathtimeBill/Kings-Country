@@ -6,6 +6,5 @@ public class PerkData : ScriptableObject
     public PerkID id;
     public new string name;
     public string description;
-    public Sprite perkIcon;
-    public bool unlocked;
+    public Sprite icon;
 }

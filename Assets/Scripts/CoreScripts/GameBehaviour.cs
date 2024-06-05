@@ -38,7 +38,7 @@ public class GameBehaviour : BV.Behaviour
 }
 
 
-public enum PerkID
+public enum PerkID2
 {
     satyr,
     orcus,
@@ -71,7 +71,7 @@ public enum CombatID
     Defend,
     Formation
 }
-public enum UpgradeID
+public enum PerkID
 {
     BarkSkin,
     FlyFoot,

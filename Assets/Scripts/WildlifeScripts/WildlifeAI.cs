@@ -187,40 +187,19 @@ public class WildlifeAI : GameBehaviour
         {
             case WildlifeType.Rabbit:
                 navAgent.speed = 1.5f;
-                if(_UM.hasUpgrade(UpgradeID.Fertile))
-                {
-                    maxHealth = 50;
-                }
-                else
-                {
-                    maxHealth = 25;
-                }
+                maxHealth = _PERK.HasPerk(PerkID.Fertile) ? 50 : 25;
                 health = maxHealth;
                 break;
 
             case WildlifeType.Deer:
                 navAgent.speed = 2;
-                if (_UM.hasUpgrade(UpgradeID.Fertile))
-                {
-                    maxHealth = 160;
-                }
-                else
-                {
-                    maxHealth = 80;
-                }
+                maxHealth = _PERK.HasPerk(PerkID.Fertile) ? 160 : 80;
                 health = maxHealth;
                 break;
 
             case WildlifeType.Boar:
                 navAgent.speed = 2;
-                if (_UM.hasUpgrade(UpgradeID.Fertile))
-                {
-                    maxHealth = 200;
-                }
-                else
-                {
-                    maxHealth = 100;
-                }
+                maxHealth = _PERK.HasPerk(PerkID.Fertile) ? 200 : 100;
                 health = maxHealth;
                 break;
 

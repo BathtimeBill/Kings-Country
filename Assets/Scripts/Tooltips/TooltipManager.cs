@@ -48,7 +48,7 @@ public class TooltipManager : Singleton<TooltipManager>
     public void SetAndShowPopulousTooltip()
     {
         tooltipBox.SetActive(true);
-        if(_UM.hasUpgrade(UpgradeID.Populous) == false)
+        if(_PERK.HasPerk(PerkID.Populous) == false)
         {
             textComponent.text = "This increases the population cap by +5. Cost is 1200 Maegen.";
             titleComponent.text = "Populous Upgrade";
