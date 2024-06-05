@@ -183,7 +183,7 @@ public class HorgrManager : Singleton<HorgrManager>
             case UnitID.Huldra:
                 SpawnHuldraManager();
                 break;
-            case UnitID.Golem:
+            case UnitID.Mistcalf:
                 SpawnGolemManager();
                 break;
         }

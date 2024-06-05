@@ -594,7 +594,7 @@ public class Unit : GameBehaviour
         }
         if(other.tag == "Heal")
         {
-            if(unitType != UnitID.Golem)
+            if(unitType != UnitID.Mistcalf)
             {
                 health += 100;
                 slider.value = slider.value = CalculateHealth();
@@ -638,7 +638,7 @@ public class Unit : GameBehaviour
         }
         if (other.tag == "Rune")
         {
-            if (unitType != UnitID.Golem)
+            if (unitType != UnitID.Mistcalf)
             {
                 healingParticle.SetActive(true);
             }
@@ -662,7 +662,7 @@ public class Unit : GameBehaviour
         //{
         //    isOutOfBounds = true;
         //}
-        if (unitType != UnitID.Golem)
+        if (unitType != UnitID.Mistcalf)
         {
             healingParticle.SetActive(false);
         }
@@ -680,7 +680,7 @@ public class Unit : GameBehaviour
         }
         if(other.tag == "Rune")
         {
-            if(unitType != UnitID.Golem)
+            if(unitType != UnitID.Mistcalf)
             {
                 if (_UM.hasUpgrade(UpgradeID.Rune))
                 {
@@ -911,7 +911,7 @@ public class Unit : GameBehaviour
                 }
 
                 break;
-            case UnitID.Golem:
+            case UnitID.Mistcalf:
                 if (_UM.hasUpgrade(UpgradeID.BarkSkin) && _PERK.golemPerk == false)
                 {
                     maxHealth = _GM.GetPercentageIncrease(_GM.golemHealth, 0.3f);
@@ -1032,7 +1032,7 @@ public class Unit : GameBehaviour
                     navAgent.speed = _GM.goblinSpeed;
                 }
                 break;
-            case UnitID.Golem:
+            case UnitID.Mistcalf:
                 if (_PERK.golemPerk == true)
                 {
                     health = _GM.GetPercentageIncrease(_GM.golemHealth, 0.5f);
@@ -1189,7 +1189,7 @@ public class Unit : GameBehaviour
     }
     private void OnContinueButton()
     {
-        if(unitType != UnitID.Golem)
+        if(unitType != UnitID.Mistcalf)
         {
             health = maxHealth;
             slider.value = slider.value = CalculateHealth();

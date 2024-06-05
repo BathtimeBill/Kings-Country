@@ -306,7 +306,7 @@ public class UnitSelection : GameBehaviour
                     audioSource.clip = _SM.GetSkessaVocal();
                     audioSource.Play();
                 }
-                if (unitSelected[0].GetComponent<Unit>().unitType == UnitID.Golem)
+                if (unitSelected[0].GetComponent<Unit>().unitType == UnitID.Mistcalf)
                 {
                     audioSource.clip = _SM.GetGolemVocal();
                     audioSource.Play();

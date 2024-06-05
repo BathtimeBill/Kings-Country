@@ -144,10 +144,17 @@ public enum UnitID
     Huldra,
     Skessa,
     Goblin,
-    Golem,
+    Mistcalf,
     Fidhain,
     Tower,
     SpitTower,
+}
+
+public enum EnemyType
+{
+    Hunter,
+    Warrior,
+    Woodcutter
 }
 
 public enum LevelID
@@ -156,6 +163,15 @@ public enum LevelID
     WormturnRoad,
     JotenheimPass,
 }
+
+public enum ThreatID
+{ 
+    Dog,
+    Mine,
+    Spy,
+    Lord
+}
+
 
 public enum WildlifeType
 {

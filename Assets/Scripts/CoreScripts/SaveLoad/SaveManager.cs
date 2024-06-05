@@ -155,8 +155,6 @@ public class SaveManager : BGG.GameData
 
     public override void SaveData()
     {
-        // if (GameSettings.Instance.saveUnfinishedLevelsScore)
-        //    SetCurrentTrackScore(ScoreManager.Instance.currentScore, false);
         SaveDataObject(save);
     }
 

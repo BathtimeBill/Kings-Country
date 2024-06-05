@@ -176,6 +176,7 @@ public class EnemyManager : Singleton<EnemyManager>
                 enemies[i].GetComponent<Enemy>().Die();
             yield return new WaitForEndOfFrame();
         }
+        _GM.canFinishWave = false;
         CheckEnemiesLeft();
     }
 

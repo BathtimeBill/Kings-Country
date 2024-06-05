@@ -7,6 +7,9 @@ using Unity.VisualScripting;
 
 public class TutorialManager : Singleton<TutorialManager>
 {
+    [BV.EnumList(typeof(TutorialID))]
+    public List<Tutorial> tutorials;
+
     [Header("Basic")]
     public Image tutorialImage;
     public TMP_Text tutContextText;
@@ -504,3 +507,22 @@ public class TutorialManager : Singleton<TutorialManager>
         GameEvents.OnHomeTreeSelected -= OnHomeTreeSelected;
     }
 }
+
+[System.Serializable]
+public class Tutorial
+{
+    
+    public TutorialID tutorialID;
+    [TextArea]
+    public string description;
+    public bool completed;
+}
+
+public enum TutorialID 
+{ 
+    Trees,
+    UnitPlacement,
+    Spy,
+    Lord
+}
+
