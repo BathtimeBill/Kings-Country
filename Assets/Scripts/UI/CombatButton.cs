@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class CombatButton : InteractableButton
@@ -12,10 +9,9 @@ public class CombatButton : InteractableButton
     public override void Start()
     {
         base.Start();
-        button.onClick.AddListener(() => PressedButton());
     }
 
-    void PressedButton()
+    public override void ClickedButton()
     {
         if(combatID == CombatID.Attack)
         {
@@ -32,12 +28,6 @@ public class CombatButton : InteractableButton
             _SM.PlaySound(_SM.formationSound);
             GameEvents.ReportOnFormationSelected();
         }
-    }
-
-    public void SetInteractable(bool _interactable)
-    {
-        if(button != null)
-            button.interactable = _interactable;
     }
 
     public override void OnPointerEnter(PointerEventData eventData)

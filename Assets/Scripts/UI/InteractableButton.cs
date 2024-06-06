@@ -7,25 +7,40 @@ public class InteractableButton : GameBehaviour, IPointerEnterHandler, IPointerE
 {
     [HideInInspector]
     public Button button;
+    public Image icon;
 
     void Awake()
     {
-        button = GetComponent<Button>();
+        button = myButton;
+        button.onClick.AddListener(() => ClickedButton());
     }
     public virtual void Start()
     {
 
     }
 
-    public void SetupButton()
+    public virtual void ClickedButton() 
+    {
+    }
+
+    public void SetInteractable(bool _interactable)
+    {
+        if (button == null)
+            return;
+
+        button.interactable = _interactable;
+
+        if (GetComponent<Coffee.UIExtensions.ShinyEffectForUGUI>() != null)
+            GetComponent<Coffee.UIExtensions.ShinyEffectForUGUI>().enabled = _interactable;
+    }
+
+    public virtual void SetupButton()
     {
         //button.colors.highlightedColor = UICharInfo.
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData) {}
-
-    public virtual void OnPointerExit(PointerEventData eventData) {}
-
+    public virtual void OnPointerExit(PointerEventData eventData) { }
     public virtual void OnPointerClick(PointerEventData eventData) {}
     public virtual void OnPointerDown(PointerEventData eventData) {}
     public virtual void OnPointerUp(PointerEventData eventData) {}

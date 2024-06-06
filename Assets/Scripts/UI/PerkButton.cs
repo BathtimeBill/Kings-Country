@@ -1,24 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class PerkButton : InteractableButton
 {
     public PerkData perkData;
-    public Image icon;
     public PerkPanel perkPanel;
     public override void Start()
     {
         base.Start();
-        button.onClick.AddListener(() => PressedButton());
-    }
-
-    void PressedButton()
-    {
-        perkPanel.SendPerkId(perkData.id);
-        GameEvents.ReportOnUpgradeSelected(perkData.id);
     }
 
     public void SetUpgrade(PerkID _id)
@@ -28,10 +17,11 @@ public class PerkButton : InteractableButton
         icon.sprite = perkData.icon;
     }
 
-    public void SetInteractable(bool _interactable)
+    #region overrides
+    public override void ClickedButton()
     {
-        if(button !=null)
-            button.interactable = _interactable;
+        perkPanel.SendPerkId(perkData.id);
+        GameEvents.ReportOnUpgradeSelected(perkData.id);
     }
 
     public override void OnPointerEnter(PointerEventData eventData)
@@ -43,4 +33,5 @@ public class PerkButton : InteractableButton
     {
         perkPanel.PointerExit();
     }
+    #endregion
 }

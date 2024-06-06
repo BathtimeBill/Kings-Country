@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -49,14 +47,6 @@ public class UnitUpgradeButton : InteractableButton
             transform.position = startPosition;
             currentTime = timePeriod * 3;
         }
-    }
-
-    public void SetInteractable(bool _interactable)
-    {
-        if (button == null)
-            return;
-
-        button.interactable = _interactable;
     }
 
     public override void OnPointerDown(PointerEventData eventData)

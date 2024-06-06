@@ -7,7 +7,6 @@ using UnityEngine.EventSystems;
 public class ToolButton : InteractableButton
 {
     public ToolID toolID;
-    public Image icon;
     public Image cooldownFill;
     public TMP_Text meagenPrice;
     public ToolPanel toolPanel;
@@ -15,24 +14,7 @@ public class ToolButton : InteractableButton
     public override void Start()
     {
         base.Start();
-        button.onClick.AddListener(() => PressedButton());
         CooldownFill(0);
-    }
-
-    void PressedButton()
-    {
-        GameEvents.ReportOnToolButtonPressed(toolID);
-    }
-
-    public void SetInteractable(bool _interactable)
-    {
-        if (button == null)
-            return;
-
-        button.interactable = _interactable;
-
-        if(GetComponent<Coffee.UIExtensions.ShinyEffectForUGUI>() != null)
-            GetComponent<Coffee.UIExtensions.ShinyEffectForUGUI>().enabled = _interactable;
     }
 
     public void CooldownFill(float _timeRemaining)
@@ -40,6 +22,12 @@ public class ToolButton : InteractableButton
         cooldownFill.fillAmount = _timeRemaining;
     }
 
+    #region overrides
+    public override void ClickedButton()
+    {
+        GameEvents.ReportOnToolButtonPressed(toolID);
+    }
+    
     public override void OnPointerEnter(PointerEventData eventData)
     {
         if (toolPanel == null)
@@ -54,13 +42,14 @@ public class ToolButton : InteractableButton
         toolPanel.PointerExit();
     }
 
-    public void SetupButton()
+    #endregion
+
+    #region Editor
+    public override void SetupButton()
     {
         icon.sprite = _DATA.GetTool(toolID).toolIcon;
         //name = tool.toolName + "ToolButton";
     }
-
-    #region Editor
 #if UNITY_EDITOR
     [CustomEditor(typeof(ToolButton))]
     [CanEditMultipleObjects]
