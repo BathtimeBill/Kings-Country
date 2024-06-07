@@ -3062,7 +3062,6 @@ MonoBehaviour:
   breakWaveLenth: 240
   agroWave: 0
   canFinishWave: 0
-  peaceTime: 0
   treeCooldown: 5
   hutCooldown: 5
   horgrCooldown: 5
@@ -3293,15 +3292,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49bf857d33210ba4bac9d36eeba0006e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroy: 0
-  score: 0
-  highScore: 0
-  maegenText: {fileID: 0}
-  treesText: {fileID: 0}
-  wildlifeText: {fileID: 0}
-  finalScoreText: {fileID: 0}
-  highScoreText: {fileID: 0}
-  finalScorePanel: {fileID: 0}
 --- !u!1001 &137298353
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8880,7 +8870,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh452458
+  m_Name: pb_Mesh79520
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -14854,7 +14844,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh452924
+  m_Name: pb_Mesh79980
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -17857,6 +17847,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6826112800178032740, guid: 5ae4b8037d3b0db4e8ac435e08d32cbf,
     type: 3}
   m_PrefabInstance: {fileID: 769873316}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &770305908 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2027334206974982801, guid: c8a465780fb9b2f4686a1ec851c1a4f7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1190588418}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &776617925
 PrefabInstance:
@@ -22001,7 +21997,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh451730
+  m_Name: pb_Mesh78796
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -34215,7 +34211,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-32209092
+  m_Name: pb_Mesh-23472
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -34366,7 +34362,7 @@ Mesh:
   m_CookingOptions: 30
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
-  m_MeshMetrics[0]: 1
+  m_MeshMetrics[0]: 1.0000001
   m_MeshMetrics[1]: 1
   m_MeshOptimizationFlags: 1
   m_StreamData:
@@ -34474,7 +34470,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh452988
+  m_Name: pb_Mesh80048
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -54252,7 +54248,7 @@ PrefabInstance:
     - target: {fileID: 1305649631322353990, guid: 60ab1fbcdd0169a438b4e457a48d54fc,
         type: 3}
       propertyPath: m_VersionIndex
-      value: 413
+      value: 416
       objectReference: {fileID: 0}
     - target: {fileID: 1626587583096563602, guid: 60ab1fbcdd0169a438b4e457a48d54fc,
         type: 3}
@@ -76699,6 +76695,16 @@ PrefabInstance:
         type: 3}
       propertyPath: nightLight
       value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3146250868504078824, guid: 5b4f9554c8228ec4b85f035ec6998f99,
+        type: 3}
+      propertyPath: buttonImage
+      value: 
+      objectReference: {fileID: 770305908}
+    - target: {fileID: 3146250868504078824, guid: 5b4f9554c8228ec4b85f035ec6998f99,
+        type: 3}
+      propertyPath: buttonRotationDay.z
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 5164605722806053096, guid: 5b4f9554c8228ec4b85f035ec6998f99,
         type: 3}

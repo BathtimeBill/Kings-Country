@@ -220,6 +220,7 @@ public class GameManager : Singleton<GameManager>
     }
     public void SpeedGame()
     {
+        print("SEPEED GAME!");
         timeAudioSource.clip = _SM.timeSpeedUpSound;
         timeAudioSource.Play();
         globalVolume.profile.TryGet(out grain);
