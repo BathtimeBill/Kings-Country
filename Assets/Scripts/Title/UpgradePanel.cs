@@ -4,33 +4,38 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEditor;
 
-public class UnitUpgrades : GameBehaviour
+public class UpgradePanel : GameBehaviour
 {
     public Image icon;
     public Image mapIcon;
     public TMP_Text nameText;
     public TMP_Text descriptionText;
-    [Header("Damage")]
-    public TMP_Text damageValue;
-    public TMP_Text damageChangeValue;
-    public Image damageChangeIcon;
-    Animator damageAnim;
-    [Header("Health")]
-    public TMP_Text healthValue;
-    public TMP_Text healthChangeValue;
-    public Image healthChangeIcon;
-    Animator healthAnim;
-    [Header("Speed")]
-    public TMP_Text speedValue;
-    public TMP_Text speedChangeValue;
-    public Image speedChangeIcon;
-    Animator speedAnim;
-    [Header("Maegen")]
-    public TMP_Text maegenValue;
-    public TMP_Text maegenChangeValue;
-    public Image maegenChangeIcon;
-    Animator maegenAnim;
 
+    [Header("Stat 1")]      //Units - Maegen
+    public Image stat1Icon;
+    public TMP_Text stat1Value;
+    public Image stat1ChangeIcon;
+    public TMP_Text stat1ValueChange;
+    Animator stat1Anim;
+    [Header("Stat 2")]      //Units - Damage
+    public Image stat2Icon;
+    public TMP_Text stat2Value;
+    public Image stat2ChangeIcon;
+    public TMP_Text stat2ChangeValue;
+    Animator stat2Anim;
+    [Header("Stat 3")]      //Units - Health
+    public Image stat3Icon;
+    public TMP_Text stat3Value;
+    public Image stat3ChangeIcon;
+    public TMP_Text stat3ChangeValue;
+    Animator stat3Anim;
+    [Header("Stat 4")]      //Units - Speed
+    public Image stat4Icon;
+    public TMP_Text stat4Value;
+    public Image stat4ChangeIcon;
+    public TMP_Text stat4ChangeValue;
+    Animator stat4Anim;
+    
     [Header("Totals")]
     public TMP_Text damageTotalValue;
     public TMP_Text damageTotalChangeValue;
@@ -60,15 +65,20 @@ public class UnitUpgrades : GameBehaviour
     Animator level2Anim;
     Animator level3Anim;
 
+    [Header("Stats")]
+
     [Header("Units")]
     public List<UnitData> currentUnits;
     private UnitData activeUnit;
     public UnitID ActiveUnit => activeUnit.id;
 
-    private int currentDamage = 0;
-    private int currentHealth = 0;
-    private int currentSpeed = 0;
-    private int currentMaegen = 0;
+    private ToolData activeTool;
+    public ToolID ActiveTool => activeTool.id;
+
+    private int currentStat1 = 0;
+    private int currentStat2 = 0;
+    private int currentStat3 = 0;
+    private int currentStat4 = 0;
 
     private int damageTotal = 0;
     private int healthTotal = 0;
@@ -87,10 +97,10 @@ public class UnitUpgrades : GameBehaviour
 
     private void Awake()
     {
-        damageAnim = damageChangeIcon.GetComponent<Animator>();
-        healthAnim = healthChangeIcon.GetComponent<Animator>();
-        speedAnim = speedChangeIcon.GetComponent<Animator>();
-        maegenAnim = maegenChangeIcon.GetComponent<Animator>();
+        stat1Anim = stat1ChangeIcon.GetComponent<Animator>();
+        stat2Anim = stat2ChangeIcon.GetComponent<Animator>();
+        stat3Anim = stat3ChangeIcon.GetComponent<Animator>();
+        stat4Anim = stat4ChangeIcon.GetComponent<Animator>();
 
         damageTotalAnim = damageTotalIcon.GetComponent<Animator>();
         healthTotalAnim = healthTotalIcon.GetComponent<Animator>();
@@ -114,46 +124,81 @@ public class UnitUpgrades : GameBehaviour
         mapIcon.sprite = null;
         nameText.text = "Unit Management";
         descriptionText.text = "Select a unit to view and upgrade";
-        damageValue.text = "-";
-        healthValue.text = "-";
-        speedValue.text = "-";
-        maegenValue.text = "-";
+        stat1Value.text = "-";
+        stat2Value.text = "-";
+        stat3Value.text = "-";
+        stat4Value.text = "-";
         RemoveUpgradeValues();
     }
 
-    public void ChangeUnit(UnitID _unitID)
+    public void ChangeUpgrade(UnitID _unitID)
     {
         activeUnit = _DATA.GetUnit(_unitID);
         icon.sprite =  activeUnit.icon;
         mapIcon.sprite =  activeUnit.mapIcon;
         nameText.text = activeUnit.name;
         descriptionText.text = activeUnit.description;
-        ShowStats();
+        currentStat1 = activeUnit.cost;
+        currentStat2 = activeUnit.damage;
+        currentStat3 = activeUnit.health;
+        currentStat4 = activeUnit.speed;
+
+        stat1Icon.sprite = _ICONS.maegenIcon;
+        stat2Icon.sprite = _ICONS.damageIcon;
+        stat3Icon.sprite = _ICONS.healthIcon;
+        stat4Icon.sprite = _ICONS.speedIcon;
+
+        SetStatValues();
     }
 
-    public void ShowStats()
+    public void ChangeUpgrade(ToolID _toolID)
     {
-        currentDamage = activeUnit.damage;
-        currentHealth = activeUnit.health;
-        currentSpeed = activeUnit.speed;
-        currentMaegen = activeUnit.cost;
+        activeTool = _DATA.GetTool(_toolID);
+        icon.sprite = activeTool.icon;
+        mapIcon.sprite = _ICONS.emptyIcon;
+        nameText.text = activeTool.name;
+        descriptionText.text = activeTool.description;
+        currentStat1 = activeTool.maegenPrice;
+        currentStat2 = activeTool.wildlifePrice;
+        currentStat3 = activeTool.cooldownTime;
+        currentStat4 = 0;
 
-        damageValue.text = currentDamage.ToString();
-        healthValue.text = currentHealth.ToString();
-        speedValue.text = currentSpeed.ToString();
-        maegenValue.text = currentMaegen.ToString();
+        stat1Icon.sprite = _ICONS.maegenIcon;
+        stat2Icon.sprite = _ICONS.wildlifeIcon;
+        stat3Icon.sprite = _ICONS.cooldownIcon;
+        stat4Icon.sprite = _ICONS.emptyIcon;
+
+        SetStatValues();
+    }
+
+    public void ChangeUpgrade(WildlifeID _wildlifeID)
+    {
+
+    }
+
+    public void SetStatValues()
+    {
+        stat1Value.text = currentStat1.ToString();
+        stat2Value.text = currentStat2.ToString();
+        stat3Value.text = currentStat3.ToString();
+        stat4Value.text = currentStat4.ToString();
 
         RemoveUpgradeValues();
         ShowTotal(); 
     }
 
+    public void ShowToolStats()
+    {
+
+    }
+
     private void RemoveUpgradeValues()
     {
         ToggleChangeIcons(false);
-        damageChangeValue.text = "";
-        healthChangeValue.text = "";
-        speedChangeValue.text = "";
-        maegenChangeValue.text = "";
+        stat1ValueChange.text = "";
+        stat2ChangeValue.text = "";
+        stat3ChangeValue.text = "";
+        stat4ChangeValue.text = "";
 
         damageTotalChangeValue.text = "";
         healthTotalChangeValue.text = "";
@@ -170,20 +215,20 @@ public class UnitUpgrades : GameBehaviour
         ToggleChangeIcons(true);
 
         //Stats
-        damageUpgradePercentage = Mathf.RoundToInt(MathX.GetPercentageChange(currentDamage, 10));
-        healthUpgradePercentage = Mathf.RoundToInt(MathX.GetPercentageChange(currentHealth, 10));
-        speedUpgradePercentage = Mathf.RoundToInt(MathX.GetPercentageChange(currentSpeed, 10));
-        maegenUpgradePercentage = Mathf.RoundToInt(MathX.GetPercentageIncrease(currentMaegen, 10));
+        damageUpgradePercentage = Mathf.RoundToInt(MathX.GetPercentageChange(currentStat2, 10));
+        healthUpgradePercentage = Mathf.RoundToInt(MathX.GetPercentageChange(currentStat3, 10));
+        speedUpgradePercentage = Mathf.RoundToInt(MathX.GetPercentageChange(currentStat4, 10));
+        maegenUpgradePercentage = Mathf.RoundToInt(MathX.GetPercentageIncrease(currentStat1, 10));
 
-        int attackUpgrade = currentDamage + damageUpgradePercentage;
-        int healthUpgrade = currentHealth + healthUpgradePercentage;
-        int speedUpgrade = currentSpeed + speedUpgradePercentage;
-        int maegenUpgrade = currentMaegen + maegenUpgradePercentage;
+        int attackUpgrade = currentStat2 + damageUpgradePercentage;
+        int healthUpgrade = currentStat3 + healthUpgradePercentage;
+        int speedUpgrade = currentStat4 + speedUpgradePercentage;
+        int maegenUpgrade = currentStat1 + maegenUpgradePercentage;
 
-        CheckStatColours(damageChangeValue, currentDamage, attackUpgrade, damageChangeIcon, damageAnim);
-        CheckStatColours(healthChangeValue, currentHealth, healthUpgrade, healthChangeIcon, healthAnim);
-        CheckStatColours(speedChangeValue, currentSpeed, speedUpgrade, speedChangeIcon, speedAnim);
-        CheckStatColours(maegenChangeValue, currentMaegen, maegenUpgrade, maegenChangeIcon, maegenAnim, true);
+        CheckStatColours(stat1ValueChange, currentStat1, maegenUpgrade, stat1ChangeIcon, stat1Anim, true);
+        CheckStatColours(stat2ChangeValue, currentStat2, attackUpgrade, stat2ChangeIcon, stat2Anim);
+        CheckStatColours(stat3ChangeValue, currentStat3, healthUpgrade, stat3ChangeIcon, stat3Anim);
+        CheckStatColours(stat4ChangeValue, currentStat4, speedUpgrade, stat4ChangeIcon, stat4Anim);
 
         //Totals
         int damageTotalUpgrade = damageTotal + damageUpgradePercentage;
@@ -219,10 +264,10 @@ public class UnitUpgrades : GameBehaviour
         maegenTotal = 0;
         for(int i=0; i< currentUnits.Count;i++)
         {
-            damageTotal += currentDamage;
-            healthTotal += currentHealth;
-            speedTotal += currentSpeed;
-            maegenTotal += currentMaegen;
+            damageTotal += currentStat2;
+            healthTotal += currentStat3;
+            speedTotal += currentStat4;
+            maegenTotal += currentStat1;
         }
 
         damageTotalValue.text = damageTotal.ToString();
@@ -243,10 +288,10 @@ public class UnitUpgrades : GameBehaviour
 
     private void ToggleChangeIcons(bool _on)
     {
-        damageChangeIcon.gameObject.SetActive(_on);
-        healthChangeIcon.gameObject.SetActive(_on);
-        speedChangeIcon.gameObject.SetActive(_on);
-        maegenChangeIcon.gameObject.SetActive(_on);
+        stat1ChangeIcon.gameObject.SetActive(_on);
+        stat2ChangeIcon.gameObject.SetActive(_on);
+        stat3ChangeIcon.gameObject.SetActive(_on);
+        stat4ChangeIcon.gameObject.SetActive(_on);
 
         damageTotalIcon.gameObject.SetActive(_on);
         healthTotalIcon.gameObject.SetActive(_on);
@@ -263,7 +308,7 @@ public class UnitUpgrades : GameBehaviour
         //}
     }
 #if UNITY_EDITOR
-    [CustomEditor(typeof(UnitUpgrades))]
+    [CustomEditor(typeof(UpgradePanel))]
     [CanEditMultipleObjects]
 
     public class UnitLoadoutsEditor : Editor
@@ -273,7 +318,7 @@ public class UnitUpgrades : GameBehaviour
             DrawDefaultInspector();
             GUILayout.Space(20);
             GUI.backgroundColor = Color.green;
-            UnitUpgrades unit = (UnitUpgrades)target;
+            UpgradePanel unit = (UpgradePanel)target;
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Setup Buttons"))
             {
@@ -288,3 +333,5 @@ public class UnitUpgrades : GameBehaviour
 #endif
     #endregion
 }
+
+

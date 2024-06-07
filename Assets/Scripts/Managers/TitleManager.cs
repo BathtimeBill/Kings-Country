@@ -16,6 +16,9 @@ public class TitleManager : GameBehaviour
     public GameObject unitCamera;
     public GameObject perkCamera;
 
+    [Header("Title Buttons")]
+    public TitleButton[] titleButtons;
+
     private void Start()
     {
         TurnOffPanels();
@@ -72,6 +75,13 @@ public class TitleManager : GameBehaviour
         FadeX.InstantTransparent(unitCanvas);
         FadeX.InstantTransparent(perkCanvas);
     }
+    public void ToggleTitleText(bool _show)
+    {
+        for(int i=0; i<titleButtons.Length;i++)
+        {
+            titleButtons[i].ToggleText(_show);
+        }
+    }
     #region Editor
 #if UNITY_EDITOR
     [CustomEditor(typeof(TitleManager))]
@@ -108,6 +118,19 @@ public class TitleManager : GameBehaviour
                 titleManager.TurnOffPanels();
                 FadeX.InstantOpaque(titleManager.perkCanvas);
                 titleManager.ShowPerks();
+                EditorUtility.SetDirty(titleManager);
+            }
+            GUILayout.EndHorizontal();
+            GUI.backgroundColor = Color.blue;
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Show Title Labels"))
+            {
+                titleManager.ToggleTitleText(true);
+                EditorUtility.SetDirty(titleManager);
+            }
+            if (GUILayout.Button("Hide Title Labels"))
+            {
+                titleManager.ToggleTitleText(false);
                 EditorUtility.SetDirty(titleManager);
             }
             GUILayout.EndHorizontal();

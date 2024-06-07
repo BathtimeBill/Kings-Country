@@ -6,7 +6,7 @@ using UnityEngine;
 public class WildlifeAI : GameBehaviour
 {
     [Header("Wildlife Type")]
-    public WildlifeType type;
+    public WildlifeID type;
     [Header("Status")]
     public bool isPanicked = false;
     [Header("General")]
@@ -58,15 +58,15 @@ public class WildlifeAI : GameBehaviour
     {
         switch (type)
         {
-            case WildlifeType.Rabbit:
+            case WildlifeID.Rabbit:
                 navAgent.speed = 1.5f;
                 break;
 
-            case WildlifeType.Deer:
+            case WildlifeID.Deer:
                 navAgent.speed = 2;
                 break;
 
-            case WildlifeType.Boar:
+            case WildlifeID.Boar:
                 navAgent.speed = 2;
                 break;
 
@@ -129,15 +129,15 @@ public class WildlifeAI : GameBehaviour
 
             switch (type)
             {
-                case WildlifeType.Rabbit:
+                case WildlifeID.Rabbit:
 
                     break;
 
-                case WildlifeType.Deer:
+                case WildlifeID.Deer:
                     audioClip = _SM.GetDeerDistressSound();
                     break;
 
-                case WildlifeType.Boar:
+                case WildlifeID.Boar:
                     audioClip = _SM.GetBoarDistressSound();
                     break;
 
@@ -163,15 +163,15 @@ public class WildlifeAI : GameBehaviour
 
             switch (type)
             {
-                case WildlifeType.Rabbit:
+                case WildlifeID.Rabbit:
 
                     break;
 
-                case WildlifeType.Deer:
+                case WildlifeID.Deer:
                     audioClip = _SM.GetDeerDistressSound();
                     break;
 
-                case WildlifeType.Boar:
+                case WildlifeID.Boar:
                     audioClip = _SM.GetBoarDistressSound();
                     break;
 
@@ -185,19 +185,19 @@ public class WildlifeAI : GameBehaviour
     {
         switch (type)
         {
-            case WildlifeType.Rabbit:
+            case WildlifeID.Rabbit:
                 navAgent.speed = 1.5f;
                 maxHealth = _PERK.HasPerk(PerkID.Fertile) ? 50 : 25;
                 health = maxHealth;
                 break;
 
-            case WildlifeType.Deer:
+            case WildlifeID.Deer:
                 navAgent.speed = 2;
                 maxHealth = _PERK.HasPerk(PerkID.Fertile) ? 160 : 80;
                 health = maxHealth;
                 break;
 
-            case WildlifeType.Boar:
+            case WildlifeID.Boar:
                 navAgent.speed = 2;
                 maxHealth = _PERK.HasPerk(PerkID.Fertile) ? 200 : 100;
                 health = maxHealth;
@@ -224,17 +224,17 @@ public class WildlifeAI : GameBehaviour
     {
         switch (type)
         {
-            case WildlifeType.Rabbit:
+            case WildlifeID.Rabbit:
                 maxHealth = 50;
                 health = maxHealth;
                 break;
 
-            case WildlifeType.Deer:
+            case WildlifeID.Deer:
                 maxHealth = 160;
                 health = maxHealth;
                 break;
 
-            case WildlifeType.Boar:
+            case WildlifeID.Boar:
                 maxHealth = 200;
                 health = maxHealth;
                 break;

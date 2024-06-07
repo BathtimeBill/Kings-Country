@@ -11,10 +11,6 @@ public class TitleButton : InteractableButton
         temp.x = 0;
         buttonTextLabel.transform.localScale = temp;
     }
-    public void SetInteractable(bool _interactable)
-    {
-        button.interactable = _interactable;
-    }
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
@@ -36,5 +32,12 @@ public class TitleButton : InteractableButton
     public void TweenText(bool _in)
     {
 
+    }
+
+    public void ToggleText(bool _show)
+    {
+        Vector3 temp = buttonTextLabel.transform.localScale;
+        temp.x = _show ? 1 : 0;
+        buttonTextLabel.transform.localScale = temp;
     }
 }

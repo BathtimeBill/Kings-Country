@@ -6,12 +6,14 @@ using UnityEngine;
 public class ToolData : ScriptableObject
 {
     public ToolID id;
-    public string toolName;
-    public string toolDescription;
-    public Sprite toolIcon;
+    public new string name;
+    [TextArea]
+    public string description;
+    public Sprite icon;
     public int maegenPrice;
     public int wildlifePrice;
-    public float cooldownTime = 5;
+    public int cooldownTime = 5;
     public int upgradeLevel;
     public bool unlocked;
+    public AudioClip[] toolSounds;
 }

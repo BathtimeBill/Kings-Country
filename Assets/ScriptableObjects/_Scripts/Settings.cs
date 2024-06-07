@@ -13,6 +13,9 @@ public class Settings : ScriptableObject
     [Header("Colours")]
     public Colours colours;
 
+    [Header("Icons")]
+    public Icons icons;
+
     [Header("Audio")]
     public AudioVariables audio;
 
@@ -72,4 +75,17 @@ public class Vibration
 {
     public bool vibrateOn = true;
     public float[] vibrateStrength; //Perfect, Great, Good
+}
+
+[Serializable]
+public class Icons
+{
+    public Sprite emptyIcon;
+    public Sprite maegenIcon;
+    public Sprite wildlifeIcon;
+    public Sprite damageIcon;
+    public Sprite healthIcon;
+    public Sprite speedIcon;
+    public Sprite cooldownIcon;
+
 }

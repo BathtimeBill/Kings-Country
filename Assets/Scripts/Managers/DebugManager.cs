@@ -21,8 +21,8 @@ public class DebugManager : GameBehaviour
 
         if(Input.GetKeyDown(KeyCode.U))
         {
-            if(FindObjectOfType<UnitUpgrades>())
-                FindObjectOfType<UnitUpgrades>().ToggleCanvasPosition();
+            if(FindObjectOfType<UpgradePanel>())
+                FindObjectOfType<UpgradePanel>().ToggleCanvasPosition();
         }
     }
 }

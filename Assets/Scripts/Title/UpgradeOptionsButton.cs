@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 
 public class UpgradeOptionsButton : InteractableButton
 {
+    public UpgradeManager upgradeManager;
+    public UpgradeCategoryID upgradeCategory;
     public override void Start()
     {
         base.Start();
@@ -13,7 +15,7 @@ public class UpgradeOptionsButton : InteractableButton
 
     public override void ClickedButton()
     {
-        
+        upgradeManager.ChangeCategory(upgradeCategory);
     }
 
     public override void OnPointerDown(PointerEventData eventData)

@@ -47,7 +47,7 @@ public class ToolButton : InteractableButton
     #region Editor
     public override void SetupButton()
     {
-        icon.sprite = _DATA.GetTool(toolID).toolIcon;
+        icon.sprite = _DATA.GetTool(toolID).icon;
         //name = tool.toolName + "ToolButton";
     }
 #if UNITY_EDITOR

@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: Stormer
   m_EditorClassIdentifier: 
   id: 2
-  toolName: Stormer
-  toolDescription: Allows you to create an intense storm that requires at least 20
-    wildlife. Lightning bolts will randomly strike enemies down for a period of 1
-    minute.
-  toolIcon: {fileID: 21300000, guid: 50f96c7031d50b74fb58eb3846d32361, type: 3}
+  name: Stormer
+  description: Allows you to create an intense storm that requires at least 20 wildlife.
+    Lightning bolts will randomly strike enemies down for a period of 1 minute.
+  icon: {fileID: -986120386, guid: 932a504f2cacdae4b98f9944f39959b2, type: 3}
   maegenPrice: 0
   wildlifePrice: 20
+  cooldownTime: 5
   upgradeLevel: 0
   unlocked: 0
+  toolSounds:
+  - {fileID: 8300000, guid: ab9c46f9f109ff241afa7fecc58b9f81, type: 3}

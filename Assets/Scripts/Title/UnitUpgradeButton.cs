@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 public class UnitUpgradeButton : InteractableButton
 {
-    public UnitUpgrades unitUpgrades;
+    public UpgradePanel unitUpgrades;
     public Image fillImage;
     public float fillSpeed = 0.5f;
     bool filling = false;
@@ -65,7 +65,7 @@ public class UnitUpgradeButton : InteractableButton
 
     public override void OnPointerExit(PointerEventData eventData)
     {
-        unitUpgrades.ShowStats();
+        unitUpgrades.SetStatValues();
         filling = false;
     }
 

@@ -8,7 +8,6 @@ public class GameBehaviour : BV.Behaviour
     protected static GameManager _GM { get { return GameManager.instance; } }
     protected static HorgrManager _HM { get { return HorgrManager.instance; } }
     protected static HutManager _HUTM { get { return HutManager.instance; } }
-    protected static UpgradeManager _UM { get { return UpgradeManager.instance; } }
     protected static MusicManager _MM { get { return MusicManager.instance; } }
     protected static EnemyManager _EM { get { return EnemyManager.instance; } }
     protected static UIManager _UI { get { return UIManager.instance; } }
@@ -35,26 +34,27 @@ public class GameBehaviour : BV.Behaviour
     public Settings _SETTINGS => _DATA.settings;
     public Tweening _TWEENING => _DATA.settings.tweening;
     public Colours _COLOUR => _DATA.settings.colours;
+    public Icons _ICONS => _DATA.settings.icons;
 }
 
 
-public enum PerkID2
+public enum UpgradeID
 {
-    satyr,
-    orcus,
-    leshy,
-    willow,
-    skessa,
-    goblin,
-    fidhain,
-    oak,
-    huldra,
-    golem,
-    explosiveTree,
-    homeTree,
-    rune,
-    fyre,
-    bear,
+    Satyr,
+    Orcus,
+    Leshy,
+    Skessa,
+    Goblin,
+    Fidhain,
+    Huldra,
+    Milcalf,
+    HomeTree,
+    Willow,
+    ExplosiveTree,
+    Rune,
+    Fyre,
+    Stormer,
+    Bear,
 }
 public enum ToolID
 {
@@ -63,7 +63,7 @@ public enum ToolID
     Stormer,
     Tree,
     Willow,
-    Ficus
+    Ficus,
 }
 public enum CombatID
 {
@@ -148,6 +148,7 @@ public enum UnitID
     Fidhain,
     Tower,
     SpitTower,
+    Unknown
 }
 
 public enum EnemyType
@@ -173,7 +174,7 @@ public enum ThreatID
 }
 
 
-public enum WildlifeType
+public enum WildlifeID
 {
     Rabbit,
     Deer,
@@ -213,6 +214,11 @@ public enum LevelButton
     Three,
     Four,
     Five,
+}
+
+public enum UpgradeCategoryID
+{
+    HomeTree,Hut,Hogyr,Tree,Tool,Wildlife
 }
 
 public enum DifficultyRating

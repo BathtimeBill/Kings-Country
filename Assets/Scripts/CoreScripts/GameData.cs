@@ -18,11 +18,16 @@ public class GameData : Singleton<GameData>
     public bool CanUseTool(ToolID _id) => GetTool(_id).wildlifePrice <= _GM.wildlife && GetTool(_id).maegenPrice <= _GM.maegen;
     #endregion
 
+    #region Tool Functions
+    [Header("Wildlife Data")]
+    public List<WildlifeData> wildlifeData;
+    public WildlifeData GetWildlife(WildlifeID _id) => wildlifeData.Find(x => x.id == _id);
+    #endregion
+
     #region Perks
     [Header("Perk Data")]
     public List<PerkData> perkData;
     public PerkData GetPerk(PerkID _id) => perkData.Find(x=> x.id == _id);
-
     #endregion
 
     #region Level Functions
