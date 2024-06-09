@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UpgradeWildlife : GameBehaviour
+public class UpgradeWildlife : UpgradeObject
 {
     public WildlifeID wildlifeID;
-    public UpgradePanel upgradePanel;
 
     private void OnMouseEnter()
     {
-        //upgradePanel.ChangeTool(wildlifeID);
+        _UPGRADE.ChangeUpgrade(this);
         PlaySelectSound();
     }
 

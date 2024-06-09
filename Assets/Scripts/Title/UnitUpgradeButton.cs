@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 public class UnitUpgradeButton : InteractableButton
 {
-    public UpgradePanel unitUpgrades;
+    public UpgradePanel upgradePanel;
     public Image fillImage;
     public float fillSpeed = 0.5f;
     bool filling = false;
@@ -19,9 +19,9 @@ public class UnitUpgradeButton : InteractableButton
     public override void Start()
     {
         base.Start();
-        startPosition = transform.position;
-        pivot = transform.position;
-        currentTime = timePeriod * 3;
+        //startPosition = transform.position;
+        //pivot = transform.position;
+        //currentTime = timePeriod * 3;
     }
     void Update()
     {
@@ -30,22 +30,22 @@ public class UnitUpgradeButton : InteractableButton
             fillImage.fillAmount += fillSpeed * Time.deltaTime;
             if (fillImage.fillAmount >= 1)
             {
-                UpgradeIt(unitUpgrades.ActiveUnit);
+                UpgradeIt(upgradePanel.ActiveUnit);
             }
             //TODO
             //Improve upgrade button shake
-            currentTime -= Time.deltaTime / 3;
-            currentTime = Mathf.Clamp(currentTime, 0.01f, 1);
-            Vector3 nextPos = transform.position;
-            nextPos.y = pivot.y + height + height * Mathf.Sin(((Mathf.PI * 2) / currentTime) * timeSinceStart);
-            timeSinceStart += Time.deltaTime;
-            transform.position = nextPos;
+            //currentTime -= Time.deltaTime / 3;
+            //currentTime = Mathf.Clamp(currentTime, 0.01f, 1);
+            //Vector3 nextPos = transform.position;
+            //nextPos.y = pivot.y + height + height * Mathf.Sin(((Mathf.PI * 2) / currentTime) * timeSinceStart);
+            //timeSinceStart += Time.deltaTime;
+            //transform.position = nextPos;
         }
         else
         {
             fillImage.fillAmount -= (fillSpeed * 3) * Time.deltaTime;
-            transform.position = startPosition;
-            currentTime = timePeriod * 3;
+            //transform.position = startPosition;
+            //currentTime = timePeriod * 3;
         }
     }
 
@@ -60,17 +60,19 @@ public class UnitUpgradeButton : InteractableButton
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
-        unitUpgrades.ShowStatsUpgrade();
+        upgradePanel.ShowStatsUpgrade();
     }
 
     public override void OnPointerExit(PointerEventData eventData)
     {
-        unitUpgrades.SetStatValues();
+        upgradePanel.SetStatValues();
         filling = false;
     }
 
-    public void UpgradeIt(UnitID _unitId)
+    public void UpgradeIt(UnitID _unitID)
     {
-
+        _UPGRADE.UpgradeObject();
+        filling = false;
+        fillImage.fillAmount = 0;
     }
 }

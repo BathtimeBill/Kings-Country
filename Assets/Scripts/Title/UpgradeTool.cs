@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UpgradeTool : GameBehaviour
+public class UpgradeTool : UpgradeObject
 {
     public ToolID toolID;
-    public UpgradePanel upgradePanel;
 
     private void OnMouseEnter()
     {
-        upgradePanel.ChangeUpgrade(toolID);
+        _UPGRADE.ChangeUpgrade(this);
         PlaySelectSound();
     }
 

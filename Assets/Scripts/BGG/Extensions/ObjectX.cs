@@ -143,4 +143,19 @@ public static class ObjectX
             comp = obj.AddComponent<T>();
         return comp;
     }
+
+    /// <summary>
+    /// Sets all children of an objects layers to a new layer
+    /// </summary>
+    /// <param name="parent"></param>
+    /// <param name="layer"></param>
+    public static void SetLayerRecursively(this Transform parent, int layer)
+    {
+        parent.gameObject.layer = layer;
+
+        for (int i = 0, count = parent.childCount; i < count; i++)
+        {
+            parent.GetChild(i).SetLayerRecursively(layer);
+        }
+    }
 }

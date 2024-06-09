@@ -3,11 +3,32 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEditor;
+using DG.Tweening;
 
-public class UpgradeManager : GameBehaviour
+public class UpgradeManager : Singleton<UpgradeManager>
 {
+    public UpgradePanel upgradePanel;
+    public Transform cameras;
+
     public GameObject[] upgradeCategories;
     public ParticleSystem[] spawnParticles;
+    public GameObject[] upgradeParticles;
+    public GameObject[] upgradeCameras;
+    public GameObject[] upgradeBases;
+    public List<UpgradeSlot> upgradeSlots;
+
+    private UpgradeObject currentUpgradeObject;
+    private UpgradeObject previousUpgradeObject;
+    private int currentObjectIndex;
+    private GameObject currentUpgradeBase;
+    private GameObject previousUpgradeBase;
+
+    private Animator anim;
+
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
 
     private void Start()
     {
@@ -16,9 +37,63 @@ public class UpgradeManager : GameBehaviour
 
     public void ChangeCategory(UpgradeCategoryID _category)
     {
+        TurnOffCameras();
         TurnOffCategories();
         ShowParticles();
         upgradeCategories[(int)_category].SetActive(true);
+    }
+
+    public void ChangeUpgrade(UpgradeObject _upgradeObject)
+    {
+        previousUpgradeObject = currentUpgradeObject;
+        currentUpgradeObject = _upgradeObject;
+
+        if(_upgradeObject.upgradeType == UpgradeType.Unit)
+        {
+            upgradePanel.ChangeUpgrade(_upgradeObject.GetComponent<UpgradeUnit>().unitID);
+        }
+        if (_upgradeObject.upgradeType == UpgradeType.Tool)
+        {
+            upgradePanel.ChangeUpgrade(_upgradeObject.GetComponent<UpgradeTool>().toolID);
+        }
+        if (_upgradeObject.upgradeType == UpgradeType.Wildlife)
+        {
+            upgradePanel.ChangeUpgrade(_upgradeObject.GetComponent<UpgradeWildlife>().wildlifeID);
+        }
+
+        //gets the int value of the upgrade to use in list checks
+        UpgradeSlot ugs = upgradeSlots.Find(x => x.upgradeCategory == currentUpgradeObject.upgradeCategoryID);
+        if (ugs == null) return;
+        currentObjectIndex = ugs.upgradeSlots.IndexOf(currentUpgradeObject.gameObject);
+
+        previousUpgradeBase = currentUpgradeBase;
+        currentUpgradeBase = upgradeBases[currentObjectIndex];
+
+        ChangeUpgradeLayer();
+    }
+
+    private void ChangeUpgradeLayer()
+    {
+        if(previousUpgradeObject != null)
+            ObjectX.SetLayerRecursively(previousUpgradeObject.transform, LayerMask.NameToLayer("Default"));
+
+        ObjectX.SetLayerRecursively(currentUpgradeObject.transform, LayerMask.NameToLayer("3DModel"));
+
+        if (previousUpgradeBase != null)
+            ObjectX.SetLayerRecursively(previousUpgradeBase.transform, LayerMask.NameToLayer("Default"));
+
+        ObjectX.SetLayerRecursively(currentUpgradeBase.transform, LayerMask.NameToLayer("3DModel"));
+    }
+
+    private void ChangeUpgradeCamera()
+    {
+        TurnOffCameras();
+        upgradeCameras[currentObjectIndex].SetActive(true);
+    }
+
+    public void UpgradeObject()
+    {
+        anim.SetTrigger("UpgradeLevel2");
     }
 
     private void TurnOffCategories()
@@ -37,6 +112,33 @@ public class UpgradeManager : GameBehaviour
             spawnParticles[i].Play();
         }
     }
+
+    private void TurnOffCameras()
+    {
+        for (int i = 0; i < upgradeCameras.Length; i++)
+            upgradeCameras[i].SetActive(false);
+    }
+
+    #region Animation Events
+    public void ZoomToUpgrade()
+    {
+        ChangeUpgradeCamera();
+    }
+
+    public void ReturnToNormalView()
+    {
+        TurnOffCameras();
+    }
+    public void PlayUpgradeParticles()
+    {
+        upgradeParticles[currentObjectIndex].SetActive(true);
+        upgradeCameras[currentObjectIndex].transform.DOShakePosition(1.5f);
+    }
+    public void ChangeUnitLevel()
+    {
+
+    }
+    #endregion
 
     #region Editor
     public void Setup()
@@ -99,4 +201,17 @@ public class UpgradeManager : GameBehaviour
     }
 #endif
     #endregion
+}
+
+[System.Serializable]
+public class UpgradeSlot
+{
+    public UpgradeCategoryID upgradeCategory;
+    public List<GameObject> upgradeSlots;
+}
+
+public class UpgradeObject : GameBehaviour
+{
+    public UpgradeCategoryID upgradeCategoryID;
+    public UpgradeType upgradeType;
 }

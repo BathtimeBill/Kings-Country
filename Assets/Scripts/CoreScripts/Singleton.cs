@@ -27,11 +27,11 @@ public class Singleton<T> : GameBehaviour where T : MonoBehaviour
         if (instance_ == null)
         {
             instance_ = this as T;
-            if (dontDestroy) DontDestroyOnLoad(gameObject);
+            //if (dontDestroy) DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
     }
 }

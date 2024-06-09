@@ -6,6 +6,7 @@ using UnityEditor;
 
 public class UpgradePanel : GameBehaviour
 {
+    [Header("Core")]
     public Image icon;
     public Image mapIcon;
     public TMP_Text nameText;
@@ -94,6 +95,7 @@ public class UpgradePanel : GameBehaviour
     Vector3 worldScale = new Vector3(0.013f, 0.013f, 0.013f);
     Vector3 worldRotation = new Vector3(90, 0, 0);
     bool worldCanvas = false;
+
 
     private void Awake()
     {

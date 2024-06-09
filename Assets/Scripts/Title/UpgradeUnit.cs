@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UpgradeUnit : GameBehaviour
+public class UpgradeUnit : UpgradeObject
 {
     public UnitID unitID;
-    public UpgradeCategoryID upgradeCategoryID;
-    public UpgradePanel upgradePanel;
 
     private void OnMouseEnter()
     {
-        upgradePanel.ChangeUpgrade(unitID);
+        _UPGRADE.ChangeUpgrade(this);
         PlaySelectSound();
-        
     }
 
     private void PlaySelectSound()

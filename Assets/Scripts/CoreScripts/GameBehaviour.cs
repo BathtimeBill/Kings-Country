@@ -25,6 +25,7 @@ public class GameBehaviour : BV.Behaviour
     protected static LevelManager _LEVEL { get { return LevelManager.instance; } }
     protected static GameData _DATA { get { return GameData.instance; } }
     protected static SaveManager _GAMESAVE { get { return SaveManager.instance; } }
+    protected static UpgradeManager _UPGRADE { get { return UpgradeManager.instance; } }
 
     public bool hasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build;
     public bool isPaused => _GM.gameState == GameState.Pause;
@@ -214,6 +215,11 @@ public enum LevelButton
     Three,
     Four,
     Five,
+}
+
+public enum UpgradeType
+{
+    Unit, Tool, Wildlife,
 }
 
 public enum UpgradeCategoryID
