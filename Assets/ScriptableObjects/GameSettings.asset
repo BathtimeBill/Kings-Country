@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8e4d9490c57cb54695ea0c0aeb55edb, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
+  playerSettings:
+    miniMapRotation: 1
+    unitOutlines: 0
+    enemyHealthBars: 0
   cameraShake:
     shakeDuration: 1.5
     shakeVibrato: 10
@@ -26,6 +30,8 @@ MonoBehaviour:
     errorTweenTime: 0.3
     errorTweenDuration: 2
     errorTweenEase: 22
+    mapTweenTime: 0.5
+    mapTweenEase: 27
   colours:
     highlightedColor: {r: 0, g: 1, b: 0, a: 1}
     cooldownColor: {r: 1, g: 0, b: 0, a: 1}
@@ -64,6 +70,9 @@ MonoBehaviour:
       m_ColorSpace: -1
       m_NumColorKeys: 3
       m_NumAlphaKeys: 2
+    mapHighlightColor: {r: 0, g: 1, b: 0, a: 1}
+    mapLockedColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
+    mapUnlockedColor: {r: 0, g: 0.3207547, b: 0, a: 1}
   icons:
     emptyIcon: {fileID: 21300000, guid: a75c49cc4da939744adeb832292863b5, type: 3}
     maegenIcon: {fileID: -2099563567, guid: 932a504f2cacdae4b98f9944f39959b2, type: 3}

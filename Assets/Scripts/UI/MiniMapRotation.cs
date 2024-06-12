@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MiniMapRotation : GameBehaviour
 {
-    public GameObject playerCam;
-    public float targetYRotation;
-    public Quaternion targetRotation;
+    private GameObject playerCam;
+    private Quaternion targetRotation;
 
 
     private void Start()
@@ -16,6 +13,9 @@ public class MiniMapRotation : GameBehaviour
 
     private void Update()
     {
+        if (!_PS.miniMapRotation)
+            return;
+
         targetRotation = Quaternion.Euler(90, playerCam.transform.localEulerAngles.y, 0);
         transform.rotation = targetRotation;
     }

@@ -6,9 +6,12 @@ using UnityEditor;
 public class LevelData : ScriptableObject
 {
     public LevelID id;
+    [TextArea]
+    public string description;
     public LevelNumber number;
     public DifficultyRating difficultyRating;
     public int days;
+    public Sprite icon;
     [Space]
     public List<BuildingID> availableBuildings;
     public List<ToolID> availableTrees;

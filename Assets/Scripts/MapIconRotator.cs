@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class MapIconRotator : MonoBehaviour
+public class MapIconRotator : GameBehaviour
 {
-    public GameObject playerCam;
-    public float targetYRotation;
-    public Quaternion targetRotation;
-    public float targetScale;
+    private GameObject playerCam;
+    private Quaternion targetRotation;
+    private float targetScale;
 
 
     private void Start()
@@ -19,6 +16,9 @@ public class MapIconRotator : MonoBehaviour
 
     private void Update()
     {
+        if (!_PS.miniMapRotation)
+            return;
+
         targetRotation = Quaternion.Euler(0, playerCam.transform.localEulerAngles.y, 0);
         transform.rotation = targetRotation;
     }

@@ -36,6 +36,7 @@ public class GameBehaviour : BV.Behaviour
     public Tweening _TWEENING => _DATA.settings.tweening;
     public Colours _COLOUR => _DATA.settings.colours;
     public Icons _ICONS => _DATA.settings.icons;
+    public PlayerSettings _PS => _DATA.settings.playerSettings;
 }
 
 
@@ -164,6 +165,8 @@ public enum LevelID
     Ironwood,
     WormturnRoad,
     JotenheimPass,
+    OswynsCrossing,
+    SteinnporpGates,
 }
 
 public enum ThreatID

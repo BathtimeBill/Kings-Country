@@ -4,6 +4,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Settings", menuName = "BGG/Settings", order = 1)]
 public class Settings : ScriptableObject
 {
+    [Header("Player Settings")]
+    public PlayerSettings playerSettings;
+
     [Header("Camera Shakes")]
     public CameraShake cameraShake;
 
@@ -24,6 +27,14 @@ public class Settings : ScriptableObject
 }
 
 [System.Serializable]
+public class PlayerSettings
+{
+    public bool miniMapRotation = false;
+    public bool unitOutlines = true;
+    public bool enemyHealthBars = false;
+}
+
+[System.Serializable]
 public class Colours
 {
     public Color highlightedColor;
@@ -34,6 +45,10 @@ public class Colours
     public Color upgradeIncreaseColor;
     public Color upgradeDecreaseColor;
     public Gradient treePercentageGradient;
+
+    public Color mapHighlightColor;
+    public Color mapLockedColor;
+    public Color mapUnlockedColor;
 
     public string GetIncreaseColorString => ColorX.GetColorHex(upgradeIncreaseColor);
     public string GetDecreaseColorString => ColorX.GetColorHex(upgradeDecreaseColor);
@@ -59,6 +74,9 @@ public class Tweening
     public float errorTweenTime = 0.2f;
     public float errorTweenDuration = 2f;
     public DG.Tweening.Ease errorTweenEase;
+    [Header("Overworld Map")]
+    public float mapTweenTime = 0.5f;
+    public DG.Tweening.Ease mapTweenEase;
 }
 
 [Serializable]
@@ -87,5 +105,4 @@ public class Icons
     public Sprite healthIcon;
     public Sprite speedIcon;
     public Sprite cooldownIcon;
-
 }

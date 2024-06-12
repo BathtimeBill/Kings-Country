@@ -14,10 +14,11 @@ public class TitleManager : GameBehaviour
     [Header("Virtual Cameras")]
     public GameObject homeCamera;
     public GameObject unitCamera;
-    public GameObject perkCamera;
+    public GameObject mapCamera;
 
     [Header("Title Buttons")]
     public TitleButton[] titleButtons;
+    public OverWorldManager overworldManager;
 
     private void Start()
     {
@@ -31,6 +32,7 @@ public class TitleManager : GameBehaviour
     {
         TurnOffCameras();
         homeCamera.SetActive(true);
+        overworldManager.ToggleInMap(false);
 
         FadeX.FadeInPanel(homeCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOutPanel(unitCanvas, _DATA.settings.tweening.titlePanelTweenTime);
@@ -47,10 +49,11 @@ public class TitleManager : GameBehaviour
         FadeX.FadeOutPanel(perkCanvas, _DATA.settings.tweening.titlePanelTweenTime);
     }
 
-    public void ShowPerks()
+    public void ShowMap()
     {
         TurnOffCameras();
-        perkCamera.SetActive(true);
+        mapCamera.SetActive(true);
+        overworldManager.ToggleInMap(true);
 
         FadeX.FadeOutPanel(homeCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOutPanel(unitCanvas, _DATA.settings.tweening.titlePanelTweenTime);
@@ -66,7 +69,7 @@ public class TitleManager : GameBehaviour
     {
         homeCamera.SetActive(false);
         unitCamera.SetActive(false);
-        perkCamera.SetActive(false);
+        mapCamera.SetActive(false);
     }
 
     public void TurnOffPanels()
@@ -104,7 +107,15 @@ public class TitleManager : GameBehaviour
                 FadeX.InstantOpaque(titleManager.homeCanvas);
                 EditorUtility.SetDirty(titleManager);
             }
-            if (GUILayout.Button("Show Units"))
+            if (GUILayout.Button("Show Map"))
+            {
+                titleManager.TurnOffCameras();
+                titleManager.TurnOffPanels();
+                FadeX.InstantOpaque(titleManager.perkCanvas);
+                titleManager.ShowMap();
+                EditorUtility.SetDirty(titleManager);
+            }
+            if (GUILayout.Button("Show Upgrades"))
             {
                 titleManager.TurnOffCameras();
                 titleManager.TurnOffPanels();
@@ -112,14 +123,7 @@ public class TitleManager : GameBehaviour
                 titleManager.ShowUnits();
                 EditorUtility.SetDirty(titleManager);
             }
-            if (GUILayout.Button("Show Perks"))
-            {
-                titleManager.TurnOffCameras();
-                titleManager.TurnOffPanels();
-                FadeX.InstantOpaque(titleManager.perkCanvas);
-                titleManager.ShowPerks();
-                EditorUtility.SetDirty(titleManager);
-            }
+            
             GUILayout.EndHorizontal();
             GUI.backgroundColor = Color.blue;
             GUILayout.BeginHorizontal();

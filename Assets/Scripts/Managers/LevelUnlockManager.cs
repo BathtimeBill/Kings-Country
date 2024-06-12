@@ -22,7 +22,6 @@ public class LevelUnlockManager : GameBehaviour
     private void Start()
     {
         StartCoroutine(WaitForLoadGame());
-        _OM.CheckScene();
     }
     public void CloseMessagePanel()
     {

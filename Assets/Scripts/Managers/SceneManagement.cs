@@ -51,7 +51,6 @@ public class SceneManagement : Singleton<SceneManagement>
     public void OpenOverworldScreen()
     {
         //_SAVE.Load();
-        StartCoroutine(_OM.WaitForLoadGame());
         overworldScreen.SetActive(true);
 
     }
