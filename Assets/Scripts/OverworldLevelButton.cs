@@ -7,25 +7,53 @@ using DG.Tweening;
 public class OverworldLevelButton : GameBehaviour
 {
     public LevelID thisLevel;
+    private OverWorldManager overworldManager;
+
+    private void Awake()
+    {
+        overworldManager = FindObjectOfType<OverWorldManager>();
+    }
 
     private void Start()
     {
-        
+        if (_DATA.levelUnlocked(thisLevel))
+            myRenderer.material.color = _COLOUR.mapUnlockedColor;
+        else
+            myRenderer.material.color = _COLOUR.mapLockedColor;
     }
 
     private void OnMouseEnter()
     {
-        ShowLevel(true);
+        TweenColor(_DATA.levelUnlocked(thisLevel) ? _COLOUR.mapHighlightColor : _COLOUR.mapLockedColor);
     }
 
     private void OnMouseExit()
     {
-        ShowLevel(false);
+        TweenColor(_DATA.levelUnlocked(thisLevel) ? _COLOUR.mapUnlockedColor : _COLOUR.mapLockedColor);
     }
 
-    public void ShowLevel(bool _show)
+    private void OnMouseDown()
     {
-        transform.DOScale(_show ? new Vector3(1.1f,1.1f,3f): Vector3.one, _TWEENING.mapTweenTime).SetEase(_TWEENING.mapTweenEase);
-        myRenderer.material.DOColor(_show ? _COLOUR.mapHighlightColor : _COLOUR.mapUnlockedColor, _TWEENING.mapTweenTime).SetEase(_TWEENING.mapTweenEase);
+        ShowLevel();
+    }
+
+    public void TweenColor(Color _color)
+    {
+        myRenderer.material.DOColor(_color, _TWEENING.mapTweenTime).SetEase(_TWEENING.mapTweenEase);
+    }
+
+    public void TweenScale(bool _show)
+    {
+        transform.DOScale(_show ? new Vector3(1.1f, 1.1f, 3f) : Vector3.one, _TWEENING.mapTweenTime).SetEase(_TWEENING.mapTweenEase);
+    }
+
+    public void ShowLevel()
+    {
+        overworldManager.ShowLevel(thisLevel);
+    }
+
+    public void LevelLocked()
+    {
+
     }
 }

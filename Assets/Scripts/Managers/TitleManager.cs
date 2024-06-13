@@ -8,7 +8,7 @@ public class TitleManager : GameBehaviour
     [Header("Canvas Groups")]
     public CanvasGroup homeCanvas;
     public CanvasGroup unitCanvas;
-    public CanvasGroup perkCanvas;
+    public CanvasGroup mapCanvas;
     //public CanvasGroup settingsCanvas;
 
     [Header("Virtual Cameras")]
@@ -18,7 +18,9 @@ public class TitleManager : GameBehaviour
 
     [Header("Title Buttons")]
     public TitleButton[] titleButtons;
+    [Header("Managers")]
     public OverWorldManager overworldManager;
+    public SceneManager sceneManager;
 
     private void Start()
     {
@@ -34,9 +36,9 @@ public class TitleManager : GameBehaviour
         homeCamera.SetActive(true);
         overworldManager.ToggleInMap(false);
 
-        FadeX.FadeInPanel(homeCanvas, _DATA.settings.tweening.titlePanelTweenTime);
-        FadeX.FadeOutPanel(unitCanvas, _DATA.settings.tweening.titlePanelTweenTime);
-        FadeX.FadeOutPanel(perkCanvas, _DATA.settings.tweening.titlePanelTweenTime);
+        FadeX.FadeIn(homeCanvas, _DATA.settings.tweening.titlePanelTweenTime);
+        FadeX.FadeOut(unitCanvas, _DATA.settings.tweening.titlePanelTweenTime);
+        FadeX.FadeOut(mapCanvas, _DATA.settings.tweening.titlePanelTweenTime);
     }
 
     public void ShowUnits()
@@ -44,9 +46,9 @@ public class TitleManager : GameBehaviour
         TurnOffCameras();
         unitCamera.SetActive(true);
 
-        FadeX.FadeOutPanel(homeCanvas, _DATA.settings.tweening.titlePanelTweenTime);
-        FadeX.FadeInPanel(unitCanvas, _DATA.settings.tweening.titlePanelTweenTime);
-        FadeX.FadeOutPanel(perkCanvas, _DATA.settings.tweening.titlePanelTweenTime);
+        FadeX.FadeOut(homeCanvas, _DATA.settings.tweening.titlePanelTweenTime);
+        FadeX.FadeIn(unitCanvas, _DATA.settings.tweening.titlePanelTweenTime);
+        FadeX.FadeOut(mapCanvas, _DATA.settings.tweening.titlePanelTweenTime);
     }
 
     public void ShowMap()
@@ -55,9 +57,9 @@ public class TitleManager : GameBehaviour
         mapCamera.SetActive(true);
         overworldManager.ToggleInMap(true);
 
-        FadeX.FadeOutPanel(homeCanvas, _DATA.settings.tweening.titlePanelTweenTime);
-        FadeX.FadeOutPanel(unitCanvas, _DATA.settings.tweening.titlePanelTweenTime);
-        FadeX.FadeInPanel(perkCanvas, _DATA.settings.tweening.titlePanelTweenTime);
+        FadeX.FadeOut(homeCanvas, _DATA.settings.tweening.titlePanelTweenTime);
+        FadeX.FadeOut(unitCanvas, _DATA.settings.tweening.titlePanelTweenTime);
+        FadeX.FadeIn(mapCanvas, _DATA.settings.tweening.titlePanelTweenTime);
     }
 
     public void ShowSettings()
@@ -76,7 +78,7 @@ public class TitleManager : GameBehaviour
     {
         FadeX.InstantTransparent(homeCanvas);
         FadeX.InstantTransparent(unitCanvas);
-        FadeX.InstantTransparent(perkCanvas);
+        FadeX.InstantTransparent(mapCanvas);
     }
     public void ToggleTitleText(bool _show)
     {
@@ -85,6 +87,8 @@ public class TitleManager : GameBehaviour
             titleButtons[i].ToggleText(_show);
         }
     }
+
+
     #region Editor
 #if UNITY_EDITOR
     [CustomEditor(typeof(TitleManager))]
@@ -111,7 +115,7 @@ public class TitleManager : GameBehaviour
             {
                 titleManager.TurnOffCameras();
                 titleManager.TurnOffPanels();
-                FadeX.InstantOpaque(titleManager.perkCanvas);
+                FadeX.InstantOpaque(titleManager.mapCanvas);
                 titleManager.ShowMap();
                 EditorUtility.SetDirty(titleManager);
             }

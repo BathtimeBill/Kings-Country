@@ -34,7 +34,10 @@ public class GameData : Singleton<GameData>
     [Header("Level Data")]
     public List<LevelData> levelData;
     public LevelData currentLevel => levelData.Find(x => x.id == _GM.thisLevel);
+    public LevelData GetLevel(LevelID _id) => levelData.Find(x => x.id == _id);
     public LevelID currentLevelID => currentLevel.id;
+
+    public bool levelUnlocked(LevelID _id) => GetLevel(_id).unlocked;
 
     public int levelMaxDays => currentLevel.days;
 

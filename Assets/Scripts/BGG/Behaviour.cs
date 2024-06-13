@@ -27,7 +27,19 @@ namespace BV
 			}
 		}
 
-		RectTransform __rt;
+        CanvasGroup __canvasGroup;
+        public CanvasGroup myCanvasGroup
+        {
+            get
+            {
+                if (__canvasGroup == null)
+                    __canvasGroup = gameObject.GetComponent<CanvasGroup>();
+                return __canvasGroup;
+            }
+        }
+
+
+        RectTransform __rt;
 		public RectTransform myRectTransform {
 			get {
 				if ( __rt == null )

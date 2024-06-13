@@ -77,6 +77,9 @@ public static class GameEvents
     public static event Action OnGroundClicked = null;
     public static event Action<int> OnMaegenChange = null;
 
+    //Title Events
+    public static event Action OnLevelStart = null;
+
     public static void ReportOnGameStateChanged(GameState _gameState)
     {
         OnGameStateChanged?.Invoke(_gameState);
@@ -317,5 +320,11 @@ public static class GameEvents
     public static void ReportOnMaegenChange(int _amount)
     {
         OnMaegenChange?.Invoke(_amount);
+    }
+
+    //Title
+    public static void ReportOnLevelStart()
+    {
+        OnLevelStart?.Invoke();
     }
 }

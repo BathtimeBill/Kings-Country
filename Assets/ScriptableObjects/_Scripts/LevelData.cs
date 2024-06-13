@@ -11,7 +11,10 @@ public class LevelData : ScriptableObject
     public LevelNumber number;
     public DifficultyRating difficultyRating;
     public int days;
+    public int spawnPoints;
     public Sprite icon;
+    public SceneAsset levelScene;
+    public bool unlocked;
     [Space]
     public List<BuildingID> availableBuildings;
     public List<ToolID> availableTrees;
@@ -23,6 +26,8 @@ public class LevelData : ScriptableObject
     [BV.ListName("Day: ")]
     public List<SpawnAmounts> spawnAmounts;
 
+
+    #region Editor
     [CustomEditor(typeof(SpawnAmounts))]
     public class SpawnAmountsEditor : Editor
     {
@@ -53,4 +58,5 @@ public class LevelData : ScriptableObject
             serializedObject.ApplyModifiedProperties();
         }
     }
+    #endregion
 }

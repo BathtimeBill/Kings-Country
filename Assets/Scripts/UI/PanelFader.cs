@@ -12,11 +12,11 @@ public class PanelFader : GameBehaviour
 
     public void FadeIn()
     {
-        FadeX.FadeInPanel(canvasGroup);
+        FadeX.FadeIn(canvasGroup);
     }
 
     public void FadeOut()
     {
-        FadeX.FadeOutPanel(canvasGroup);
+        FadeX.FadeOut(canvasGroup);
     }
 }

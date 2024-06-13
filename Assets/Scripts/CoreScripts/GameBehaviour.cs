@@ -19,8 +19,6 @@ public class GameBehaviour : BV.Behaviour
     protected static ForestManager _FM { get { return ForestManager.instance; } }
     protected static TooltipManager _Tool { get { return TooltipManager.instance; } }
     protected static SpyManager _SPYM { get { return SpyManager.instance; } }
-    protected static OverWorldManager _OM { get { return OverWorldManager.instance; } }
-    protected static SceneManagement _SCENE { get { return SceneManagement.instance; } }
     protected static PerkManager _PERK { get { return PerkManager.instance; } }
     protected static LevelManager _LEVEL { get { return LevelManager.instance; } }
     protected static GameData _DATA { get { return GameData.instance; } }

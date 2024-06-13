@@ -15,13 +15,13 @@ public class TitleButton : InteractableButton
     public override void OnPointerEnter(PointerEventData eventData)
     {
         _SM.PlaySound(_SM.buttonClickSound);
-        TweenX.TweenTextScale(buttonTextLabel.transform, 1);
+        TweenX.TweenTextScale(buttonTextLabel.transform, 1, _TWEENING.UIButtonTweenTime, _TWEENING.UIButtonTweenEase);
     }
 
     public override void OnPointerExit(PointerEventData eventData)
     {
         //_SM.PlaySound(_SM.buttonClickSound);
-        TweenX.TweenTextScale(buttonTextLabel.transform, 0);
+        TweenX.TweenTextScale(buttonTextLabel.transform, 0, _TWEENING.UIButtonTweenTime, _TWEENING.UIButtonTweenEase);
     }
 
     public override void OnPointerClick(PointerEventData eventData)

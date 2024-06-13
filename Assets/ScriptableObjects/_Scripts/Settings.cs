@@ -47,6 +47,7 @@ public class Colours
     public Gradient treePercentageGradient;
 
     public Color mapHighlightColor;
+    public Color mapSelectedColor;
     public Color mapLockedColor;
     public Color mapUnlockedColor;
 

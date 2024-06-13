@@ -36,11 +36,11 @@ public class Cutscene : GameBehaviour
     {
         loadingScreen.SetActive(true);
         player.Stop();
-        loadingOperation = SceneManager.LoadSceneAsync(_sceneName);
+        loadingOperation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(_sceneName);
     }
     public void LoadMainMenu()
     {
-        SceneManager.LoadScene(titleName);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(titleName);
     }
 
     //Quit Button

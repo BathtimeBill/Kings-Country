@@ -8,42 +8,36 @@ public class InteractableButton : GameBehaviour, IPointerEnterHandler, IPointerE
     [HideInInspector]
     public Button button;
     public Image icon;
+    [HideInInspector]
+    public bool interactable = true;
 
     void Awake()
     {
         button = myButton;
         button.onClick.AddListener(() => ClickedButton());
     }
-    public virtual void Start()
-    {
+    public virtual void Start() {}
 
-    }
-
-    public virtual void ClickedButton() 
+    public virtual void SetInteractable(bool _interactable)
     {
-    }
-
-    public void SetInteractable(bool _interactable)
-    {
+        print(name + _interactable);
         if (button == null)
             return;
 
-        button.interactable = _interactable;
+        interactable = _interactable;
+        button.interactable = interactable;
 
         if (GetComponent<Coffee.UIExtensions.ShinyEffectForUGUI>() != null)
-            GetComponent<Coffee.UIExtensions.ShinyEffectForUGUI>().enabled = _interactable;
+            GetComponent<Coffee.UIExtensions.ShinyEffectForUGUI>().enabled = interactable;
     }
 
-    public virtual void SetupButton()
-    {
-        //button.colors.highlightedColor = UICharInfo.
-    }
-
+    public virtual void ClickedButton() {}
     public virtual void OnPointerEnter(PointerEventData eventData) {}
-    public virtual void OnPointerExit(PointerEventData eventData) { }
+    public virtual void OnPointerExit(PointerEventData eventData) {}
     public virtual void OnPointerClick(PointerEventData eventData) {}
     public virtual void OnPointerDown(PointerEventData eventData) {}
     public virtual void OnPointerUp(PointerEventData eventData) {}
+    public virtual void SetupButton(){}
 
     #region Editor
 #if UNITY_EDITOR
@@ -70,3 +64,63 @@ public class InteractableButton : GameBehaviour, IPointerEnterHandler, IPointerE
     #endregion
 }
 
+public class HoldButton : InteractableButton
+{
+    public Image fillImage;
+    public float fillSpeed = 0.5f;
+    bool filling = false;
+
+    void Update()
+    {
+        if (!interactable)
+            return;
+        
+        if (filling)
+        {
+            fillImage.fillAmount += fillSpeed * Time.deltaTime;
+            if (fillImage.fillAmount >= 1)
+            {
+                OnButtonFilled();
+            }
+            //TODO
+            //Improve upgrade button shake
+            //currentTime -= Time.deltaTime / 3;
+            //currentTime = Mathf.Clamp(currentTime, 0.01f, 1);
+            //Vector3 nextPos = transform.position;
+            //nextPos.y = pivot.y + height + height * Mathf.Sin(((Mathf.PI * 2) / currentTime) * timeSinceStart);
+            //timeSinceStart += Time.deltaTime;
+            //transform.position = nextPos;
+        }
+        else
+        {
+            fillImage.fillAmount -= (fillSpeed * 3) * Time.deltaTime;
+            //transform.position = startPosition;
+            //currentTime = timePeriod * 3;
+        }
+    }
+
+    public virtual void OnButtonFilled()
+    {
+        filling = false;
+        fillImage.fillAmount = 0;
+    }
+
+    public override void OnPointerDown(PointerEventData eventData)
+    {
+        filling = true;
+    }
+    public override void OnPointerUp(PointerEventData eventData)
+    {
+        filling = false;
+    }
+
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+
+    }
+
+    public override void OnPointerExit(PointerEventData eventData)
+    {
+        filling = false;
+    }
+}

@@ -1,26 +1,42 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class FadeX : MonoBehaviour
+public static class FadeX
 {
-    public static void FadeInPanel(CanvasGroup _canvasGroup, float _tweenTime = 0.3f)
+    public static void FadeIn(CanvasGroup _canvasGroup, float _tweenTime, Ease _ease, bool _interactable = true, Action _onSuccess = null)
     {
         if (_canvasGroup.alpha == 1) return;
 
-        _canvasGroup.DOFade(1, _tweenTime);
-        _canvasGroup.interactable = true;
-        _canvasGroup.blocksRaycasts = true;
+        _canvasGroup.DOFade(1, _tweenTime).OnComplete(() => _onSuccess.Invoke());
+        _canvasGroup.interactable = _interactable;
+        _canvasGroup.blocksRaycasts = _interactable;
+    }
+    public static void FadeIn(CanvasGroup _canvasGroup, float _tweenTime = 0.5f, bool _interactable = true, Action _onSuccess = null)
+    {
+        if (_canvasGroup.alpha == 1) return;
+
+        _canvasGroup.DOFade(1, _tweenTime).OnComplete(() => _onSuccess.Invoke());
+        _canvasGroup.interactable = _interactable;
+        _canvasGroup.blocksRaycasts = _interactable;
     }
 
-    public static void FadeOutPanel(CanvasGroup _canvasGroup, float _tweenTime = 0.3f)
+    public static void FadeOut(CanvasGroup _canvasGroup, float _tweenTime, Ease _ease, bool _interactable = true, Action _onSuccess = null)
     {
         if (_canvasGroup.alpha == 0) return;
 
-        _canvasGroup.DOFade(0, _tweenTime);
-        _canvasGroup.interactable = false;
-        _canvasGroup.blocksRaycasts = false;
+        _canvasGroup.DOFade(0, _tweenTime).OnComplete(() => _onSuccess.Invoke());
+        _canvasGroup.interactable = _interactable;
+        _canvasGroup.blocksRaycasts = _interactable;
+    }
+    public static void FadeOut(CanvasGroup _canvasGroup, float _tweenTime = 0.5f, bool _interactable = false, Action _onSuccess = null)
+    {
+        if (_canvasGroup.alpha == 0) return;
+
+        _canvasGroup.DOFade(0, _tweenTime).OnComplete(()=> _onSuccess.Invoke());
+        _canvasGroup.interactable = _interactable;
+        _canvasGroup.blocksRaycasts = _interactable;
     }
 
     /// <summary>
