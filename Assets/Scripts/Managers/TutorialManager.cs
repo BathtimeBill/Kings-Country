@@ -9,6 +9,7 @@ public class TutorialManager : Singleton<TutorialManager>
 {
     [BV.EnumList(typeof(TutorialID))]
     public List<Tutorial> tutorials;
+    public TutorialID tutorialID;
 
     [Header("Basic")]
     public Image tutorialImage;
@@ -23,20 +24,23 @@ public class TutorialManager : Singleton<TutorialManager>
 
     [Header("Sprites")]
     public Sprite welcomeSprite;
-    public Sprite oneSprite;
-    public Sprite twoSprite;
-    public Sprite threeSprite;
-    public Sprite fourSprite;
-    public Sprite fiveSprite;
-    public Sprite sixSprite;
-    public Sprite sevenSprite;
-    public Sprite eightSprite;
-    public Sprite nineSprite;
-    public Sprite tenSprite;
-    public Sprite elevenSprite;
-    public Sprite twelveSprite;
-    public Sprite thirteenSprite;
-    public Sprite fouteenSprite;
+    public Sprite cameraControlsSprite;
+    public Sprite creatureMovementSprite;
+    public Sprite maegenSprite;
+    public Sprite treesSprite;
+    public Sprite wildlifeSprite;
+    public Sprite populousSprite;
+    public Sprite homeTreeSprite;
+    public Sprite witchsHutSprite;
+    public Sprite horgrSprite;
+    public Sprite powersSprite;
+    public Sprite dayNightCycleSprite;
+    public Sprite humanClassesSprite;
+    public Sprite dogsSprite;
+    public Sprite minesSprite;
+    public Sprite spiesprite;
+    public Sprite lordsOfTheLandSprite;
+    public Sprite combatSprite;
 
     [Header("In Game Tutorial")]
     public GameObject tutorialText;
@@ -262,95 +266,113 @@ public class TutorialManager : Singleton<TutorialManager>
     {
         scrollbar.value = 1;
         tutCounterText.text = tutorialCount.ToString() + "/" + maxTutorialCount.ToString();
-        if (tutorialCount == 0)
+        //if (tutorialCount == 0)
+        //{
+        //    tutorialImage.sprite = welcomeSprite;
+        //    tutTitle.text = "Tutorial";
+        //    tutContextText.text = "Welcome to Grove Keeper, thanks for playing!\r\n<br>The game is in development and we would love your feedback.\r\n<br>If you return to the main menu, you will see a link to a feedback form where you can give your thoughts and feelings about the game.";
+        //}
+        if(tutorialID == TutorialID.CameraControls)
         {
-            tutorialImage.sprite = welcomeSprite;
-            tutTitle.text = "Tutorial";
-            tutContextText.text = "Welcome to Grove Keeper, thanks for playing!\r\n<br>The game is in development and we would love your feedback.\r\n<br>If you return to the main menu, you will see a link to a feedback form where you can give your thoughts and feelings about the game.";
-        }
-        if(tutorialCount == 1)
-        {
-            tutorialImage.sprite = oneSprite;
+            tutorialImage.sprite = cameraControlsSprite;
             tutTitle.text = "Camera Controls";
-            tutContextText.text = "Use 'W,A,S,D' to control the movement of the camera.\r\n<br>Clicking and dragging 'Middle Mouse Button' will roatate and scrolling zooms in and out.\r\n<br>Hold 'Shift' to increase the speed of the camera";
+            tutContextText.text = "To move the camera, use the <b>‘W,A,S,D’</b> keys or move the mouse cursor to the edge of the screen.\r\n<br>Hold <b>Left Shift</b> to hasten camera movement.\r\n<br>To rotate the camera, click and drag the <b>Middle Mouse Button</b> to the left or right.\r\n<br>To zoom the camera, scroll the <b>Mouse Wheel</b> in and out.";
         }
-        if(tutorialCount == 2)
+        if(tutorialID == TutorialID.CreatureMovement)
         {
-            tutorialImage.sprite = twoSprite;
-            tutTitle.text = "Controls";
-            tutContextText.text = "To select a unit, left click on it.\r\n<br>To order them to do something, right click on your desired target with them selected. If you right click on an enemy with a unit selected they will target that enemy.\r\n<br>To select multiple units, click and drag the left mouse button around the desired units.";
+            tutorialImage.sprite = creatureMovementSprite;
+            tutTitle.text = "Creature Movement";
+            tutContextText.text = "To select a <color=#3A9F87><b>Creature</b></color>, click on it with the <b>Left Mouse Button</b> or click and drag over multiple <color=#3A9F87><b>Creatures</b></color> to select more than one.\r\n<br>With a selected <color=#3A9F87><b>Creature(s)</b></color>, <b>Right Cick</b> on a location to send them there. \r\n<br>Our <color=#3A9F87><b>Creatures</b></color> will defend that location if <color=#FE4E2D><b>Humans</b></color> come within their range.";
         }
-        if( tutorialCount == 3)
+        if(tutorialID == TutorialID.Maegen)
         {
-            tutorialImage.sprite = threeSprite;
-            tutTitle.text = "Resources";
-            tutContextText.text = "The game has 4 resources. These include, Maegen, Trees, Wildlife, and Populous.\r\n<br>Maegen:<br>This is the main currency of the game. Maegen represents the raw energy of the grove, and you use this to recruit units. Maegen is collected at the end of each wave, based on the amount and quality of the trees standing.\r\n<br>Trees:<br>Once placed, trees produce Maegen based on their location to other trees at the end of each wave.\r\n<br>Wildlife:<br>This represents the amount of wildlife you have in your grove. Wildlife includes rabbits, deer, and boar. Wildlife spawns in at the end of each round based on the number of trees are in the grove; 1 wildlife for every 5 trees. Your special abilities require a certain amount of wildlife for them to be used.\r\n<br>Populous:<br>This represents how many units you can have in your army at any one time (game starts with 10 populous). This number can be increased through acquiring upgrades.";
+            tutorialImage.sprite = maegenSprite;
+            tutTitle.text = "Maegen";
+            tutContextText.text = "<color=#FCA343><b>Maegen</b></color> is the raw, wild energy of the <color=#9665cd><b>Grove</b></color>. It functions as the main currency of the game.\r\n<br><color=#FCA343><b>Maegen</b></color> is created by <color=#6d8659><b>Trees</b></color> at the end of each <color=#FCA343><b>Day</b></color> and is used to grow more <color=#6d8659><b>Trees</b></color> and spawn <color=#3A9F87><b>Creatures</b></color>.\r\n<br>Sometimes when a <color=#FE4E2D><b>Human</b></color> is killed, the <color=#9665cd><b>Grove</b></color> can harvest <color=#FCA343><b>Maegen</b></color> from their soul.";
         } 
-        if(tutorialCount == 4)
+        if(tutorialID == TutorialID.Trees)
         {
-            tutorialImage.sprite = fourSprite;
-            tutTitle.text = "Tools";
-            tutContextText.text = "Tree Tool:<br>Clicking on the tree icon at the bottom of the screen will allow you to place a tree by left clicking on an available ground space. Trees cannot be placed on top of one another and neither on rocks nor swamp sections. A tree produces Maegen at the end of each wave and its productivity is determined by its distance from other trees. (Trees cannot be placed while the enemy is attacking).\r\n<br>Rune Tool:<br>Clicking on the rune icon at the bottom of the screen allows you to place a ‘Rune’. This is a blue dome of magical energy that heals units that are inside it. The rune will last for 1 round and multiple can be placed at an increasing cost each time.\r\n<br>Fyre Tool:<br>Clicking on the icon at the bottom of the screen allows you to create a fiery explosion, dealing damage to all enemy units in its radius.\r\n<br>Stormer Tool:<br>Clicking on the icon at the bottom of the screen allows you to create an intense storm that requires at least 20 wildlife. Lightning bolts will randomly strike enemies down for a period of 1 minute.";
+            tutorialImage.sprite = treesSprite;
+            tutTitle.text = "Trees";
+            tutContextText.text = "<color=#6d8659><b>Trees</b></color> are how we increase our power and earn more <color=#FCA343><b>Maegen</b></color>.\r\n<br>The productivity of each <color=#6d8659><b>Tree</b></color> is determined by its proximity to others in the <color=#9665cd><b>Grove</b></color>. <color=#6d8659><b>Trees</b></color> clustered together are less productive but easier to defend, while those spread out yield more <color=#FCA343><b>Maegen</b></color> but are more vulnerable to attack. \r\n<br>To grow a <color=#6d8659><b>Tree</b></color>, click on the <color=#6d8659><b>Tree</b></color> button and <b>Left-Click</b> on an available space in our domain.\r\n<br><b>Right-Click</b> to deselect <color=#6d8659><b>Tree</b></color> mode.";
         }
-        if(tutorialCount == 5)
+        if(tutorialID == TutorialID.Wildlife)
         {
-            tutorialImage.sprite = fiveSprite;
+            tutorialImage.sprite = wildlifeSprite;
+            tutTitle.text = "Wildlife";
+            tutContextText.text = "<color=#da691e><b>Wildlife</b></color> is spawned into the <color=#9665cd><b>Grove</b></color> at the end of each <color=#FCA343><b>Day</b></color>, based on the number of <color=#6d8659><b>Trees</b></color> we have and is required for us to use our Powers.\r\n<br>Hold down <b>Left-Alt</b> to see our <color=#da691e><b>Wildlife</b></color> highlighted.";
+        }
+        if(tutorialID == TutorialID.Populous)
+        {
+            tutorialImage.sprite = populousSprite;
+            tutTitle.text = "Populous";
+            tutContextText.text = "<color=#523c52><b>Populous</b></color> is the maximum number of <color=#3A9F87><b>Creatures</b></color> you can command in one <color=#9665cd><b>Grove</b></color>.\r\n<br>Each <color=#3A9F87><b>Creature</b></color> takes up 1 <color=#523c52><b>Populous</b></color> point.\r\n<br><color=#523c52><b>Populous</b></color> can be upgraded by +5 with a <color=#caad87><b>Perk</b></color>.";
+        }
+        if(tutorialID == TutorialID.HomeTree)
+        {
+            tutorialImage.sprite = homeTreeSprite;
             tutTitle.text = "Home Tree";
-            tutContextText.text = "The home tree is the heart of your forest and must be protected at all costs. Units can be spawned from this ancient tree to help defend the forest. If the Home Tree is ever destroyed, the game is over.\r\n<br>To open the Home Tree menu, either click on it in the game world or press 'Tab'";
+            tutContextText.text = "This is our <color=#FEE65F><b>Home Tree</b></color>, the heart of our <color=#9665cd><b>Grove</b></color> and vital to its survival.\r\n<br>From here, you can summon <color=#3A9F87><b>Creatures</b></color> to fight for us. If the <color=#FEE65F><b>Home Tree</b></color> is ever destroyed, the game is over.\r\n<br>To open the <color=#FEE65F><b>Home Tree</b></color> menu, either click on it in the game world or press <b>Tab</b>";
         }
-        if(tutorialCount == 6)
+        if (tutorialID == TutorialID.WitchsHut)
         {
-            tutorialImage.sprite = sixSprite;
-            tutTitle.text = "Horgr";
-            tutContextText.text = "This is a magical shrine that is valuable to both the humans and the grove.\r\n<br>From this location, you can purchase a 'Huldra', which can transform into a watch tower to defend your grove.\r\n<br>You can also call upon the ‘Mistclif’, an enormous stone golem with tremendous power but that can’t be healed.\r\n<br>Enemies will attempt to claim this site for themselves, at which point they will begin to spawn their own knights into the game, so you'll need to either defend it or attack it before the wave is over.\r\n<br>If the player outnumbers the enemy in the vicinity of the site, it will begin to be claimed back. The more units, the more quickly it will be claimed.\r\n<br>Units cannot be purchased unless you have control of the Horgr.";
-        }
-        if(tutorialCount == 7)
-        {
-            tutorialImage.sprite = sevenSprite;
+            tutorialImage.sprite = witchsHutSprite;
             tutTitle.text = "Witch's Hut";
-            tutContextText.text = "A lone witch in the woods allows the grove’s minions to gather here. From this location, you can purchase the 'Skessa', a fast and powerful female troll, the 'Goblin Archer', A reliable ranged unit with fire arrows, and the Fidhain, a wiry monster made from plants that spits acid and can transform into an acid tower.\r\n<br>Enemies will attempt to claim this site for themselves, at which point they will begin to spawn their own crossbowmen into the game, so you'll need to either defend it or attack it before the wave is over.\r\n<br>If the player outnumbers the enemy in the vicinity of the site, it will begin to be claimed back. The more units, the more quickly it will be claimed.\r\n<br>Units cannot be purchased unless you have control of the Witch’s Hut.";
+            tutContextText.text = "A lone witch in the woods allows the grove’s <color=#3A9F87><b>Creatures</b></color> to gather here.\r\n<br><color=#FE4E2D><b>Humans</b></color> will attempt to claim this site for themselves, which they do by being in its vicinity without opposition from any <color=#3A9F87><b>Creatures</b></color>, at which point they will begin to spawn their top tier <color=#FE4E2D><b>Human</b></color> units into the game. \r\n<br>You'll need to either defend it or attack it before the <color=#FCA343><b>Day</b></color> is over.\r\n<br>If the <color=#3A9F87><b>Creatures</b></color> outnumber the <color=#FE4E2D><b>Humans</b></color> in the vicinity of the site, it will begin to be claimed back. \r\n<br>The more units, the more quickly it will be claimed.\r\n<br><color=#3A9F87><b>Creatures</b></color> from this site cannot be purchased unless you have control of the <color=#4d705d><b>Witch's Hut</b></color>.";
         }
-        if (tutorialCount == 8)
+        if (tutorialID == TutorialID.Horgr)
         {
-            tutorialImage.sprite = eightSprite;
-            tutTitle.text = "Waves";
-            tutContextText.text = "The game is broken up into 'waves'.\r\n<br>Before a wave starts, you have the opportunity to place trees and purchase units in preparation for the incoming enemy force.\r\n<br>When you're ready to begin the wave, click the button pictured above and the enemies will begin to attack.\r\n<br>Once all enemies have been taken care of, the wave will end and you will receive a breakdown of your incoming resources for the next round and a choice between two upgrades.\r\n<br>Press ‘F4’ to speed up time\r\n<br>Press ‘F3’ to return to regular speed.";
+            tutorialImage.sprite = horgrSprite;
+            tutTitle.text = "Horgr";
+            tutContextText.text = "This is a magical shrine that is valuable to both the <color=#FE4E2D><b>Humans</b></color> and the <color=#9665cd><b>Grove</b></color>.\r\n<br>Enemies will attempt to claim this site for themselves, at which point they will begin to spawn their own Knights into the game, so you'll need to either defend it or attack it before the wave is over.\r\n<br>If the <color=#3A9F87><b>Creatures</b></color> outnumber the <color=#FE4E2D><b>Humans</b></color> in the vicinity of the site, it will begin to be claimed back.\r\n<br>The more units, the more quickly it will be claimed.\r\n<br><color=#3A9F87><b>Creatures</b></color> cannot be purchased unless you have control of the <color=#4d705d><b>Horgr</b></color>.";
         }
-        if (tutorialCount == 9)
+        if (tutorialID == TutorialID.Powers)
         {
-            tutorialImage.sprite = nineSprite;
-            tutTitle.text = "Enemy Types";
-            tutContextText.text = "There are 4 enemy types that you will encounter.\r\n<br>Woodcutters:<br>Woodcutters are marked in 'YELLOW' on the map. Their primary target are your trees and will prioritise cutting them down unless they are confronted by your units.\r\n<br>Hunters:<br>Hunters are marked in 'GREEN' on the map and their main focus is your wildlife. They will attempt to hunt your grove into extinction unless a 'Witch's Hut' or one of your units is closer.\r\n<br>Warriors:<br>Warriors are marked in 'RED' on the map and their main goal is to kill all of your units. They will attempt to claim your 'Horgr' if they are closer to it than they are to your units.";
+            tutorialImage.sprite = powersSprite;
+            tutTitle.text = "Powers";
+            tutContextText.text = "<color=#abb4ca><b>Rune</b></color>:<br><color=#abb4ca><b>Runes</b></color> are ancient, magical zones of wild energy that heal our <color=#3A9F87><b>Creatures</b></color> over time.\r\n<br><color=#caad87><b>Fyre</b></color>:<br><color=#caad87><b>Fyre</b></color> creates an explosion dealing damage to all <color=#FE4E2D><b>Humans</b></color> in its radius.\r\n<br><color=#aeaecf><b>Stormer</b></color>:<br>Allows you to create an intense storm that will randomly strike down <color=#FE4E2D><b>Humans</b></color> with lightning for a period of 1 minute.";
         }
-        if (tutorialCount == 10)
+        if (tutorialID == TutorialID.DayNightCycle)
         {
-            tutorialImage.sprite = tenSprite;
-            tutTitle.text = "Spies";
-            tutContextText.text = "Spies are unique enemies that will attempt to sneak through your defences and attack your Home Tree directly.\r\n<br>They will arrive on the map at a random location and are marked in 'BLACK'.\r\n<br>They will move towards your home tree, ignoring everything else in their path to destroy it.\r\n<br>They will spawn in more regularly the higher the current wave is and can emerge at any time, even in between waves.";
+            tutorialImage.sprite = dayNightCycleSprite;
+            tutTitle.text = "Day/Night Cycle";
+            tutContextText.text = "The game is divided into two phases: <color=#FCA343><b>Day</b></color> and <color=#24455A><b>Night</b></color>.<br>\r\nDuring the <color=#FCA343><b>Day</b></color>, <color=#FE4E2D><b>Human</b></color> settlers will encroach upon our <color=#9665cd><b>Grove</b></color>, seeking to cut down our <color=#6d8659><b>Trees</b></color> and hunt our <color=#da691e><b>Wildlife</b></color>. You must protect us against them until the <color=#FCA343><b>Day</b></color> is done.<br>\r\nAt <color=#24455A><b>Night</b></color>, we can recover and expand our <color=#9665cd><b>Grove</b></color>.";
         }
-        if (tutorialCount == 11)
+        if (tutorialID == TutorialID.HumanClasses)
         {
-            tutorialImage.sprite = elevenSprite;
-            tutTitle.text = "Health Pickups";
-            tutContextText.text = "Health:<br>During the game you might notice some pink objects appearing around the map. These are 'Health' pickups.\r\n<br>If you send a unit to their location, they will heal any units that are nearby at the time.";
+            tutorialImage.sprite = humanClassesSprite;
+            tutTitle.text = "Human Classes";
+            tutContextText.text = "There are 4 <color=#FE4E2D><b>Human</b></color> classes that you will encounter.\r\n<br><color=#FFFF69><b>Woodcutters</b></color> are marked in <color=#FFFF69><b>YELLOW</b></color> on the Minimap.\r\n<br>Their primary target are your <color=#6d8659><b>Trees</b></color> and will prioritize cutting them down unless they are confronted by your <color=#3A9F87><b>Creatures</b></color>.\r\n<br><color=#30FE2C><b>Hunters</b></color> are marked in <color=#30FE2C><b>GREEN</b></color> on the Minimap.\r\n<br>Their main focus is your <color=#da691e><b>Wildlife</b></color> and will attempt to hunt your <color=#9665cd><b>Grove</b></color> into extinction unless a <color=#4d705d><b>Witch's Hut</b></color> or one of your <color=#3A9F87><b>Creatures</b></color> is closer.\r\n<br><color=#FE4E2D><b>Warriors</b></color> are marked in <color=#FE4E2D><b>RED</b></color> on the Minimap.\r\n<br>Their main goal is to kill all of your <color=#3A9F87><b>Creatures</b></color> and they will attempt to claim your <color=#4d705d><b>Horgr</b></color> if they are closer to it than they are to your <color=#3A9F87><b>Creatures</b></color>.";
         }
-        if (tutorialCount == 12)
+        if (tutorialID == TutorialID.Dogs)
         {
-            tutorialImage.sprite = twelveSprite;
+            tutorialImage.sprite = dogsSprite;
+            tutTitle.text = "Dogs";
+            tutContextText.text = "These ferocious hounds have explosives strapped to their backs.<br>\r\n<br>They will appear at the beginning of a <color=#FCA343><b>Day</b></color> if there are plentiful <color=#6d8659><b>Trees</b></color> populating the <color=#9665cd><b>Grove</b></color> and will attempt to blow up your <color=#6d8659><b>trees</b></color>.<br>\r\n<br>They are easy to stop if you can intercept them but they’re fast moving.";
+        }
+        if (tutorialID == TutorialID.Mines)
+        {
+            tutorialImage.sprite = minesSprite;
             tutTitle.text = "Mines";
-            tutContextText.text = "The humans are coming out of holes in the ground!\r\n<br>Occasionally, the humans will bore through the earth and set up their iron mines, this creates a new spawn point that enemies can arrive from.\r\n<br>Any trees in the area will be destroyed as it emerges.";
+            tutContextText.text = "Occasionally, the <color=#FE4E2D><b>Humans</b></color> will bore through the earth and set up their iron mines, this creates a new spawn point that enemies can arrive from.<br>\r\nAny <color=#6d8659><b>Trees</b></color> in the area will be destroyed as it emerges.";
         }
-        if (tutorialCount == 13)
+        if (tutorialID == TutorialID.Spies)
         {
-            tutorialImage.sprite = thirteenSprite;
+            tutorialImage.sprite = spiesprite;
+            tutTitle.text = "Spies";
+            tutContextText.text = "Spies are unique <color=#FE4E2D><b>Humans</b></color> that will attempt to sneak through your defences and attack your <color=#FEE65F><b>Home Tree</b></color> directly.<br>\r\nThey will arrive on the map at a random location and are marked in BLACK.<br>\r\nThey will move towards your <color=#FEE65F><b>Home Tree</b></color>, ignoring everything else in their path to destroy it.<br>\r\nThey will spawn in more regularly as the <color=#FCA343><b>Days</b></color> go by and can emerge at any time, even at <color=#24455A><b>Night</b></color>.";
+        }
+        if (tutorialID == TutorialID.LordsOfTheLand)
+        {
+            tutorialImage.sprite = lordsOfTheLandSprite;
             tutTitle.text = "Lords of the Land";
-            tutContextText.text = "These are high ranking members of the King’s Court, tasked with weakening the defences of the grove.\r\n<br>They are incredibly deadly warriors that will appear sporadically to cause as much chaos as possible.\r\n<br>If you’re not prepared, they can easily cut through your units and destroy your Home Tree.";
+            tutContextText.text = "These are high ranking members of the King’s Court, tasked with weakening the defences of the <color=#9665cd><b>Grove</b></color>.<br>\r\nThey are incredibly deadly fighters that will appear sporadically to cause as much chaos as possible.<br>\r\nIf you’re not prepared, they can easily cut through your <color=#3A9F87><b>Creatures</b></color> and destroy your <color=#FEE65F><b>Home Tree</b></color>.";
         }
-        if (tutorialCount == 14)
+        if (tutorialID == TutorialID.Combat)
         {
-            tutorialImage.sprite = fouteenSprite;
+            tutorialImage.sprite = combatSprite;
             tutTitle.text = "Combat";
-            tutContextText.text = "Right clicking on an enemy will order a selected unit to target it. They will track down the enemy until they catch up to them.\r\n<br>Otherwise, the unit will behave differently, depending on which Combat Mode you have selected. This is represented by this icon above the unit.\r\n<br>Attack Mode:<br>Selecting Attack Mode allows the unit to move freely about the map, attacking any enemies that come within its range.<br>This is the default Combat Mode.\r\n<br>Defend Mode:<br>Selecting Defend Mode orders the unit to defend its current position. Its range is reduced and will move small distances to attack enemies but will always return to its original defence position.\r\n<br>Formations:<br>Clicking the Formations button will change how spread out units are. You can choose to have them bunch them together to allow a more concentrated force or spread out to cover more ground.";
+            tutContextText.text = "When a <color=#FE4E2D><b>Human</b></color> first arrives, they are invincible for 5 seconds.\r\n<br><b>Right Clicking</b> on an <color=#FE4E2D><b>Human</b></color> will order a selected <color=#3A9F87><b>Creature</b></color> to target it. They will track down the <color=#FE4E2D><b>Human</b></color> until they catch up to them.\r\n<br>The <color=#3A9F87><b>Creature</b></color> will behave differently, depending on which Combat Mode you have selected. This is represented by an icon above the <color=#3A9F87><b>Creature</b></color>.\r\n<br>Attack Mode:<br>Selecting <b>Attack Mode</b> allows the <color=#3A9F87><b>Creature</b></color> to move freely about the <color=#9665cd><b>Grove</b></color>, attacking any <color=#FE4E2D><b>Humans</b></color> that come within its range.\r\n<br>This is the default Combat Mode.\r\n<br><b>Defend Mode:</b>\r\n<br>Selecting <b>Defend Mode</b> orders the <color=#3A9F87><b>Creature</b></color> to defend its current position.\r\n<br>Its range is reduced and will move small distances to attack <color=#FE4E2D><b>Humans</b></color> but will always return to its original defence position.\r\n<br><b>Formations:</b>\r\n<br>Clicking the <b>Formations</b> button will change how spread out <color=#3A9F87><b>Creatures</b></color> are. You can choose to have them bunch them together to allow a more concentrated force or spread out to cover more ground.";
         }
     }
 
@@ -520,9 +542,23 @@ public class Tutorial
 
 public enum TutorialID 
 { 
+    CameraControls,
+    CreatureMovement,
+    Maegen,
     Trees,
-    UnitPlacement,
-    Spy,
-    Lord
+    Wildlife,
+    Populous,
+    HomeTree,
+    WitchsHut,
+    Horgr,
+    Powers,
+    DayNightCycle,
+    HumanClasses,
+    Dogs,
+    Mines,
+    Spies,
+    LordsOfTheLand,
+    Combat,
+    Perks,
 }
 
