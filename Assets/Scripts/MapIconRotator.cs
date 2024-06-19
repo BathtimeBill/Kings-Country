@@ -7,6 +7,8 @@ public class MapIconRotator : GameBehaviour
     public CreatureID creatureID;
     [DrawIf("unitType", UnitType.Human)]
     public HumanID humanID;
+    [DrawIf("unitType", UnitType.Building)]
+    public BuildingID buildingID;
 
     private GameObject playerCam;
     private Quaternion targetRotation;
@@ -17,7 +19,10 @@ public class MapIconRotator : GameBehaviour
     private void Start()
     {
         sprite = GetComponentInChildren<SpriteRenderer>();
-        SetIconData();
+        if (!_SETTINGS.miniMap.showIcons)
+            sprite.enabled = false;
+        else
+            SetIconData();
         playerCam = GameObject.FindGameObjectWithTag("PlayerCam");
         targetScale = transform.localScale.z - transform.localScale.z*2;
         transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, targetScale);
@@ -25,6 +30,9 @@ public class MapIconRotator : GameBehaviour
 
     private void Update()
     {
+        if (!_SETTINGS.miniMap.showIcons)
+            return;
+
         if (!_PS.miniMapRotation)
             return;
 
@@ -34,15 +42,23 @@ public class MapIconRotator : GameBehaviour
 
     public void SetIconData()
     {
-        if(unitType == UnitType.Human)
+        switch(unitType)
         {
-            sprite.sprite = _DATA.GetEnemyUnit(humanID).mapIcon;
-            sprite.color = _DATA.GetEnemyUnit(humanID).mapIconColour;
-        }
-        else if(unitType == UnitType.Creature)
-        {
-            sprite.sprite = _DATA.GetUnit(creatureID).mapIcon;
-            sprite.color = _DATA.GetUnit(creatureID).mapIconColour;
+            case UnitType.Creature:
+                sprite.sprite = _DATA.GetUnit(creatureID).mapIcon;
+                sprite.color = _DATA.GetUnit(creatureID).mapIconColour;
+                sprite.transform.localScale = Vector3.one * _SETTINGS.miniMap.creatureIconSize;
+                break;
+            case UnitType.Human:
+                sprite.sprite = _DATA.GetUnit(humanID).mapIcon;
+                sprite.color = _DATA.GetUnit(humanID).mapIconColour;
+                sprite.transform.localScale = Vector3.one * _SETTINGS.miniMap.humanIconSize;
+                break;
+            case UnitType.Building:
+                sprite.sprite = _DATA.GetUnit(buildingID).mapIcon;
+                sprite.color = _DATA.GetUnit(buildingID).mapIconColour;
+                sprite.transform.localScale = Vector3.one * _SETTINGS.miniMap.buildingIconSize;
+                break;
         }
     }
 

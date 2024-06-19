@@ -16,6 +16,9 @@ public class Settings : ScriptableObject
     [Header("Colours")]
     public Colours colours;
 
+    [Header("Mini Map")]
+    public MiniMap miniMap;
+
     [Header("Icons")]
     public Icons icons;
 
@@ -106,4 +109,14 @@ public class Icons
     public Sprite healthIcon;
     public Sprite speedIcon;
     public Sprite cooldownIcon;
+}
+
+[Serializable]
+public class MiniMap
+{
+    public bool visible = true;
+    public bool showIcons = true;
+    public int buildingIconSize = 24;
+    public int creatureIconSize = 16;
+    public int humanIconSize = 16;
 }

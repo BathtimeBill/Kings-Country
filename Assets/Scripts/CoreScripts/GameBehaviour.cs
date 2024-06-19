@@ -172,7 +172,8 @@ public enum HumanID
 public enum UnitType
 {
     Creature,
-    Human
+    Human,
+    Building
 }
 
 public enum EnemyType

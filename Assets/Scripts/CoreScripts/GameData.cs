@@ -16,8 +16,14 @@ public class GameData : Singleton<GameData>
     #region Human Units
     [Header("Human Unit Data")]
     public List<EnemyData> humanData;
-    public EnemyData GetEnemyUnit(HumanID _id) => humanData.Find(x => x.id == _id);
-    public EnemyType GetEnemyType(HumanID _id) => GetEnemyUnit(_id).type;
+    public EnemyData GetUnit(HumanID _id) => humanData.Find(x => x.id == _id);
+    public EnemyType GetUnitType(HumanID _id) => GetUnit(_id).type;
+    #endregion;
+
+    #region Building Units
+    [Header("Building Unit Data")]
+    public List<BuildingData> buildingData;
+    public BuildingData GetUnit(BuildingID _id) => buildingData.Find(x => x.id == _id);
     #endregion;
 
     #region Tools
