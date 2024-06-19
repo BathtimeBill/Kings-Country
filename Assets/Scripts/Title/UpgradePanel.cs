@@ -71,7 +71,7 @@ public class UpgradePanel : GameBehaviour
     [Header("Units")]
     public List<UnitData> currentUnits;
     private UnitData activeUnit;
-    public UnitID ActiveUnit => activeUnit.id;
+    public CreatureID ActiveUnit => activeUnit.id;
 
     private ToolData activeTool;
     public ToolID ActiveTool => activeTool.id;
@@ -133,7 +133,7 @@ public class UpgradePanel : GameBehaviour
         RemoveUpgradeValues();
     }
 
-    public void ChangeUpgrade(UnitID _unitID)
+    public void ChangeUpgrade(CreatureID _unitID)
     {
         activeUnit = _DATA.GetUnit(_unitID);
         icon.sprite =  activeUnit.icon;

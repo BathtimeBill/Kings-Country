@@ -180,10 +180,10 @@ public class HorgrManager : Singleton<HorgrManager>
     {
         switch (_unitData.id)
         {
-            case UnitID.Huldra:
+            case CreatureID.Huldra:
                 SpawnHuldraManager();
                 break;
-            case UnitID.Mistcalf:
+            case CreatureID.Mistcalf:
                 SpawnGolemManager();
                 break;
         }

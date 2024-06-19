@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UpgradeUnit : UpgradeObject
 {
-    public UnitID unitID;
+    public CreatureID unitID;
 
     private void OnMouseEnter()
     {

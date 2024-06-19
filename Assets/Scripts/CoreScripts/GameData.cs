@@ -7,18 +7,27 @@ public class GameData : Singleton<GameData>
 {
     public Settings settings;
 
-    [Header("Unit Data")]
+    #region Creature Units
+    [Header("Creature Unit Data")]
     public List<UnitData> unitData;
-    public UnitData GetUnit(UnitID _id) => unitData.Find(x => x.id == _id);
+    public UnitData GetUnit(CreatureID _id) => unitData.Find(x => x.id == _id);
+    #endregion;
 
-    #region Tool Functions
+    #region Human Units
+    [Header("Human Unit Data")]
+    public List<EnemyData> humanData;
+    public EnemyData GetEnemyUnit(HumanID _id) => humanData.Find(x => x.id == _id);
+    public EnemyType GetEnemyType(HumanID _id) => GetEnemyUnit(_id).type;
+    #endregion;
+
+    #region Tools
     [Header("Tool Data")]
     public List<ToolData> toolData;
     public ToolData GetTool(ToolID _id) => toolData.Find(x => x.id == _id);
     public bool CanUseTool(ToolID _id) => GetTool(_id).wildlifePrice <= _GM.wildlife && GetTool(_id).maegenPrice <= _GM.maegen;
     #endregion
 
-    #region Tool Functions
+    #region Wildlife
     [Header("Wildlife Data")]
     public List<WildlifeData> wildlifeData;
     public WildlifeData GetWildlife(WildlifeID _id) => wildlifeData.Find(x => x.id == _id);
@@ -45,7 +54,6 @@ public class GameData : Singleton<GameData>
 
     public int enemySpawnLocations => currentLevel.enemySpawnLocations;
     #endregion
-
 
     #region Editor
     [Header("CSV File")]
@@ -78,7 +86,7 @@ public class GameData : Singleton<GameData>
             {
                 // Gets a unit data based off the ID and updates the data
                 if (item.Key.Contains("ID"))
-                    unit.id = EnumX.ToEnum<UnitID>(item.Value);
+                    unit.id = EnumX.ToEnum<CreatureID>(item.Value);
                 if (item.Key.Contains("Name"))
                     unit.name = item.Value;
                 if (item.Key.Contains("Description"))

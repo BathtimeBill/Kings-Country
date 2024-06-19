@@ -161,13 +161,13 @@ public class HutManager : Singleton<HutManager>
     {
         switch (_unitData.id)
         {
-            case UnitID.Skessa:
+            case CreatureID.Skessa:
                 SpawnSkessaManager();
                 break;
-            case UnitID.Goblin:
+            case CreatureID.Goblin:
                 SpawnGoblinManager();
                 break;
-            case UnitID.Fidhain:
+            case CreatureID.Fidhain:
                 SpawnFidhainManager();
                 break;
         }

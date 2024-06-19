@@ -137,7 +137,7 @@ public enum CombatMode
     AttackMove,
     Defend,
 }
-public enum UnitID
+public enum CreatureID
 {
     Satyr,
     Orcus,
@@ -152,11 +152,35 @@ public enum UnitID
     Unknown
 }
 
+public enum HumanID
+{
+    Logger,
+    Lumberjack,
+    LogCutter,
+    Wathe,
+    Hunter,
+    Bjornjeger,
+    Dreng,
+    Berserkr,
+    Knight,
+    Dog,
+    Mine,
+    Spy,
+    Lord
+}
+
+public enum UnitType
+{
+    Creature,
+    Human
+}
+
 public enum EnemyType
 {
     Hunter,
     Warrior,
-    Woodcutter
+    Woodcutter,
+    Special,
 }
 
 public enum LevelID

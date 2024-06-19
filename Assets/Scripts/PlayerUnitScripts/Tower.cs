@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Tower : GameBehaviour
 {
-    public UnitID unitType;
+    public CreatureID unitType;
     public Animator animator;
 
     public GameObject firingPoint;
@@ -75,11 +75,11 @@ public class Tower : GameBehaviour
             if(_PERK.HasPerk(PerkID.Tower))
             {
 
-                if(unitType == UnitID.SpitTower)
+                if(unitType == CreatureID.SpitTower)
                 {
                     animator.SetTrigger("Spit");
                 }
-                if (unitType == UnitID.Tower)
+                if (unitType == CreatureID.Tower)
                 {
                     GameObject go = Instantiate(projectile2, firingPoint.transform.position, firingPoint.transform.rotation);
                     go.GetComponent<Rigidbody>().AddForce(firingPoint.transform.forward * projectileSpeed);
@@ -87,11 +87,11 @@ public class Tower : GameBehaviour
             }
             else
             {
-                if (unitType == UnitID.SpitTower)
+                if (unitType == CreatureID.SpitTower)
                 {
                     animator.SetTrigger("Spit");
                 }
-                if (unitType == UnitID.Tower)
+                if (unitType == CreatureID.Tower)
                 {
                     GameObject go = Instantiate(projectile1, firingPoint.transform.position, firingPoint.transform.rotation);
                     go.GetComponent<Rigidbody>().AddForce(firingPoint.transform.forward * projectileSpeed);
@@ -184,13 +184,13 @@ public class Tower : GameBehaviour
             go = Instantiate(explosionParticle, transform.position, transform.rotation);
             Destroy(go, 15);
             _UI.CheckPopulousUI();
-            if(unitType == UnitID.Tower)
+            if(unitType == CreatureID.Tower)
             {
                 UnitSelection.Instance.unitList.Remove(gameObject);
                 Destroy(gameObject);
             }
 
-            if (unitType == UnitID.SpitTower)
+            if (unitType == CreatureID.SpitTower)
             {
                 UnitSelection.Instance.unitList.Remove(parent);
                 Destroy(parent);
@@ -199,7 +199,7 @@ public class Tower : GameBehaviour
     }
     private void Setup()
     {
-        if(unitType == UnitID.Tower)
+        if(unitType == CreatureID.Tower)
         {
             fireRate = 2;
             if (_PERK.HasPerk(PerkID.Tower))
@@ -211,7 +211,7 @@ public class Tower : GameBehaviour
                 maxHealth = _GM.towerHealth;
             }
         }
-        if(unitType == UnitID.SpitTower)
+        if(unitType == CreatureID.SpitTower)
         {
             fireRate = 4;
             if (_PERK.HasPerk(PerkID.Tower))

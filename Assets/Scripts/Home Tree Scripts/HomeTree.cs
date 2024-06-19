@@ -187,13 +187,13 @@ public class HomeTree : GameBehaviour
     {
         switch(_unitData.id)
         {
-            case UnitID.Satyr:
+            case CreatureID.Satyr:
                 SpawnSatyr();
                 break;
-            case UnitID.Orcus:
+            case CreatureID.Orcus:
                 SpawnOrcus();
                 break;
-            case UnitID.Leshy:
+            case CreatureID.Leshy:
                 SpawnLeshy();
                 break;
         }

@@ -48,8 +48,8 @@ public class OverWorldManager : GameBehaviour
             levelDescription.text = levelData.description;
             levelIcon.sprite = levelData.icon;
             levelDays.text = levelData.days.ToString();
-            spawnPoints.text = levelData.spawnPoints.ToString();
-            enemyCount.text = levelData.availableHunters.Count.ToString();
+            //spawnPoints.text = levelData.spawnPoints.ToString();
+            //enemyCount.text = levelData.availableHunters.Count.ToString();
             selectedLevel = _levelID;
         }
         else
@@ -58,8 +58,8 @@ public class OverWorldManager : GameBehaviour
             levelDescription.text = "Locked";// levelData.description;
             levelIcon.sprite = levelData.icon;
             levelDays.text = levelData.days.ToString();
-            spawnPoints.text = levelData.spawnPoints.ToString();
-            enemyCount.text = levelData.availableHunters.Count.ToString();
+            //spawnPoints.text = levelData.spawnPoints.ToString();
+            //enemyCount.text = levelData.availableHunters.Count.ToString();
             selectedLevel = _levelID;
         }
 

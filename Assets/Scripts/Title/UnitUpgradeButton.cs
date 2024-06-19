@@ -69,7 +69,7 @@ public class UnitUpgradeButton : InteractableButton
         filling = false;
     }
 
-    public void UpgradeIt(UnitID _unitID)
+    public void UpgradeIt(CreatureID _unitID)
     {
         _UPGRADE.UpgradeObject();
         filling = false;

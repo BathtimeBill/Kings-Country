@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Enemy Data", menuName = "BGG/Enemy Data", order = 4)]
 public class EnemyData : ScriptableObject
 {
+    public HumanID id;
     public EnemyType type;
     public new string name;
     [TextArea(3, 5)]
@@ -15,5 +16,6 @@ public class EnemyData : ScriptableObject
     [Header("Non Stats")]
     public Sprite icon;
     public Sprite mapIcon;
+    public Color mapIconColour;
     public AudioClip[] voiceSounds;
 }
