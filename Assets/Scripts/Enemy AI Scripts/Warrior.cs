@@ -292,6 +292,10 @@ public class Warrior : Enemy
         {
             navAgent.speed = speed / 2;
         }
+        if (other.tag == "PlayerWeapon3")
+        {
+            TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage);
+        }
     }
     private void OnTriggerExit(Collider other)
     {

@@ -22,15 +22,7 @@ public class Enemy : GameBehaviour
         {
             TakeDamage(_DATA.GetUnit(CreatureID.Orcus).damage);
         }
-        //if (other.tag == "PlayerWeapon3")
-        //{
-        //    if (type != HunterType.Bjornjeger)
-        //    {
-        //        Launch();
-        //    }
-        //    else
-        //        TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage);
-        //}
+
         if (other.tag == "PlayerWeapon4")
         {
             TakeDamage(_DATA.GetUnit(CreatureID.Skessa).damage);

@@ -382,6 +382,17 @@ public class Hunter : Enemy
         {
             navAgent.speed = speed / 2;
         }
+        if (other.tag == "PlayerWeapon3")
+        {
+            if(type != HunterType.Bjornjeger)
+            {
+                Launch();
+            }
+            else
+            {
+                TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage);
+            }
+        }
     }
     //private void OnTriggerStay(Collider other)
     //{

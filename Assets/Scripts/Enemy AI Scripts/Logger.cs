@@ -324,6 +324,10 @@ public class Logger : Enemy
             GameEvents.ReportOnEnemyKilled();
             Destroy(gameObject);
         }
+        if (other.tag == "PlayerWeapon3")
+        {
+            Launch();
+        }
     }
     private void OnTriggerExit(Collider other)
     {
