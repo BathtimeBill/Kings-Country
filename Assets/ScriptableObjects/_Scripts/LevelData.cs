@@ -6,6 +6,7 @@ using UnityEditor;
 public class LevelData : ScriptableObject
 {
     public LevelID id;
+    public new string name;
     [TextArea]
     public string description;
     public LevelNumber number;
@@ -18,9 +19,7 @@ public class LevelData : ScriptableObject
     [Space]
     public List<BuildingID> availableBuildings;
     public List<ToolID> availableTrees;
-    public List<WoodcutterType> availableLoggers;
-    public List<HunterType> availableHunters;
-    public List<WarriorType> availableWarriors;
+    public List<HumanID> availableHumans;
     [Space]
     public int enemySpawnLocations;
     [BV.ListName("Day: ")]
