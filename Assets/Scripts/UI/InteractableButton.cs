@@ -20,7 +20,6 @@ public class InteractableButton : GameBehaviour, IPointerEnterHandler, IPointerE
 
     public virtual void SetInteractable(bool _interactable)
     {
-        print(name + _interactable);
         if (button == null)
             return;
 

@@ -26,7 +26,7 @@ public class TestSatyrAnimation : GameBehaviour
     private void Update()
     {
         animator.SetFloat("z", Mathf.Clamp(currentSpeed, 0, 3) );
-        if(GetComponentInParent<Unit>().unitType == CreatureID.Goblin)
+        if(GetComponentInParent<Unit>().unitID == CreatureID.Goblin)
         {
             if (distanceFromClosestUnit < 80 && _EM.enemies.Count != 0)
             {
@@ -59,7 +59,7 @@ public class TestSatyrAnimation : GameBehaviour
         {
             closestUnit = GetClosestEnemy();
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
-            if(GetComponentInParent<Unit>().unitType != CreatureID.Goblin)
+            if(GetComponentInParent<Unit>().unitID != CreatureID.Goblin)
             {
                 if (distanceFromClosestUnit <= 15)
                 {

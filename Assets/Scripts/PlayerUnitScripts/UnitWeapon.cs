@@ -21,7 +21,7 @@ public class UnitWeapon : GameBehaviour
 
     private void Update()
     {
-        if(gameObject.GetComponentInParent<Unit>().unitType == CreatureID.Goblin)
+        if(gameObject.GetComponentInParent<Unit>().unitID == CreatureID.Goblin)
         {
             firingPoint.transform.LookAt(gameObject.GetComponentInParent<Unit>().closestEnemy);
         }    

@@ -304,15 +304,21 @@ public class Hunter : Enemy
         }
 
     }
-    private void OnTriggerEnter(Collider other)
+    public override void OnTriggerEnter(Collider other)
     {
+        base.OnTriggerEnter(other);
+        /*if(other.GetComponent<UnitWeaponCollider>() != null)
+        {
+            TakeDamage(other.GetComponent<UnitWeaponCollider>().Damage);
+        }
+
         if (other.tag == "PlayerWeapon")
         {
-            TakeDamage(_GM.satyrDamage);
+            TakeDamage(_DATA.GetUnit(CreatureID.Satyr).damage);
         }
         if (other.tag == "PlayerWeapon2")
         {
-            TakeDamage(_GM.orcusDamage);
+            TakeDamage(_DATA.GetUnit(CreatureID.Orcus).damage);
         }
         if (other.tag == "PlayerWeapon3")
         {
@@ -321,19 +327,19 @@ public class Hunter : Enemy
                 Launch();
             }
             else
-            TakeDamage(_GM.leshyDamage);
+            TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage);
         }
         if (other.tag == "PlayerWeapon4")
         {
-            TakeDamage(_GM.skessaDamage);
+            TakeDamage(_DATA.GetUnit(CreatureID.Skessa).damage);
         }
         if (other.tag == "PlayerWeapon5")
         {
-            TakeDamage(_GM.goblinDamage);
+            TakeDamage(_DATA.GetUnit(CreatureID.Goblin).damage);
         }
         if (other.tag == "PlayerWeapon6")
         {
-            TakeDamage(_GM.golemDamage);
+            TakeDamage(_DATA.GetUnit(CreatureID.Mistcalf).damage);
         }
         if (other.tag == "Spit")
         {
@@ -342,7 +348,7 @@ public class Hunter : Enemy
         if (other.tag == "SpitExplosion")
         {
             TakeDamage(_GM.spitExplosionDamage);
-        }
+        }*/
         if (other.tag == "Beacon")
         {
             animator.SetTrigger("Cheer" + RandomCheerAnim());
@@ -413,7 +419,7 @@ public class Hunter : Enemy
         int rnd = Random.Range(1, 3);
         return rnd;
     }
-    public void TakeDamage(float damage)
+    public override void TakeDamage(int damage)
     {
         if(!invincible)
         {

@@ -257,9 +257,10 @@ public class Logger : Enemy
     //    }
     //}
 
-    private void OnTriggerEnter(Collider other)
+    public override void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "PlayerWeapon")
+        base.OnTriggerEnter(other);
+        /*if(other.tag == "PlayerWeapon")
         {
             TakeDamage(_GM.satyrDamage);
         }
@@ -290,7 +291,7 @@ public class Logger : Enemy
         if (other.tag == "SpitExplosion")
         {
             TakeDamage(_GM.spitExplosionDamage);
-        }
+        }*/
         if (other.tag == "Beacon")
         {
             if(woodcutterType != WoodcutterType.LogCutter)
@@ -371,7 +372,7 @@ public class Logger : Enemy
         }
     }
 
-    public void TakeDamage(float damage)
+    public override void TakeDamage(int damage)
     {
         if(!invincible)
         {
@@ -387,7 +388,6 @@ public class Logger : Enemy
                 audioSource.pitch = Random.Range(0.8f, 1.2f);
                 audioSource.Play();
             }
-            Vector3 forward = new Vector3(0, 180, 0);
 
             GameObject bloodParticle;
             bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);

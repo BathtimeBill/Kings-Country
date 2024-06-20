@@ -32,10 +32,10 @@ public class UnitClick : GameBehaviour
                 {
                     if(UnitSelection.Instance.canDoubleClick)
                     {
-                        CreatureID thisUnitType = hit.collider.gameObject.GetComponent<Unit>().unitType;
+                        CreatureID thisUnitType = hit.collider.gameObject.GetComponent<Unit>().unitID;
                         foreach(GameObject go in UnitSelection.Instance.unitList)
                         {
-                            if(go.gameObject.GetComponent<Unit>().unitType == thisUnitType)
+                            if(go.gameObject.GetComponent<Unit>().unitID == thisUnitType)
                             {
                                 UnitSelection.Instance.DoubleClickSelect(go);
                             }

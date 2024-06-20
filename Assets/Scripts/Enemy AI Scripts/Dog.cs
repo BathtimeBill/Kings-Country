@@ -40,9 +40,10 @@ public class Dog : Enemy
         agent.SetDestination(targetTree.transform.position);
     }
 
-    private void OnTriggerEnter(Collider other)
+    public override void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "PlayerWeapon")
+        base.OnTriggerEnter(other);
+        /*if (other.tag == "PlayerWeapon")
         {
             TakeDamage(_GM.satyrDamage);
         }
@@ -73,7 +74,7 @@ public class Dog : Enemy
         if (other.tag == "SpitExplosion")
         {
             TakeDamage(_GM.spitExplosionDamage);
-        }
+        }*/
         if (other.tag == "Explosion" || other.tag == "Explosion2")
         {
 
@@ -87,7 +88,7 @@ public class Dog : Enemy
 
         }
     }
-    public void TakeDamage(float damage)
+    public override void TakeDamage(int damage)
     {
         GameObject bloodParticle;
         bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);

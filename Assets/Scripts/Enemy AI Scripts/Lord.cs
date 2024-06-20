@@ -97,8 +97,10 @@ public class Lord : Enemy
         lordVocals.Remove(lordVocals[i]);
     }
 
-    private void OnTriggerEnter(Collider other)
+    public override void OnTriggerEnter(Collider other)
     {
+        base.OnTriggerEnter(other);
+        /*
         if (other.tag == "PlayerWeapon")
         {
             TakeDamage(_GM.satyrDamage);
@@ -130,7 +132,7 @@ public class Lord : Enemy
         if (other.tag == "SpitExplosion")
         {
             TakeDamage(_GM.spitExplosionDamage);
-        }
+        }*/
         if (other.tag == "Explosion")
         {
             TakeDamage(100);
@@ -151,7 +153,7 @@ public class Lord : Enemy
             navAgent.speed = speed;
         }
     }
-    public void TakeDamage(float damage)
+    public override void TakeDamage(int damage)
     {
         audioSource.clip = _SM.GetGruntSounds();
         audioSource.pitch = Random.Range(0.8f, 1.2f);

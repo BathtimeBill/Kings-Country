@@ -226,9 +226,10 @@ public class Warrior : Enemy
 
 
 
-    private void OnTriggerEnter(Collider other)
+    public override void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "PlayerWeapon")
+        base.OnTriggerEnter(other);
+        /*if (other.tag == "PlayerWeapon")
         {
             TakeDamage(_GM.satyrDamage);
         }
@@ -259,7 +260,7 @@ public class Warrior : Enemy
         if (other.tag == "SpitExplosion")
         {
             TakeDamage(_GM.spitExplosionDamage);
-        }
+        }*/
         if (other.tag == "Beacon")
         {
             animator.SetTrigger("Cheer" + RandomCheerAnim());
@@ -329,7 +330,7 @@ public class Warrior : Enemy
         int rnd = Random.Range(1, 3);
         return rnd;
     }
-    public void TakeDamage(float damage)
+    public override void TakeDamage(int damage)
     {
         if(!invincible)
         {

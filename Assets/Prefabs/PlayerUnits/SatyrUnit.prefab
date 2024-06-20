@@ -768,16 +768,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5c39e1991a61f44181baad37cfedf96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitType: 0
+  unitID: 0
   combatMode: 0
   combatModeImage: {fileID: 5269530224681157385}
   attackSprite: {fileID: 21300000, guid: c5cd52a4f3d0bc744a6182db1ed6818d, type: 3}
   defendSprite: {fileID: 21300000, guid: 021aa7092ae516e4a9c156f7049ca959, type: 3}
   defendPosition: {x: 0, y: 0, z: 0}
-  unitSpeed: 0
   tickRate: 0.1
   health: 0
   maxHealth: 0
+  unitSpeed: 0
   projectileSpeed: 1000
   slider: {fileID: 7265826588056917754}
   focusSpeed: 5
@@ -3929,7 +3929,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f16954cd12278df47a2b816b4b7c7e74,
         type: 3}
       propertyPath: m_TagString
-      value: PlayerWeapon
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3939,6 +3939,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1911833747}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f16954cd12278df47a2b816b4b7c7e74,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3240289353645054823}
   m_SourcePrefab: {fileID: 100100000, guid: f16954cd12278df47a2b816b4b7c7e74, type: 3}
 --- !u!4 &8420273847348394682 stripped
 Transform:
@@ -3973,3 +3977,19 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.02
   m_Center: {x: 0.000000009878913, y: -0.03, z: 0.000000015133569}
+--- !u!114 &3240289353645054823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9192131471308365824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0bcff6a82b5f24c901b72b5aed2f5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitType: 0
+  creatureID: 0
+  humanID: 0
+  buildingID: 0

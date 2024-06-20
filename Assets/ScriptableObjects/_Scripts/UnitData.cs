@@ -14,6 +14,7 @@ public class UnitData : ScriptableObject
     public int damage;
     public int speed;
     public int cost;
+    public float detectionRadius = 50f;
     [Header("Non Stats")]
     public Sprite icon;
     public Sprite mapIcon;

@@ -61,14 +61,6 @@ public class GameManager : Singleton<GameManager>
     public ToolData stormerTool;
 
     [Header("Unit Health")]
-    public float satyrHealth;
-    public float orcusHealth;
-    public float leshyHealth;
-    public float huldraHealth;
-    public float skessaHealth;
-    public float goblinHealth;
-    public float golemHealth;
-    public float dryadHealth;
     public float towerHealth;
     public float spitTowerHealth;
 
@@ -82,16 +74,6 @@ public class GameManager : Singleton<GameManager>
     public float dryadDamage;
     public float spitDamage;
     public float spitExplosionDamage;
-
-    [Header("Unit Speed")]
-    public float satyrSpeed;
-    public float orcusSpeed;
-    public float leshySpeed;
-    public float skessaSpeed;
-    public float goblinSpeed;
-    public float golemSpeed;
-    public float dryadSpeed;
-    public float huldraSpeed;
 
     [Header("Unit Price")]
     public int satyrPrice;

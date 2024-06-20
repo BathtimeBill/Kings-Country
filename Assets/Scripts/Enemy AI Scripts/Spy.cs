@@ -52,9 +52,10 @@ public class Spy : Enemy
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public override void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "PlayerWeapon")
+        base.OnTriggerEnter(other);
+        /*if (other.tag == "PlayerWeapon")
         {
             TakeDamage(_GM.satyrDamage);
         }
@@ -86,7 +87,7 @@ public class Spy : Enemy
         if (other.tag == "SpitExplosion")
         {
             TakeDamage(_GM.spitExplosionDamage);
-        }
+        }*/
         if (other.tag == "River")
         {
             _EM.enemies.Remove(gameObject);
@@ -106,7 +107,7 @@ public class Spy : Enemy
             Destroy(gameObject);
         }
     }
-    public void TakeDamage(float damage)
+    public override void TakeDamage(int damage)
     {
         audioSource.clip = _SM.GetGruntSounds();
         audioSource.pitch = Random.Range(0.8f, 1.2f);
