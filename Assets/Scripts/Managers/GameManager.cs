@@ -182,9 +182,11 @@ public class GameManager : Singleton<GameManager>
             case GameState.Win:
                 Time.timeScale = 1;
                 break;
-
+            case GameState.Transitioning:
+                Time.timeScale = 1;
+                break;
         }
-        GameEvents.ReportOnGameStateChanged(_gameState);
+        GameEvents.ReportOnGameStateChanged(gameState);
     }
 
     public void SetGame()
@@ -456,8 +458,15 @@ public class GameManager : Singleton<GameManager>
         _UI.UpdateWinUI(maegenBonus, treeBonus, wildlifeBonus, finalScore);
     }
 
+    private void OnGameStateChanged(GameState _gameState)
+    {
+        if(_gameState != gameState)
+            ChangeGameState(_gameState);
+    }
+
     private void OnEnable()
     {
+        
         GameEvents.OnUnitKilled += OnUnitKilled;
         GameEvents.OnWispDestroy += OnWispDestroy;
         GameEvents.OnTreePlaced += OnTreePlaced;
@@ -473,10 +482,9 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnWildlifeValueChange += OnWildlifeValueChange;
     }
 
-    
-
     private void OnDisable()
     {
+        GameEvents.OnGameStateChanged -= OnGameStateChanged;
         GameEvents.OnUnitKilled -= OnUnitKilled;
         GameEvents.OnWispDestroy -= OnWispDestroy;
         GameEvents.OnTreePlaced -= OnTreePlaced;

@@ -51,6 +51,8 @@ public class GameData : Singleton<GameData>
     public LevelData currentLevel => levelData.Find(x => x.id == _GM.thisLevel);
     public LevelData GetLevel(LevelID _id) => levelData.Find(x => x.id == _id);
     public LevelID currentLevelID => currentLevel.id;
+    public bool LevelContains(LevelID _levelID, HumanID _humanID) => GetLevel(_levelID).availableHumans.Contains(_humanID);
+    public bool LevelContains(LevelID _levelID, BuildingID _buildingID) => GetLevel(_levelID).availableBuildings.Contains(_buildingID);
 
     public bool levelUnlocked(LevelID _id) => GetLevel(_id).unlocked;
 

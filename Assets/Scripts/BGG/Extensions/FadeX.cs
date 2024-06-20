@@ -9,7 +9,7 @@ public static class FadeX
     {
         if (_canvasGroup.alpha == 1) return;
 
-        _canvasGroup.DOFade(1, _tweenTime).OnComplete(() => _onSuccess.Invoke());
+        _canvasGroup.DOFade(1, _tweenTime).SetUpdate(true).OnComplete(() => _onSuccess.Invoke());
         _canvasGroup.interactable = _interactable;
         _canvasGroup.blocksRaycasts = _interactable;
     }
@@ -17,7 +17,7 @@ public static class FadeX
     {
         if (_canvasGroup.alpha == 1) return;
 
-        _canvasGroup.DOFade(1, _tweenTime).OnComplete(() => _onSuccess.Invoke());
+        _canvasGroup.DOFade(1, _tweenTime).SetUpdate(true).OnComplete(() => _onSuccess.Invoke());
         _canvasGroup.interactable = _interactable;
         _canvasGroup.blocksRaycasts = _interactable;
     }
@@ -26,7 +26,7 @@ public static class FadeX
     {
         if (_canvasGroup.alpha == 0) return;
 
-        _canvasGroup.DOFade(0, _tweenTime).OnComplete(() => _onSuccess.Invoke());
+        _canvasGroup.DOFade(0, _tweenTime).SetUpdate(true).OnComplete(() => _onSuccess.Invoke());
         _canvasGroup.interactable = _interactable;
         _canvasGroup.blocksRaycasts = _interactable;
     }
@@ -34,7 +34,7 @@ public static class FadeX
     {
         if (_canvasGroup.alpha == 0) return;
 
-        _canvasGroup.DOFade(0, _tweenTime).OnComplete(()=> _onSuccess.Invoke());
+        _canvasGroup.DOFade(0, _tweenTime).SetUpdate(true).OnComplete(()=> _onSuccess.Invoke());
         _canvasGroup.interactable = _interactable;
         _canvasGroup.blocksRaycasts = _interactable;
     }

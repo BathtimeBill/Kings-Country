@@ -31,14 +31,26 @@ public static class TweenX
     /// </summary>
     public static void TweenFill(Image _image, float _duration, Ease _ease = Ease.InOutSine, float _toValue = 1)
     {
-        _image.DOFillAmount(_toValue, _duration).SetEase(_ease);
+        _image.DOFillAmount(_toValue, _duration).SetUpdate(true).SetEase(_ease);
     }
     public static void TweenFill(Image _image, float _duration, float _toValue = 1, Action _onComplete = null)
     {
-        _image.DOFillAmount(_toValue, _duration).OnComplete(() => _onComplete.Invoke());
+        _image.DOFillAmount(_toValue, _duration).SetUpdate(true).OnComplete(() => _onComplete.Invoke());
     }
     public static void TweenFill(Image _image, float _duration, Ease _ease = Ease.InOutSine, float _toValue = 1, Action _onComplete = null)
     {
-        _image.DOFillAmount(_toValue, _duration).SetEase(_ease).OnComplete(()=>_onComplete.Invoke());
+        _image.DOFillAmount(_toValue, _duration).SetEase(_ease).SetUpdate(true).OnComplete(()=>_onComplete.Invoke());
+    }
+
+    /// <summary>
+    /// Tweens an images colour
+    /// </summary>
+    /// <param name="_image"></param>
+    /// <param name="_toColor"></param>
+    /// <param name="_duration"></param>
+    /// <param name="_ease"></param>
+    public static void TweenColor(Image _image, Color _toColor, float _duration = 0.4f, Ease _ease = Ease.InOutSine)
+    {
+        _image.DOColor(_toColor, _duration).SetEase(_ease);
     }
 }

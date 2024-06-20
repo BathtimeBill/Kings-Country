@@ -88,6 +88,22 @@ public class TitleManager : GameBehaviour
         }
     }
 
+    public void ChangePanelColour(bool _dark)
+    {
+        GameObject[] panels = GameObject.FindGameObjectsWithTag("UIBackgroundPanel");
+        for(int i=0; i< panels.Length; i++)
+        {
+            if (panels[i].GetComponent<UnityEngine.UI.Image>() != null)
+            {
+                TweenX.TweenColor(panels[i].GetComponent<UnityEngine.UI.Image>(), _dark ? _COLOUR.darkModeBackground : _COLOUR.lightModeBackground);
+#if UNITY_EDITOR
+                panels[i].GetComponent<UnityEngine.UI.Image>().color = _dark ? _COLOUR.darkModeBackground : _COLOUR.lightModeBackground;
+#endif
+            }
+
+
+        }
+    }
 
     #region Editor
 #if UNITY_EDITOR
@@ -139,6 +155,21 @@ public class TitleManager : GameBehaviour
             if (GUILayout.Button("Hide Title Labels"))
             {
                 titleManager.ToggleTitleText(false);
+                EditorUtility.SetDirty(titleManager);
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.Space(20);
+            GUILayout.BeginHorizontal();
+            GUI.backgroundColor = Color.black;
+            if (GUILayout.Button("Dark Mode"))
+            {
+                titleManager.ChangePanelColour(true);
+                EditorUtility.SetDirty(titleManager);
+            }
+            GUI.backgroundColor = Color.white;
+            if (GUILayout.Button("Light Mode"))
+            {
+                titleManager.ChangePanelColour(false);
                 EditorUtility.SetDirty(titleManager);
             }
             GUILayout.EndHorizontal();

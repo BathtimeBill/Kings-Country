@@ -4,10 +4,6 @@ using UnityEditor;
 
 public class SceneManager : GameBehaviour
 {
-    public TransitionType transitionType;
-    public float transitionTime = 5f;
-    public DG.Tweening.Ease transitionEase;
-
     private CanvasGroup transitionPanel;
     private Image transitionImage;
     private AsyncOperation loadingOperation;
@@ -40,9 +36,8 @@ public class SceneManager : GameBehaviour
     private void LoadScene()
     {
         if (string.IsNullOrEmpty(sceneToLoad)) sceneToLoad = currentSceneName;
-        //UnityEngine.SceneManagement.SceneManager.LoadScene(levelToLoad);
         loadingOperation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneToLoad);
-
+        Time.timeScale = 1;
     }
     public void RestartScene()
     {
@@ -62,31 +57,31 @@ public class SceneManager : GameBehaviour
     public void TransitionOut(string _newScene)
     {
         sceneToLoad = _newScene;
-        switch (transitionType)
+        switch (_TWEENING.sceneTransitionType)
         {
             case TransitionType.Fade:
-                FadeX.FadeIn(transitionPanel, 2f, transitionEase, true, ()=> LoadScene());
+                FadeX.FadeIn(transitionPanel, 2f, _TWEENING.sceneTransitionEase, true, ()=> LoadScene());
                 break;
             case TransitionType.Fill:
                 transitionImage.fillAmount = 0;
                 transitionPanel.alpha = 1;
-                TweenX.TweenFill(transitionImage, 2f, transitionEase, 1f, ()=> LoadScene());
+                TweenX.TweenFill(transitionImage, 2f, _TWEENING.sceneTransitionEase, 1f, ()=> LoadScene());
                 break;
         }
     }
 
     public void TransitionIn()
     {
-        switch (transitionType)
+        switch (_TWEENING.sceneTransitionType)
         {
             case TransitionType.Fade:
                 transitionPanel.alpha = 1;
-                FadeX.FadeOut(transitionPanel, 2f, transitionEase, false, () => SceneLoaded());
+                FadeX.FadeOut(transitionPanel, 2f, _TWEENING.sceneTransitionEase, false, () => SceneLoaded());
                 break;
             case TransitionType.Fill:
                 transitionImage.fillAmount = 1;
                 transitionPanel.alpha = 1;
-                TweenX.TweenFill(transitionImage, 2f, transitionEase, 0f, () => SceneLoaded());
+                TweenX.TweenFill(transitionImage, 2f, _TWEENING.sceneTransitionEase, 0f, () => SceneLoaded());
                 break;
         }
     }

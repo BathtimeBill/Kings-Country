@@ -92,7 +92,9 @@ public enum BuildingID
 {
     HomeTree,
     Hut,
-    Hogyr
+    Hogyr,
+    Unknown,
+    Unknown2
 }
 public enum TreeType
 {
@@ -107,6 +109,7 @@ public enum GameState
     Win,
     Intro,
     Finish,
+    Transitioning,
 }
 public enum PlayMode
 {

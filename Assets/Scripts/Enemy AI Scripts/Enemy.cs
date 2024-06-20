@@ -9,7 +9,6 @@ public class Enemy : GameBehaviour
 
     public virtual void OnTriggerEnter(Collider other)
     {
-        print("Enemy Base Class On Trigger Enter");
         if (other.GetComponent<UnitWeaponCollider>() != null)
         {
             TakeDamage(other.GetComponent<UnitWeaponCollider>().Damage);

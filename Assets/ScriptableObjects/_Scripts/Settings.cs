@@ -53,6 +53,12 @@ public class Colours
     public Color mapSelectedColor;
     public Color mapLockedColor;
     public Color mapUnlockedColor;
+    [Header("Title")]
+    public Color levelHasColor;
+    public Color levelHasNotColor;
+    [Header("UI")]
+    public Color darkModeBackground;
+    public Color lightModeBackground;
 
     public string GetIncreaseColorString => ColorX.GetColorHex(upgradeIncreaseColor);
     public string GetDecreaseColorString => ColorX.GetColorHex(upgradeDecreaseColor);
@@ -81,6 +87,10 @@ public class Tweening
     [Header("Overworld Map")]
     public float mapTweenTime = 0.5f;
     public DG.Tweening.Ease mapTweenEase;
+    [Header("Scene Transition")]
+    public TransitionType sceneTransitionType;
+    public float sceneTransitionTime = 5f;
+    public DG.Tweening.Ease sceneTransitionEase;
 }
 
 [Serializable]
