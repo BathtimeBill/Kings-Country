@@ -48,17 +48,28 @@ public class Colours
     public Color upgradeIncreaseColor;
     public Color upgradeDecreaseColor;
     public Gradient treePercentageGradient;
-
-    public Color mapHighlightColor;
-    public Color mapSelectedColor;
-    public Color mapLockedColor;
+    [Header("Map")]
     public Color mapUnlockedColor;
+    public Color mapUnlockedHighlightColor;
+    public Color mapUnlockedSelectedColor;
+    public Color mapLockedColor;
+    public Color mapLockedHighlightColor;
+    public Color mapLockedSelectedColor;
     [Header("Title")]
     public Color levelHasColor;
     public Color levelHasNotColor;
-    [Header("UI")]
-    public Color darkModeBackground;
-    public Color lightModeBackground;
+    [Header("UI Panels")]
+    public Color darkPanels;
+    public Color lightPanels;
+    public Color bluePanels;
+    public Color greenPanels;
+    [Header("Toggles")]
+    public Color toggleIconActiveColor;
+    public Color toggleIconInactiveColor;
+    public Color toggleIconDisabledColor;
+    public Color toggleIconHighlightColor;
+    [Header("General")]
+    public Color transparentColor;
 
     public string GetIncreaseColorString => ColorX.GetColorHex(upgradeIncreaseColor);
     public string GetDecreaseColorString => ColorX.GetColorHex(upgradeDecreaseColor);

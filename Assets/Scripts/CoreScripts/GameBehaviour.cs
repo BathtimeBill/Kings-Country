@@ -194,6 +194,12 @@ public enum LevelID
     JotenheimPass,
     OswynsCrossing,
     SteinnporpGates,
+    None,
+}
+
+public enum SeasonID
+{
+    Spring, Summer, Autumn, Winter
 }
 
 public enum ThreatID

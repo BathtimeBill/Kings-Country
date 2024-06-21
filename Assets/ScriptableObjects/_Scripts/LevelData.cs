@@ -16,6 +16,8 @@ public class LevelData : ScriptableObject
     public Sprite icon;
     public SceneAsset levelScene;
     public bool unlocked;
+    [BV.EnumList(typeof(SeasonID))]
+    public List<SeasonID> unlockedSeasons;
     [Space]
     public List<BuildingID> availableBuildings;
     public List<ToolID> availableTrees;

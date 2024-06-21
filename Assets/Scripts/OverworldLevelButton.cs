@@ -8,6 +8,7 @@ public class OverworldLevelButton : GameBehaviour
 {
     public LevelID thisLevel;
     private OverWorldManager overworldManager;
+    private bool selected = false;
 
     private void Awake()
     {
@@ -24,17 +25,20 @@ public class OverworldLevelButton : GameBehaviour
 
     private void OnMouseEnter()
     {
-        TweenColor(_DATA.levelUnlocked(thisLevel) ? _COLOUR.mapHighlightColor : _COLOUR.mapLockedColor);
+        if (!selected)
+            TweenColor(_DATA.levelUnlocked(thisLevel) ? _COLOUR.mapUnlockedHighlightColor : _COLOUR.mapLockedHighlightColor);
     }
 
     private void OnMouseExit()
     {
-        TweenColor(_DATA.levelUnlocked(thisLevel) ? _COLOUR.mapUnlockedColor : _COLOUR.mapLockedColor);
+        if(!selected)
+            TweenColor(_DATA.levelUnlocked(thisLevel) ? _COLOUR.mapUnlockedColor : _COLOUR.mapLockedColor);
     }
 
     private void OnMouseDown()
     {
-        ShowLevel();
+        selected = !selected;
+        overworldManager.ShowLevel(selected ? thisLevel : LevelID.None);
     }
 
     public void TweenColor(Color _color)
@@ -47,9 +51,14 @@ public class OverworldLevelButton : GameBehaviour
         transform.DOScale(_show ? new Vector3(1.1f, 1.1f, 3f) : Vector3.one, _TWEENING.mapTweenTime).SetEase(_TWEENING.mapTweenEase);
     }
 
+    public void SetSelected(bool _selected)
+    {
+        selected = _selected;
+    }
+
     public void ShowLevel()
     {
-        overworldManager.ShowLevel(thisLevel);
+        
     }
 
     public void LevelLocked()

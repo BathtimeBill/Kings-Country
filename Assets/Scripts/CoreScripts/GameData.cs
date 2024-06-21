@@ -9,12 +9,14 @@ public class GameData : Singleton<GameData>
 
     #region Creature Units
     [Header("Creature Unit Data")]
+    [BV.EnumList(typeof(CreatureID))]
     public List<UnitData> unitData;
     public UnitData GetUnit(CreatureID _id) => unitData.Find(x => x.id == _id);
     #endregion;
 
     #region Human Units
     [Header("Human Unit Data")]
+    [BV.EnumList(typeof(HumanID))]
     public List<EnemyData> humanData;
     public EnemyData GetUnit(HumanID _id) => humanData.Find(x => x.id == _id);
     public EnemyType GetUnitType(HumanID _id) => GetUnit(_id).type;
@@ -22,12 +24,14 @@ public class GameData : Singleton<GameData>
 
     #region Building Units
     [Header("Building Unit Data")]
+    [BV.EnumList(typeof(BuildingID))]
     public List<BuildingData> buildingData;
     public BuildingData GetUnit(BuildingID _id) => buildingData.Find(x => x.id == _id);
     #endregion;
 
     #region Tools
     [Header("Tool Data")]
+    [BV.EnumList(typeof(ToolID))]
     public List<ToolData> toolData;
     public ToolData GetTool(ToolID _id) => toolData.Find(x => x.id == _id);
     public bool CanUseTool(ToolID _id) => GetTool(_id).wildlifePrice <= _GM.wildlife && GetTool(_id).maegenPrice <= _GM.maegen;
@@ -35,18 +39,21 @@ public class GameData : Singleton<GameData>
 
     #region Wildlife
     [Header("Wildlife Data")]
+    [BV.EnumList(typeof(WildlifeID))]
     public List<WildlifeData> wildlifeData;
     public WildlifeData GetWildlife(WildlifeID _id) => wildlifeData.Find(x => x.id == _id);
     #endregion
 
     #region Perks
     [Header("Perk Data")]
+    [BV.EnumList(typeof(PerkID))]
     public List<PerkData> perkData;
     public PerkData GetPerk(PerkID _id) => perkData.Find(x=> x.id == _id);
     #endregion
 
     #region Level Functions
     [Header("Level Data")]
+    [BV.EnumList(typeof(LevelID))]
     public List<LevelData> levelData;
     public LevelData currentLevel => levelData.Find(x => x.id == _GM.thisLevel);
     public LevelData GetLevel(LevelID _id) => levelData.Find(x => x.id == _id);

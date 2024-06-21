@@ -11,9 +11,9 @@ public class InteractableButton : GameBehaviour, IPointerEnterHandler, IPointerE
     [HideInInspector]
     public bool interactable = true;
 
-    void Awake()
+    public virtual void Awake()
     {
-        button = myButton;
+        button = GetComponent<Button>();
         button.onClick.AddListener(() => ClickedButton());
     }
     public virtual void Start() {}

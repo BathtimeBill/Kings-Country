@@ -3,8 +3,9 @@ public class StartLevelButton : HoldButton
     private TitleManager titleManager;
     public TMPro.TMP_Text text;
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         titleManager = FindObjectOfType<TitleManager>();
     }
 
@@ -18,7 +19,7 @@ public class StartLevelButton : HoldButton
 
     public override void SetInteractable(bool _interactable)
     {
-        base.SetInteractable(false);
+        base.SetInteractable(_interactable);
         text.text = _interactable ? "Play" : "Locked";
         text.color = _interactable ? _COLOUR.highlightedColor : _COLOUR.cooldownColor;
     }

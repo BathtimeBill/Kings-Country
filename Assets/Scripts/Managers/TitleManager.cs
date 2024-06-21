@@ -7,6 +7,7 @@ public class TitleManager : GameBehaviour
 {
     [Header("Canvas Groups")]
     public CanvasGroup homeCanvas;
+    public CanvasGroup progressCanvas;
     public CanvasGroup unitCanvas;
     public CanvasGroup mapCanvas;
     //public CanvasGroup settingsCanvas;
@@ -37,6 +38,7 @@ public class TitleManager : GameBehaviour
         overworldManager.ToggleInMap(false);
 
         FadeX.FadeIn(homeCanvas, _DATA.settings.tweening.titlePanelTweenTime);
+        FadeX.FadeOut(progressCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOut(unitCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOut(mapCanvas, _DATA.settings.tweening.titlePanelTweenTime);
     }
@@ -47,6 +49,7 @@ public class TitleManager : GameBehaviour
         unitCamera.SetActive(true);
 
         FadeX.FadeOut(homeCanvas, _DATA.settings.tweening.titlePanelTweenTime);
+        FadeX.FadeIn(progressCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeIn(unitCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOut(mapCanvas, _DATA.settings.tweening.titlePanelTweenTime);
     }
@@ -58,6 +61,7 @@ public class TitleManager : GameBehaviour
         overworldManager.ToggleInMap(true);
 
         FadeX.FadeOut(homeCanvas, _DATA.settings.tweening.titlePanelTweenTime);
+        FadeX.FadeIn(progressCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOut(unitCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeIn(mapCanvas, _DATA.settings.tweening.titlePanelTweenTime);
     }
@@ -77,6 +81,7 @@ public class TitleManager : GameBehaviour
     public void TurnOffPanels()
     {
         FadeX.InstantTransparent(homeCanvas);
+        FadeX.InstantTransparent(progressCanvas);
         FadeX.InstantTransparent(unitCanvas);
         FadeX.InstantTransparent(mapCanvas);
     }
@@ -88,16 +93,16 @@ public class TitleManager : GameBehaviour
         }
     }
 
-    public void ChangePanelColour(bool _dark)
+    public void ChangePanelColour(Color _color)
     {
         GameObject[] panels = GameObject.FindGameObjectsWithTag("UIBackgroundPanel");
         for(int i=0; i< panels.Length; i++)
         {
             if (panels[i].GetComponent<UnityEngine.UI.Image>() != null)
             {
-                TweenX.TweenColor(panels[i].GetComponent<UnityEngine.UI.Image>(), _dark ? _COLOUR.darkModeBackground : _COLOUR.lightModeBackground);
+                TweenX.TweenColor(panels[i].GetComponent<UnityEngine.UI.Image>(), _color);
 #if UNITY_EDITOR
-                panels[i].GetComponent<UnityEngine.UI.Image>().color = _dark ? _COLOUR.darkModeBackground : _COLOUR.lightModeBackground;
+                panels[i].GetComponent<UnityEngine.UI.Image>().color = _color;
 #endif
             }
 
@@ -163,13 +168,25 @@ public class TitleManager : GameBehaviour
             GUI.backgroundColor = Color.black;
             if (GUILayout.Button("Dark Mode"))
             {
-                titleManager.ChangePanelColour(true);
+                titleManager.ChangePanelColour(titleManager._COLOUR.darkPanels);
                 EditorUtility.SetDirty(titleManager);
             }
             GUI.backgroundColor = Color.white;
             if (GUILayout.Button("Light Mode"))
             {
-                titleManager.ChangePanelColour(false);
+                titleManager.ChangePanelColour(titleManager._COLOUR.lightPanels);
+                EditorUtility.SetDirty(titleManager);
+            }
+            GUI.backgroundColor = Color.blue;
+            if (GUILayout.Button("Blue Mode"))
+            {
+                titleManager.ChangePanelColour(titleManager._COLOUR.bluePanels);
+                EditorUtility.SetDirty(titleManager);
+            }
+            GUI.backgroundColor = Color.green;
+            if (GUILayout.Button("Green Mode"))
+            {
+                titleManager.ChangePanelColour(titleManager._COLOUR.greenPanels);
                 EditorUtility.SetDirty(titleManager);
             }
             GUILayout.EndHorizontal();
