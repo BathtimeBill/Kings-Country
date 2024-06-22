@@ -78,7 +78,7 @@ public class TutorialManager : Singleton<TutorialManager>
     {
         //_SAVE.Load();
         CheckTutorial();
-        StartCoroutine(WaitForStartCamera());
+        //StartCoroutine(WaitForStartCamera());
         //if (newTutorialButton != null)
         //{
         //    CheckTutorial();
@@ -106,6 +106,12 @@ public class TutorialManager : Singleton<TutorialManager>
         //    NewTutorialAvailable(6, "Horgr Shrine");
         //}
     }
+
+    public void GlossaryButton(TutorialID id)
+    {
+        tutorialID = id;
+        CheckTutorial();
+    }
     public void FirstPlayTutorial()
     {
         maxTutorialCount = 3;
@@ -114,17 +120,17 @@ public class TutorialManager : Singleton<TutorialManager>
     IEnumerator WaitForToolsTutorial()
     {
         yield return new WaitForSeconds(5);
-        NewTutorialAvailable(4, "Tools");
+        NewTutorialAvailable(TutorialID.Powers, "Powers");
     }
     IEnumerator WaitForWavesTutorial()
     {
         yield return new WaitForSeconds(30);
-        NewTutorialAvailable(8, "Waves");
+        NewTutorialAvailable(TutorialID.DayNightCycle, "Day/Night Cycle");
     }
     IEnumerator WaitForHealthTutorial()
     {
         yield return new WaitForSeconds(180);
-        NewTutorialAvailable(11, "Health Pickups");
+        NewTutorialAvailable(TutorialID.Health, "Health Pickups");
     }
     private void Update()
     {
@@ -152,9 +158,9 @@ public class TutorialManager : Singleton<TutorialManager>
             }
         }
     }
-    public void NewTutorialAvailable(int i, string title)
+    public void NewTutorialAvailable(TutorialID id, string title)
     {
-        tutorialCount = i;
+        tutorialID = id;
         newTutorialTitle.text = title;
         newTutorialButton.SetActive(true);
         newTutorialButton.GetComponent<Animator>().SetTrigger("TutorialAvailable");
@@ -262,7 +268,7 @@ public class TutorialManager : Singleton<TutorialManager>
         CheckTutorial();
     }
 
-    private void CheckTutorial()
+    public void CheckTutorial()
     {
         scrollbar.value = 1;
         tutCounterText.text = tutorialCount.ToString() + "/" + maxTutorialCount.ToString();
@@ -376,6 +382,8 @@ public class TutorialManager : Singleton<TutorialManager>
         }
     }
 
+
+
     public void OpenTutPanel()
     {
         CheckTutorial();
@@ -438,15 +446,15 @@ public class TutorialManager : Singleton<TutorialManager>
         {
             if(_GM.level == LevelNumber.One && _GM.currentWave == 1)
             {
-                NewTutorialAvailable(9, "Enemy Types");
+                NewTutorialAvailable(TutorialID.HumanClasses, "Human Classes");
                 StartCoroutine(WaitToAddCombatTutorial());
             }
         }
     }
     IEnumerator WaitToAddCombatTutorial()
     {
-        yield return new WaitForSeconds(25);
-        NewTutorialAvailable(14, "Combat");
+        yield return new WaitForSeconds(10);
+        NewTutorialAvailable(TutorialID.Combat, "Combat");
     }
     public void OnWaveOver()
     {
@@ -477,7 +485,7 @@ public class TutorialManager : Singleton<TutorialManager>
         if(firstMine == false)
         {
             firstMine = true;
-            NewTutorialAvailable(12, "Mines");
+            NewTutorialAvailable(TutorialID.Mines, "Mines");
         }
     }
     void OnLordSpawned()
@@ -485,7 +493,7 @@ public class TutorialManager : Singleton<TutorialManager>
         if (firstLord == false)
         {
             firstLord = true;
-            NewTutorialAvailable(13, "Lords of the Land");
+            NewTutorialAvailable(TutorialID.LordsOfTheLand, "Lords of the Land");
         }
     }
     void OnSpySpawned()
@@ -493,7 +501,7 @@ public class TutorialManager : Singleton<TutorialManager>
         if(firstSpy == false)
         {
             firstSpy = true;
-            NewTutorialAvailable(10, "Spies");
+            NewTutorialAvailable(TutorialID.Spies, "Spies");
         }
     }
     void OnHomeTreeSelected()
@@ -501,7 +509,7 @@ public class TutorialManager : Singleton<TutorialManager>
         if (firstPlay == false && firstHomeTree == false)
         {
             firstHomeTree = true;
-            NewTutorialAvailable(5, "Home Tree");
+            NewTutorialAvailable(TutorialID.HomeTree, "Home Tree");
         }
     }
     private void OnEnable()
@@ -559,6 +567,6 @@ public enum TutorialID
     Spies,
     LordsOfTheLand,
     Combat,
-    Perks,
+    Health,
 }
 
