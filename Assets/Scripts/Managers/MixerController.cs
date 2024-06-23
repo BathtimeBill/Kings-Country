@@ -10,11 +10,11 @@ public class MixerController : MonoBehaviour
 
     public void SetVolume(float sliderValue)
     {
-        musicAudioMixer.SetFloat("MusicVolume", Mathf.Log10(sliderValue) * 20); 
+        musicAudioMixer.SetFloat("MusicVolume", sliderValue * 0.1f); 
     }
 
     public void SetVolumeSFX(float sliderValue)
     {
-        SFXAudioMixer.SetFloat("SFXVolume", Mathf.Log10(sliderValue) * 20);
+        SFXAudioMixer.SetFloat("SFXVolume", sliderValue * 0.1f);
     }
 }

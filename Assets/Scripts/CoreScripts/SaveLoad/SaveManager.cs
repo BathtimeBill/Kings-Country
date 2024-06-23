@@ -38,10 +38,19 @@ public class PerkSaveObject
     public bool unlocked;
 }
 
-[Serializable]
-public class PlayerSaveObject
+[System.Serializable]
+public class PlayerSettings
 {
     public string playerHandle = "Your Name!";
+    public bool miniMapRotation = false;
+    public bool miniMapShowing = true;
+    public bool miniMapIcons = true;
+    public bool unitOutlines = true;
+    public bool enemyHealthBars = false;
+    public Color panelColour;
+    [Header("Audio")]
+    public float musicVolume = 1.0f;
+    public float sfxVolume = 1.0f;
 }
 
 [Serializable]
@@ -57,7 +66,7 @@ public class PlayTimeObject
 public class SaveDataObject : BGG.GameDataBase
 {
     // Player info
-    public PlayerSaveObject playerInfo = new PlayerSaveObject();
+    public PlayerSettings playerSettings = new PlayerSettings();
     public int maegen;
     // Level data
     public Dictionary<LevelID, LevelSaveObject> levels = new Dictionary<LevelID, LevelSaveObject>();
@@ -146,7 +155,7 @@ public class SaveManager : BGG.GameData
                 };
             }
 
-            save.playerInfo = new PlayerSaveObject();
+            save.playerSettings = new PlayerSettings();
             save.playTime = new PlayTimeObject();
         }
 
@@ -179,6 +188,29 @@ public class SaveManager : BGG.GameData
     {
         return save.maegen;
     }
+
+    public void SetPanelColour(Color _panelColour)
+    {
+        save.playerSettings.panelColour = _panelColour;
+        SaveData();
+    }
+    public Color GetPanelColour()
+    {
+        return save.playerSettings.panelColour;
+    }
+
+    public void SetMusicVolume(float _volume)
+    {
+        save.playerSettings.musicVolume = _volume;
+        SaveData();
+    }
+    public float GetMusicVolume => save.playerSettings.musicVolume;
+    public void SetSFXVolume(float _volume)
+    {
+        save.playerSettings.sfxVolume = _volume;
+        SaveData();
+    }
+    public float GetSFXVolume => save.playerSettings.sfxVolume;
     #endregion
 
     #region Level Specific

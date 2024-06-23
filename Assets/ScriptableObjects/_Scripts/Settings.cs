@@ -1,12 +1,10 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Settings", menuName = "BGG/Settings", order = 1)]
 public class Settings : ScriptableObject
 {
-    [Header("Player Settings")]
-    public PlayerSettings playerSettings;
-
     [Header("Camera Shakes")]
     public CameraShake cameraShake;
 
@@ -27,14 +25,6 @@ public class Settings : ScriptableObject
 
     [Header("Vibration")]
     public Vibration vibration;
-}
-
-[System.Serializable]
-public class PlayerSettings
-{
-    public bool miniMapRotation = false;
-    public bool unitOutlines = true;
-    public bool enemyHealthBars = false;
 }
 
 [System.Serializable]
@@ -63,6 +53,7 @@ public class Colours
     public Color lightPanels;
     public Color bluePanels;
     public Color greenPanels;
+    public Color redPanels;
     [Header("Toggles")]
     public Color toggleIconActiveColor;
     public Color toggleIconInactiveColor;

@@ -13,7 +13,7 @@ public class MiniMapRotation : GameBehaviour
 
     private void Update()
     {
-        if (!_PS.miniMapRotation)
+        if (!_PLAYER.miniMapRotation)
             return;
 
         targetRotation = Quaternion.Euler(90, playerCam.transform.localEulerAngles.y, 0);

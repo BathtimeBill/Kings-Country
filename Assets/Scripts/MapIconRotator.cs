@@ -33,7 +33,7 @@ public class MapIconRotator : GameBehaviour
         if (!_SETTINGS.miniMap.showIcons)
             return;
 
-        if (!_PS.miniMapRotation)
+        if (!_PLAYER.miniMapRotation)
             return;
 
         targetRotation = Quaternion.Euler(0, playerCam.transform.localEulerAngles.y, 0);

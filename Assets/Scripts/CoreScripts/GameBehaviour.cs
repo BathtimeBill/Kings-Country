@@ -24,6 +24,7 @@ public class GameBehaviour : BV.Behaviour
     protected static GameData _DATA { get { return GameData.instance; } }
     protected static SaveManager _GAMESAVE { get { return SaveManager.instance; } }
     protected static UpgradeManager _UPGRADE { get { return UpgradeManager.instance; } }
+    protected static SaveManager _SAVE { get { return SaveManager.instance; } }
 
     public bool hasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build;
     public bool isPaused => _GM.gameState == GameState.Pause;
@@ -34,7 +35,7 @@ public class GameBehaviour : BV.Behaviour
     public Tweening _TWEENING => _DATA.settings.tweening;
     public Colours _COLOUR => _DATA.settings.colours;
     public Icons _ICONS => _DATA.settings.icons;
-    public PlayerSettings _PS => _DATA.settings.playerSettings;
+    public PlayerSettings _PLAYER => _SAVE.save.playerSettings;
 }
 
 
