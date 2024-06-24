@@ -107,6 +107,10 @@ public class Tweening
     public TransitionType sceneTransitionType;
     public float sceneTransitionTime = 5f;
     public DG.Tweening.Ease sceneTransitionEase;
+    [Header("Game Log")]
+    public float logTweenTime = 0.3f;
+    public float logTweenDelay = 1.5f;
+    public DG.Tweening.Ease logEase;
 }
 
 [Serializable]

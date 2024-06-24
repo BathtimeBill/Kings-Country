@@ -5,11 +5,10 @@ public static class GameEvents
 {
 
     public static event Action<GameState> OnGameStateChanged = null;
-    public static event Action OnUnitKilled = null;
-
+    
     public static event Action<int> OnWildlifeValueChange = null;
     public static event Action OnWildlifeKilled = null;
-    public static event Action OnTreePlaced = null;
+    public static event Action<ToolID> OnTreePlaced = null;
     public static event Action OnTreeDestroyed = null;
     public static event Action OnUnitMove = null;
     public static event Action OnUnitArrivedAtHorgr = null;
@@ -33,9 +32,6 @@ public static class GameEvents
     public static event Action OnContinueButton = null;
 
     public static event Action OnWispDestroy = null;
-
-    public static event Action OnEnemyKilled = null;
-
     public static event Action OnNextTutorial = null;
 
     public static event Action OnBorkrskinnUpgrade = null;
@@ -136,10 +132,7 @@ public static class GameEvents
     {
         OnHutSelected?.Invoke();
     }
-    public static void ReportOnUnitKilled()
-    {
-        OnUnitKilled?.Invoke();
-    }
+    
     public static void ReportOnWispDestroy()
     {
         OnWispDestroy?.Invoke();
@@ -156,10 +149,8 @@ public static class GameEvents
     {
         OnFormationSelected?.Invoke();
     }
-    public static void ReportOnEnemyKilled()
-    {
-        OnEnemyKilled?.Invoke();
-    }
+    
+    
     public static void ReportOnNextTutorial()
     {
         OnNextTutorial?.Invoke();
@@ -176,26 +167,6 @@ public static class GameEvents
     {
         OnLevelWin?.Invoke(_levelID, _score, _maegen);
     }
-    /*public static void ReportOnHomeTreeUpgrade()
-    {
-        OnHomeTreeUpgrade?.Invoke();
-    }
-    public static void ReportOnWinfallUpgrade()
-    {
-        OnWinfallUpgrade?.Invoke();
-    }
-    public static void ReportOnTreeUpgrade()
-    {
-        OnTreeUpgrade?.Invoke();
-    }
-    public static void ReportOnStormerUpgrade()
-    {
-        OnStormerUpgrade?.Invoke();
-    }
-    public static void ReportOnTowerUpgrade()
-    {
-        OnTowerUpgrade?.Invoke();
-    }*/
     
     public static void ReportOnUpgradeSelected(PerkID _id)
     {
@@ -303,9 +274,9 @@ public static class GameEvents
     {
         OnWildlifeKilled?.Invoke();
     }
-    public static void ReportOnTreePlaced()
+    public static void ReportOnTreePlaced(ToolID _treeID)
     {
-        OnTreePlaced?.Invoke();
+        OnTreePlaced?.Invoke(_treeID);
     }
     public static void ReportOnTreeDestroy()
     {
@@ -328,7 +299,14 @@ public static class GameEvents
         OnLevelStart?.Invoke();
     }
 
-    # region Settings
+    #region Unit Management
+    public static event Action<string, string> OnUnitKilled = null;
+    public static event Action<string> OnUnitSpawned = null;
+    public static void ReportOnUnitKilled(string _killed, string _killedBy) => OnUnitKilled?.Invoke(_killed, _killedBy);
+    public static void ReportOnUnitSpawned(string _unitID) => OnUnitSpawned?.Invoke(_unitID);
+    #endregion
+
+    #region Settings
     public static event Action<bool> OnUnitOutlines = null;
     public static event Action<bool> OnUnitHealthBars = null;
     public static event Action<bool> OnMiniMapShow = null;

@@ -182,7 +182,7 @@ public class TitleManager : GameBehaviour
                 titleManager.TurnOffCameras();
                 titleManager.TurnOffPanels();
                 FadeX.InstantOpaque(titleManager.statsCanvas);
-                FadeX.InstantTransparent(titleManager.progressCanvas);
+                FadeX.InstantOpaque(titleManager.progressCanvas);
                 titleManager.ShowStats();
                 EditorUtility.SetDirty(titleManager);
             }

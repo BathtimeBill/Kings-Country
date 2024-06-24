@@ -38,7 +38,21 @@ public class PerkSaveObject
     public bool unlocked;
 }
 
-[System.Serializable]
+[Serializable]
+public class UnitStats
+{
+    public string unitID;
+    public List<KillStat> killStats;
+}
+
+[Serializable]
+public class KillStat
+{
+    public string killedID;
+    public int amount;
+}
+
+[Serializable]
 public class PlayerSettings
 {
     public string playerHandle = "Your Name!";
@@ -77,6 +91,8 @@ public class SaveDataObject : BGG.GameDataBase
     public List<string> achievements = new List<string>();
     // Times
     public PlayTimeObject playTime = new PlayTimeObject();
+    //Unit Stats
+    public Dictionary<string, UnitStats> unitStats = new Dictionary<string, UnitStats>();
 
     // Data getters
     public LevelSaveObject GetLevelSaveData(LevelID _levelID)
@@ -90,6 +106,18 @@ public class SaveDataObject : BGG.GameDataBase
         if (perks.ContainsKey(_perkID))
             return perks[_perkID];
         return null;
+    }
+    public UnitStats GetUnitStats(string _unitID)
+    {
+        if(unitStats.ContainsKey(_unitID))
+            return unitStats[_unitID];
+        return null;
+    }
+    public void AddUnitStats(UnitStats _unitStats)
+    {
+        if (unitStats.ContainsKey(_unitStats.unitID))
+            return;
+        unitStats.Add(_unitStats.unitID, _unitStats);
     }
 }
 
@@ -154,6 +182,8 @@ public class SaveManager : BGG.GameData
                     unlocked = false,
                 };
             }
+
+            save.unitStats = new Dictionary<string, UnitStats>();
 
             save.playerSettings = new PlayerSettings();
             save.playerSettings.musicVolume = 0.8f;
@@ -322,6 +352,40 @@ public class SaveManager : BGG.GameData
         if(perk == null) return false;
         return perk.unlocked;
     }
+
+    #endregion
+
+    #region Unit Stats
+    public int GetKillCount(string _unitID, string _killedID)
+    {
+        UnitStats stat = save.GetUnitStats(_unitID);
+        if (stat == null) return 0;
+        int killAmount = stat.killStats.Find(x=>x.killedID == _killedID).amount;
+        return killAmount;
+    }
+    public void SetKillCount(string _unitID, string _killedID, int _amount)
+    {
+        UnitStats stat = save.GetUnitStats(_unitID);
+        if (stat == null)
+        {
+            stat = new UnitStats();
+            stat.unitID = _unitID;
+            stat.killStats = new List<KillStat>();
+            save.AddUnitStats(stat);
+        }
+        List<KillStat> killStats = stat.killStats;
+        KillStat ks = killStats.Find(x=> x.killedID==_killedID);
+        print(killStats.Count + " " + ks.killedID);
+        if (ks == null)
+        {
+            ks.killedID = _killedID;
+            ks.amount = 0;
+            killStats.Add(ks);
+        }
+        ks.amount += _amount;
+        SaveData();
+    }
+
 
     #endregion
 

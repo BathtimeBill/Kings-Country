@@ -55,9 +55,9 @@ public class Warrior : Enemy
         navAgent = gameObject.GetComponent<NavMeshAgent>();
         Setup();
     }
-    void Start()
+    public override void Start()
     {
-        _EM.enemies.Add(gameObject);
+        base.Start();
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
         horgr = GameObject.FindGameObjectWithTag("HorgrRally");
         speed = navAgent.speed;
@@ -276,14 +276,14 @@ public class Warrior : Enemy
         }
         if (other.tag == "Explosion")
         {
-            TakeDamage(50);
+            TakeDamage(50, "Mine");//TODO where are these numbers from and from who?
             animator.SetTrigger("Impact");
             hasArrivedAtBeacon = false;
             state = EnemyState.Attack;
         }
         if (other.tag == "Explosion2")
         {
-            TakeDamage(100);
+            TakeDamage(100, "Mine");//TODO where are these numbers from and from who?
             animator.SetTrigger("Impact");
             hasArrivedAtBeacon = false;
             state = EnemyState.Attack;
@@ -294,7 +294,7 @@ public class Warrior : Enemy
         }
         if (other.tag == "PlayerWeapon3")
         {
-            TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage);
+            TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage, CreatureID.Leshy.ToString());
         }
     }
     private void OnTriggerExit(Collider other)
@@ -334,7 +334,7 @@ public class Warrior : Enemy
         int rnd = Random.Range(1, 3);
         return rnd;
     }
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, string _damagedBy)
     {
         if(!invincible)
         {
@@ -346,7 +346,7 @@ public class Warrior : Enemy
             bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
             health -= damage;
             if (health <= 0)
-                Die();
+                Die(unitID.ToString(), _damagedBy);
         }
     }
     IEnumerator WaitForInvincible()
@@ -355,8 +355,9 @@ public class Warrior : Enemy
         yield return new WaitForSeconds(5);
         invincible = false;
     }
-    public override void Die()
+    public override void Die(string _thisUnit, string _killedBy)
     {
+        base.Die(_thisUnit, _killedBy);
         bool isColliding = false;
         _EM.enemies.Remove(gameObject);
         if (_HM.enemies.Contains(gameObject))
@@ -371,7 +372,6 @@ public class Warrior : Enemy
             go = Instantiate(deathObject, transform.position, transform.rotation);
             Destroy(go, 15);
         }
-        GameEvents.ReportOnEnemyKilled();
         Destroy(gameObject);
     }
     private void DropMaegen()

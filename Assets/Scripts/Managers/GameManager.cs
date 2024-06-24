@@ -301,7 +301,7 @@ public class GameManager : Singleton<GameManager>
         return populous;
     }
     //Updates the the count for how many trees exist and updates the UI.
-    private void OnTreePlaced()
+    private void OnTreePlaced(ToolID _treeID)
     {
         ////trees = GameObject.FindGameObjectsWithTag("Tree");
         //if (_TPlace.maegenPerWave <= 1)
@@ -397,8 +397,11 @@ public class GameManager : Singleton<GameManager>
         if(maegen > maxMaegen)
             maegen = maxMaegen;
     }
-    private void OnUnitKilled()
+    private void OnUnitKilled(string _unitID, string _killedBy)
     {
+        if (!_DATA.IsCreatureUnit(_unitID))
+            return;
+
         if(UnitSelection.Instance.unitList.Count == 0)
         {
             if(maegen == 0)
@@ -466,7 +469,7 @@ public class GameManager : Singleton<GameManager>
 
     private void OnEnable()
     {
-        
+        GameEvents.OnGameStateChanged += OnGameStateChanged;
         GameEvents.OnUnitKilled += OnUnitKilled;
         GameEvents.OnWispDestroy += OnWispDestroy;
         GameEvents.OnTreePlaced += OnTreePlaced;

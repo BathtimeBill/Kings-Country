@@ -353,7 +353,7 @@ public class PlayerControls : Singleton<PlayerControls>
                             treeInstance.GetComponent<Tree>().energyMultiplier = _TPlace.maegenPerWave;
                             cantDestroy = Instantiate(cantPlace, treePlacement.transform.position, treePlacement.transform.rotation);
                             Destroy(cantDestroy, 15);
-                            GameEvents.ReportOnTreePlaced();
+                            GameEvents.ReportOnTreePlaced(ToolID.Tree);
                             worldAudioSource = treeInstance.GetComponent<AudioSource>();
                             worldAudioSource.clip = _SM.GetTreeGrowSound();
                             worldAudioSource.Play();
