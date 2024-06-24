@@ -46,8 +46,8 @@ public class PlayerSettings
     public bool miniMapShowing = true;
     public bool miniMapIcons = true;
     public bool unitOutlines = true;
-    public bool enemyHealthBars = false;
-    public Color panelColour;
+    public bool unitHealthBars = false;
+    public PanelColourID panelColour;
     [Header("Audio")]
     public float musicVolume = 1.0f;
     public float sfxVolume = 1.0f;
@@ -156,6 +156,14 @@ public class SaveManager : BGG.GameData
             }
 
             save.playerSettings = new PlayerSettings();
+            save.playerSettings.musicVolume = 0.8f;
+            save.playerSettings.sfxVolume = 0.8f;
+            save.playerSettings.unitOutlines = true;
+            save.playerSettings.unitHealthBars = true;
+            save.playerSettings.miniMapShowing = true;
+            save.playerSettings.miniMapIcons = true;
+            save.playerSettings.miniMapRotation = true;
+            save.playerSettings.panelColour = PanelColourID.Black;
             save.playTime = new PlayTimeObject();
         }
 
@@ -189,16 +197,8 @@ public class SaveManager : BGG.GameData
         return save.maegen;
     }
 
-    public void SetPanelColour(Color _panelColour)
-    {
-        save.playerSettings.panelColour = _panelColour;
-        SaveData();
-    }
-    public Color GetPanelColour()
-    {
-        return save.playerSettings.panelColour;
-    }
-
+    
+    //Audio
     public void SetMusicVolume(float _volume)
     {
         save.playerSettings.musicVolume = _volume;
@@ -211,6 +211,51 @@ public class SaveManager : BGG.GameData
         SaveData();
     }
     public float GetSFXVolume => save.playerSettings.sfxVolume;
+
+    //Units
+    public void SetUnitOutline(bool _outline)
+    {
+        save.playerSettings.unitOutlines = _outline;
+        SaveData();
+    }
+    public bool GetUnitOutline => save.playerSettings.unitOutlines;
+    public void SetUnitHealthBars(bool _show)
+    {
+        save.playerSettings.unitHealthBars = _show;
+        SaveData();
+    }
+    public bool GetUnitHealthBars => save.playerSettings.unitHealthBars;
+
+    //Mini Map
+    public void SetMiniMapShow(bool _show)
+    {
+        save.playerSettings.miniMapShowing = _show;
+        SaveData() ;
+    }
+    public bool GetMiniMapShow => save.playerSettings.miniMapShowing;
+    public void SetMiniMapIcons(bool _show)
+    {
+        save.playerSettings.miniMapIcons = _show;
+        SaveData();
+    }
+    public bool GetMiniMapIcons => save.playerSettings.miniMapIcons;
+    public void SetMiniMapRotation(bool _rotation)
+    {
+        save.playerSettings.miniMapRotation = _rotation;
+        SaveData();
+    }
+    public bool GetMiniMapRotation => save.playerSettings.miniMapRotation;
+
+    //Aesthetics
+    public void SetPanelColour(PanelColourID _panelColour)
+    {
+        save.playerSettings.panelColour = _panelColour;
+        SaveData();
+    }
+    public PanelColourID GetPanelColour()
+    {
+        return save.playerSettings.panelColour;
+    }
     #endregion
 
     #region Level Specific
@@ -352,12 +397,22 @@ public class SaveManager : BGG.GameData
     void OnEnable()
     {
         GameEvents.OnLevelWin += OnLevelWin;
+        GameEvents.OnUnitOutlines += SetUnitOutline;
+        GameEvents.OnUnitHealthBars += SetUnitHealthBars;
+        GameEvents.OnMiniMapShow += SetMiniMapShow;
+        GameEvents.OnMiniMapIcons += SetMiniMapIcons;
+        GameEvents.OnMiniMapRotation += SetMiniMapRotation;
     }
 
 
     void OnDisable()
     {
         GameEvents.OnLevelWin -= OnLevelWin;
+        GameEvents.OnUnitOutlines -= SetUnitOutline;
+        GameEvents.OnUnitHealthBars -= SetUnitHealthBars;
+        GameEvents.OnMiniMapShow -= SetMiniMapShow;
+        GameEvents.OnMiniMapIcons -= SetMiniMapIcons;
+        GameEvents.OnMiniMapRotation -= SetMiniMapRotation;
     }
 
     #region Editor

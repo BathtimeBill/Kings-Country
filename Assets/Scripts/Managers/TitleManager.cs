@@ -80,7 +80,7 @@ public class TitleManager : GameBehaviour
         TurnOffCameras();
         settingsCamera.SetActive(true);
 
-        FadeX.FadeIn(progressCanvas, _DATA.settings.tweening.titlePanelTweenTime);
+        FadeX.FadeOut(progressCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOut(homeCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOut(unitCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOut(mapCanvas, _DATA.settings.tweening.titlePanelTweenTime);
@@ -93,7 +93,7 @@ public class TitleManager : GameBehaviour
         TurnOffCameras();
         statsCamera.SetActive(true);
 
-        FadeX.FadeIn(progressCanvas, _DATA.settings.tweening.titlePanelTweenTime);
+        FadeX.FadeOut(progressCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOut(homeCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOut(unitCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOut(mapCanvas, _DATA.settings.tweening.titlePanelTweenTime);
@@ -173,7 +173,7 @@ public class TitleManager : GameBehaviour
                 titleManager.TurnOffCameras();
                 titleManager.TurnOffPanels();
                 FadeX.InstantOpaque(titleManager.settingsCanvas);
-                FadeX.InstantOpaque(titleManager.progressCanvas);
+                FadeX.InstantTransparent(titleManager.progressCanvas);
                 titleManager.ShowSettings();
                 EditorUtility.SetDirty(titleManager);
             }
@@ -182,7 +182,7 @@ public class TitleManager : GameBehaviour
                 titleManager.TurnOffCameras();
                 titleManager.TurnOffPanels();
                 FadeX.InstantOpaque(titleManager.statsCanvas);
-                FadeX.InstantOpaque(titleManager.progressCanvas);
+                FadeX.InstantTransparent(titleManager.progressCanvas);
                 titleManager.ShowStats();
                 EditorUtility.SetDirty(titleManager);
             }

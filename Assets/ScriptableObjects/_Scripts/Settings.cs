@@ -64,6 +64,20 @@ public class Colours
 
     public string GetIncreaseColorString => ColorX.GetColorHex(upgradeIncreaseColor);
     public string GetDecreaseColorString => ColorX.GetColorHex(upgradeDecreaseColor);
+
+    public Color GetPanelColour(PanelColourID _panelColourID)
+    {
+        if (_panelColourID == PanelColourID.Black)
+            return darkPanels;
+        else if (_panelColourID == PanelColourID.White)
+            return lightPanels;
+        else if(_panelColourID == PanelColourID.Blue)
+            return bluePanels;
+        else if (_panelColourID == PanelColourID.Green)
+            return greenPanels;
+        else 
+            return redPanels;
+    }
 }
 
 [System.Serializable]

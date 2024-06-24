@@ -269,6 +269,8 @@ public enum DifficultyRating
     OneStar, TwoStar, ThreeStar, FourStar, FiveStar,
 }
 
+public enum PanelColourID { Black, White, Blue, Green, Red}
+
 public enum ErrorID
 {
     TooClose,

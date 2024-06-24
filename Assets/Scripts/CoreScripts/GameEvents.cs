@@ -327,4 +327,18 @@ public static class GameEvents
     {
         OnLevelStart?.Invoke();
     }
+
+    # region Settings
+    public static event Action<bool> OnUnitOutlines = null;
+    public static event Action<bool> OnUnitHealthBars = null;
+    public static event Action<bool> OnMiniMapShow = null;
+    public static event Action<bool> OnMiniMapIcons = null;
+    public static event Action<bool> OnMiniMapRotation = null;
+
+    public static void ReportOnUnitOutlines(bool _show) => OnUnitOutlines?.Invoke(_show);
+    public static void ReportOnUnitHealthBars(bool _show) => OnUnitHealthBars?.Invoke(_show);
+    public static void ReportOnMiniMapShow(bool _show) => OnMiniMapShow?.Invoke(_show);
+    public static void ReportOnMiniMapIcons(bool _show) => OnMiniMapIcons?.Invoke(_show);
+    public static void ReportOnMiniMapRotation(bool _show) => OnMiniMapRotation?.Invoke(_show);
+    #endregion
 }
