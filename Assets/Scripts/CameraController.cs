@@ -69,7 +69,14 @@ public class CameraController : GameBehaviour
         {
             if(newZoom.y != minY || newZoom.y != maxY)
             newZoom += Input.mouseScrollDelta.y * zoomAmount;
-
+            if (_TUTM.isTutorial && _TUTM.tutorialStage == 2)
+            {
+                if (_TUTM.hasCompletedTask == false)
+                {
+                    _TUTM.hasCompletedTask = true;
+                    _TUTM.CheckTaskList();
+                }
+            }
         }
 
         if (Input.GetMouseButtonDown(2))
@@ -86,6 +93,17 @@ public class CameraController : GameBehaviour
 
             newRotation *= Quaternion.Euler(Vector3.up * (-difference.x / 5f));
 
+        }
+        if (Input.GetMouseButtonUp(2))
+        {
+            if (_TUTM.isTutorial && _TUTM.tutorialStage == 1)
+            {
+                if (_TUTM.hasCompletedTask == false)
+                {
+                    _TUTM.hasCompletedTask = true;
+                    _TUTM.CheckTaskList();
+                }
+            }
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -118,18 +136,50 @@ public class CameraController : GameBehaviour
         if (Input.GetKey(KeyCode.W) || mouseY > Screen.height - edgeScrollThreshold)
         {
             newPosition += (transform.forward * movementSpeed * Time.deltaTime);
+            if(_TUTM.isTutorial && _TUTM.tutorialStage == 0)
+            {
+                if(_TUTM.hasCompletedTask == false)
+                {
+                    _TUTM.hasCompletedTask = true;
+                    _TUTM.CheckTaskList();
+                }
+            }
         }
         if (Input.GetKey(KeyCode.S) || mouseY < edgeScrollThreshold)
         {
             newPosition += (transform.forward * -movementSpeed * Time.deltaTime);
+            if (_TUTM.isTutorial && _TUTM.tutorialStage == 0)
+            {
+                if (_TUTM.hasCompletedTask == false)
+                {
+                    _TUTM.hasCompletedTask = true;
+                    _TUTM.CheckTaskList();
+                }
+            }
         }
         if (Input.GetKey(KeyCode.D) || mouseX > Screen.width - edgeScrollThreshold)
         {
             newPosition += (transform.right * movementSpeed * Time.deltaTime);
+            if (_TUTM.isTutorial && _TUTM.tutorialStage == 0)
+            {
+                if (_TUTM.hasCompletedTask == false)
+                {
+                    _TUTM.hasCompletedTask = true;
+                    _TUTM.CheckTaskList();
+                }
+            }
         }
         if (Input.GetKey(KeyCode.A) || mouseX < edgeScrollThreshold)
         {
             newPosition += (transform.right * -movementSpeed * Time.deltaTime);
+            if (_TUTM.isTutorial && _TUTM.tutorialStage == 0)
+            {
+                if (_TUTM.hasCompletedTask == false)
+                {
+                    _TUTM.hasCompletedTask = true;
+                    _TUTM.CheckTaskList();
+                }
+            }
         }
 
 

@@ -84,7 +84,7 @@ public class PlayerControls : Singleton<PlayerControls>
             _UI.ShowTreeModifier(true);
         }
         _TPlace.canPlace = true;
-        _TPlace.gameObject.GetComponent<Renderer>().material = _TPlace.canPlaceMat;
+        //_TPlace.gameObject.GetComponent<Renderer>().material = _TPlace.canPlaceMat;
     }
 
     private void SelectRuneMode()
