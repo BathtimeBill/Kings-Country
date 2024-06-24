@@ -12,6 +12,7 @@ public class Toggles : GameBehaviour, IPointerEnterHandler, IPointerExitHandler
         toggle = GetComponent<Toggle>();
         if (toggle != null)
             toggle.onValueChanged.AddListener((bool on) => PressedToggle(on));
+        ExecuteNextFrame(()=>PressedToggle(toggle.isOn));
     }
 
     public virtual void PressedToggle(bool _on)

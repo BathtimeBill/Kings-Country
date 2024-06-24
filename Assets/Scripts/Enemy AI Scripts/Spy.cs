@@ -27,9 +27,9 @@ public class Spy : Enemy
     public AudioSource[] soundPool;
     public AudioSource audioSource;
 
-    void Start()
+    public override void Start()
     {
-        _EM.enemies.Add(gameObject);
+        base.Start();
         health = maxHealth;
         soundPool = SFXPool.GetComponents<AudioSource>();
         navAgent = gameObject.GetComponent<NavMeshAgent>();
@@ -107,7 +107,7 @@ public class Spy : Enemy
             Destroy(gameObject);
         }
     }
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, string _damagedBy)
     {
         audioSource.clip = _SM.GetGruntSounds();
         audioSource.pitch = Random.Range(0.8f, 1.2f);
@@ -116,10 +116,11 @@ public class Spy : Enemy
         bloodParticle = Instantiate(bloodParticle1, transform.position, transform.rotation);
         health -= damage;
         if (health <= 0)
-            Die();
+            Die(unitID.ToString(), _damagedBy);
     }
-    public override void Die()
+    public override void Die(string _thisUnit, string _killedBy)
     {
+        base.Die(_thisUnit, _killedBy);
         _EM.enemies.Remove(gameObject);
         GameObject go;
         go = Instantiate(deathObject, transform.position, transform.rotation);

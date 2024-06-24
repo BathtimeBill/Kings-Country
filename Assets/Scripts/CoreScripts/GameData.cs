@@ -12,6 +12,7 @@ public class GameData : Singleton<GameData>
     [BV.EnumList(typeof(CreatureID))]
     public List<UnitData> unitData;
     public UnitData GetUnit(CreatureID _id) => unitData.Find(x => x.id == _id);
+    public bool IsCreatureUnit(string _id) => unitData.Find(x => x.id.ToString() == _id);
     #endregion;
 
     #region Human Units
@@ -20,6 +21,7 @@ public class GameData : Singleton<GameData>
     public List<EnemyData> humanData;
     public EnemyData GetUnit(HumanID _id) => humanData.Find(x => x.id == _id);
     public EnemyType GetUnitType(HumanID _id) => GetUnit(_id).type;
+    public bool IsHumanUnit(string _id) => humanData.Find(x => x.id.ToString() == _id);
     #endregion;
 
     #region Building Units
@@ -27,6 +29,7 @@ public class GameData : Singleton<GameData>
     [BV.EnumList(typeof(BuildingID))]
     public List<BuildingData> buildingData;
     public BuildingData GetUnit(BuildingID _id) => buildingData.Find(x => x.id == _id);
+    public bool IsBuildingUnit(string _id) => buildingData.Find(x => x.id.ToString() == _id);
     #endregion;
 
     #region Tools

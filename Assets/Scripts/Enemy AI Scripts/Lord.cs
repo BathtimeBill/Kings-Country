@@ -28,9 +28,9 @@ public class Lord : Enemy
     public GameObject homeTree;
     public float speed;
 
-    private void Start()
+    public override void Start()
     {
-        _EM.enemies.Add(gameObject);
+        base.Start();
         navAgent = GetComponent<NavMeshAgent>();
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
         maxHealth = _GM.lordHealth;
@@ -135,11 +135,11 @@ public class Lord : Enemy
         }*/
         if (other.tag == "Explosion")
         {
-            TakeDamage(100);
+            TakeDamage(100, "Mine");//TODO where are these numbers from and from who?
         }
         if (other.tag == "Explosion2")
         {
-            TakeDamage(200);
+            TakeDamage(200, "Mine");//TODO where are these numbers from and from who?
         }
         if (other.tag == "Spit")
         {
@@ -153,7 +153,7 @@ public class Lord : Enemy
             navAgent.speed = speed;
         }
     }
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, string _damagedBy)
     {
         audioSource.clip = _SM.GetGruntSounds();
         audioSource.pitch = Random.Range(0.8f, 1.2f);
@@ -165,10 +165,11 @@ public class Lord : Enemy
         health -= damage;
         slider.value = CalculateHealth();
         if (health <= 0) 
-            Die();
+            Die(unitID.ToString(), _damagedBy);
     }
-    public override void Die()
+    public override void Die(string _thisUnit, string _killedBy)
     {
+        base.Die(_thisUnit, _killedBy);
         _EM.enemies.Remove(gameObject);
         GameObject go;
         GameObject go2;
@@ -176,7 +177,6 @@ public class Lord : Enemy
         go2 = Instantiate(deathObject2, rider.transform.position, rider.transform.rotation);
         go2.transform.localScale = rider.transform.localScale;
         Destroy(go, 15);
-        GameEvents.ReportOnEnemyKilled();
         Destroy(gameObject);
     }
     public Transform GetClosestUnit()

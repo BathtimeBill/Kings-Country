@@ -25,20 +25,58 @@ public class SettingsManager : GameBehaviour
     [SerializeField] private Toggle colourBlueToggle;
     [SerializeField] private Toggle colourGreenToggle;
     [SerializeField] private Toggle colourRedToggle;
-    void Start()
-    {
-        ChangePanelColour(_SAVE.GetPanelColour());
+    [SerializeField] private ToggleGroup colourToggles;
 
+    void Awake()
+    {
+        //Audio
         musicSlider.onValueChanged.AddListener((float _value) => SetVolume(_value));
         musicSlider.value = _SAVE.GetMusicVolume * 10;
         sfxSlider.onValueChanged.AddListener((float _value) => SetVolumeSFX(_value));
         sfxSlider.value = _SAVE.GetSFXVolume * 10;
 
-        colourBlackToggle.onValueChanged.AddListener((bool _on) => ChangePanelBlack(_on));
-        colourWhiteToggle.onValueChanged.AddListener((bool _on) => ChangePanelWhite(_on));
-        colourBlueToggle.onValueChanged.AddListener((bool _on) => ChangePanelBlue(_on));
-        colourGreenToggle.onValueChanged.AddListener((bool _on) => ChangePanelGreen(_on));
-        colourRedToggle.onValueChanged.AddListener((bool _on) => ChangePanelRed(_on));
+        //Units
+        unitOutlinesToggle.onValueChanged.AddListener((bool _show) => GameEvents.ReportOnUnitOutlines(_show));
+        unitOutlinesToggle.isOn = _SAVE.GetUnitOutline;
+        unitHealthBarToggle.onValueChanged.AddListener((bool _show) => GameEvents.ReportOnUnitHealthBars(_show));
+        unitHealthBarToggle.isOn = _SAVE.GetUnitHealthBars;
+
+        //Mini Map
+        showMiniMapToggle.onValueChanged.AddListener((bool _show) => GameEvents.ReportOnMiniMapShow(_show));
+        showMiniMapToggle.isOn = _SAVE.GetMiniMapShow;
+        showMiniMapIconsToggle.onValueChanged.AddListener((bool _show) => GameEvents.ReportOnMiniMapIcons(_show));
+        showMiniMapIconsToggle.isOn = _SAVE.GetMiniMapIcons;
+        miniMapRotationToggle.onValueChanged.AddListener((bool _show) => GameEvents.ReportOnMiniMapRotation(_show));
+        miniMapRotationToggle.isOn = _SAVE.GetMiniMapRotation;
+
+        //Aesthetics
+        colourBlackToggle.onValueChanged.AddListener((bool _on) => ChangePanelColour(PanelColourID.Black));
+        colourWhiteToggle.onValueChanged.AddListener((bool _on) => ChangePanelColour(PanelColourID.White));
+        colourBlueToggle.onValueChanged.AddListener((bool _on) => ChangePanelColour(PanelColourID.Blue));
+        colourGreenToggle.onValueChanged.AddListener((bool _on) => ChangePanelColour(PanelColourID.Green));
+        colourRedToggle.onValueChanged.AddListener((bool _on) => ChangePanelColour(PanelColourID.Red));
+
+        PanelColourID currentColour = _SAVE.GetPanelColour();
+        ChangePanelColour(currentColour);
+        colourToggles.SetAllTogglesOff(true);
+        switch (currentColour)
+        {
+            case PanelColourID.Black:
+                colourBlackToggle.isOn = true;
+                break;
+            case PanelColourID.White:
+                colourWhiteToggle.isOn = true;
+                break;
+            case PanelColourID.Blue:
+                colourBlueToggle.isOn = true;
+                break;
+            case PanelColourID.Green:
+                colourGreenToggle.isOn = true;
+                break;
+            case PanelColourID.Red:
+                colourRedToggle.isOn = true;
+                break;
+        }
     }
 
     #region Audio
@@ -55,63 +93,35 @@ public class SettingsManager : GameBehaviour
         SFXAudioMixer.SetFloat("SFXVolume", newVolume);
         _SAVE.SetSFXVolume(newVolume);
     }
-
     #endregion
-
 
     #region Units
 
-
     #endregion
-
 
     #region Mini Map
 
     #endregion
 
     #region Aesthetics
-    public void ChangePanelBlack(bool _on)
-    {
-        ChangePanelColour(_COLOUR.darkPanels);
-        _SAVE.SetPanelColour(_COLOUR.darkPanels);
-    }
-    public void ChangePanelWhite(bool _on)
-    {
-        ChangePanelColour(_COLOUR.lightPanels);
-        _SAVE.SetPanelColour(_COLOUR.lightPanels);
-    }
-    public void ChangePanelBlue(bool _on)
-    {
-        ChangePanelColour(_COLOUR.bluePanels);
-        _SAVE.SetPanelColour(_COLOUR.bluePanels);
-    }
-    public void ChangePanelGreen(bool _on)
-    {
-        ChangePanelColour(_COLOUR.greenPanels);
-        _SAVE.SetPanelColour(_COLOUR.greenPanels);
-    }
-    public void ChangePanelRed(bool _on)
-    {
-        ChangePanelColour(_COLOUR.redPanels);
-        _SAVE.SetPanelColour(_COLOUR.redPanels);
-    }
 
-    public void ChangePanelColour(Color _color)
+    public void ChangePanelColour(PanelColourID _color)
     {
+        Color c = _COLOUR.GetPanelColour(_color);
+        _SAVE.SetPanelColour(_color);
         GameObject[] panels = GameObject.FindGameObjectsWithTag("UIBackgroundPanel");
         for (int i = 0; i < panels.Length; i++)
         {
             if (panels[i].GetComponent<Image>() != null)
             {
-                TweenX.TweenColor(panels[i].GetComponent<Image>(), _color);
+                TweenX.TweenColor(panels[i].GetComponent<Image>(), c);
 #if UNITY_EDITOR
-                panels[i].GetComponent<Image>().color = _color;
+                panels[i].GetComponent<Image>().color = c;
 #endif
             }
         }
     }
     #endregion
-
 
     #region Editor
 #if UNITY_EDITOR
@@ -128,31 +138,31 @@ public class SettingsManager : GameBehaviour
             GUI.backgroundColor = Color.black;
             if (GUILayout.Button("Dark Mode"))
             {
-                settings.ChangePanelColour(settings._COLOUR.darkPanels);
+                settings.ChangePanelColour(PanelColourID.Black);
                 EditorUtility.SetDirty(settings);
             }
             GUI.backgroundColor = Color.white;
             if (GUILayout.Button("Light Mode"))
             {
-                settings.ChangePanelColour(settings._COLOUR.lightPanels);
+                settings.ChangePanelColour(PanelColourID.White);
                 EditorUtility.SetDirty(settings);
             }
             GUI.backgroundColor = Color.blue;
             if (GUILayout.Button("Blue Mode"))
             {
-                settings.ChangePanelColour(settings._COLOUR.bluePanels);
+                settings.ChangePanelColour(PanelColourID.Blue);
                 EditorUtility.SetDirty(settings);
             }
             GUI.backgroundColor = Color.green;
             if (GUILayout.Button("Green Mode"))
             {
-                settings.ChangePanelColour(settings._COLOUR.greenPanels);
+                settings.ChangePanelColour(PanelColourID.Green);
                 EditorUtility.SetDirty(settings);
             }
             GUI.backgroundColor = Color.red;
             if (GUILayout.Button("Red Mode"))
             {
-                settings.ChangePanelColour(settings._COLOUR.redPanels);
+                settings.ChangePanelColour(PanelColourID.Red);
                 EditorUtility.SetDirty(settings);
             }
             GUI.backgroundColor = Color.white;

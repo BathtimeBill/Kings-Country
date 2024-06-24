@@ -173,7 +173,7 @@ public class EnemyManager : Singleton<EnemyManager>
         for(int i=0; i< enemies.Count; i++)
         {
             if (enemies[i].GetComponent<Enemy>() != null)
-                enemies[i].GetComponent<Enemy>().Die();
+                enemies[i].GetComponent<Enemy>().Die(enemies[i].GetComponent<Enemy>().unitID.ToString(), "MassKilling");
             yield return new WaitForEndOfFrame();
         }
         _GM.canFinishWave = false;
@@ -201,10 +201,13 @@ public class EnemyManager : Singleton<EnemyManager>
         StartCoroutine(CheckForEnemiesLeft());
     }
 
-    private void OnEnemyKilled()
+    private void OnUnitKilled(string _unitID, string _killedBy)
     {
-        CheckEnemiesLeft ();
-        //StartCoroutine(CheckForEnemiesLeft());
+        if (!_DATA.IsHumanUnit(_unitID))
+            return;
+
+        print("Human was killed");
+        CheckEnemiesLeft();
     }
 
     private void OnCollectMaegenButton()
@@ -400,16 +403,18 @@ public class EnemyManager : Singleton<EnemyManager>
     }
     private void OnEnable()
     {
-        GameEvents.OnEnemyKilled += OnEnemyKilled;
+        GameEvents.OnUnitKilled += OnUnitKilled;
         //GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnCollectMaegenButton += OnCollectMaegenButton;
         GameEvents.OnWaveBegin += OnStartNextRound;
 
     }
 
+    
+
     private void OnDisable()
     {
-        GameEvents.OnEnemyKilled -= OnEnemyKilled;
+        GameEvents.OnUnitKilled -= OnUnitKilled;
         //GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnCollectMaegenButton -= OnCollectMaegenButton;
         GameEvents.OnWaveBegin -= OnStartNextRound;

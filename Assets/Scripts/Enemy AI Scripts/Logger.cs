@@ -56,9 +56,9 @@ public class Logger : Enemy
         navAgent = GetComponent<NavMeshAgent>();
         Setup();
     }
-    void Start()
+    public override void Start()
     {
-        _EM.enemies.Add(gameObject);
+        base.Start();
         state = EnemyState.Work;
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
         speed = navAgent.speed;
@@ -314,14 +314,14 @@ public class Logger : Enemy
         {
             navAgent.speed = speed / 2;
         }
-        if (other.tag == "Hand")
+        if (other.tag == "Hand") //TODO what is the hand?
         {
             _EM.enemies.Remove(gameObject);
             DropMaegen();
             GameObject go;
             go = Instantiate(deadLogger, other.gameObject.transform.position, transform.rotation);
             go.transform.parent = other.gameObject.transform;
-            GameEvents.ReportOnEnemyKilled();
+            GameEvents.ReportOnUnitKilled(unitID.ToString(), CreatureID.Unknown.ToString());
             Destroy(gameObject);
         }
         if (other.tag == "PlayerWeapon3")
@@ -376,7 +376,7 @@ public class Logger : Enemy
         }
     }
 
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, string _damagedBy)
     {
         if(!invincible)
         {
@@ -397,7 +397,7 @@ public class Logger : Enemy
             bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
             health -= damage;
             if (health <= 0)
-                Die();
+                Die(unitID.ToString(), _damagedBy);
         }
     }
     IEnumerator WaitForInvincible()
@@ -406,8 +406,9 @@ public class Logger : Enemy
         yield return new WaitForSeconds(5);
         invincible = false;
     }
-    public override void Die()
+    public override void Die(string _thisUnit, string _killedBy)
     {
+        base.Die(_thisUnit, _killedBy);
         bool isColliding = false;
         _EM.enemies.Remove(gameObject);
         DropMaegen();
@@ -418,7 +419,6 @@ public class Logger : Enemy
             go = Instantiate(deadLogger, transform.position, transform.rotation);
             Destroy(go, 15);
         }
-        GameEvents.ReportOnEnemyKilled();
         Destroy(gameObject);
     }
     private void DropMaegen()
@@ -458,7 +458,7 @@ public class Logger : Enemy
             Destroy(go, 25);
         }
 
-        GameEvents.ReportOnEnemyKilled();
+        GameEvents.ReportOnUnitKilled(unitID.ToString(), CreatureID.Leshy.ToString());
         Destroy(gameObject);
     }
 

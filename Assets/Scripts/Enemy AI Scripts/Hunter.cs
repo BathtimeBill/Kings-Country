@@ -59,9 +59,9 @@ public class Hunter : Enemy
         Setup();
     }
 
-    private void Start()
+    public override void Start()
     {
-        _EM.enemies.Add(gameObject);
+        base.Start();
         horgr = GameObject.FindGameObjectWithTag("HutRally");
         speed = navAgent.speed;
         StartCoroutine(Tick());
@@ -390,7 +390,7 @@ public class Hunter : Enemy
             }
             else
             {
-                TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage);
+                TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage, CreatureID.Leshy.ToString());
             }
         }
     }
@@ -430,7 +430,7 @@ public class Hunter : Enemy
         int rnd = Random.Range(1, 3);
         return rnd;
     }
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, string _damagedBy)
     {
         if(!invincible)
         {
@@ -441,7 +441,7 @@ public class Hunter : Enemy
             bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
             health -= damage;
             if (health <= 0)
-                Die();
+                Die(unitID.ToString(), _damagedBy);
         }
     }
     IEnumerator WaitForInvincible()
@@ -450,8 +450,9 @@ public class Hunter : Enemy
         yield return new WaitForSeconds(5);
         invincible = false;
     }
-    public override void Die()
+    public override void Die(string _thisUnit, string _killedBy)
     {
+        base.Die(_thisUnit, _killedBy);
         bool isColliding = false;
 
         _EM.enemies.Remove(gameObject);
@@ -467,7 +468,6 @@ public class Hunter : Enemy
             go = Instantiate(deathObject, transform.position, transform.rotation);
             Destroy(go, 15);
         }
-        GameEvents.ReportOnEnemyKilled();
         Destroy(gameObject);
 
     }
@@ -500,8 +500,7 @@ public class Hunter : Enemy
             go.GetComponent<RagdollSound>().hasBeenLaunched = true;
             Destroy(go, 25);
         }
-
-        GameEvents.ReportOnEnemyKilled();
+        GameEvents.ReportOnUnitKilled(unitID.ToString(), CreatureID.Leshy.ToString());
         Destroy(gameObject);
     }
     private void Setup()

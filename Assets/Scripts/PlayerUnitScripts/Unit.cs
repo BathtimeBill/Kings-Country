@@ -80,6 +80,7 @@ public class Unit : GameBehaviour
         pointer = GameObject.FindGameObjectWithTag("Pointer");
         Setup();
         UnitSelection.Instance.unitList.Add(gameObject);
+        GameEvents.ReportOnUnitSpawned(unitID.ToString());
     }
 
     private void Setup()
@@ -308,7 +309,7 @@ public class Unit : GameBehaviour
                     go = Instantiate(deadSatyr, transform.position, transform.rotation);
                     Destroy(go, 15);
                     _UI.CheckPopulousUI();
-                    GameEvents.ReportOnUnitKilled();
+                    GameEvents.ReportOnUnitKilled(unitID.ToString(), "Unknown");
                     CheckIfUnitIsInGroup();
                     Destroy(gameObject);
                 }
@@ -752,7 +753,7 @@ public class Unit : GameBehaviour
                 Destroy(go, 15);
             }
             _UI.CheckPopulousUI();
-            GameEvents.ReportOnUnitKilled();
+            GameEvents.ReportOnUnitKilled(unitID.ToString(), "Unknown");
             CheckIfUnitIsInGroup();
             Destroy(gameObject);
         }

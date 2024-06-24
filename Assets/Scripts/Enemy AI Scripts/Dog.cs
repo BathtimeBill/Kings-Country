@@ -27,9 +27,9 @@ public class Dog : Enemy
             Destroy(gameObject);
         }
     }
-    void Start()
+    public override void Start()
     {
-        _EM.enemies.Add(gameObject);
+        base.Start();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         health = maxHealth;
@@ -88,16 +88,17 @@ public class Dog : Enemy
 
         }
     }
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, string _damagedBy)
     {
         GameObject bloodParticle;
         bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
         health -= damage;
         if (health <= 0)
-            Die();
+            Die(unitID.ToString(), _damagedBy);
     }
-    public override void Die()
+    public override void Die(string _thisUnit, string _killedBy)
     {
+        base.Die(_thisUnit, _killedBy);
         _EM.enemies.Remove(gameObject);
         Instantiate(explosion, transform.position, transform.rotation);
         Destroy(gameObject);

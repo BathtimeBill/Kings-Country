@@ -64,6 +64,20 @@ public class Colours
 
     public string GetIncreaseColorString => ColorX.GetColorHex(upgradeIncreaseColor);
     public string GetDecreaseColorString => ColorX.GetColorHex(upgradeDecreaseColor);
+
+    public Color GetPanelColour(PanelColourID _panelColourID)
+    {
+        if (_panelColourID == PanelColourID.Black)
+            return darkPanels;
+        else if (_panelColourID == PanelColourID.White)
+            return lightPanels;
+        else if(_panelColourID == PanelColourID.Blue)
+            return bluePanels;
+        else if (_panelColourID == PanelColourID.Green)
+            return greenPanels;
+        else 
+            return redPanels;
+    }
 }
 
 [System.Serializable]
@@ -93,6 +107,10 @@ public class Tweening
     public TransitionType sceneTransitionType;
     public float sceneTransitionTime = 5f;
     public DG.Tweening.Ease sceneTransitionEase;
+    [Header("Game Log")]
+    public float logTweenTime = 0.3f;
+    public float logTweenDelay = 1.5f;
+    public DG.Tweening.Ease logEase;
 }
 
 [Serializable]
