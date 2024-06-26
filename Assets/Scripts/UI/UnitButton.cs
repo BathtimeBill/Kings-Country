@@ -82,7 +82,7 @@ public class UnitButton : InteractableButton
     public override void SetupButton()
     {
         icon.sprite = unitData.icon;
-        title.text = unitData.unitName;
+        title.text = unitData.name;
         cost.text = unitData.cost.ToString();
 
         if (tooltip != null)

@@ -27,7 +27,7 @@ public class GameBehaviour : BV.Behaviour
     protected static SaveManager _SAVE { get { return SaveManager.instance; } }
     protected static StatsData _STATS { get { return StatsData.instance; } }
 
-    public bool hasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build;
+    public bool hasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build || _GM.gameState == GameState.Tutorial;
     public bool isPaused => _GM.gameState == GameState.Pause;
     public bool gameFinished => _GM.gameState == GameState.Finish;
     public bool buildPhase => _GM.gameState == GameState.Build;
@@ -112,6 +112,8 @@ public enum GameState
     Win,
     Intro,
     Finish,
+    Glossary,
+    Tutorial,
     Transitioning,
 }
 public enum PlayMode
@@ -289,4 +291,15 @@ public enum ErrorID
     TooCloseToTower,
     OutOfBounds,
     SpyClose
+}
+
+public enum ColorID
+{
+    HomeTree, Hut, Hogyr, 
+    Tree, Tool, Wildlife, Maegen, 
+    Logger, Lumberjack, Logcutter,
+    Hunter, Wathe, Bjornjeger,
+    Berzerkr, Drend, Knight,
+    Lord, Spy, Dog, Mine,
+    Day, Night,
 }

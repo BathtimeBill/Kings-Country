@@ -32,33 +32,30 @@ public class GameLog : GameBehaviour
     }
     private void OnUnitSpawned(string _unitID)
     {
-        Color unitCol = Color.white;
-        if(_DATA.IsCreatureUnit(_unitID))
-            unitCol = _DATA.GetUnit(EnumX.ToEnum<CreatureID>(_unitID)).mapIconColour;
+        string u = _unitID;
+        if (_DATA.IsCreatureUnit(_unitID))
+            u = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<CreatureID>(_unitID)));
         if(_DATA.IsHumanUnit(_unitID))
-            unitCol = _DATA.GetUnit(EnumX.ToEnum<HumanID>(_unitID)).mapIconColour;
-        string col = "<color=#" + ColorX.GetColorHex(unitCol) + ">";
+            u = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<HumanID>(_unitID)));
 
-        ChangeLogLine(col + _unitID + "</color> was spawned in ");
+        ChangeLogLine(u + " was spawned in ");
     }
 
     private void OnUnitKilled(string _unitID, string _killedBy)
     {
-        Color unitCol = Color.white;
+        string u = _unitID;
         if (_DATA.IsCreatureUnit(_unitID))
-            unitCol = _DATA.GetUnit(EnumX.ToEnum<CreatureID>(_unitID)).mapIconColour;
+            u = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<CreatureID>(_unitID)));
         if (_DATA.IsHumanUnit(_unitID))
-            unitCol = _DATA.GetUnit(EnumX.ToEnum<HumanID>(_unitID)).mapIconColour;
-        string unitKillCol = "<color=#" + ColorX.GetColorHex(unitCol) + ">";
+            u = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<HumanID>(_unitID)));
 
-        Color unitKilledCol = Color.white;
+        string k = _killedBy;
         if (_DATA.IsCreatureUnit(_killedBy))
-            unitKilledCol = _DATA.GetUnit(EnumX.ToEnum<CreatureID>(_killedBy)).mapIconColour;
+            k = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<CreatureID>(_killedBy)));
         if (_DATA.IsHumanUnit(_killedBy))
-            unitKilledCol = _DATA.GetUnit(EnumX.ToEnum<HumanID>(_killedBy)).mapIconColour;
-        string unitKilledColor = "<color=#" + ColorX.GetColorHex(unitKilledCol) + ">";
+            k = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<HumanID>(_killedBy)));
 
-        ChangeLogLine(unitKillCol + _unitID + "</color> was killed by "+ unitKilledColor + _killedBy);
+        ChangeLogLine(u + " was killed by " + k);
     }
 
     private void OnDayOver()

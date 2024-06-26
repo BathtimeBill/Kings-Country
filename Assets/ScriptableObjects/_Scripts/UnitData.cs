@@ -6,7 +6,8 @@ using UnityEngine;
 public class UnitData : ScriptableObject
 {
     public CreatureID id;
-    public string unitName;
+    public BuildingID home;
+    public new string name;
     [TextArea(3, 5)]
     public string description;
     [Header("Stats")]
@@ -18,6 +19,5 @@ public class UnitData : ScriptableObject
     [Header("Non Stats")]
     public Sprite icon;
     public Sprite mapIcon;
-    public Color mapIconColour;
     public AudioClip[] voiceSounds;
 }

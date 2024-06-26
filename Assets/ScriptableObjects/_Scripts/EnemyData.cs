@@ -16,6 +16,5 @@ public class EnemyData : ScriptableObject
     [Header("Non Stats")]
     public Sprite icon;
     public Sprite mapIcon;
-    public Color mapIconColour;
     public AudioClip[] voiceSounds;
 }

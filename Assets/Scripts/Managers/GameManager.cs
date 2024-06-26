@@ -185,6 +185,12 @@ public class GameManager : Singleton<GameManager>
             case GameState.Transitioning:
                 Time.timeScale = 1;
                 break;
+            case GameState.Glossary:
+                Time.timeScale = 0;
+                break;
+            case GameState.Tutorial:
+                Time.timeScale = 1;
+                break;
         }
         GameEvents.ReportOnGameStateChanged(gameState);
     }

@@ -270,6 +270,20 @@ public class UIManager : Singleton<UIManager>
                 TweenX.KillTweener(blackoutCanvasTweener);
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
                 break;
+            case GameState.Glossary:
+                TweenX.KillTweener(inGameCanvasTweener);
+                inGameCanvas.interactable = false;
+                inGameCanvasTweener = inGameCanvas.DOFade(0, 0.2f).SetUpdate(true);
+                TweenX.KillTweener(blackoutCanvasTweener);
+                blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
+                break;
+            case GameState.Tutorial:
+                TweenX.KillTweener(inGameCanvasTweener);
+                inGameCanvas.interactable = false;
+                inGameCanvasTweener = inGameCanvas.DOFade(0, 0.2f).SetUpdate(true);
+                TweenX.KillTweener(blackoutCanvasTweener);
+                //blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
+                break;
         }
     }
 

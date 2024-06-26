@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -61,6 +62,18 @@ public class Colours
     public Color toggleIconHighlightColor;
     [Header("General")]
     public Color transparentColor;
+    [Header("Unit Colours")]
+    public Color homeTreeUnitColor;
+    public Color hutUnitColor;
+    public Color hogyrUnitColor;
+    public Color woodcutterTypeColor;
+    public Color hunterTypeColor;
+    public Color warriorTypeColor;
+    public Color specialTypeColor;
+
+    [Header("Unit Colours")]
+    [BV.EnumList(typeof(ColorID))]
+    public List<ObjectColor> objectColor;
 
     public string GetIncreaseColorString => ColorX.GetColorHex(upgradeIncreaseColor);
     public string GetDecreaseColorString => ColorX.GetColorHex(upgradeDecreaseColor);
@@ -77,6 +90,53 @@ public class Colours
             return greenPanels;
         else 
             return redPanels;
+    }
+
+    public Color GetUnitColor(UnitData _creatureData)
+    {
+        Color c = Color.white;
+        if (_creatureData.home == BuildingID.HomeTree)
+            c = homeTreeUnitColor;
+        if(_creatureData.home == BuildingID.Hut)
+            c = hutUnitColor;
+        if(_creatureData.home == BuildingID.Hogyr)
+            c = hogyrUnitColor;
+        return c;
+    }
+
+    public Color GetUnitColor(EnemyData _humanData)
+    {
+        Color c = Color.white;
+        if (_humanData.type == EnemyType.Woodcutter)
+            c = woodcutterTypeColor;
+        if (_humanData.type == EnemyType.Hunter)
+            c = hunterTypeColor;
+        if (_humanData.type == EnemyType.Warrior)
+            c = warriorTypeColor;
+        if (_humanData.type == EnemyType.Special)
+            c = specialTypeColor;
+        return c;
+    }
+
+    public Color GetUnitColor(BuildingData _buildingData)
+    {
+        Color c = Color.white;
+        if (_buildingData.id == BuildingID.HomeTree)
+            c = homeTreeUnitColor;
+        if (_buildingData.id == BuildingID.Hut)
+            c = hutUnitColor;
+        if (_buildingData.id == BuildingID.Hogyr)
+            c = hogyrUnitColor;
+        return c;
+    }
+
+    public string GetColoredUnitName(UnitData _creatureData)
+    {
+        return "<color=#" + ColorX.GetColorHex(GetUnitColor(_creatureData)) + ">" + _creatureData.name + "</color>";
+    }
+    public string GetColoredUnitName(EnemyData _humanData)
+    {
+        return "<color=#" + ColorX.GetColorHex(GetUnitColor(_humanData)) + ">" + _humanData.name + "</color>";
     }
 }
 
@@ -149,4 +209,11 @@ public class MiniMap
     public int buildingIconSize = 24;
     public int creatureIconSize = 16;
     public int humanIconSize = 16;
+}
+
+[Serializable]
+public class ObjectColor
+{
+    public ColorID id;
+    public Color color;
 }

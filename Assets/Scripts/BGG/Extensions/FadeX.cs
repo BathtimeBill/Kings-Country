@@ -7,6 +7,7 @@ public static class FadeX
 {
     public static void FadeIn(CanvasGroup _canvasGroup, float _tweenTime, Ease _ease, bool _interactable = true, Action _onSuccess = null)
     {
+        _canvasGroup.gameObject.SetActive(true);
         if (_canvasGroup.alpha == 1) return;
 
         _canvasGroup.DOFade(1, _tweenTime).SetUpdate(true).OnComplete(() => _onSuccess.Invoke());
@@ -15,6 +16,7 @@ public static class FadeX
     }
     public static void FadeIn(CanvasGroup _canvasGroup, float _tweenTime = 0.5f, bool _interactable = true, Action _onSuccess = null)
     {
+        _canvasGroup.gameObject.SetActive(true);
         if (_canvasGroup.alpha == 1) return;
 
         _canvasGroup.DOFade(1, _tweenTime).SetUpdate(true).OnComplete(() => _onSuccess.Invoke());
@@ -46,6 +48,7 @@ public static class FadeX
     /// <param name="_interactable">Are we interactable?</param>
     public static void InstantOpaque(CanvasGroup _canvasGroup, bool _interactable = true)
     {
+        _canvasGroup.gameObject.SetActive(true);
         _canvasGroup.alpha = 1;
         _canvasGroup.interactable = _interactable;
         _canvasGroup.blocksRaycasts = _interactable;
@@ -58,6 +61,7 @@ public static class FadeX
     /// <param name="_interactable">Are we interactable?</param>
     public static void InstantTransparent(CanvasGroup _canvasGroup, bool _interactable = false)
     {
+        _canvasGroup.gameObject.SetActive(false);
         _canvasGroup.alpha = 0;
         _canvasGroup.interactable = _interactable;
         _canvasGroup.blocksRaycasts = _interactable;
