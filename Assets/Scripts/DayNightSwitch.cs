@@ -15,10 +15,10 @@ public class DayNightSwitch : GameBehaviour
     public float dayLight;
     public Color nightColor;
     public Color dayColor;
-    public GameObject buttonImage;
     public Vector3 buttonRotationDay;
     public Vector3 buttonRotationNight;
 
+    private GameObject dayNightButton;
     Tweener sunTweener;
     Tween ambientColourTween;
     Tween moonIntensityTween;
@@ -31,6 +31,8 @@ public class DayNightSwitch : GameBehaviour
     //    KillTweener(ambientLight);
     //    ambientLight = RenderSettings.ambientIntensity.DO 
     //}
+    public void SetDayNightButton(GameObject _button) => dayNightButton = _button;
+
 
     public void TweenSunRotation(Vector3 endVector, float time)
     {
@@ -41,7 +43,7 @@ public class DayNightSwitch : GameBehaviour
     public void TweenButtonRotation(Vector3 endRotation, float time)
     {
         TweenX.KillTweener(buttonRotationTween);
-        buttonRotationTween = buttonImage.transform.DORotate(endRotation, time).SetEase(Ease.InOutSine);
+        buttonRotationTween = dayNightButton.transform.DORotate(endRotation, time).SetEase(Ease.InOutSine);
     }
 
     public Tween TweenAmbientColour(Color color, float time)

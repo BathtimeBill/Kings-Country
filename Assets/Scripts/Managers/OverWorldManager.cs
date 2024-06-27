@@ -140,7 +140,7 @@ public class OverWorldManager : GameBehaviour
         humanLevelIcons.hunterIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Hunter) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         humanLevelIcons.bjornjegerIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Bjornjeger) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         humanLevelIcons.drengIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Dreng) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        humanLevelIcons.bezerkrIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Berserkr) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        humanLevelIcons.bezerkrIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Bezerker) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         humanLevelIcons.knightIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Knight) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         humanLevelIcons.lordIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Lord) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         humanLevelIcons.dogIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Dog) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);

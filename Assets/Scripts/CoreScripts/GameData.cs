@@ -75,11 +75,10 @@ public class GameData : Singleton<GameData>
 
     #region Editor
     [Header("CSV File")]
-    [Tooltip("Include file extension (eg .csv)")]
-    public string fileName;
+    public TextAsset csvFile;
     public void LoadDataFromFile()
     {
-        string[,] grid = CSVReader.GetCSVGrid(fileName);
+        string[,] grid = CSVReader.GetCSVGrid("/Assets/_Balancing/" + csvFile.name + ".csv");
         UnitData unit = new UnitData();
         List<string> keys = new List<string>();
 

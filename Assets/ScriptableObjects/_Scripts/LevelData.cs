@@ -1,6 +1,6 @@
-using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "Level Data", menuName = "BGG/Level Data", order = 6)]
 public class LevelData : ScriptableObject
@@ -24,40 +24,104 @@ public class LevelData : ScriptableObject
     public List<HumanID> availableHumans;
     [Space]
     public int enemySpawnLocations;
-    [BV.ListName("Day: ")]
+    [BV.EnumList(typeof(DayID))]
     public List<SpawnAmounts> spawnAmounts;
 
-
     #region Editor
-    [CustomEditor(typeof(SpawnAmounts))]
-    public class SpawnAmountsEditor : Editor
+    [Header("CSV File")]
+    public TextAsset csvFile;
+    public void LoadDataFromFile()
     {
-        private SerializedProperty _dialogues;
+        string[,] grid = CSVReader.GetCSVGrid("/Assets/_Balancing/" + csvFile.name + ".csv");
+        spawnAmounts.Clear();
+        spawnAmounts = new List<SpawnAmounts>();
+        List<string> keys = new List<string>();
 
-        private void OnEnable()
+        //First create a list for holding our key values
+        for (int y = 0; y < grid.GetUpperBound(0); ++y)
         {
-            // do this only once here
-            _dialogues = serializedObject.FindProperty("dialogue");
+            keys.Add(grid[y, 0]);
         }
 
-        public override void OnInspectorGUI()
+        //Loop through the rows, adding the value to the appropriate key
+        for (int x = 1; x < grid.GetUpperBound(1); x++)
         {
-            //base.OnInspectorGUI();
-
-            serializedObject.Update();
-
-            // Ofcourse you also want to change the list size here
-            _dialogues.arraySize = EditorGUILayout.IntField("Size", _dialogues.arraySize);
-
-            for (int i = 0; i < _dialogues.arraySize; i++)
+            Dictionary<string, string> columnData = new Dictionary<string, string>();
+            for (int k = 0; k < keys.Count; k++)
             {
-                var dialogue = _dialogues.GetArrayElementAtIndex(i);
-                EditorGUILayout.PropertyField(dialogue, new GUIContent("Dialogue " + i), true);
+                columnData.Add(keys[k], grid[k, x]);
+                //Debug.Log("Key: " + keys[k] + ", Value: " + grid[x, k]);
             }
 
-            // Note: You also forgot to add this
-            serializedObject.ApplyModifiedProperties();
+            SpawnAmounts sa = new SpawnAmounts();
+            //Loop through the dictionary using the key values
+            foreach (KeyValuePair<string, string> item in columnData)
+            {
+                //Gets a unit data based off the ID and updates the spawn amounts data
+                if (item.Key.Contains(HumanID.Logger.ToString()))
+                    sa.logger = int.TryParse(item.Value, out sa.logger) ? sa.logger : 0;
+
+                if (item.Key.Contains(HumanID.Lumberjack.ToString()))
+                    sa.lumberjack = int.TryParse(item.Value, out sa.lumberjack) ? sa.lumberjack : 0;
+
+                if (item.Key.Contains(HumanID.LogCutter.ToString()))
+                    sa.logcutter = int.TryParse(item.Value, out sa.logcutter) ? sa.logcutter : 0;
+
+                if (item.Key.Contains(HumanID.Wathe.ToString()))
+                    sa.wathe = int.TryParse(item.Value, out sa.wathe) ? sa.wathe : 0;
+
+                if (item.Key.Contains(HumanID.Hunter.ToString()))
+                    sa.hunter = int.TryParse(item.Value, out sa.hunter) ? sa.hunter : 0;
+
+                if (item.Key.Contains(HumanID.Bjornjeger.ToString()))
+                    sa.bjornjeger = int.TryParse(item.Value, out sa.bjornjeger) ? sa.bjornjeger : 0;
+
+                if (item.Key.Contains(HumanID.Dreng.ToString()))
+                    sa.dreng = int.TryParse(item.Value, out sa.dreng) ? sa.dreng : 0;
+
+                if (item.Key.Contains(HumanID.Bezerker.ToString()))
+                    sa.bezerker = int.TryParse(item.Value, out sa.bezerker) ? sa.bezerker : 0;
+
+                if (item.Key.Contains(HumanID.Knight.ToString()))
+                    sa.knight = int.TryParse(item.Value, out sa.knight) ? sa.knight : 0;
+            }
+            UpdateLevel(sa);
         }
     }
+
+    private void UpdateLevel(SpawnAmounts _spawnAmount)
+    {
+        spawnAmounts.Add(_spawnAmount);
+
+        //flag the object as "dirty" in the editor so it will be saved
+        EditorUtility.SetDirty(this);
+
+        // Prompt the editor database to save dirty assets, committing your changes to disk.
+        AssetDatabase.SaveAssets();
+    }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(LevelData))]
+    public class LevelDataEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            LevelData gameData = (LevelData)target;
+            DrawDefaultInspector();
+            GUILayout.Space(5);
+            GUILayout.BeginHorizontal();
+            GUI.backgroundColor = Color.green;
+            if (GUILayout.Button("Load Data from file?"))
+            {
+                if (EditorUtility.DisplayDialog("Load Spreadsheet Data", "Are you sure you want to load data? This will overwrite any existing data", "Yes", "No"))
+                {
+                    gameData.LoadDataFromFile();
+                    EditorUtility.SetDirty(gameData);
+                }
+            }
+            GUILayout.EndHorizontal();
+        }
+    }
+#endif
     #endregion
 }

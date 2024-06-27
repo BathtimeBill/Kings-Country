@@ -424,12 +424,13 @@ public class EnemyManager : Singleton<EnemyManager>
 [System.Serializable]   
 public class SpawnAmounts
 {
-    public int loggerAmount;
-    public int lumberjackAmount;
-    public int watheAmount;
-    public int longbowAmount;
-    public int crossbowAmount;
-    public int drengAmount;
-    public int bezerkerAmount;
-    public int knightAmount;
+    public int logger;
+    public int lumberjack;
+    public int logcutter;
+    public int wathe;
+    public int hunter;
+    public int bjornjeger;
+    public int dreng;
+    public int bezerker;
+    public int knight;
 }

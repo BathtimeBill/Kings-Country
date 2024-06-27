@@ -11,7 +11,7 @@ public static class CSVReader
     static string GetPath(string _fileName)
     {
         return Application.dataPath.Substring(0,
-            Application.dataPath.LastIndexOf('/')) + "/Assets/" + _fileName;
+            Application.dataPath.LastIndexOf('/')) + _fileName;
     }
 
     static public string[,] GetCSVGrid(string _fileName)
@@ -20,6 +20,18 @@ public static class CSVReader
         StreamReader reader = new StreamReader(path);
         string textData = reader.ReadToEnd();
         //Debug.Log(reader.ReadToEnd());
+        reader.Close();
+
+        return SplitCsvGrid(textData);
+    }
+
+    static public string[,] GetCSVGrid(TextAsset _file)
+    {
+        Debug.Log("file name: " + _file);
+        //string path = GetPath(_fileName);
+        StreamReader reader = new StreamReader(_file.text);
+        string textData = reader.ReadToEnd();
+        Debug.Log(reader.ReadToEnd());
         reader.Close();
 
         return SplitCsvGrid(textData);

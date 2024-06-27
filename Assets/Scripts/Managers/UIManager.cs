@@ -12,6 +12,7 @@ public class UIManager : Singleton<UIManager>
     public TMP_Text wildlifeText;
     public TMP_Text populousText;
     public TMP_Text waveText;
+    public TMP_Text enemyProgressText;
 
     [Header("Error")]
     public TMP_Text errorText;
@@ -71,7 +72,7 @@ public class UIManager : Singleton<UIManager>
     public TMP_Text waveTitleText;
     
     public Animator waveTextAnimator;
-    public Button startWaveButton;
+    public Button dayNightButton;
     public Button treetoolButton;
 
     [Header("Day End Stats")]
@@ -165,6 +166,11 @@ public class UIManager : Singleton<UIManager>
     public string dayMessage = "Day";
     public string nightMessage = "Night";
 
+    private new void Awake()
+    {
+        base.Awake();
+        FindObjectOfType<DayNightSwitch>().SetDayNightButton(dayNightButton.gameObject);
+    }
     void Start()
     {
         CheckTreeUI();
@@ -193,6 +199,12 @@ public class UIManager : Singleton<UIManager>
 
         errorAnim = errorText.GetComponent<Animator>();
         errorText.DOFade(0, 0);
+
+        dayNightButton.onClick.AddListener(() =>
+        {
+            GameEvents.ReportOnWaveBegin();
+        });
+        
     }
 
     private void TurnOffIcons()
@@ -248,7 +260,7 @@ public class UIManager : Singleton<UIManager>
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
                 break;
             case GameState.Play:
-                startWaveButton.interactable = false;
+                dayNightButton.interactable = false;
                 TweenX.KillTweener(inGameCanvasTweener);
                 inGameCanvas.interactable = true;
                 inGameCanvasTweener = inGameCanvas.DOFade(1, 0.2f).SetUpdate(true);
@@ -256,7 +268,7 @@ public class UIManager : Singleton<UIManager>
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0, 0.2f).SetUpdate(true);
                 break;
             case GameState.Build:
-                startWaveButton.interactable = true;
+                dayNightButton.interactable = true;
                 TweenX.KillTweener(inGameCanvasTweener);
                 inGameCanvas.interactable = true;
                 inGameCanvasTweener = inGameCanvas.DOFade(1, 0.2f).SetUpdate(true);
@@ -748,6 +760,7 @@ public class UIManager : Singleton<UIManager>
     private void OnWaveBegin()
     {
         treeTool.SetInteractable(false);
+        //int enemyProgressTotal = 
     }
 
     public void OnPerkSelected(PerkID perkID)
