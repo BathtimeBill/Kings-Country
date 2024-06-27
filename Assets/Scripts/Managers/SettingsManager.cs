@@ -107,58 +107,9 @@ public class SettingsManager : GameBehaviour
 
     public void ChangePanelColour(PanelColourID _color)
     {
-        _SETTINGS.colours.ChangePanelColour(_color, _COLOUR, _SAVE);
+        _SETTINGS.colours.ChangePanelColour(_color, _SAVE);
     }
     #endregion
 
-    #region Editor
-#if UNITY_EDITOR
-    [CustomEditor(typeof(SettingsManager))]
-    [CanEditMultipleObjects]
 
-    public class SettingsManagerEditor : Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            SettingsManager settings = (SettingsManager)target;
-            GUILayout.Space(20);
-            GUILayout.BeginHorizontal();
-            GUI.backgroundColor = Color.black;
-            if (GUILayout.Button("Dark Mode"))
-            {
-                settings.ChangePanelColour(PanelColourID.Black);
-                EditorUtility.SetDirty(settings);
-            }
-            GUI.backgroundColor = Color.white;
-            if (GUILayout.Button("Light Mode"))
-            {
-                settings.ChangePanelColour(PanelColourID.White);
-                EditorUtility.SetDirty(settings);
-            }
-            GUI.backgroundColor = Color.blue;
-            if (GUILayout.Button("Blue Mode"))
-            {
-                settings.ChangePanelColour(PanelColourID.Blue);
-                EditorUtility.SetDirty(settings);
-            }
-            GUI.backgroundColor = Color.green;
-            if (GUILayout.Button("Green Mode"))
-            {
-                settings.ChangePanelColour(PanelColourID.Green);
-                EditorUtility.SetDirty(settings);
-            }
-            GUI.backgroundColor = Color.red;
-            if (GUILayout.Button("Red Mode"))
-            {
-                settings.ChangePanelColour(PanelColourID.Red);
-                EditorUtility.SetDirty(settings);
-            }
-            GUI.backgroundColor = Color.white;
-            GUILayout.EndHorizontal();
-            GUILayout.Space(20);
-            DrawDefaultInspector();
-        }
-    }
-#endif
-    #endregion
 }

@@ -32,7 +32,7 @@ public class TitleManager : GameBehaviour
         TurnOffCameras();
         homeCamera.SetActive(true);
         FadeX.InstantOpaque(homeCanvas);
-        _SETTINGS.colours.ChangePanelColour(_SAVE.GetPanelColour(), _COLOUR, _SAVE);
+        _SETTINGS.colours.ChangePanelColour(_SAVE.GetPanelColour(), _SAVE);
     }
 
     public void ShowHome()

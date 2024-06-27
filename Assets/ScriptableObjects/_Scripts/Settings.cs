@@ -29,6 +29,57 @@ public class Settings : ScriptableObject
 
     [Header("General")]
     public GeneralObjects generalObjects;
+
+    #region Editor
+#if UNITY_EDITOR
+    [CustomEditor(typeof(Settings))]
+    [CanEditMultipleObjects]
+
+    public class SettingsEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            Settings settings = (Settings)target;
+            GUILayout.Space(20);
+            GUILayout.BeginHorizontal();
+            GUI.backgroundColor = Color.black;
+            if (GUILayout.Button("Dark Mode"))
+            {
+                settings.colours.ChangePanelColour(PanelColourID.Black, null);
+                EditorUtility.SetDirty(settings);
+            }
+            GUI.backgroundColor = Color.white;
+            if (GUILayout.Button("Light Mode"))
+            {
+                settings.colours.ChangePanelColour(PanelColourID.White, null);
+                EditorUtility.SetDirty(settings);
+            }
+            GUI.backgroundColor = Color.blue;
+            if (GUILayout.Button("Blue Mode"))
+            {
+                settings.colours.ChangePanelColour(PanelColourID.Blue, null);
+                EditorUtility.SetDirty(settings);
+            }
+            GUI.backgroundColor = Color.green;
+            if (GUILayout.Button("Green Mode"))
+            {
+                settings.colours.ChangePanelColour(PanelColourID.Green, null);
+                EditorUtility.SetDirty(settings);
+            }
+            GUI.backgroundColor = Color.red;
+            if (GUILayout.Button("Red Mode"))
+            {
+                settings.colours.ChangePanelColour(PanelColourID.Red, null);
+                EditorUtility.SetDirty(settings);
+            }
+            GUI.backgroundColor = Color.white;
+            GUILayout.EndHorizontal();
+            GUILayout.Space(20);
+            DrawDefaultInspector();
+        }
+    }
+#endif
+    #endregion
 }
 
 [System.Serializable]
@@ -142,9 +193,9 @@ public class Colours
         return "<color=#" + ColorX.GetColorHex(GetUnitColor(_humanData)) + ">" + _humanData.name + "</color>";
     }
 
-    public void ChangePanelColour(PanelColourID _color, Colours _colours, SaveManager _save)
+    public void ChangePanelColour(PanelColourID _color, SaveManager _save)
     {
-        Color c = _colours.GetPanelColour(_color);
+        Color c = GetPanelColour(_color);
 #if !UNITY_EDITOR
         _save.SetPanelColour(_color);
 #endif
@@ -160,7 +211,6 @@ public class Colours
             }
         }
     }
-
 }
 
 [System.Serializable]
