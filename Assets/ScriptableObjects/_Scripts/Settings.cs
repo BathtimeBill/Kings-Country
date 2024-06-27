@@ -141,6 +141,26 @@ public class Colours
     {
         return "<color=#" + ColorX.GetColorHex(GetUnitColor(_humanData)) + ">" + _humanData.name + "</color>";
     }
+
+    public void ChangePanelColour(PanelColourID _color, Colours _colours, SaveManager _save)
+    {
+        Color c = _colours.GetPanelColour(_color);
+#if !UNITY_EDITOR
+        _save.SetPanelColour(_color);
+#endif
+        GameObject[] panels = GameObject.FindGameObjectsWithTag("UIBackgroundPanel");
+        for (int i = 0; i < panels.Length; i++)
+        {
+            if (panels[i].GetComponent<UnityEngine.UI.Image>() != null)
+            {
+                TweenX.TweenColor(panels[i].GetComponent<UnityEngine.UI.Image>(), c);
+#if UNITY_EDITOR
+                panels[i].GetComponent<UnityEngine.UI.Image>().color = c;
+#endif
+            }
+        }
+    }
+
 }
 
 [System.Serializable]

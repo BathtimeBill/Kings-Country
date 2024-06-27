@@ -57,7 +57,7 @@ public class SettingsManager : GameBehaviour
         colourRedToggle.onValueChanged.AddListener((bool _on) => ChangePanelColour(PanelColourID.Red));
 
         PanelColourID currentColour = _SAVE.GetPanelColour();
-        ChangePanelColour(currentColour);
+        //ChangePanelColour(currentColour);
         colourToggles.SetAllTogglesOff(true);
         switch (currentColour)
         {
@@ -107,19 +107,7 @@ public class SettingsManager : GameBehaviour
 
     public void ChangePanelColour(PanelColourID _color)
     {
-        Color c = _COLOUR.GetPanelColour(_color);
-        _SAVE.SetPanelColour(_color);
-        GameObject[] panels = GameObject.FindGameObjectsWithTag("UIBackgroundPanel");
-        for (int i = 0; i < panels.Length; i++)
-        {
-            if (panels[i].GetComponent<Image>() != null)
-            {
-                TweenX.TweenColor(panels[i].GetComponent<Image>(), c);
-#if UNITY_EDITOR
-                panels[i].GetComponent<Image>().color = c;
-#endif
-            }
-        }
+        _SETTINGS.colours.ChangePanelColour(_color, _COLOUR, _SAVE);
     }
     #endregion
 

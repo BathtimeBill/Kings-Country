@@ -5,20 +5,24 @@ using UnityEngine;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
-    public List<HumanID> enemyIDList;
-    public List<GameObject> enemies;
-    public List<GameObject> spawnPoints;
-    public List<SpawnAmounts> spawnAmounts;
-    private SpawnAmounts currentDaySpawnAmount;
+    [HideInInspector] public List<GameObject> enemies;
+    [HideInInspector] public List<GameObject> spawnPoints;
     [Header("Spawn Cooldown")]
     public BV.Range cooldown;
+
+    private List<HumanID> enemyIDList;
+    private List<SpawnAmounts> spawnAmounts;
+    private SpawnAmounts currentDaySpawnAmount;
 
     public bool allEnemiesDead => enemies.Count == 0;
     public bool allEnemiesSpawned => enemyIDList.Count == 0;
     public int currentKillCount;
+    public void AddSpawnPoint(GameObject spawnPoint) => spawnPoints.Add(spawnPoint);
 
     private void Start()
     {
+        enemyIDList = new List<HumanID>();
+        spawnAmounts = new List<SpawnAmounts>();
         spawnAmounts.Clear();
         spawnAmounts = _DATA.currentLevel.spawnAmounts;
     }

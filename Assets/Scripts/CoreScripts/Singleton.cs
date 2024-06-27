@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Singleton<T> : GameBehaviour where T : MonoBehaviour
 {
-    public bool dontDestroy;
+    //public bool dontDestroy;
     private static T instance_;
     public static T instance
     {

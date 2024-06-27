@@ -199,6 +199,8 @@ public class UIManager : Singleton<UIManager>
 
         errorAnim = errorText.GetComponent<Animator>();
         errorText.DOFade(0, 0);
+
+        _SETTINGS.colours.ChangePanelColour(_SAVE.GetPanelColour(), _COLOUR, _SAVE);
     }
 
     private void TurnOffIcons()

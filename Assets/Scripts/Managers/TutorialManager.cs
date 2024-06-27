@@ -6,6 +6,11 @@ using UnityEngine.UI;
 
 public class TutorialManager : Singleton<TutorialManager>
 {
+    //TEMP
+    [Tooltip("Untick to skip tutorial")]
+    public bool playTutorial;
+
+    [Header("Tutorial Chunks")]
     [BV.EnumList(typeof(TutorialID))]
     public List<Tutorial> tutorials;
     public TutorialID tutorialID;
@@ -68,8 +73,7 @@ public class TutorialManager : Singleton<TutorialManager>
     public bool firstSpy;
     public bool firstHomeTree;
 
-    //TEMP
-    public bool playTutorial;
+    
 
 
     void Start()
