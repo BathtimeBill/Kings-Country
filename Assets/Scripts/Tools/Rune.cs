@@ -16,11 +16,11 @@ public class Rune : GameBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnWaveOver += OnWaveOver;
+        GameEvents.OnDayOver += OnWaveOver;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnWaveOver -= OnWaveOver;
+        GameEvents.OnDayOver -= OnWaveOver;
     }
 }

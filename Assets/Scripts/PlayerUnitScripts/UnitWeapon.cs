@@ -28,7 +28,7 @@ public class UnitWeapon : GameBehaviour
     }
     public void Arrow()
     {
-        if(_EM.enemies.Count != 0 && GetComponentInParent<Unit>().distanceToClosestEnemy < 80)
+        if(!_EM.allEnemiesDead && GetComponentInParent<Unit>().distanceToClosestEnemy < 80)
         {
             GameObject go = Instantiate(arrow, firingPoint.transform.position, transform.rotation);
             go.GetComponent<EnemyProjectile>().target = GetComponentInParent<Unit>().closestEnemy.gameObject;

@@ -22,7 +22,7 @@ public class StatsData : Singleton<StatsData>
     private void OnEnable()
     {
         GameEvents.OnUnitKilled += OnUnitKilled;
-        GameEvents.OnWaveOver += OnWaveOver;
+        GameEvents.OnDayOver += OnWaveOver;
     }
 
     
@@ -30,6 +30,6 @@ public class StatsData : Singleton<StatsData>
     private void OnDisable()
     {
         GameEvents.OnUnitKilled -= OnUnitKilled;
-        GameEvents.OnWaveOver -= OnWaveOver;
+        GameEvents.OnDayOver -= OnWaveOver;
     }
 }

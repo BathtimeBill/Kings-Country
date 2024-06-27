@@ -76,12 +76,12 @@ public class WoodcutterManager : GameBehaviour
         if(_GM.agroWave)
         {
             
-            for (int i = 0; i < _EM.loggerAmount; i++)
+            for (int i = 0; i < _EM.GetHumanDayLimit(HumanID.Logger); i++)
             {
                 print("SpawnThisManyLogger");
                 Instantiate(logger, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
             }
-            for (int i = 0; i < _EM.lumberjackAmount; i++)
+            for (int i = 0; i < _EM.GetHumanDayLimit(HumanID.Lumberjack); i++)
             {
                 Instantiate(lumberjack, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
             }

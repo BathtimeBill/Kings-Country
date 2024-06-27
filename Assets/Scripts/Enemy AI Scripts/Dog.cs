@@ -6,79 +6,38 @@ using UnityEngine.AI;
 public class Dog : Enemy
 {
     Animator animator;
-    NavMeshAgent agent;
-    public float health;
-    public float maxHealth;
-    public float speed;
     public GameObject targetTree;
     public GameObject explosion;
     public GameObject bloodParticle1;
-
     List<GameObject> trees;
 
-    private void Update()
+    public override void Awake()
     {
-        trees = _GM.trees;
-
-        if(Vector3.Distance(gameObject.transform.position, targetTree.transform.position) < 10)
-        {
-            Instantiate(explosion, transform.position, transform.rotation);
-            _EM.enemies.Remove(gameObject);
-            Destroy(gameObject);
-        }
+        base.Awake();
     }
     public override void Start()
     {
         base.Start();
         animator = GetComponent<Animator>();
-        agent = GetComponent<NavMeshAgent>();
-        health = maxHealth;
-        agent.speed = speed;
         trees = _GM.trees;
         int target = Random.Range(0, trees.Count);
         targetTree = trees[target];
         agent.SetDestination(targetTree.transform.position);
     }
+    private void Update()
+    {
+        trees = _GM.trees;
+
+        if (Vector3.Distance(gameObject.transform.position, targetTree.transform.position) < 10)
+        {
+            Instantiate(explosion, transform.position, transform.rotation);
+            Destroy(gameObject);
+        }
+    }
 
     public override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-        /*if (other.tag == "PlayerWeapon")
-        {
-            TakeDamage(_GM.satyrDamage);
-        }
-        if (other.tag == "PlayerWeapon2")
-        {
-            TakeDamage(_GM.orcusDamage);
-        }
-        if (other.tag == "PlayerWeapon3")
-        {
-            TakeDamage(_GM.skessaDamage);
-        }
-        if (other.tag == "PlayerWeapon4")
-        {
-            TakeDamage(_GM.skessaDamage);
-        }
-        if (other.tag == "PlayerWeapon5")
-        {
-            TakeDamage(_GM.goblinDamage);
-        }
-        if (other.tag == "PlayerWeapon6")
-        {
-            TakeDamage(_GM.golemDamage);
-        }
-        if (other.tag == "Spit")
-        {
-            TakeDamage(_GM.spitDamage);
-        }
-        if (other.tag == "SpitExplosion")
-        {
-            TakeDamage(_GM.spitExplosionDamage);
-        }*/
-        if (other.tag == "Explosion" || other.tag == "Explosion2")
-        {
-
-        }
         if (other.tag == "Spit")
         {
             agent.speed = speed / 2;
@@ -90,17 +49,11 @@ public class Dog : Enemy
     }
     public override void TakeDamage(int damage, string _damagedBy)
     {
-        GameObject bloodParticle;
-        bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
-        health -= damage;
-        if (health <= 0)
-            Die(unitID.ToString(), _damagedBy);
+        base.TakeDamage(damage, _damagedBy);
     }
-    public override void Die(string _thisUnit, string _killedBy)
+    public override void Die(Enemy _thisUnit, string _killedBy, DeathID _deathID)
     {
-        base.Die(_thisUnit, _killedBy);
-        _EM.enemies.Remove(gameObject);
         Instantiate(explosion, transform.position, transform.rotation);
-        Destroy(gameObject);
+        base.Die(_thisUnit, _killedBy, _deathID);
     }
 }

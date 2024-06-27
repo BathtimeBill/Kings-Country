@@ -32,30 +32,47 @@ public class GameLog : GameBehaviour
     }
     private void OnUnitSpawned(string _unitID)
     {
-        string u = _unitID;
+        string unit = _unitID;
         if (_DATA.IsCreatureUnit(_unitID))
-            u = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<CreatureID>(_unitID)));
+            unit = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<CreatureID>(_unitID)));
         if(_DATA.IsHumanUnit(_unitID))
-            u = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<HumanID>(_unitID)));
+            unit = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<HumanID>(_unitID)));
 
-        ChangeLogLine(u + " was spawned in ");
+        ChangeLogLine(unit + " was spawned in ");
     }
 
     private void OnUnitKilled(string _unitID, string _killedBy)
     {
-        string u = _unitID;
+        string unit = _unitID;
         if (_DATA.IsCreatureUnit(_unitID))
-            u = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<CreatureID>(_unitID)));
+            unit = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<CreatureID>(_unitID)));
         if (_DATA.IsHumanUnit(_unitID))
-            u = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<HumanID>(_unitID)));
+            unit = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<HumanID>(_unitID)));
 
-        string k = _killedBy;
+        string killer = _killedBy;
         if (_DATA.IsCreatureUnit(_killedBy))
-            k = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<CreatureID>(_killedBy)));
+            killer = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<CreatureID>(_killedBy)));
         if (_DATA.IsHumanUnit(_killedBy))
-            k = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<HumanID>(_killedBy)));
+            killer = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<HumanID>(_killedBy)));
 
-        ChangeLogLine(u + " was killed by " + k);
+        ChangeLogLine(unit + " was killed by " + killer);
+    }
+
+    private void OnEnemyUnitKilled(Enemy _unitID, string _killedBy)
+    {
+        string unit = _unitID.unitID.ToString();
+        if (_DATA.IsCreatureUnit(unit))
+            unit = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<CreatureID>(unit)));
+        if (_DATA.IsHumanUnit(unit))
+            unit = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<HumanID>(unit)));
+
+        string killer = _killedBy;
+        if (_DATA.IsCreatureUnit(_killedBy))
+            killer = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<CreatureID>(_killedBy)));
+        if (_DATA.IsHumanUnit(_killedBy))
+            killer = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<HumanID>(_killedBy)));
+
+        ChangeLogLine(unit + " was killed by " + killer);
     }
 
     private void OnDayOver()
@@ -72,15 +89,19 @@ public class GameLog : GameBehaviour
     {
         GameEvents.OnUnitSpawned    += OnUnitSpawned;
         GameEvents.OnUnitKilled     += OnUnitKilled;
-        GameEvents.OnWaveOver       += OnDayOver;
+        GameEvents.OnEnemyUnitKilled += OnEnemyUnitKilled;
+        GameEvents.OnDayOver       += OnDayOver;
         GameEvents.OnTreePlaced     += OnTreePlaced;
     }
+
+    
 
     private void OnDisable()
     {
         GameEvents.OnUnitSpawned    -= OnUnitSpawned;
         GameEvents.OnUnitKilled     -= OnUnitKilled;
-        GameEvents.OnWaveOver       -= OnDayOver;
+        GameEvents.OnEnemyUnitKilled -= OnEnemyUnitKilled;
+        GameEvents.OnDayOver       -= OnDayOver;
         GameEvents.OnTreePlaced     -= OnTreePlaced;
     }
 }

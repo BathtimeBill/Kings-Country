@@ -27,8 +27,8 @@ public static class GameEvents
     public static event Action OnJustStragglers = null;
     public static event Action OnCollectMaegenButton = null;
 
-    public static event Action OnWaveBegin = null;
-    public static event Action OnWaveOver = null;
+    public static event Action OnDayBegin = null;
+    public static event Action OnDayOver = null;
     public static event Action OnContinueButton = null;
 
     public static event Action OnWispDestroy = null;
@@ -191,13 +191,13 @@ public static class GameEvents
     {
         OnContinueButton?.Invoke();
     }
-    public static void ReportOnWaveBegin()
+    public static void ReportOnDayBegin()
     {
-        OnWaveBegin?.Invoke();
+        OnDayBegin?.Invoke();
     }
     public static void ReportOnWaveOver()
     {
-        OnWaveOver?.Invoke();
+        OnDayOver?.Invoke();
     }
     public static void ReportOnTreeHit()
     {
@@ -301,8 +301,10 @@ public static class GameEvents
 
     #region Unit Management
     public static event Action<string, string> OnUnitKilled = null;
+    public static event Action<Enemy, string> OnEnemyUnitKilled = null;
     public static event Action<string> OnUnitSpawned = null;
-    public static void ReportOnUnitKilled(string _killed, string _killedBy) => OnUnitKilled?.Invoke(_killed, _killedBy);
+    public static void ReportOnUnitKilled(string _unitID, string _killedBy) => OnUnitKilled?.Invoke(_unitID, _killedBy);
+    public static void ReportOnEnemyUnitKilled(Enemy _unitID, string _killedBy) => OnEnemyUnitKilled?.Invoke(_unitID, _killedBy);
     public static void ReportOnUnitSpawned(string _unitID) => OnUnitSpawned?.Invoke(_unitID);
     #endregion
 

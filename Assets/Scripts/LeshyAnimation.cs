@@ -29,7 +29,7 @@ public class LeshyAnimation : GameBehaviour
     {
         currentSpeed = Vector3.Distance(oldPosition, transform.position) * 100 * Time.deltaTime;
         oldPosition = transform.position;
-        if (_EM.enemies.Count > 0)
+        if (!_EM.allEnemiesDead)
         {
             closestUnit = GetClosestEnemy();
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);

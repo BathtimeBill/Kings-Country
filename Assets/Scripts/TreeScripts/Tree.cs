@@ -274,13 +274,13 @@ public class Tree : GameBehaviour
     {
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnTreeUpgrade += OnTreeUpgrade;
-        GameEvents.OnWaveBegin += OnWaveBegin;
+        GameEvents.OnDayBegin += OnWaveBegin;
     }
 
     private void OnDisable()
     {
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnTreeUpgrade -= OnTreeUpgrade;
-        GameEvents.OnWaveBegin -= OnWaveBegin;
+        GameEvents.OnDayBegin -= OnWaveBegin;
     }
 }

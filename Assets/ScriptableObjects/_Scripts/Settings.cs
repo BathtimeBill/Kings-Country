@@ -26,6 +26,9 @@ public class Settings : ScriptableObject
 
     [Header("Vibration")]
     public Vibration vibration;
+
+    [Header("General")]
+    public GeneralObjects generalObjects;
 }
 
 [System.Serializable]
@@ -216,4 +219,11 @@ public class ObjectColor
 {
     public ColorID id;
     public Color color;
+}
+
+[Serializable]
+public class GeneralObjects
+{
+    public GameObject maegenPickup;
+    public GameObject healObject;
 }

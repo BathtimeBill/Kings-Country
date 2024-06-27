@@ -74,11 +74,12 @@ public class GameData : Singleton<GameData>
     #endregion
 
     #region Editor
-    [Header("CSV File")]
-    public TextAsset csvFile;
-    public void LoadDataFromFile()
+    [Header("Unit CSV Files")]
+    public TextAsset creatureDataSheet;
+    public TextAsset humanDataSheet;
+    public void LoadUnitDataFromFile()
     {
-        string[,] grid = CSVReader.GetCSVGrid("/Assets/_Balancing/" + csvFile.name + ".csv");
+        string[,] grid = CSVReader.GetCSVGrid("/Assets/_Balancing/" + creatureDataSheet.name + ".csv");
         UnitData unit = new UnitData();
         List<string> keys = new List<string>();
 
@@ -150,6 +151,74 @@ public class GameData : Singleton<GameData>
         AssetDatabase.SaveAssets();
     }
 
+    public void LoadHumanDataFromFile()
+    {
+        string[,] grid = CSVReader.GetCSVGrid("/Assets/_Balancing/" + humanDataSheet.name + ".csv");
+        EnemyData enemy = new EnemyData();
+        List<string> keys = new List<string>();
+
+        //First create a list for holding our key values
+        for (int y = 0; y < grid.GetUpperBound(1); ++y)
+        {
+            keys.Add(grid[0, y]);
+        }
+
+        //Loop through the columns, adding the value to the appropriate key
+        for (int x = 1; x < grid.GetUpperBound(0); x++)
+        {
+            Dictionary<string, string> columnData = new Dictionary<string, string>();
+            for (int k = 0; k < keys.Count; k++)
+            {
+                columnData.Add(keys[k], grid[x, k]);
+                //Debug.Log("Key: " + keys[k] + ", Value: " + grid[x, k]);
+            }
+
+            //Loop through the dictionary using the key values
+            foreach (KeyValuePair<string, string> item in columnData)
+            {
+                // Gets a unit data based off the ID and updates the data
+                if (item.Key.Contains("ID"))
+                    enemy.id = EnumX.ToEnum<HumanID>(item.Value);
+                if (item.Key.Contains("Name"))
+                    enemy.name = item.Value;
+                if (item.Key.Contains("Description"))
+                    enemy.description = item.Value;
+                if (item.Key.Contains("Health"))
+                {
+                    int temp = int.TryParse(item.Value, out temp) ? temp : 100;
+                    enemy.health = temp;
+                }
+                if (item.Key.Contains("Damage"))
+                {
+                    int temp = int.TryParse(item.Value, out temp) ? temp : 20;
+                    enemy.damage = temp;
+                }
+                if (item.Key.Contains("Speed"))
+                {
+                    int temp = int.TryParse(item.Value, out temp) ? temp : 10;
+                    enemy.speed = temp;
+                }
+            }
+            UpdateHumans(enemy);
+        }
+    }
+
+    private void UpdateHumans(EnemyData _enemyData)
+    {
+        EnemyData enemy = GetUnit(_enemyData.id);
+        enemy.name = _enemyData.name;
+        enemy.description = _enemyData.description;
+        enemy.health = _enemyData.health;
+        enemy.damage = _enemyData.damage;
+        enemy.speed = _enemyData.speed;
+
+        //flag the object as "dirty" in the editor so it will be saved
+        EditorUtility.SetDirty(enemy);
+
+        // Prompt the editor database to save dirty assets, committing your changes to disk.
+        AssetDatabase.SaveAssets();
+    }
+
 #if UNITY_EDITOR
     [CustomEditor(typeof(GameData))]
     public class GameDataEditor : Editor
@@ -161,11 +230,20 @@ public class GameData : Singleton<GameData>
             GUILayout.Space(5);
             GUILayout.BeginHorizontal();
             GUI.backgroundColor = Color.green;
-            if (GUILayout.Button("Load Data from file?"))
+            if (GUILayout.Button("Load Creature Data from file?"))
             {
-                if (EditorUtility.DisplayDialog("Load Spreadsheet Data", "Are you sure you want to load data? This will overwrite any existing data", "Yes", "No"))
+                if (EditorUtility.DisplayDialog("Load Creature Spreadsheet Data", "Are you sure you want to load data? This will overwrite any existing data", "Yes", "No"))
                 {
-                    gameData.LoadDataFromFile();
+                    gameData.LoadUnitDataFromFile();
+                    EditorUtility.SetDirty(gameData);
+                }
+            }
+            GUI.backgroundColor = Color.yellow;
+            if (GUILayout.Button("Load Human Data from file?"))
+            {
+                if (EditorUtility.DisplayDialog("Load Human Spreadsheet Data", "Are you sure you want to load data? This will overwrite any existing data", "Yes", "No"))
+                {
+                    gameData.LoadHumanDataFromFile();
                     EditorUtility.SetDirty(gameData);
                 }
             }

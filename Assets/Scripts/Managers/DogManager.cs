@@ -22,7 +22,7 @@ public class DogManager : GameBehaviour
     }
     private void OnStartNextRound()
     {
-        if (_GM.currentWave == 1 && _GM.trees.Count > 5)
+        if (_GM.currentDay == 1 && _GM.trees.Count > 5)
         {
             int rndCoin = Random.Range(1, 2);
             if(rndCoin == 1)
@@ -30,7 +30,7 @@ public class DogManager : GameBehaviour
                 Instantiate(dog, spawnLocations[RandomSpawnLocation()].transform.position, transform.rotation);
             }
         }
-        if (_GM.currentWave == 2 && _GM.trees.Count > 10)
+        if (_GM.currentDay == 2 && _GM.trees.Count > 10)
         {
             int rndCoin = Random.Range(0, 1);
             if (rndCoin == 1)
@@ -38,7 +38,7 @@ public class DogManager : GameBehaviour
                 Instantiate(dog, spawnLocations[RandomSpawnLocation()].transform.position, transform.rotation);
             }
         }
-        if (_GM.currentWave == 3 && _GM.trees.Count > 15)
+        if (_GM.currentDay == 3 && _GM.trees.Count > 15)
         {
             int rndCoin = Random.Range(0, 1);
             if (rndCoin == 1)
@@ -46,7 +46,7 @@ public class DogManager : GameBehaviour
                 Instantiate(dog, spawnLocations[RandomSpawnLocation()].transform.position, transform.rotation);
             }
         }
-        if (_GM.currentWave == 4 && _GM.trees.Count > 20)
+        if (_GM.currentDay == 4 && _GM.trees.Count > 20)
         {
             int rndCoin = Random.Range(0, 1);
             if (rndCoin == 1)
@@ -54,7 +54,7 @@ public class DogManager : GameBehaviour
                 Instantiate(dog, spawnLocations[RandomSpawnLocation()].transform.position, transform.rotation);
             }
         }
-        if (_GM.currentWave == 5 && _GM.trees.Count > 20)
+        if (_GM.currentDay == 5 && _GM.trees.Count > 20)
         {
             int rndCoin = Random.Range(0, 1);
             if (rndCoin == 1)
@@ -62,7 +62,7 @@ public class DogManager : GameBehaviour
                 Instantiate(dog, spawnLocations[RandomSpawnLocation()].transform.position, transform.rotation);
             }
         }
-        if (_GM.currentWave == 6 && _GM.trees.Count > 20)
+        if (_GM.currentDay == 6 && _GM.trees.Count > 20)
         {
             int rndCoin = Random.Range(0, 1);
             if (rndCoin == 1)
@@ -74,11 +74,11 @@ public class DogManager : GameBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnWaveBegin += OnStartNextRound;
+        GameEvents.OnDayBegin += OnStartNextRound;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnWaveBegin -= OnStartNextRound;
+        GameEvents.OnDayBegin -= OnStartNextRound;
     }
 }

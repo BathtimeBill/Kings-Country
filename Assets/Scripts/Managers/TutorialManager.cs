@@ -75,8 +75,8 @@ public class TutorialManager : Singleton<TutorialManager>
     void Start()
     {
         //_SAVE.Load();
-        CheckTutorial();
-        CheckInGameTutorial();
+        //CheckTutorial();
+        //CheckInGameTutorial();
         //StartCoroutine(WaitForStartCamera());
         //if (newTutorialButton != null)
         //{
@@ -84,7 +84,7 @@ public class TutorialManager : Singleton<TutorialManager>
         //    StartCoroutine(WaitForStartCamera());
         //}
         FadeX.InstantTransparent(glossaryPanel);
-        if (isTutorial)
+        if (playTutorial)
         {
             FadeX.InstantOpaque(inGameTutorialPanel);
             _GM.ChangeGameState(GameState.Tutorial);
@@ -105,14 +105,6 @@ public class TutorialManager : Singleton<TutorialManager>
             StartCoroutine(WaitForToolsTutorial());
             FirstPlayTutorial();
         }
-        //if (_SAVE.lvl2Complete == false && _GM.level == LevelNumber.Two)
-        //{
-        //    NewTutorialAvailable(7, "Witch's Hut");
-        //}
-        //if (_SAVE.lvl3Complete == false && _GM.level == LevelNumber.Three)
-        //{
-        //    NewTutorialAvailable(6, "Horgr Shrine");
-        //}
     }
 
     public void GlossaryButton(TutorialID id)
@@ -389,11 +381,14 @@ public class TutorialManager : Singleton<TutorialManager>
         }
     }
 
-    public void OnStartNextRound()
+    public void OnDayBegin()
     {
+        if (!playTutorial)
+            return;
+
         if (firstPlay == false)
         {
-            if(_GM.level == LevelNumber.One && _GM.currentWave == 1)
+            if(_GM.level == LevelNumber.One && _GM.currentDay == 1)
             {
                 NewTutorialAvailable(TutorialID.HumanClasses, "Human Classes");
                 StartCoroutine(WaitToAddCombatTutorial());
@@ -405,7 +400,7 @@ public class TutorialManager : Singleton<TutorialManager>
         yield return new WaitForSeconds(10);
         NewTutorialAvailable(TutorialID.Combat, "Combat");
     }
-    public void OnWaveOver()
+    public void OnDayOver()
     {
         if(isTutorial)
         {
@@ -463,8 +458,8 @@ public class TutorialManager : Singleton<TutorialManager>
     }
     private void OnEnable()
     {
-        GameEvents.OnWaveBegin += OnStartNextRound;
-        GameEvents.OnWaveOver += OnWaveOver;
+        GameEvents.OnDayBegin += OnDayBegin;
+        GameEvents.OnDayOver += OnDayOver;
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnLevelWin += OnLevelWin;
         GameEvents.OnMineSpawned += OnMineSpawned;
@@ -474,8 +469,8 @@ public class TutorialManager : Singleton<TutorialManager>
     }
     private void OnDisable()
     {
-        GameEvents.OnWaveBegin -= OnStartNextRound;
-        GameEvents.OnWaveOver -= OnWaveOver;
+        GameEvents.OnDayBegin -= OnDayBegin;
+        GameEvents.OnDayOver -= OnDayOver;
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnLevelWin -= OnLevelWin;
         GameEvents.OnMineSpawned -= OnMineSpawned;

@@ -137,8 +137,8 @@ public class UIManager : Singleton<UIManager>
     public TMP_Text skessaPriceText;
     public TMP_Text goblinPriceText;
     public TMP_Text huldraPriceText;
-    public TMP_Text golemPriceText;
-    public TMP_Text dryadPriceText;
+    public TMP_Text mistcalfPriceText;
+    public TMP_Text fidhainPriceText;
 
     [Header("Panel Tweening")]
     public Ease panelEase = Ease.InOutSine;
@@ -165,11 +165,11 @@ public class UIManager : Singleton<UIManager>
 
     public string dayMessage = "Day";
     public string nightMessage = "Night";
+    public string dayProgressMessage = "Humans Vanquished: ";
 
     private new void Awake()
     {
         base.Awake();
-        FindObjectOfType<DayNightSwitch>().SetDayNightButton(dayNightButton.gameObject);
     }
     void Start()
     {
@@ -199,12 +199,6 @@ public class UIManager : Singleton<UIManager>
 
         errorAnim = errorText.GetComponent<Animator>();
         errorText.DOFade(0, 0);
-
-        dayNightButton.onClick.AddListener(() =>
-        {
-            GameEvents.ReportOnWaveBegin();
-        });
-        
     }
 
     private void TurnOffIcons()
@@ -301,14 +295,14 @@ public class UIManager : Singleton<UIManager>
 
     private void CheckUnitPrices()
     {
-        satyrPriceText.text = _GM.satyrPrice.ToString();
-        orcusPriceText.text = _GM.orcusPrice.ToString();
-        leshyPriceText.text = _GM.leshyPrice.ToString();
-        skessaPriceText.text = _GM.skessaPrice.ToString();
-        goblinPriceText.text = _GM.goblinPrice.ToString();
-        huldraPriceText.text = _GM.huldraPrice.ToString();
-        golemPriceText.text = _GM.golemPrice.ToString();
-        dryadPriceText.text = _GM.dryadPrice.ToString();
+        satyrPriceText.text = _DATA.GetUnit(CreatureID.Satyr).cost.ToString();
+        orcusPriceText.text = _DATA.GetUnit(CreatureID.Orcus).cost.ToString();
+        leshyPriceText.text = _DATA.GetUnit(CreatureID.Leshy).cost.ToString();
+        skessaPriceText.text = _DATA.GetUnit(CreatureID.Skessa).cost.ToString();
+        goblinPriceText.text = _DATA.GetUnit(CreatureID.Goblin).cost.ToString();
+        huldraPriceText.text = _DATA.GetUnit(CreatureID.Huldra).cost.ToString();
+        mistcalfPriceText.text = _DATA.GetUnit(CreatureID.Mistcalf).cost.ToString();
+        fidhainPriceText.text = _DATA.GetUnit(CreatureID.Fidhain).cost.ToString();
 }
     public void OnFormationSelected()
     {
@@ -421,7 +415,7 @@ public class UIManager : Singleton<UIManager>
 
     public void CheckWave()
     {
-        waveText.text = dayMessage + ": " + _GM.currentWave.ToString() + "/" + _DATA.levelMaxDays;
+        waveText.text = dayMessage + ": " + _GM.currentDay.ToString() + "/" + _DATA.levelMaxDays;
         TriggerWaveTextAnimation();
     }
 
@@ -614,7 +608,7 @@ public class UIManager : Singleton<UIManager>
         TweenInPanel(wavePanel);
         _SM.PlaySound(_SM.waveOverSound);
         _SM.PlaySound(_SM.menuDragSound);
-        waveTitleText.text = dayMessage + " " + _GM.currentWave.ToString() + " is complete!";
+        waveTitleText.text = dayMessage + " " + _GM.currentDay.ToString() + " is complete!";
 
         totalTrees = _GM.trees.Count;
         totalMaegenDrops = GameObject.FindGameObjectsWithTag("MaegenDrop").Length;
@@ -757,10 +751,11 @@ public class UIManager : Singleton<UIManager>
 
     #endregion
 
-    private void OnWaveBegin()
+    public void BeginNewDay()
     {
         treeTool.SetInteractable(false);
-        //int enemyProgressTotal = 
+        int enemyProgressTotal = _EM.GetDayTotalEnemyCount();
+        enemyProgressText.text = dayProgressMessage + "0/" + enemyProgressTotal;
     }
 
     public void OnPerkSelected(PerkID perkID)
@@ -946,6 +941,14 @@ public class UIManager : Singleton<UIManager>
         winHighScoreText.text = _GAMESAVE.GetLevelHighScore(_DATA.currentLevelID).ToString();
     }
 
+    private void OnEnemyUnitKilled(Enemy _unitID, string _killedBy)
+    {
+        ExecuteNextFrame(() =>
+        {
+            enemyProgressText.text = dayProgressMessage + _EM.currentKillCount + "/" + _EM.GetDayTotalEnemyCount();
+        });
+    }
+
     private void OnEnable()
     {
         GameEvents.OnGameStateChanged += OnGameStateChanged;
@@ -954,18 +957,16 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnFyrePlaced += OnFyrePlaced;
         GameEvents.OnStormerPlaced += OnStormerPlaced;
         GameEvents.OnRunePlaced += OnRunePlaced;
-        GameEvents.OnWaveOver += OnWaveOver;
+        GameEvents.OnDayOver += OnWaveOver;
         GameEvents.OnContinueButton += OnContinueButton;
-        GameEvents.OnWaveBegin += OnWaveBegin;
         GameEvents.OnJustStragglers += OnJustStragglers;
 
         GameEvents.OnUpgradeSelected += OnPerkSelected;
 
         GameEvents.OnWildlifeValueChange += OnWildlifeValueChange;
         GameEvents.OnFormationSelected += OnFormationSelected;
+        GameEvents.OnEnemyUnitKilled += OnEnemyUnitKilled;
     }
-
-    
 
     private void OnDisable()
     {
@@ -975,14 +976,14 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnFyrePlaced -= OnFyrePlaced;
         GameEvents.OnStormerPlaced -= OnStormerPlaced;
         GameEvents.OnRunePlaced -= OnRunePlaced;
-        GameEvents.OnWaveOver -= OnWaveOver;
+        GameEvents.OnDayOver -= OnWaveOver;
         GameEvents.OnContinueButton -= OnContinueButton;
-        GameEvents.OnWaveBegin -= OnWaveBegin;
         GameEvents.OnJustStragglers -= OnJustStragglers;
 
         GameEvents.OnUpgradeSelected -= OnPerkSelected;
 
         GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange;
         GameEvents.OnFormationSelected -= OnFormationSelected;
+        GameEvents.OnEnemyUnitKilled -= OnEnemyUnitKilled;
     }
 }

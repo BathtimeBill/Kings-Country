@@ -137,13 +137,13 @@ public class ForestManager : Singleton<ForestManager>
     {
         GameEvents.OnWildlifeKilled += OnWildlifeKilled;
         GameEvents.OnContinueButton += OnContinueButton;
-        GameEvents.OnWaveOver += OnWaveOver;
+        GameEvents.OnDayOver += OnWaveOver;
     }
 
     private void OnDisable()
     {
         GameEvents.OnWildlifeKilled -= OnWildlifeKilled;
         GameEvents.OnContinueButton -= OnContinueButton;
-        GameEvents.OnWaveOver -= OnWaveOver;
+        GameEvents.OnDayOver -= OnWaveOver;
     }
 }

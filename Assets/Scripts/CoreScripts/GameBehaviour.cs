@@ -20,7 +20,6 @@ public class GameBehaviour : BV.Behaviour
     protected static TooltipManager _Tool { get { return TooltipManager.instance; } }
     protected static SpyManager _SPYM { get { return SpyManager.instance; } }
     protected static PerkManager _PERK { get { return PerkManager.instance; } }
-    protected static LevelManager _LEVEL { get { return LevelManager.instance; } }
     protected static GameData _DATA { get { return GameData.instance; } }
     protected static SaveManager _GAMESAVE { get { return SaveManager.instance; } }
     protected static UpgradeManager _UPGRADE { get { return UpgradeManager.instance; } }
@@ -31,13 +30,13 @@ public class GameBehaviour : BV.Behaviour
     public bool isPaused => _GM.gameState == GameState.Pause;
     public bool gameFinished => _GM.gameState == GameState.Finish;
     public bool buildPhase => _GM.gameState == GameState.Build;
+    public int CurrentDay => _GM.currentDay - 1;
 
     public Settings _SETTINGS => _DATA.settings;
     public Tweening _TWEENING => _DATA.settings.tweening;
     public Colours _COLOUR => _DATA.settings.colours;
     public Icons _ICONS => _DATA.settings.icons;
     public PlayerSettings _PLAYER => _SAVE.save.playerSettings;
-
 }
 
 
@@ -274,6 +273,7 @@ public enum DifficultyRating
 }
 
 public enum PanelColourID { Black, White, Blue, Green, Red}
+public enum DeathID { Regular,Launch,Explosion}
 
 public enum ErrorID
 {

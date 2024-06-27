@@ -35,7 +35,9 @@ public class HomeTree : GameBehaviour
     //Checks to see if the player has enough resources and then spawns a Satyr unit in front of the Home Tree. Is called when a button is pressed in the UI.
     public void SpawnSatyr()
     {
-        if(_GM.maegen < _GM.satyrPrice)
+        int cost = _DATA.GetUnit(CreatureID.Satyr).cost;
+
+        if (_GM.maegen < cost)
         {
             _UI.SetError(ErrorID.InsufficientMaegen);
             return;
@@ -43,7 +45,7 @@ public class HomeTree : GameBehaviour
 
         if(_GM.populous < _GM.maxPopulous)
         {
-            _GM.DecreaseMaegen(_GM.satyrPrice);
+            _GM.DecreaseMaegen(cost);
             Instantiate(satyr, spawnLocation.transform.position, spawnLocation.transform.rotation);
             Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
             _UI.CheckPopulousUI();
@@ -57,7 +59,9 @@ public class HomeTree : GameBehaviour
     //Checks to see if the player has enough resources and then spawns a Orcus unit in front of the Home Tree. Is called when a button is pressed in the UI.
     public void SpawnOrcus()
     {
-        if (_GM.maegen < _GM.orcusPrice)
+        int cost = _DATA.GetUnit(CreatureID.Orcus).cost;
+
+        if (_GM.maegen < cost)
         {
             _UI.SetError(ErrorID.InsufficientMaegen);
             return;
@@ -65,7 +69,7 @@ public class HomeTree : GameBehaviour
 
         if(_GM.populous < _GM.maxPopulous)
         {
-            _GM.DecreaseMaegen(_GM.orcusPrice);
+            _GM.DecreaseMaegen(cost);
             Instantiate(orcus, spawnLocation.transform.position, spawnLocation.transform.rotation);
             Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
             _UI.CheckPopulousUI();
@@ -79,7 +83,8 @@ public class HomeTree : GameBehaviour
     //Checks to see if the player has enough resources and then spawns a Leshy unit in front of the Home Tree. Is called when a button is pressed in the UI.
     public void SpawnLeshy()
     {
-        if (_GM.maegen < _GM.leshyPrice)
+        int cost = _DATA.GetUnit(CreatureID.Leshy).cost;
+        if (_GM.maegen < cost)
         {
             _UI.SetError(ErrorID.InsufficientMaegen);
             return;
@@ -87,7 +92,7 @@ public class HomeTree : GameBehaviour
 
         if(_GM.populous < _GM.maxPopulous)
         {
-            _GM.DecreaseMaegen(_GM.leshyPrice);
+            _GM.DecreaseMaegen(cost);
             Instantiate(leshy, spawnLocation.transform.position, spawnLocation.transform.rotation);
             Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
             _UI.CheckPopulousUI();

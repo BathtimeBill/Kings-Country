@@ -42,7 +42,7 @@ public class MusicManager : Singleton<MusicManager>
         combatMusic.Remove(currentClip);
         musicPlayer.clip = GetRandomCombatMusic();
         musicPlayer.Play();
-        if (_EM.enemies.Count > 0)
+        if (!_EM.allEnemiesDead)
             StartCoroutine(WaitForCombatTrackToEnd());
         else
             StartCoroutine(WaitForPeaceTrackToEnd());
@@ -90,17 +90,17 @@ public class MusicManager : Singleton<MusicManager>
     {
         GameEvents.OnGameOver += OnGameOver;
         GameEvents.OnLevelWin += OnLevelWin;
-        GameEvents.OnWaveOver += OnWaveOver;
+        GameEvents.OnDayOver += OnWaveOver;
         GameEvents.OnContinueButton += OnContinueButton;
-        GameEvents.OnWaveBegin += OnStartNextRound;
+        GameEvents.OnDayBegin += OnStartNextRound;
     }
 
     private void OnDisable()
     {
         GameEvents.OnGameOver -= OnGameOver;
         GameEvents.OnLevelWin -= OnLevelWin;
-        GameEvents.OnWaveOver -= OnWaveOver;
+        GameEvents.OnDayOver -= OnWaveOver;
         GameEvents.OnContinueButton -= OnContinueButton;
-        GameEvents.OnWaveBegin -= OnStartNextRound;
+        GameEvents.OnDayBegin -= OnStartNextRound;
     }
 }

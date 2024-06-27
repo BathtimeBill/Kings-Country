@@ -12,9 +12,13 @@ public class EnemyData : ScriptableObject
     public int health;
     public int damage;
     public int speed;
-    public int cost;
     [Header("Non Stats")]
     public Sprite icon;
     public Sprite mapIcon;
     public AudioClip[] voiceSounds;
+    [Header("Models")]
+    public GameObject playModel;
+    public GameObject ragdollModel;
+    public GameObject ragdollFireModel;
+    public GameObject bloodParticles;
 }

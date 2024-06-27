@@ -28,7 +28,7 @@ public class TestSatyrAnimation : GameBehaviour
         animator.SetFloat("z", Mathf.Clamp(currentSpeed, 0, 3) );
         if(GetComponentInParent<Unit>().unitID == CreatureID.Goblin)
         {
-            if (distanceFromClosestUnit < 80 && _EM.enemies.Count != 0)
+            if (distanceFromClosestUnit < 80 && !_EM.allEnemiesDead)
             {
                 if(closestUnit != null)
                 {
@@ -55,7 +55,7 @@ public class TestSatyrAnimation : GameBehaviour
         {
             GetComponentInParent<Unit>().isMoving = true;
         }
-        if (_EM.enemies.Count > 0)
+        if (!_EM.allEnemiesDead)
         {
             closestUnit = GetClosestEnemy();
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
@@ -154,7 +154,7 @@ public class TestSatyrAnimation : GameBehaviour
     }
     public void CheckAttack()
     {
-        if (_EM.enemies.Count != 0 && distanceFromClosestUnit <= 15)
+        if (!_EM.allEnemiesDead && distanceFromClosestUnit <= 15)
         {
             animator.SetTrigger("Attack" + GetRandomAnimation());
         }
@@ -166,7 +166,7 @@ public class TestSatyrAnimation : GameBehaviour
 
     public void CheckAttackGoblin()
     {
-        if (_EM.enemies.Count != 0 && distanceFromClosestUnit <= 80)
+        if (!_EM.allEnemiesDead && distanceFromClosestUnit <= 80)
         {
             animator.SetTrigger("Attack1");
         }

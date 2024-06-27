@@ -29,15 +29,15 @@ public class WarriorManager : GameBehaviour
         int rndSpawn = Random.Range(0, _EM.spawnPoints.Count);
         if (_GM.agroWave)
         {
-            for (int i = 0; i < _EM.drengAmount; i++)
+            for (int i = 0; i < _EM.GetHumanDayLimit(HumanID.Dreng); i++)
             {
                 Instantiate(dreng, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
             }
-            for (int i = 0; i < _EM.bezerkerAmount; i++)
+            for (int i = 0; i < _EM.GetHumanDayLimit(HumanID.Bezerker); i++)
             {
                 Instantiate(berserkr, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
             }
-            for (int i = 0; i < _EM.knightAmount; i++)
+            for (int i = 0; i < _EM.GetHumanDayLimit(HumanID.Knight); i++)
             {
                 Instantiate(knight, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
             }

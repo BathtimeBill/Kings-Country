@@ -12,25 +12,17 @@ public class Warrior : Enemy
     [Header("Tick")]
     public float seconds = 0.5f;
     [Header("Stats")]
-    public float health;
-    public float maxHealth;
     public EnemyState state;
     public float stoppingDistance;
     public GameObject homeTree;
     public bool hasArrivedAtBeacon;
     public GameObject fyreBeacon;
     public GameObject deadWarriorFire;
-    public float speed;
 
     [Header("Death Objects")]
-    public GameObject deathObject;
-    public GameObject bloodParticle1;
     private float damping = 5;
-    public GameObject maegenPickup;
-    public int maxRandomDropChance;
 
     [Header("Components")]
-    NavMeshAgent navAgent;
     public Animator animator;
     public Transform closestUnit;
     public float distanceFromClosestUnit;
@@ -48,23 +40,24 @@ public class Warrior : Enemy
     public AudioSource[] soundPool;
     public AudioSource audioSource;
 
-    private void Awake()
+    #region Startup
+    public override void Awake()
     {
+        base.Awake();
         soundPool = SFXPool.GetComponents<AudioSource>();
         state = EnemyState.Attack;
-        navAgent = gameObject.GetComponent<NavMeshAgent>();
-        Setup();
     }
     public override void Start()
     {
         base.Start();
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
         horgr = GameObject.FindGameObjectWithTag("HorgrRally");
-        speed = navAgent.speed;
         StartCoroutine(Tick());
         StartCoroutine(WaitForInvincible());
     }
+    #endregion
 
+    #region AI
     IEnumerator Tick()
     {
         closestUnit = GetClosestUnit();
@@ -80,7 +73,7 @@ public class Warrior : Enemy
         switch (state)
         {
             case EnemyState.Work:
-                navAgent.SetDestination(transform.position);
+                agent.SetDestination(transform.position);
 
                 break;
 
@@ -89,7 +82,7 @@ public class Warrior : Enemy
                 horgrSwitch = false;
                 if (UnitSelection.Instance.unitList.Count == 0)
                 {
-                    navAgent.stoppingDistance = 10;
+                    agent.stoppingDistance = 10;
                     FindHomeTree();
                     SmoothFocusOnEnemy();
                 }
@@ -102,11 +95,11 @@ public class Warrior : Enemy
                     }
                     if (closestUnit.tag == "LeshyUnit")
                     {
-                        navAgent.stoppingDistance = 8;
+                        agent.stoppingDistance = 8;
                     }
                     else
                     {
-                        navAgent.stoppingDistance = stoppingDistance;
+                        agent.stoppingDistance = stoppingDistance;
                     }
                 }
                 if (distanceFromClosestHorgr < distanceFromClosestUnit && !spawnedFromBuilding)
@@ -123,13 +116,13 @@ public class Warrior : Enemy
                 break;
             case EnemyState.Beacon:
                 if (!hasArrivedAtBeacon)
-                    navAgent.SetDestination(fyreBeacon.transform.position);
+                    agent.SetDestination(fyreBeacon.transform.position);
                 else
-                    navAgent.SetDestination(transform.position);
+                    agent.SetDestination(transform.position);
                 break;
             case EnemyState.Horgr:
                 if (!hasArrivedAtHorgr)
-                    navAgent.SetDestination(horgr.transform.position);
+                    agent.SetDestination(horgr.transform.position);
                 else
                 {
                     if (_HM.units.Count > 0)
@@ -143,7 +136,7 @@ public class Warrior : Enemy
                         if (horgrSwitch == false)
                         {
                             animator.SetBool("hasStoppedHorgr", true);
-                            navAgent.SetDestination(transform.position);
+                            agent.SetDestination(transform.position);
                             horgrSwitch = true;
                             print("Setting Destination");
                         }
@@ -152,11 +145,11 @@ public class Warrior : Enemy
                 }
                 break;
         }
-        if (navAgent.velocity != Vector3.zero || distanceFromClosestUnit >= 10)
+        if (agent.velocity != Vector3.zero || distanceFromClosestUnit >= 10)
         {
             animator.SetBool("hasStopped", false);
         }
-        if (navAgent.velocity == Vector3.zero || distanceFromClosestUnit < 10)
+        if (agent.velocity == Vector3.zero || distanceFromClosestUnit < 10)
         {
             animator.SetBool("hasStopped", true);
         }
@@ -200,67 +193,12 @@ public class Warrior : Enemy
         }
 
     }
-    private void Setup()
-    {
-        switch (type)
-        {
-            case WarriorType.Dreng:
-                navAgent.speed = 9;
-                health = _GM.drengHealth;
-                maxHealth = _GM.drengHealth;
-                break;
+    #endregion
 
-            case WarriorType.Berserkr:
-                navAgent.speed = 20;
-                health = _GM.beserkrHealth;
-                maxHealth = _GM.beserkrHealth;
-                break;
-
-            case WarriorType.Knight:
-                navAgent.speed = 12;
-                health = _GM.knightHealth;
-                maxHealth = _GM.knightHealth;
-                break;
-        }
-    }
-
-
-
+    #region Damage
     public override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-        /*if (other.tag == "PlayerWeapon")
-        {
-            TakeDamage(_GM.satyrDamage);
-        }
-        if (other.tag == "PlayerWeapon2")
-        {
-            TakeDamage(_GM.orcusDamage);
-        }
-        if (other.tag == "PlayerWeapon3")
-        {
-            TakeDamage(_GM.leshyDamage);
-        }
-        if (other.tag == "PlayerWeapon4")
-        {
-            TakeDamage(_GM.skessaDamage);
-        }
-        if (other.tag == "PlayerWeapon5")
-        {
-            TakeDamage(_GM.goblinDamage);
-        }
-        if (other.tag == "PlayerWeapon6")
-        {
-            TakeDamage(_GM.golemDamage);
-        }
-        if (other.tag == "Spit")
-        {
-            TakeDamage(_GM.spitDamage);
-        }
-        if (other.tag == "SpitExplosion")
-        {
-            TakeDamage(_GM.spitExplosionDamage);
-        }*/
         if (other.tag == "Beacon")
         {
             animator.SetTrigger("Cheer" + RandomCheerAnim());
@@ -290,14 +228,11 @@ public class Warrior : Enemy
         }
         if (other.tag == "Spit")
         {
-            navAgent.speed = speed / 2;
+            agent.speed = speed / 2;
         }
-        if (other.tag == "PlayerWeapon3")
-        {
-            TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage, CreatureID.Leshy.ToString());
-        }
+
     }
-    private void OnTriggerExit(Collider other)
+    public override void OnTriggerExit(Collider other)
     {
         if (other.tag == "Horgr")
         {
@@ -310,7 +245,7 @@ public class Warrior : Enemy
         }
         if (other.tag == "Spit")
         {
-            navAgent.speed = speed;
+            agent.speed = speed;
         }
     }
     
@@ -342,11 +277,7 @@ public class Warrior : Enemy
             audioSource.clip = _SM.GetGruntSounds();
             audioSource.pitch = Random.Range(0.8f, 1.2f);
             audioSource.Play();
-            GameObject bloodParticle;
-            bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
-            health -= damage;
-            if (health <= 0)
-                Die(unitID.ToString(), _damagedBy);
+            base.TakeDamage(damage, _damagedBy);
         }
     }
     IEnumerator WaitForInvincible()
@@ -355,43 +286,12 @@ public class Warrior : Enemy
         yield return new WaitForSeconds(5);
         invincible = false;
     }
-    public override void Die(string _thisUnit, string _killedBy)
+    public override void Die(Enemy _thisUnit, string _killedBy, DeathID _deathID)
     {
-        base.Die(_thisUnit, _killedBy);
-        bool isColliding = false;
-        _EM.enemies.Remove(gameObject);
-        if (_HM.enemies.Contains(gameObject))
-        {
-            _HM.enemies.Remove(gameObject);
-        }
-        DropMaegen();
-        if (!isColliding)
-        {
-            isColliding = true;
-            GameObject go;
-            go = Instantiate(deathObject, transform.position, transform.rotation);
-            Destroy(go, 15);
-        }
-        Destroy(gameObject);
+        base.Die(_thisUnit, _killedBy, _deathID);
     }
-    private void DropMaegen()
-    {
-        int rnd = Random.Range(1, maxRandomDropChance);
-        if (rnd == 1)
-        {
-            Instantiate(maegenPickup, transform.position, transform.rotation);
-        }
-    }
-    public void Launch()
-    {
-        float thrust = 20000f;
-        GameObject go;
-        go = Instantiate(deathObject, transform.position, transform.rotation);
-        go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * thrust);
-        go.GetComponentInChildren<Rigidbody>().AddForce(transform.forward * -thrust);
-        Destroy(go, 25);
-        Destroy(gameObject);
-    }
+    #endregion
+
     public void PlayFootstepSound()
     {
         PlaySound(_SM.GetHumanFootstepSound());
@@ -417,12 +317,12 @@ public class Warrior : Enemy
         {
             state = EnemyState.Work;
         }
-        navAgent.SetDestination(closestUnit.transform.position);
+        agent.SetDestination(closestUnit.transform.position);
     }
 
     public void FindHomeTree()
     {
-        navAgent.SetDestination(homeTree.transform.position);
+        agent.SetDestination(homeTree.transform.position);
     }
 
     public Transform GetClosestUnit()

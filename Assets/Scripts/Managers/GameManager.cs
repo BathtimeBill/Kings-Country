@@ -27,7 +27,7 @@ public class GameManager : Singleton<GameManager>
     public int highScore;
 
     [Header("Waves")]
-    public int currentWave;
+    public int currentDay;
     public int agroWaveLength;
     public int breakWaveLenth;
     public bool agroWave;
@@ -65,45 +65,17 @@ public class GameManager : Singleton<GameManager>
     public float spitTowerHealth;
 
     [Header("Unit Damage")]
-    public float satyrDamage;
-    public float orcusDamage;
-    public float leshyDamage;
-    public float skessaDamage;
-    public float goblinDamage;
-    public float golemDamage;
-    public float dryadDamage;
     public float spitDamage;
     public float spitExplosionDamage;
 
-    [Header("Unit Price")]
-    public int satyrPrice;
-    public int orcusPrice;
-    public int leshyPrice;
-    public int skessaPrice;
-    public int goblinPrice;
-    public int huldraPrice;
-    public int golemPrice;
-    public int dryadPrice;
-
-    [Header("Enemy Health")]
-    public float watheHealth;
-    public float hunterHealth;
-    public float bjornjeggerHealth;
-    public float drengHealth;
-    public float beserkrHealth;
-    public float knightHealth;
-    public float loggerHealth;
-    public float lumberjackHealth;
-    public float lordHealth;
-
     [Header("Enemy Damage")]
-    public float axe1Damage;
-    public float axe2Damage;
-    public float sword2Damage;
-    public float sword3Damage;
-    public float arrow1Damage;
-    public float arrow2Damage;
-    public float lordDamage;
+    //public float axe1Damage; - Logger
+    //public float axe2Damage; - Lumberjack
+    //public float sword2Damage; - Dreng
+    //public float sword3Damage; - Bezerker
+    //public float arrow1Damage; - Wathe
+    //public float arrow2Damage; - Hunter
+    //public float lordDamage; - Lord
 
     [Header("Horgr")]
     public bool horgrClaimedByPlayer;
@@ -129,9 +101,8 @@ public class GameManager : Singleton<GameManager>
 
     void Start()
     {
-        Time.timeScale = 1;
         IncreaseMaegen(startingMaegen);
-        currentWave = 0;
+        currentDay = 0;
         playmode = PlayMode.DefaultMode;
         SetGame();
         trees.AddRange(GameObject.FindGameObjectsWithTag("Tree"));
@@ -197,8 +168,6 @@ public class GameManager : Singleton<GameManager>
 
     public void SetGame()
     {
-        print("SET GAME!");
-        //_GM.boundry.SetActive(true);
         maxMaegen = _UI.totalMaegen + maegen;
         timeAudioSource.clip = _SM.timeStopSound;
         timeAudioSource.Play();
@@ -210,7 +179,6 @@ public class GameManager : Singleton<GameManager>
     }
     public void SpeedGame()
     {
-        print("SPEED GAME!");
         timeAudioSource.clip = _SM.timeSpeedUpSound;
         timeAudioSource.Play();
         globalVolume.profile.TryGet(out grain);
@@ -219,12 +187,6 @@ public class GameManager : Singleton<GameManager>
         grain.intensity.value = 1;
         Time.timeScale = 3;
     }
-
-    public void ToggleSpeed()
-    {
-        
-    }
-        
 
     public void IncreaseMaegen(int _value)
     {
@@ -240,11 +202,15 @@ public class GameManager : Singleton<GameManager>
         GameEvents.ReportOnMaegenChange(maegen);
     }
 
-    private void OnWaveBegin()
+    public void BeginNewDay()
     {
+        currentDay++;
         ChangeGameState(GameState.Play);
         StartCoroutine(ManageWaveAgro());
         StartCoroutine(WaitForCanFinishWave());
+        _EM.BeginNewDay();
+        _UI.BeginNewDay();
+        GameEvents.ReportOnDayBegin();
         //boundry.SetActive(false);
     }
 
@@ -252,35 +218,14 @@ public class GameManager : Singleton<GameManager>
     IEnumerator ManageWaveAgro()
     {
         agroWave = true;
-        currentWave++;
         _UI.CheckWave();
         yield return new WaitForSeconds(agroWaveLength);
         agroWave = false;
     }
-    //IEnumerator CheckForCollectMaegen()
-    //{
-    //    yield return new WaitForSeconds(5);
-       
-    //    int totalEnemies = _HM.enemies.Count + _HUTM.enemies.Count;
-    //    if (totalEnemies == _EM.enemies.Count)
-    //    {
-    //        if(canFinishWave)
-    //        {
-    //            GameEvents.ReportOnJustStragglers();
-    //        }
-    //    }
-    //    StartCoroutine(CheckForCollectMaegen());
-    //}
+
     IEnumerator WaitForCanFinishWave()
     {
         yield return new WaitForSeconds(60);
-        canFinishWave = true;
-    }
-    IEnumerator ManageWaveBreak()
-    {
-        agroWave = false;
-        yield return new WaitForSeconds(breakWaveLenth);
-        StartCoroutine(ManageWaveAgro());
     }
 
     public void ContinueToNextRound()
@@ -340,11 +285,12 @@ public class GameManager : Singleton<GameManager>
     //Once the 'Jarnnefi' upgrade has been purchased, the damage values for the player units are increased by 30%.
     public void OnJarnnefiUpgrade()
     {
-        satyrDamage += satyrDamage * 0.3f;
-        orcusDamage += orcusDamage * 0.3f;
-        leshyDamage += leshyDamage * 0.3f;
-        skessaDamage += skessaDamage * 0.3f;
-        goblinDamage += goblinDamage * 0.3f;
+        //TODO - How does this work?
+        //satyrDamage += satyrDamage * 0.3f;
+        //orcusDamage += orcusDamage * 0.3f;
+        //leshyDamage += leshyDamage * 0.3f;
+        //skessaDamage += skessaDamage * 0.3f;
+        //goblinDamage += goblinDamage * 0.3f;
     }
 
     //When a rune has been depleted, we wait until the end of the frame and update the rune count and UI.
@@ -370,10 +316,10 @@ public class GameManager : Singleton<GameManager>
         timeSinceAttack = 0;
     }
 
-    public void OnWaveOver()
+    public void OnDayOver()
     {
-        print(currentWave + " / " + _DATA.levelMaxDays);
-        if(currentWave == _DATA.levelMaxDays)
+        print(currentDay + " / " + _DATA.levelMaxDays);
+        if(currentDay == _DATA.levelMaxDays)
         {
             SetGame();
             GameEvents.ReportOnGameWin(_DATA.currentLevelID, score, maegen);
@@ -382,7 +328,6 @@ public class GameManager : Singleton<GameManager>
         }
         else
         {
-            canFinishWave = false;
             agroWave = false;
             ChangeGameState(GameState.Win);
             GameEvents.ReportOnRuneDestroyed();
@@ -484,8 +429,8 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnRuneDestroyed += OnRuneDestroyed;
         GameEvents.OnPopulousUpgrade += OnPopulousUpgrade;
         GameEvents.OnTreeHit += OnTreeHit;
-        GameEvents.OnWaveOver += OnWaveOver;
-        GameEvents.OnWaveBegin += OnWaveBegin;
+        GameEvents.OnDayOver += OnDayOver;
+        //GameEvents.OnWaveBegin += OnWaveBegin;
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnWildlifeKilled += OnWildlifeKilled;
         GameEvents.OnWildlifeValueChange += OnWildlifeValueChange;
@@ -502,8 +447,8 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnRuneDestroyed -= OnRuneDestroyed;
         GameEvents.OnPopulousUpgrade -= OnPopulousUpgrade;
         GameEvents.OnTreeHit -= OnTreeHit;
-        GameEvents.OnWaveOver -= OnWaveOver;
-        GameEvents.OnWaveBegin -= OnWaveBegin;
+        GameEvents.OnDayOver -= OnDayOver;
+        //GameEvents.OnWaveBegin -= OnWaveBegin;
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnWildlifeKilled -= OnWildlifeKilled;
         GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange;

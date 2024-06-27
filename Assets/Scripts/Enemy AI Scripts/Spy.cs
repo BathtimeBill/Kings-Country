@@ -2,14 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
-using Unity.Burst.CompilerServices;
 
 public class Spy : Enemy
 {
-    [Header("Stats")]
-    public float health;
-    public float maxHealth;
-
     [Header("Components")]
     public NavMeshAgent navAgent;
     public Animator animator;
@@ -17,8 +12,6 @@ public class Spy : Enemy
     public GameObject spawnParticle;
 
     [Header("Death Objects")]
-    public GameObject deathObject;
-    public GameObject bloodParticle1;
     public GameObject deadFire;
 
     [Header("Audio")]
@@ -55,31 +48,7 @@ public class Spy : Enemy
     public override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-        /*if (other.tag == "PlayerWeapon")
-        {
-            TakeDamage(_GM.satyrDamage);
-        }
-        if (other.tag == "PlayerWeapon2")
-        {
-            TakeDamage(_GM.orcusDamage);
-        }
-        if (other.tag == "PlayerWeapon3")
-        {
-
-            TakeDamage(_GM.leshyDamage);
-        }
-        if (other.tag == "PlayerWeapon4")
-        {
-            TakeDamage(_GM.skessaDamage);
-        }
-        if (other.tag == "PlayerWeapon5")
-        {
-            TakeDamage(_GM.goblinDamage);
-        }
-        if (other.tag == "PlayerWeapon6")
-        {
-            TakeDamage(_GM.golemDamage);
-        }
+        /*
         if (other.tag == "Spit")
         {
             TakeDamage(_GM.spitDamage);
@@ -90,20 +59,8 @@ public class Spy : Enemy
         }*/
         if (other.tag == "River")
         {
-            _EM.enemies.Remove(gameObject);
             _SPYM.Respawn();
             Instantiate(spawnParticle, transform.position, transform.rotation);
-            Destroy(gameObject);
-        }
-
-        if (other.tag == "Explosion" || other.tag == "Explosion2")
-        {
-            _EM.enemies.Remove(gameObject);
-            GameObject go;
-            go = Instantiate(deadFire, transform.position, transform.rotation);
-            go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * 2000);
-            go.GetComponentInChildren<Rigidbody>().AddForce(transform.forward * -16000);
-            Destroy(go, 15);
             Destroy(gameObject);
         }
     }
@@ -112,19 +69,13 @@ public class Spy : Enemy
         audioSource.clip = _SM.GetGruntSounds();
         audioSource.pitch = Random.Range(0.8f, 1.2f);
         audioSource.Play();
-        GameObject bloodParticle;
-        bloodParticle = Instantiate(bloodParticle1, transform.position, transform.rotation);
-        health -= damage;
-        if (health <= 0)
-            Die(unitID.ToString(), _damagedBy);
+        base.TakeDamage(damage, _damagedBy);
     }
-    public override void Die(string _thisUnit, string _killedBy)
-    {
-        base.Die(_thisUnit, _killedBy);
-        _EM.enemies.Remove(gameObject);
-        GameObject go;
-        go = Instantiate(deathObject, transform.position, transform.rotation);
-        Destroy(go, 15);
-        Destroy(gameObject);
-    }
+    //public override void Die(Enemy _thisUnit, string _killedBy, DeathID _deathID)
+    //{
+    //    GameObject go;
+    //    go = Instantiate(deathObject, transform.position, transform.rotation);
+    //    Destroy(go, 15);
+    //    base.Die(_thisUnit, _killedBy, _deathID);
+    //}
 }

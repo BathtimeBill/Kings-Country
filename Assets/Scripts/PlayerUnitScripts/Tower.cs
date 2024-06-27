@@ -46,7 +46,7 @@ public class Tower : GameBehaviour
     void Update()
     {
 
-        if (_EM.enemies.Count != 0)
+        if (!_EM.allEnemiesDead)
         {
             closestEnemy = GetClosestEnemy().transform.position;
             firingPoint.transform.LookAt(closestEnemy);
@@ -161,7 +161,7 @@ public class Tower : GameBehaviour
         }
         if(other.tag == "LordWeapon")
         {
-            TakeDamage(_GM.lordDamage);
+            TakeDamage(_DATA.GetUnit(HumanID.Lord).damage);
         }
     }
     public void TakeDamage(float damage)

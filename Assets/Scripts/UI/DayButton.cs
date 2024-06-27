@@ -1,9 +1,7 @@
 using UnityEngine.EventSystems;
 
-public class WaveButton : InteractableButton
+public class DayButton : InteractableButton
 {
-
-
     public override void Start()
     {
         base.Start();
@@ -12,7 +10,7 @@ public class WaveButton : InteractableButton
     #region overrides
     public override void ClickedButton()
     {
-        GameEvents.ReportOnWaveBegin();
+        _GM.BeginNewDay();
     }
 
     public override void OnPointerEnter(PointerEventData eventData)

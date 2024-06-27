@@ -18,7 +18,6 @@ public class DayNightSwitch : GameBehaviour
     public Vector3 buttonRotationDay;
     public Vector3 buttonRotationNight;
 
-    private GameObject dayNightButton;
     Tweener sunTweener;
     Tween ambientColourTween;
     Tween moonIntensityTween;
@@ -31,8 +30,6 @@ public class DayNightSwitch : GameBehaviour
     //    KillTweener(ambientLight);
     //    ambientLight = RenderSettings.ambientIntensity.DO 
     //}
-    public void SetDayNightButton(GameObject _button) => dayNightButton = _button;
-
 
     public void TweenSunRotation(Vector3 endVector, float time)
     {
@@ -42,8 +39,9 @@ public class DayNightSwitch : GameBehaviour
 
     public void TweenButtonRotation(Vector3 endRotation, float time)
     {
+        print("GJKHGB");
         TweenX.KillTweener(buttonRotationTween);
-        buttonRotationTween = dayNightButton.transform.DORotate(endRotation, time).SetEase(Ease.InOutSine);
+        buttonRotationTween = _UI.dayNightButton.transform.DORotate(endRotation, time).SetEase(Ease.InOutBack);
     }
 
     public Tween TweenAmbientColour(Color color, float time)
@@ -77,7 +75,7 @@ public class DayNightSwitch : GameBehaviour
         _SM.weatherAudioSource.clip = _SM.forestSoundNight;
         _SM.weatherAudioSource.Play();
     }
-    public void OnWaveBegin()
+    public void OnDayBegin()
     {
         TweenButtonRotation(buttonRotationDay, duration);
         MoonIntensityTween(0, duration);
@@ -94,12 +92,12 @@ public class DayNightSwitch : GameBehaviour
     private void OnEnable()
     {
         GameEvents.OnContinueButton += OnContinueButton;
-        GameEvents.OnWaveBegin += OnWaveBegin;
+        GameEvents.OnDayBegin += OnDayBegin;
     }
 
     private void OnDisable()
     {
         GameEvents.OnContinueButton -= OnContinueButton;
-        GameEvents.OnWaveBegin -= OnWaveBegin;
+        GameEvents.OnDayBegin -= OnDayBegin;
     }
 }

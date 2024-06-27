@@ -124,13 +124,14 @@ public class HorgrManager : Singleton<HorgrManager>
     public void SpawnHuldraManager()
     {
         horgrObject = GameObject.FindGameObjectWithTag("Horgr");
+        int cost = _DATA.GetUnit(CreatureID.Huldra).cost;
         if (playerOwns)
         {
-            if (_GM.maegen >= _GM.huldraPrice && _GM.populous < _GM.maxPopulous)
+            if (_GM.maegen >= cost && _GM.populous < _GM.maxPopulous)
             {
                 Instantiate(huldra, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.DecreaseMaegen(_GM.huldraPrice);
+                _GM.DecreaseMaegen(cost);
                 _UI.CheckPopulousUI();
                 if(_TUTM.isTutorial && _TUTM.tutorialStage == 12)
                 {
@@ -150,13 +151,14 @@ public class HorgrManager : Singleton<HorgrManager>
     public void SpawnGolemManager()
     {
         horgrObject = GameObject.FindGameObjectWithTag("Horgr");
+        int cost = _DATA.GetUnit(CreatureID.Mistcalf).cost;
         if (playerOwns)
         {
-            if (_GM.maegen >= _GM.golemPrice && _GM.populous < _GM.maxPopulous)
+            if (_GM.maegen >= cost && _GM.populous < _GM.maxPopulous)
             {
                 Instantiate(golem, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.DecreaseMaegen(_GM.golemPrice);
+                _GM.DecreaseMaegen(cost);
                 _UI.CheckPopulousUI();
             }
             else

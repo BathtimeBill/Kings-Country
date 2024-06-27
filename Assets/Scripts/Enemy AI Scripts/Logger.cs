@@ -12,15 +12,11 @@ public class Logger : Enemy
     [Header("Tick")]
     public float seconds = 0.5f;
     [Header("Stats")]
-    public float health;
-    public float maxHealth;
     public float loggerStoppingDistance;
     public bool hasStopped = false;
-    public float speed;
 
     [Header("AI")]
     public EnemyState state;
-    private NavMeshAgent navAgent;
     public Animator animator;
     public Transform closestUnit;
     public float distanceFromClosestUnit;
@@ -36,13 +32,6 @@ public class Logger : Enemy
     public float distanceFromClosestTree;
     public GameObject homeTree;
 
-    [Header("Death Objects")]
-    public GameObject bloodParticle1;
-    public GameObject deadLogger;
-    public GameObject deadLoggerFire;
-    public GameObject maegenPickup;
-    public int maxRandomDropChance;
-
     [Header("Audio")]
     public GameObject SFXPool;
     public int soundPoolCurrent;
@@ -50,22 +39,24 @@ public class Logger : Enemy
     public AudioSource audioSource;
     private AudioClip audioClip;
 
-    private void Awake()
+    #region Startup
+    public override void Awake()
     {
+        base.Awake();
         soundPool = SFXPool.GetComponents<AudioSource>();
-        navAgent = GetComponent<NavMeshAgent>();
-        Setup();
+        
     }
     public override void Start()
     {
         base.Start();
         state = EnemyState.Work;
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
-        speed = navAgent.speed;
         StartCoroutine(Tick());
         StartCoroutine(WaitForInvincible());
     }
+    #endregion
 
+    #region AI
     IEnumerator Tick()
     {
         if (UnitSelection.Instance.unitList.Count != 0)
@@ -97,7 +88,7 @@ public class Logger : Enemy
                 {
                     if (woodcutterType != WoodcutterType.LogCutter)
                     {
-                        navAgent.stoppingDistance = 7;
+                        agent.stoppingDistance = 7;
                     }
 
                     //SmoothFocusOnTree();
@@ -105,7 +96,7 @@ public class Logger : Enemy
                 }
                 else
                 {
-                    navAgent.stoppingDistance = loggerStoppingDistance;
+                    agent.stoppingDistance = loggerStoppingDistance;
                     if (distanceFromClosestTree < 30)
                     {
                         SmoothFocusOnTree();
@@ -125,29 +116,29 @@ public class Logger : Enemy
                 if (closestUnit.tag == "LeshyUnit")
                 {
                     if (woodcutterType != WoodcutterType.LogCutter)
-                        navAgent.stoppingDistance = 6;
+                        agent.stoppingDistance = 6;
 
                 }
                 else
                 {
-                    navAgent.stoppingDistance = loggerStoppingDistance;
+                    agent.stoppingDistance = loggerStoppingDistance;
                 }
                 break;
             case EnemyState.Beacon:
                 if (!hasArrivedAtBeacon)
-                    navAgent.SetDestination(fyreBeacon.transform.position);
+                    agent.SetDestination(fyreBeacon.transform.position);
                 else
-                    navAgent.SetDestination(transform.position);
+                    agent.SetDestination(transform.position);
 
                 break;
         }
 
-        if (navAgent.velocity != Vector3.zero)
+        if (agent.velocity != Vector3.zero)
         {
             animator.SetBool("hasStopped", false);
             hasStopped = false;
         }
-        if (navAgent.velocity == Vector3.zero)
+        if (agent.velocity == Vector3.zero)
         {
             animator.SetBool("hasStopped", true);
             hasStopped = true;
@@ -155,135 +146,14 @@ public class Logger : Enemy
         yield return new WaitForSeconds(seconds);
         StartCoroutine(Tick());
     }
+    #endregion
 
-    //void Update()
-    //{
-    //    if (UnitSelection.Instance.unitList.Count != 0)
-    //    {
-    //        closestUnit = GetClosestUnit();
-    //        distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
-    //    }
-    //    if(_GM.trees.Count != 0)
-    //    {
-    //        closestTree = GetClosestTree();
-    //        distanceFromClosestTree = Vector3.Distance(closestTree.transform.position, transform.position);
-    //    }
-    //    //else
-    //    //{
-    //    //    closestTree = homeTree;
-    //    //}
-
-    //    if (UnitSelection.Instance.unitList.Count == 0)
-    //    {
-    //        state = EnemyState.Work;
-    //    }
-
-    //    switch (state)
-    //    {
-    //        case EnemyState.Work:
-
-    //            if (distanceFromClosestUnit < 30)
-    //            {
-    //                state = EnemyState.Attack;
-    //            }
-
-    //            if (_GM.trees.Count == 0)
-    //            {
-    //                if(woodcutterType != WoodcutterType.LogCutter)
-    //                {
-    //                    navAgent.stoppingDistance = 7;
-    //                }
-
-    //                //SmoothFocusOnTree();
-    //                FindHomeTree();
-    //            }
-    //            else
-    //            {
-    //                navAgent.stoppingDistance = loggerStoppingDistance;
-    //                if (distanceFromClosestTree < 30)
-    //                {
-    //                    SmoothFocusOnTree();
-    //                }
-    //                FindTree();
-    //            }
-
-    //            break;
-
-    //        case EnemyState.Attack:
-    //            if (distanceFromClosestUnit >= 30)
-    //            {
-    //                state = EnemyState.Work;
-    //            }
-    //            FindUnit();
-    //            SmoothFocusOnEnemy();
-    //            if (closestUnit.tag == "LeshyUnit")
-    //            {
-    //                if(woodcutterType != WoodcutterType.LogCutter)
-    //                    navAgent.stoppingDistance = 6;
-
-    //            }
-    //            else
-    //            {
-    //                navAgent.stoppingDistance = loggerStoppingDistance;
-    //            }
-    //            break;
-    //        case EnemyState.Beacon:
-    //            if (!hasArrivedAtBeacon)
-    //                navAgent.SetDestination(fyreBeacon.transform.position);
-    //            else
-    //                navAgent.SetDestination(transform.position);
-
-    //            break;
-    //    }
-
-    //    if (navAgent.velocity != Vector3.zero)
-    //    {
-    //        animator.SetBool("hasStopped", false);
-    //        hasStopped = false;
-    //    }
-    //    if (navAgent.velocity == Vector3.zero)
-    //    {
-    //        animator.SetBool("hasStopped", true);
-    //        hasStopped = true;
-    //    }
-
-
-    //}
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if (other.tag == "Spit")
-    //    {
-    //        TakeDamage(_GM.spitDamage * Time.deltaTime);
-    //    }
-    //}
+    #region Damage
 
     public override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-        /*if(other.tag == "PlayerWeapon")
-        {
-            TakeDamage(_GM.satyrDamage);
-        }
-        if (other.tag == "PlayerWeapon2")
-        {
-            TakeDamage(_GM.orcusDamage);
-        }
-        if (other.tag == "PlayerWeapon3")
-        {
-            Launch();
-        }
-        if (other.tag == "PlayerWeapon4")
-        {
-            TakeDamage(_GM.skessaDamage);
-        }
-        if (other.tag == "PlayerWeapon5")
-        {
-            TakeDamage(_GM.goblinDamage);
-        }
-        if (other.tag == "PlayerWeapon6")
-        {
-            TakeDamage(_GM.golemDamage);
-        }
+        /*
         if (other.tag == "Spit")
         {
             TakeDamage(_GM.spitDamage);
@@ -300,40 +170,29 @@ public class Logger : Enemy
                 hasArrivedAtBeacon = true;
             }
         }
-        if(other.tag == "Explosion" || other.tag == "Explosion2")
+        /*if(other.tag == "Explosion" || other.tag == "Explosion2")
         {
-            _EM.enemies.Remove(gameObject);
             GameObject go;
             go = Instantiate(deadLoggerFire, transform.position, transform.rotation);
             go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * 2000);
             go.GetComponentInChildren<Rigidbody>().AddForce(transform.forward * -16000);
             Destroy(go, 15);
             Destroy(gameObject);
-        }
+        }*/
         if (other.tag == "Spit")
         {
-            navAgent.speed = speed / 2;
+            agent.speed = speed / 2;
         }
         if (other.tag == "Hand") //TODO what is the hand?
         {
-            _EM.enemies.Remove(gameObject);
-            DropMaegen();
-            GameObject go;
-            go = Instantiate(deadLogger, other.gameObject.transform.position, transform.rotation);
-            go.transform.parent = other.gameObject.transform;
-            GameEvents.ReportOnUnitKilled(unitID.ToString(), CreatureID.Unknown.ToString());
-            Destroy(gameObject);
-        }
-        if (other.tag == "PlayerWeapon3")
-        {
-            Launch();
+            Die(this, "Hand", DeathID.Regular);
         }
     }
-    private void OnTriggerExit(Collider other)
+    public override void OnTriggerExit(Collider other)
     {
         if (other.tag == "Spit")
         {
-            navAgent.speed = speed;
+            agent.speed = speed;
         }
     }
     private int RandomCheerAnim()
@@ -341,7 +200,9 @@ public class Logger : Enemy
         int rnd = Random.Range(1, 3);
         return rnd;
     }
-        
+
+    #endregion
+
     public void PlayFootstepSound()
     {
         PlaySound(_SM.GetHumanFootstepSound());
@@ -392,12 +253,7 @@ public class Logger : Enemy
                 audioSource.pitch = Random.Range(0.8f, 1.2f);
                 audioSource.Play();
             }
-
-            GameObject bloodParticle;
-            bloodParticle = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
-            health -= damage;
-            if (health <= 0)
-                Die(unitID.ToString(), _damagedBy);
+            base.TakeDamage(damage, _damagedBy);
         }
     }
     IEnumerator WaitForInvincible()
@@ -406,22 +262,11 @@ public class Logger : Enemy
         yield return new WaitForSeconds(5);
         invincible = false;
     }
-    public override void Die(string _thisUnit, string _killedBy)
+    public override void Die(Enemy _thisUnit, string _killedBy, DeathID _deathID)
     {
-        base.Die(_thisUnit, _killedBy);
-        bool isColliding = false;
-        _EM.enemies.Remove(gameObject);
-        DropMaegen();
-        if (!isColliding)
-        {
-            isColliding = true;
-            GameObject go;
-            go = Instantiate(deadLogger, transform.position, transform.rotation);
-            Destroy(go, 15);
-        }
-        Destroy(gameObject);
+        base.Die(_thisUnit, _killedBy, _deathID);
     }
-    private void DropMaegen()
+    public override void DropMaegen()
     {
         int rnd;
         if (_TUTM.isTutorial && _TUTM.tutorialStage == 8)
@@ -434,58 +279,15 @@ public class Logger : Enemy
         }
         if (rnd == 1)
         {
-            Instantiate(maegenPickup, transform.position, transform.rotation);
+            Instantiate(_SETTINGS.generalObjects.maegenPickup, transform.position, transform.rotation);
         }
     }
-    public void Launch()
-    {
-        bool isColliding = false;
-        _EM.enemies.Remove(gameObject);
-        DropMaegen();
-        if (_HUTM.enemies.Contains(gameObject))
-        {
-            _HUTM.enemies.Remove(gameObject);
-        }
-        float thrust = 20000f;
-        if(!isColliding)
-        {
-            isColliding= true;
-            GameObject go;
-            go = Instantiate(deadLogger, transform.position, transform.rotation);
-            go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * thrust);
-            go.GetComponentInChildren<Rigidbody>().AddForce(transform.forward * -thrust);
-            go.GetComponent<RagdollSound>().hasBeenLaunched = true;
-            Destroy(go, 25);
-        }
+    //public override void Launch()
+    //{
+    //    base.Launch();
+    //}
 
-        GameEvents.ReportOnUnitKilled(unitID.ToString(), CreatureID.Leshy.ToString());
-        Destroy(gameObject);
-    }
-
-    private void Setup()
-    {
-        switch (woodcutterType)
-        {
-            case WoodcutterType.Logger:
-                
-                navAgent.speed = 9;
-                health = _GM.loggerHealth;
-                maxHealth = _GM.loggerHealth;
-                break;
-
-            case WoodcutterType.Lumberjack:
-                navAgent.speed = 10;
-                health = _GM.lumberjackHealth;
-                maxHealth = _GM.lumberjackHealth;
-                break;
-            case WoodcutterType.LogCutter:
-                navAgent.speed = 3;
-                navAgent.stoppingDistance = 10;
-                health = 250;
-                maxHealth = 250;
-                break;
-        }
-    }
+    
 
     public Transform GetClosestTree()
     {
@@ -539,7 +341,7 @@ public class Logger : Enemy
 
     public void FindTree()
     {
-        navAgent.SetDestination(closestTree.transform.position);
+        agent.SetDestination(closestTree.transform.position);
     }
     public void FindUnit()
     {
@@ -547,11 +349,11 @@ public class Logger : Enemy
         {
             state = EnemyState.Work;
         }
-        navAgent.SetDestination(closestUnit.transform.position);
+        agent.SetDestination(closestUnit.transform.position);
     }
     public void FindHomeTree()
     {
         print("Finding Home Tree");
-        navAgent.SetDestination(homeTree.transform.position);
+        agent.SetDestination(homeTree.transform.position);
     }
 }

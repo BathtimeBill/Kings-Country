@@ -30,7 +30,7 @@ public class LevelEvents : GameBehaviour
     {
         //LEVEL 1//
 
-        if (_GM.level == LevelNumber.One && _GM.currentWave == 4)
+        if (_GM.level == LevelNumber.One && _GM.currentDay == 4)
         {
             GameEvents.ReportOnMineSpawned();
             StartCoroutine(SetGameState(10));
@@ -43,7 +43,7 @@ public class LevelEvents : GameBehaviour
         }
 
         //LEVEL 2//
-        if (_GM.level == LevelNumber.Two && _GM.currentWave == 2)
+        if (_GM.level == LevelNumber.Two && _GM.currentDay == 2)
         {
             int dice = Random.Range(1, 6);
             if (dice == 6 && mineExists == false)
@@ -53,7 +53,7 @@ public class LevelEvents : GameBehaviour
             }
             print(dice.ToString());
         }
-        if (_GM.level == LevelNumber.Two && _GM.currentWave == 3)
+        if (_GM.level == LevelNumber.Two && _GM.currentDay == 3)
         {
             int dice = Random.Range(1, 6);
             if(dice >= 5 && mineExists == false)
@@ -63,7 +63,7 @@ public class LevelEvents : GameBehaviour
             }
             print(dice.ToString());
         }
-        if (_GM.level == LevelNumber.Two && _GM.currentWave == 4)
+        if (_GM.level == LevelNumber.Two && _GM.currentDay == 4)
         {
             int dice = Random.Range(1, 6);
             if (dice >= 4 && mineExists == false)
@@ -73,7 +73,7 @@ public class LevelEvents : GameBehaviour
             }
             print(dice.ToString());
         }
-        if (_GM.level == LevelNumber.Two && _GM.currentWave == 5)
+        if (_GM.level == LevelNumber.Two && _GM.currentDay == 5)
         {
             int dice = Random.Range(1, 6);
             if (dice >= 3 && mineExists == false)
@@ -83,7 +83,7 @@ public class LevelEvents : GameBehaviour
             }
             print(dice.ToString());
         }
-        if (_GM.level == LevelNumber.Two && _GM.currentWave == 6)
+        if (_GM.level == LevelNumber.Two && _GM.currentDay == 6)
         {
             int dice = Random.Range(1, 6);
             if (dice >= 2 && mineExists == false)
@@ -93,7 +93,7 @@ public class LevelEvents : GameBehaviour
             }
             print(dice.ToString());
         }
-        if (_GM.level == LevelNumber.Two && _GM.currentWave == 7)
+        if (_GM.level == LevelNumber.Two && _GM.currentDay == 7)
         {
             if (mineExists == false)
             {
@@ -104,7 +104,7 @@ public class LevelEvents : GameBehaviour
 
         //LEVEL 3//
 
-        if (_GM.level == LevelNumber.Three && _GM.currentWave == 3)
+        if (_GM.level == LevelNumber.Three && _GM.currentDay == 3)
         {
             int dice3 = Random.Range(1, 6);
             if (dice3 >= 5 && lordHasArrived == false)
@@ -123,7 +123,7 @@ public class LevelEvents : GameBehaviour
             }
             print(dice3.ToString());
         }
-        if (_GM.level == LevelNumber.Three && _GM.currentWave == 4)
+        if (_GM.level == LevelNumber.Three && _GM.currentDay == 4)
         {
             int dice3 = Random.Range(1, 6);
             if (dice3 >= 4 && lordHasArrived == false)
@@ -142,7 +142,7 @@ public class LevelEvents : GameBehaviour
             }
             print(dice3.ToString());
         }
-        if (_GM.level == LevelNumber.Three && _GM.currentWave == 5)
+        if (_GM.level == LevelNumber.Three && _GM.currentDay == 5)
         {
             int dice3 = Random.Range(1, 6);
             if (dice3 >= 3 && lordHasArrived == false)
@@ -161,7 +161,7 @@ public class LevelEvents : GameBehaviour
             }
             print(dice3.ToString());
         }
-        if (_GM.level == LevelNumber.Three && _GM.currentWave == 6)
+        if (_GM.level == LevelNumber.Three && _GM.currentDay == 6)
         {
             int dice3 = Random.Range(1, 6);
             if (dice3 >= 2 && lordHasArrived == false)
@@ -180,7 +180,7 @@ public class LevelEvents : GameBehaviour
             }
             print(dice3.ToString());
         }
-        if (_GM.level == LevelNumber.Three && _GM.currentWave == 7)
+        if (_GM.level == LevelNumber.Three && _GM.currentDay == 7)
         {
             int dice3 = Random.Range(1, 6);
             if (dice3 >= 1 && lordHasArrived == false)
@@ -199,7 +199,7 @@ public class LevelEvents : GameBehaviour
             }
             print(dice3.ToString());
         }
-        if (_GM.level == LevelNumber.Three && _GM.currentWave == 8)
+        if (_GM.level == LevelNumber.Three && _GM.currentDay == 8)
         {
             if (mineExists == false)
             {
@@ -232,11 +232,11 @@ public class LevelEvents : GameBehaviour
     }
     private void OnEnable()
     {
-        GameEvents.OnWaveBegin += OnStartNextRound;
+        GameEvents.OnDayBegin += OnStartNextRound;
     }
     private void OnDisable()
     {
-        GameEvents.OnWaveBegin -= OnStartNextRound;
+        GameEvents.OnDayBegin -= OnStartNextRound;
     }
 
 

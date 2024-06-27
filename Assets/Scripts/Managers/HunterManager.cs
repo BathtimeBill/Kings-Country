@@ -30,15 +30,15 @@ public class HunterManager : GameBehaviour
         int rndSpawn = Random.Range(0, _EM.spawnPoints.Count);
         if (_GM.agroWave)
         {
-            for (int i = 0; i < _EM.watheAmount; i++)
+            for (int i = 0; i < _EM.GetHumanDayLimit(HumanID.Wathe); i++)
             {
                 Instantiate(wathe, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
             }
-            for (int i = 0; i < _EM.longbowAmount; i++)
+            for (int i = 0; i < _EM.GetHumanDayLimit(HumanID.Hunter); i++)
             {
                 Instantiate(hunter, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
             }
-            for (int i = 0; i < _EM.crossbowAmount; i++)
+            for (int i = 0; i < _EM.GetHumanDayLimit(HumanID.Bjornjeger); i++)
             {
                 Instantiate(bjornjeger, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
             }

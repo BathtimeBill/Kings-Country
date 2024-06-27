@@ -119,7 +119,7 @@ public class Unit : GameBehaviour
 
     void Update()
     {
-        if (_EM.enemies.Count != 0)
+        if (!_EM.allEnemiesDead)
         {
             closestEnemy = GetClosestEnemy();
             distanceToClosestEnemy = Vector3.Distance(closestEnemy.transform.position, transform.position);
@@ -141,7 +141,7 @@ public class Unit : GameBehaviour
         switch (state)
         {
             case UnitState.Idle:
-                if (_EM.enemies.Count > 0)
+                if (!_EM.allEnemiesDead)
                 {
                     if (combatMode != CombatMode.Defend)
                     {
@@ -170,7 +170,7 @@ public class Unit : GameBehaviour
 
             case UnitState.Attack:
                 //navAgent.angularSpeed = 500;
-                if (_EM.enemies.Count == 0)
+                if (_EM.allEnemiesDead)
                 {
                     state = UnitState.Idle;
                 }
@@ -191,7 +191,7 @@ public class Unit : GameBehaviour
                 {
                     navAgent.stoppingDistance = 20;
                 }
-                if (_EM.enemies.Count != 0)
+                if (!_EM.allEnemiesDead)
                 {
                     if (distanceToClosestEnemy < detectionRadius)
                     {
@@ -359,7 +359,7 @@ public class Unit : GameBehaviour
         switch (state)
         {
             case UnitState.Idle:
-                if (_EM.enemies.Count > 0)
+                if (!_EM.allEnemiesDead)
                 {
                     if (combatMode != CombatMode.Defend)
                     {
@@ -388,7 +388,7 @@ public class Unit : GameBehaviour
 
             case UnitState.Attack:
                 //navAgent.angularSpeed = 500;
-                if (_EM.enemies.Count == 0)
+                if (_EM.allEnemiesDead)
                 {
                     state = UnitState.Idle;
                 }
@@ -409,7 +409,7 @@ public class Unit : GameBehaviour
                 {
                     navAgent.stoppingDistance = 20;
                 }
-                if (_EM.enemies.Count != 0)
+                if (!_EM.allEnemiesDead)
                 {
                     if (distanceToClosestEnemy < detectionRadius)
                     {
@@ -549,19 +549,19 @@ public class Unit : GameBehaviour
     {
         if (other.tag == "Axe1")
         {
-            TakeDamage(_GM.axe1Damage);
+            TakeDamage(_DATA.GetUnit(HumanID.Logger).damage);
             other.enabled = false;
         }
         if (other.tag == "Axe2")
         {
-            TakeDamage(_GM.axe2Damage);
+            TakeDamage(_DATA.GetUnit(HumanID.Lumberjack).damage);
             other.enabled = false;
         }
         if (other.tag == "Sword2")
         {
             if(unitID != CreatureID.Leshy)
             {
-                TakeDamage(_GM.sword2Damage);
+                TakeDamage(_DATA.GetUnit(HumanID.Dreng).damage);
             }
             else
             {
@@ -574,7 +574,7 @@ public class Unit : GameBehaviour
         {
             if (unitID != CreatureID.Leshy)
             {
-                TakeDamage(_GM.sword3Damage);
+                TakeDamage(_DATA.GetUnit(HumanID.Bezerker).damage);
             }
             else
             {
@@ -590,11 +590,11 @@ public class Unit : GameBehaviour
             StartCoroutine(HitByArrowDelay());
             if (unitID == CreatureID.Skessa)
             {
-                TakeDamage(_GM.arrow1Damage * 3);
+                TakeDamage(_DATA.GetUnit(HumanID.Wathe).damage * 3);
             }
             else
             {
-                TakeDamage(_GM.arrow1Damage);
+                TakeDamage(_DATA.GetUnit(HumanID.Wathe).damage);
             }
 
             Destroy(other.gameObject);
@@ -607,11 +607,11 @@ public class Unit : GameBehaviour
             StartCoroutine(HitByArrowDelay());
             if (unitID == CreatureID.Skessa)
             {
-                TakeDamage(_GM.arrow2Damage * 3);
+                TakeDamage(_DATA.GetUnit(HumanID.Hunter).damage * 3);
             }
             else
             {
-                TakeDamage(_GM.arrow2Damage);
+                TakeDamage(_DATA.GetUnit(HumanID.Hunter).damage);
             }
 
             Destroy(other.gameObject);
@@ -650,7 +650,7 @@ public class Unit : GameBehaviour
         //}
         if (other.tag == "LordWeapon")
         {
-            TakeDamage(_GM.lordDamage);
+            TakeDamage(_DATA.GetUnit(HumanID.Lord).damage);
         }
         if (other.tag == "Lord")
         {

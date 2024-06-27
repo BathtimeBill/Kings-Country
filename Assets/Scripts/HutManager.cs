@@ -88,13 +88,14 @@ public class HutManager : Singleton<HutManager>
     public void SpawnSkessaManager()
     {
         hutObject = GameObject.FindGameObjectWithTag("Hut");
+        int cost = _DATA.GetUnit(CreatureID.Skessa).cost;
         if (playerOwns)
         {
-            if (_GM.maegen >= _GM.skessaPrice && _GM.populous < _GM.maxPopulous)
+            if (_GM.maegen >= cost && _GM.populous < _GM.maxPopulous)
             {
                 Instantiate(skessa, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.DecreaseMaegen(_GM.skessaPrice);
+                _GM.DecreaseMaegen(cost);
                 _UI.CheckPopulousUI();
             }
             else
@@ -111,11 +112,12 @@ public class HutManager : Singleton<HutManager>
     {
         if (playerOwns)
         {
-            if (_GM.maegen >= _GM.goblinPrice && _GM.populous < _GM.maxPopulous)
+            int cost = _DATA.GetUnit(CreatureID.Goblin).cost;
+            if (_GM.maegen >= cost && _GM.populous < _GM.maxPopulous)
             {
                 Instantiate(goblin, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.DecreaseMaegen(_GM.goblinPrice);
+                _GM.DecreaseMaegen(cost);
                 _UI.CheckPopulousUI();
             }
             else
@@ -132,11 +134,12 @@ public class HutManager : Singleton<HutManager>
     {
         if (playerOwns)
         {
-            if (_GM.maegen >= _GM.dryadPrice && _GM.populous < _GM.maxPopulous)
+            int cost = _DATA.GetUnit(CreatureID.Fidhain).cost;
+            if (_GM.maegen >= cost && _GM.populous < _GM.maxPopulous)
             {
                 Instantiate(fidhain, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.DecreaseMaegen(_GM.dryadPrice);
+                _GM.DecreaseMaegen(cost);
                 _UI.CheckPopulousUI();
             }
             else

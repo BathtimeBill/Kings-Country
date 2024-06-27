@@ -9,7 +9,6 @@ public class Lord : Enemy
     public Animator horseAnimator;
     public Animator knightAnimator;
     public Transform closestUnit;
-    private NavMeshAgent navAgent;
     public float distanceFromClosestUnit;
     public ParticleSystem swingParticle;
     public Slider slider;
@@ -21,27 +20,27 @@ public class Lord : Enemy
     public GameObject rider;
     public AudioClip[] allLordVocals;
     public List<AudioClip> lordVocals;
-    [Header("Stats")]
-    public float health;
-    public float maxHealth;
     public float stoppingDistance;
     public GameObject homeTree;
-    public float speed;
+
+    #region Startup
+    public override void Awake()
+    {
+        base.Awake();
+    }
 
     public override void Start()
     {
         base.Start();
-        navAgent = GetComponent<NavMeshAgent>();
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
-        maxHealth = _GM.lordHealth;
-        health = maxHealth;
-        navAgent.speed = speed;
         slider.value = CalculateHealth();
         audioSource = GetComponent<AudioSource>();  
         StartCoroutine(Tick());
         StartCoroutine(Bark());
     }
+    #endregion
 
+    #region AI
     IEnumerator Tick()
     {
         yield return new WaitForSeconds(0.2f);
@@ -49,7 +48,7 @@ public class Lord : Enemy
         {
             closestUnit = GetClosestUnit();
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
-            navAgent.SetDestination(closestUnit.transform.position);
+            agent.SetDestination(closestUnit.transform.position);
             if (distanceFromClosestUnit < 40)
             {
                 knightAnimator.SetBool("unitIsClose", true);
@@ -62,16 +61,16 @@ public class Lord : Enemy
         else
         {
             knightAnimator.SetBool("unitIsClose", true);
-            navAgent.SetDestination(homeTree.transform.position);
+            agent.SetDestination(homeTree.transform.position);
         }
 
 
 
-        if (navAgent.velocity != Vector3.zero)
+        if (agent.velocity != Vector3.zero)
         {
             horseAnimator.SetBool("hasStopped", false);
         }
-        if (navAgent.velocity == Vector3.zero)
+        if (agent.velocity == Vector3.zero)
         {
             horseAnimator.SetBool("hasStopped", true);
         }
@@ -96,35 +95,13 @@ public class Lord : Enemy
         barkSource.clip = lordVocals[i];
         lordVocals.Remove(lordVocals[i]);
     }
+    #endregion
 
+    #region Damage
     public override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
         /*
-        if (other.tag == "PlayerWeapon")
-        {
-            TakeDamage(_GM.satyrDamage);
-        }
-        if (other.tag == "PlayerWeapon2")
-        {
-            TakeDamage(_GM.orcusDamage);
-        }
-        if (other.tag == "PlayerWeapon3")
-        {
-            TakeDamage(_GM.leshyDamage);
-        }
-        if (other.tag == "PlayerWeapon4")
-        {
-            TakeDamage(_GM.skessaDamage);
-        }
-        if (other.tag == "PlayerWeapon5")
-        {
-            TakeDamage(_GM.goblinDamage);
-        }
-        if (other.tag == "PlayerWeapon6")
-        {
-            TakeDamage(_GM.golemDamage);
-        }
         if (other.tag == "Spit")
         {
             TakeDamage(_GM.spitDamage);
@@ -143,14 +120,15 @@ public class Lord : Enemy
         }
         if (other.tag == "Spit")
         {
-            navAgent.speed = speed / 2;
+            agent.speed = speed / 2;
         }
     }
-    private void OnTriggerExit(Collider other)
+    public override void OnTriggerExit(Collider other)
     {
+        base.OnTriggerExit(other);
         if (other.tag == "Spit")
         {
-            navAgent.speed = speed;
+            agent.speed = speed;
         }
     }
     public override void TakeDamage(int damage, string _damagedBy)
@@ -158,27 +136,21 @@ public class Lord : Enemy
         audioSource.clip = _SM.GetGruntSounds();
         audioSource.pitch = Random.Range(0.8f, 1.2f);
         audioSource.Play();
-        Vector3 forward = new Vector3(0, 180, 0);
-
-        GameObject bloodParticle;
-        bloodParticle = Instantiate(bloodParticle1, transform.position, Quaternion.LookRotation(forward));
-        health -= damage;
         slider.value = CalculateHealth();
-        if (health <= 0) 
-            Die(unitID.ToString(), _damagedBy);
+        base.TakeDamage(damage, _damagedBy);
     }
-    public override void Die(string _thisUnit, string _killedBy)
+    public override void Die(Enemy _thisUnit, string _killedBy, DeathID _deathID)
     {
-        base.Die(_thisUnit, _killedBy);
-        _EM.enemies.Remove(gameObject);
-        GameObject go;
-        GameObject go2;
-        go = Instantiate(deathObject, transform.position, transform.rotation);
-        go2 = Instantiate(deathObject2, rider.transform.position, rider.transform.rotation);
+        //GameObject go = Instantiate(deathObject, transform.position, transform.rotation);
+        GameObject go2 = Instantiate(deathObject2, rider.transform.position, rider.transform.rotation);
         go2.transform.localScale = rider.transform.localScale;
-        Destroy(go, 15);
-        Destroy(gameObject);
+        //Destroy(go, 15);
+        //Destroy(gameObject);
+        base.Die(_thisUnit, _killedBy, _deathID);
     }
+
+    #endregion
+
     public Transform GetClosestUnit()
     {
         float closestDistance = Mathf.Infinity;
