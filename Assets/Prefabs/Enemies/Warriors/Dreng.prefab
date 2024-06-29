@@ -100,24 +100,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitID: 6
+  health: 0
+  maxHealth: 0
+  damage: 0
+  speed: 0
+  maxRandomDropChance: 5
+  agent: {fileID: 0}
   invincible: 1
   type: 0
   seconds: 0.5
-  health: 0
-  maxHealth: 0
   state: 0
   stoppingDistance: 4
   homeTree: {fileID: 0}
   hasArrivedAtBeacon: 0
   fyreBeacon: {fileID: 0}
   deadWarriorFire: {fileID: 0}
-  speed: 0
-  deathObject: {fileID: 39230353614587206, guid: 423bc8c941d33334eac2072e5c9f3eb7,
-    type: 3}
-  bloodParticle1: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}
-  maegenPickup: {fileID: 1244892433919609755, guid: f6c8136a3fd58064198b300f4c94f5a3,
-    type: 3}
-  maxRandomDropChance: 5
   animator: {fileID: 6430059557901584783}
   closestUnit: {fileID: 0}
   distanceFromClosestUnit: 0
@@ -1711,7 +1708,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: ca25546c391c97f48be5c6334f57c54e,
         type: 3}
       propertyPath: m_TagString
-      value: Axe2
+      value: Sword2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1721,6 +1718,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3511612816396690393}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ca25546c391c97f48be5c6334f57c54e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3978670931649497295}
   m_SourcePrefab: {fileID: 100100000, guid: ca25546c391c97f48be5c6334f57c54e, type: 3}
 --- !u!1 &6056912236767639459 stripped
 GameObject:
@@ -1751,6 +1752,22 @@ CapsuleCollider:
   m_Height: 4.42
   m_Direction: 1
   m_Center: {x: 0, y: 2.17, z: 0}
+--- !u!114 &3978670931649497295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6056912236767639459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0bcff6a82b5f24c901b72b5aed2f5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitType: 1
+  creatureID: 0
+  humanID: 6
+  buildingID: 0
 --- !u!4 &6865079274625314073 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ca25546c391c97f48be5c6334f57c54e,

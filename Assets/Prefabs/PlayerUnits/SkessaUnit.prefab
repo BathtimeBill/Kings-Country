@@ -2877,13 +2877,11 @@ MonoBehaviour:
   unitID: 4
   combatMode: 0
   combatModeImage: {fileID: 5862909421843371049}
-  attackSprite: {fileID: 21300000, guid: c5cd52a4f3d0bc744a6182db1ed6818d, type: 3}
-  defendSprite: {fileID: 21300000, guid: 021aa7092ae516e4a9c156f7049ca959, type: 3}
   defendPosition: {x: 0, y: 0, z: 0}
-  unitSpeed: 0
   tickRate: 0.1
   health: 0
   maxHealth: 0
+  unitSpeed: 0
   projectileSpeed: 1000
   slider: {fileID: 1071894615877026358}
   focusSpeed: 5
@@ -3575,12 +3573,12 @@ PrefabInstance:
     - target: {fileID: -8183481454299698827, guid: 7d822ac7447cec943a6ec3b3a3af545c,
         type: 3}
       propertyPath: m_TagString
-      value: PlayerWeapon4
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: -4278032810995721380, guid: 7d822ac7447cec943a6ec3b3a3af545c,
         type: 3}
       propertyPath: m_TagString
-      value: PlayerWeapon4
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: -933895757607389765, guid: 7d822ac7447cec943a6ec3b3a3af545c,
         type: 3}
@@ -3620,10 +3618,18 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 968171010281812305}
+    - targetCorrespondingSourceObject: {fileID: -4278032810995721380, guid: 7d822ac7447cec943a6ec3b3a3af545c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8629601621311722119}
     - targetCorrespondingSourceObject: {fileID: -8183481454299698827, guid: 7d822ac7447cec943a6ec3b3a3af545c,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6954496595841947536}
+    - targetCorrespondingSourceObject: {fileID: -8183481454299698827, guid: 7d822ac7447cec943a6ec3b3a3af545c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2681581025672501208}
   m_SourcePrefab: {fileID: 100100000, guid: 7d822ac7447cec943a6ec3b3a3af545c, type: 3}
 --- !u!1 &4245752090458701224 stripped
 GameObject:
@@ -3652,6 +3658,22 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2.59
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8629601621311722119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4245752090458701224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0bcff6a82b5f24c901b72b5aed2f5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitType: 0
+  creatureID: 4
+  humanID: 0
+  buildingID: 0
 --- !u!1 &8080794886446763905 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8183481454299698827, guid: 7d822ac7447cec943a6ec3b3a3af545c,
@@ -3679,6 +3701,22 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2.59
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2681581025672501208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8080794886446763905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0bcff6a82b5f24c901b72b5aed2f5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitType: 0
+  creatureID: 4
+  humanID: 0
+  buildingID: 0
 --- !u!1 &8253909591793261477 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7d822ac7447cec943a6ec3b3a3af545c,

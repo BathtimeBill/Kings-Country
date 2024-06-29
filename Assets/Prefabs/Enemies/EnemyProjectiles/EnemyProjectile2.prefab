@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2344572776676009729}
   - component: {fileID: -8006412527983748602}
   - component: {fileID: 6935474869887598}
+  - component: {fileID: -3707776372782742846}
   m_Layer: 0
   m_Name: EnemyProjectile2
   m_TagString: Arrow2
@@ -96,10 +97,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3894247749214064697}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 0.5
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -210,9 +222,17 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3894247749214064697}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Radius: 3.01
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6935474869887598
@@ -229,6 +249,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3.5
   target: {fileID: 0}
+--- !u!114 &-3707776372782742846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3894247749214064697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0bcff6a82b5f24c901b72b5aed2f5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitType: 1
+  creatureID: 0
+  humanID: 4
+  buildingID: 0
 --- !u!1 &4943394363125378167
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,7 +299,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!96 &908618741432301598
 TrailRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -304,6 +340,7 @@ TrailRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Time: 2
+  m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -349,22 +386,27 @@ TrailRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
   m_MinVertexDistance: 0.1
+  m_MaskInteraction: 0
   m_Autodestruct: 0
   m_Emitting: 1
+  m_ApplyActiveColorSpace: 0
 --- !u!1001 &1987606536714045610
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5516048426707545568}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: e21f0d2b6d61967438f301bd6abed596,
@@ -453,12 +495,22 @@ PrefabInstance:
       value: ArrowModel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e21f0d2b6d61967438f301bd6abed596, type: 3}
+--- !u!4 &2026581212921376577 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e21f0d2b6d61967438f301bd6abed596,
+    type: 3}
+  m_PrefabInstance: {fileID: 1987606536714045610}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5406089409604618763
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2272058214052946191}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: cf79327d00ac2d4409ea152668978e67,
@@ -542,6 +594,13 @@ PrefabInstance:
       value: ArrowPlaceHolder
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: cf79327d00ac2d4409ea152668978e67,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2026581212921376577}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf79327d00ac2d4409ea152668978e67, type: 3}
 --- !u!4 &5516048426707545568 stripped
 Transform:
