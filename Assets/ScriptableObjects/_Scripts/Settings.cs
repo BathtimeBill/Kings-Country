@@ -28,7 +28,7 @@ public class Settings : ScriptableObject
     public Vibration vibration;
 
     [Header("General")]
-    public GeneralObjects generalObjects;
+    public General general;
 
     #region Editor
 #if UNITY_EDITOR
@@ -292,8 +292,9 @@ public class ObjectColor
 }
 
 [Serializable]
-public class GeneralObjects
+public class General
 {
+    public float introCameraDuration = 5;
     public GameObject maegenPickup;
     public GameObject healObject;
 }

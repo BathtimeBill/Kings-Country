@@ -53,4 +53,15 @@ public static class TweenX
     {
         _image.DOColor(_toColor, _duration).SetEase(_ease);
     }
+    /// <summary>
+    /// Tweens an images colour
+    /// </summary>
+    /// <param name="_text"></param>
+    /// <param name="_toColor"></param>
+    /// <param name="_duration"></param>
+    /// <param name="_ease"></param>
+    public static void TweenColor(TMPro.TMP_Text _text, Color _toColor, float _duration = 0.4f, Ease _ease = Ease.InOutSine)
+    {
+        _text.DOColor(_toColor, _duration).SetEase(_ease);
+    }
 }

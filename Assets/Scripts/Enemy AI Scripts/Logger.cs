@@ -269,7 +269,7 @@ public class Logger : Enemy
     public override void DropMaegen()
     {
         int rnd;
-        if (_TUTM.isTutorial && _TUTM.tutorialStage == 8)
+        if (_TUTORIAL.isTutorial && _TUTORIAL.tutorialStage == 8)
         {
             rnd = 1;
         }
@@ -279,7 +279,7 @@ public class Logger : Enemy
         }
         if (rnd == 1)
         {
-            Instantiate(_SETTINGS.generalObjects.maegenPickup, transform.position, transform.rotation);
+            Instantiate(_SETTINGS.general.maegenPickup, transform.position, transform.rotation);
         }
     }
     //public override void Launch()

@@ -7,6 +7,11 @@ using DG.Tweening;
 
 public class UIManager : Singleton<UIManager>
 {
+    [Header("Managers")]
+    public GlossaryManager glossaryManager;
+    public TutorialManager tutorialManager;
+
+    [Header("Resources Top")]
     public TMP_Text maegenText;
     public TMP_Text treesText;
     public TMP_Text wildlifeText;

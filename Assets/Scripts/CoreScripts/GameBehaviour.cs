@@ -11,7 +11,6 @@ public class GameBehaviour : BV.Behaviour
     protected static MusicManager _MM { get { return MusicManager.instance; } }
     protected static EnemyManager _EM { get { return EnemyManager.instance; } }
     protected static UIManager _UI { get { return UIManager.instance; } }
-    protected static TutorialManager _TUTM { get { return TutorialManager.instance; } }
     protected static PlayerControls _PC { get { return PlayerControls.instance; } }
     protected static SoundManager _SM { get { return SoundManager.instance; } }
     protected static TreePlacement _TPlace { get { return TreePlacement.instance; } }
@@ -25,6 +24,8 @@ public class GameBehaviour : BV.Behaviour
     protected static UpgradeManager _UPGRADE { get { return UpgradeManager.instance; } }
     protected static SaveManager _SAVE { get { return SaveManager.instance; } }
     protected static StatsData _STATS { get { return StatsData.instance; } }
+    protected static TutorialManager _TUTORIAL { get { return _UI.tutorialManager; } }
+    protected static GlossaryManager _GLOSSARY { get { return _UI.glossaryManager; } }
 
     public bool hasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build || _GM.gameState == GameState.Tutorial;
     public bool isPaused => _GM.gameState == GameState.Pause;
@@ -309,4 +310,53 @@ public enum DayID
     Day1, Day2, Day3, Day4, Day5, Day6, Day7, 
     Day8, Day9, Day10, Day11, Day12, Day13, Day14, 
     Day15, Day16, Day17, Day18, Day19, Day20, Day21
+}
+
+public enum GlossaryID
+{
+    CameraControls,
+    CreatureMovement,
+    Maegen,
+    Trees,
+    Wildlife,
+    Populous,
+    HomeTree,
+    WitchsHut,
+    Horgr,
+    Powers,
+    DayNightCycle,
+    HumanClasses,
+    Dogs,
+    Mines,
+    Spies,
+    LordsOfTheLand,
+    Combat,
+    Health,
+}
+
+public enum TutorialID
+{
+    CameraMove,
+    CameraRotate,
+    CameraZoom,
+    Maegen,
+    Trees,
+    CreatureMovement,
+    Wildlife,
+    Populous,
+    HomeTree,
+    WitchsHut,
+    Horgr,
+    Powers,
+    DayNightCycle,
+    HumanClasses,
+    Dogs,
+    Mines,
+    Spies,
+    LordsOfTheLand,
+    Combat,
+    Health,
+    Map,
+    Survive,
+    DayOver
 }

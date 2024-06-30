@@ -202,7 +202,7 @@ public class Enemy : GameBehaviour
         int rnd = Random.Range(1, maxRandomDropChance);
         if (rnd == 1)
         {
-            Instantiate(_SETTINGS.generalObjects.maegenPickup, transform.position, transform.rotation);
+            Instantiate(_SETTINGS.general.maegenPickup, transform.position, transform.rotation);
         }
     }
 }

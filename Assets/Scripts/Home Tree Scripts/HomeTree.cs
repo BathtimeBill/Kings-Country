@@ -106,9 +106,9 @@ public class HomeTree : GameBehaviour
     }
     private void CheckForNumberOfUnitsForTutorial()
     {
-        if (_TUTM.isTutorial)
+        if (_TUTORIAL.isTutorial)
         {
-            if (_GM.populous >= 2 && _TUTM.tutorialStage == 4)
+            if (_GM.populous >= 2 && _TUTORIAL.tutorialStage == 4)
             {
                 GameEvents.ReportOnNextTutorial();
             }

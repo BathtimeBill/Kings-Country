@@ -133,7 +133,7 @@ public class HorgrManager : Singleton<HorgrManager>
                 Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
                 _GM.DecreaseMaegen(cost);
                 _UI.CheckPopulousUI();
-                if(_TUTM.isTutorial && _TUTM.tutorialStage == 12)
+                if(_TUTORIAL.isTutorial && _TUTORIAL.tutorialStage == 12)
                 {
                     GameEvents.ReportOnNextTutorial();  
                 }

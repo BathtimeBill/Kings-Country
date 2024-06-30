@@ -330,7 +330,7 @@ public class Unit : GameBehaviour
             Vector3 offset = new Vector3(0, -1.5f, 0);
             if (unitID == CreatureID.Huldra && isSelected || unitID == CreatureID.Fidhain && isSelected)
             {
-                if (_TUTM.isTutorial && _TUTM.tutorialStage == 13)
+                if (_TUTORIAL.isTutorial && _TUTORIAL.tutorialStage == 13)
                 {
                     GameEvents.ReportOnNextTutorial();
                 }

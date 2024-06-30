@@ -71,9 +71,9 @@ public class PlayerControls : Singleton<PlayerControls>
     {
         if(buildPhase)
         {
-            if(_TUTM.isTutorial)
+            if(_TUTORIAL.isTutorial)
             {
-                if(_TUTM.tutorialStage == 1)
+                if(_TUTORIAL.tutorialStage == 1)
                 {
                     GameEvents.ReportOnNextTutorial();
                 }
@@ -520,9 +520,9 @@ public class PlayerControls : Singleton<PlayerControls>
                     GameEvents.ReportOnHomeTreeSelected();
                     GameEvents.ReportOnHutDeselected();
                     GameEvents.ReportOnHorgrDeselected();
-                    if (_TUTM.isTutorial)
+                    if (_TUTORIAL.isTutorial)
                     {
-                        if (_TUTM.tutorialStage == 3)
+                        if (_TUTORIAL.tutorialStage == 3)
                         {
                             GameEvents.ReportOnNextTutorial();
                         }

@@ -65,7 +65,15 @@ public class EnemyManager : Singleton<EnemyManager>
 
     public int GetDayTotalEnemyCount()
     {
-        return currentDaySpawnAmount.logger + currentDaySpawnAmount.lumberjack + currentDaySpawnAmount.logcutter + currentDaySpawnAmount.wathe + currentDaySpawnAmount.hunter + currentDaySpawnAmount.bjornjeger + currentDaySpawnAmount.dreng + currentDaySpawnAmount.bezerker + currentDaySpawnAmount.knight;
+        return currentDaySpawnAmount.logger +
+            currentDaySpawnAmount.lumberjack +
+            currentDaySpawnAmount.logcutter +
+            currentDaySpawnAmount.wathe + 
+            currentDaySpawnAmount.hunter + 
+            currentDaySpawnAmount.bjornjeger + 
+            currentDaySpawnAmount.dreng + 
+            currentDaySpawnAmount.bezerker + 
+            currentDaySpawnAmount.knight;
     }
 
     public int GetHumanDayLimit(HumanID _humanID)
