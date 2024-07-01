@@ -11,6 +11,9 @@ public class UIManager : Singleton<UIManager>
     public GlossaryManager glossaryManager;
     public TutorialManager tutorialManager;
 
+    [Header("In Game Panels")]
+    public InGamePanels inGamePanels;
+
     [Header("Resources Top")]
     public TMP_Text maegenText;
     public TMP_Text treesText;
@@ -291,10 +294,11 @@ public class UIManager : Singleton<UIManager>
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
                 break;
             case GameState.Tutorial:
-                TweenX.KillTweener(inGameCanvasTweener);
-                inGameCanvas.interactable = false;
-                inGameCanvasTweener = inGameCanvas.DOFade(0, 0.2f).SetUpdate(true);
-                TweenX.KillTweener(blackoutCanvasTweener);
+                //TweenX.KillTweener(inGameCanvasTweener);
+                inGameCanvas.interactable = true;
+                inGameCanvas.alpha = 1;
+                //inGameCanvasTweener = inGameCanvas.DOFade(0, 0.2f).SetUpdate(true);
+                //TweenX.KillTweener(blackoutCanvasTweener);
                 //blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
                 break;
         }
@@ -993,4 +997,21 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnFormationSelected -= OnFormationSelected;
         GameEvents.OnEnemyUnitKilled -= OnEnemyUnitKilled;
     }
+}
+
+[System.Serializable]
+public class InGamePanels
+{
+    public CanvasGroup dayNightPanel;
+    public CanvasGroup treePanel;
+    public CanvasGroup toolPanel;
+    public CanvasGroup combatPanel;
+    public CanvasGroup speedPanel;
+    public CanvasGroup unitPanel;
+    public CanvasGroup perksPanel;
+    public CanvasGroup resourcesPanel;
+    public CanvasGroup mapPanel;
+    public CanvasGroup tasksPanel;
+
+    public void Show(CanvasGroup cvg) => FadeX.FadeIn(cvg);
 }

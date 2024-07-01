@@ -52,6 +52,8 @@ public class PlayerControls : Singleton<PlayerControls>
 
     private CameraController cameraController;
 
+    public void DeselectAllTools() => DeslectAllModes();
+
 
     private void Start()
     {
@@ -69,17 +71,16 @@ public class PlayerControls : Singleton<PlayerControls>
 
     private void SelectTreeMode()
     {
+        if(!TutorialComplete)
+        {
+            _GM.SetPlayMode(PlayMode.TreeMode);
+            treePlacement.SetActive(true);
+            _UI.ShowTreeModifier(true);
+        }
+
         if(buildPhase)
         {
-            if(_TUTORIAL.isTutorial)
-            {
-                if(_TUTORIAL.tutorialStage == 1)
-                {
-                    GameEvents.ReportOnNextTutorial();
-                }
-            }
-
-            _GM.playmode = PlayMode.TreeMode;
+            _GM.SetPlayMode(PlayMode.TreeMode);
             treePlacement.SetActive(true);
             _UI.ShowTreeModifier(true);
         }
@@ -89,25 +90,25 @@ public class PlayerControls : Singleton<PlayerControls>
 
     private void SelectRuneMode()
     {
-        _GM.playmode = PlayMode.RuneMode;
+        _GM.SetPlayMode(PlayMode.RuneMode);
         runePlacement.SetActive(true);
     }
 
     private void SelectFyreMode()
     {
-        _GM.playmode = PlayMode.FyreMode;
+        _GM.SetPlayMode(PlayMode.FyreMode);
         beaconPlacement.SetActive(true);
     }    
 
     private void SelectStormerMode()
     {
-        _GM.playmode = PlayMode.StormerMode;
+        _GM.SetPlayMode(PlayMode.StormerMode);
         stormerPlacement.SetActive(true);
     }
 
     private void DeslectAllModes()
     {
-        _GM.playmode = PlayMode.DefaultMode;
+        _GM.SetPlayMode(PlayMode.DefaultMode);
         treePlacement.SetActive(false);
         runePlacement.SetActive(false);
         stormerPlacement.SetActive(false);
@@ -520,13 +521,6 @@ public class PlayerControls : Singleton<PlayerControls>
                     GameEvents.ReportOnHomeTreeSelected();
                     GameEvents.ReportOnHutDeselected();
                     GameEvents.ReportOnHorgrDeselected();
-                    if (_TUTORIAL.isTutorial)
-                    {
-                        if (_TUTORIAL.tutorialStage == 3)
-                        {
-                            GameEvents.ReportOnNextTutorial();
-                        }
-                    }
                 }
             }
             if (hitPoint.collider.tag == "Horgr")

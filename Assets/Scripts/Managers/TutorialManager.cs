@@ -10,30 +10,31 @@ using UnityEngine.UIElements;
 public class TutorialManager : GameBehaviour
 {
     //TEMP
-    [Tooltip("Untick to skip tutorial")]
-    public bool playTutorial;
+    [Tooltip("Will override the save data values")]
+    public bool overrideTutorial;
+    [DrawIf("overrideTutorial", true)]
+    public bool showTutorial;
     [Tooltip("Just to skip the intro camera")]
     public bool overrideStartTime = true;
+    public int debugStartOffset = 0;
+    public float cameraTaskTime = 3f;
 
     [Header("Tutorial Chunks")]
     public TutorialID currentTutorialID;
     public List<Tutorial> tutorials;
-    [BV.EnumList(typeof(TutorialID))]
-    public List<TutorialID> tutorialList;
     public List<TaskLine> taskLines;
 
     [Header("Basic")]
+    public TutorialArrow arrows;
     public CanvasGroup glossaryPanel;
-    public int tutorialCount = 0;
-    public int maxTutorialCount;
 
     [Header("In Game Tutorial")]
     public TMP_Text tutorialTitle;
     public TMP_Text tutorialDescription;
     public TMP_Text taskText;
     public GameObject check;
-    public CanvasGroup inGameTutorialPanel;
-    public GameObject taskPanel;
+    public CanvasGroup tutorialPanel;
+    public CanvasGroup taskPanel;
     public GameObject inGameContinueButton;
     public GameObject treeButton;
     public GameObject maegenIcon;
@@ -43,54 +44,132 @@ public class TutorialManager : GameBehaviour
     public int tutorialStage;
     public bool isTutorial;
 
-    [Header("New")]
-    public GameObject newTutorialButton;
-    public TMP_Text newTutorialTitle;
-    public bool firstPlay;
-    public bool firstWave;
-    public bool firstMine;
-    public bool firstLord;
-    public bool firstLevel2;
-    public bool firstSpy;
-    public bool firstHomeTree;
+    [HideInInspector] public bool tutorialComplete;
+    private int treeCount = 0;
+    private int treeCompletionCount = 4;
 
-    public Tutorial GetTutorial(TutorialID _id) => tutorials.Find(x => x.tutorialID == _id);
+    private int creatureCount = 0;
+    private int creatureCompletionCount = 3;
+
+    private float fadeStrength = 0.1f;
+
+    private InGamePanels gamePanels;
+    private List<CanvasGroup> arrowList = new List<CanvasGroup>();
+
+    private Tutorial GetTutorial(TutorialID _id) => tutorials.Find(x => x.tutorialID == _id);
     private Tutorial CurrentTutorial => GetTutorial(currentTutorialID);
-    public TutorialID current => tutorialList[0];
+
+    #region Text Variables
+    private string moveCameraTask   = "Move the camera around the GROVE";
+    private string rotateCameraTask = "Rotate the camera";
+    private string zoomCameraTask   = "Zoom the camera";
+    private string treesTask        = "Grow 4 Trees";
+    private string creaturesTask    = "Summon 4 CREATURES";
+    private string startDayTask     = "Start the Day";
+    private string winDayTask       = "Defend the GROVE from the HUMANS";
+
+    #endregion
 
     void Start()
     {
-        //TODO save and load from file
-        //_SAVE.Load();
-        //CheckTutorial();
-        //CheckInGameTutorial();
-        //StartCoroutine(WaitForStartCamera());
-        //if (newTutorialButton != null)
-        //{
-        //    CheckTutorial();
-        //    StartCoroutine(WaitForStartCamera());
-        //}
+        gamePanels = _UI.inGamePanels;
 
         for (int i = 0; i < tutorials.Count; i++)
             SetupTutorials(GetTutorial(tutorials[i].tutorialID));
-        
-        currentTutorialID = tutorialList[0];
 
         FadeX.InstantTransparent(glossaryPanel);
-        FadeX.InstantTransparent(inGameTutorialPanel);
+        FadeX.InstantTransparent(tutorialPanel);
+        SetArrows();
 
-        if (playTutorial)
+        //if(debugStartOffset > 0)
+        //{
+        //    for(int  i = 0;i <= tutorials.Count;i++)
+        //    {
+        //        tutorials.Remove(tutorials[i]);
+        //    }
+        //    currentTutorialID = tutorials[0].tutorialID;
+        //}
+
+        //Debug Stuff
+        if (overrideTutorial)
+            tutorialComplete = !showTutorial;
+        else
+            tutorialComplete = _SAVE.TutorialComplete;
+
+        if (tutorialComplete)
         {
-            _GM.ChangeGameState(GameState.Tutorial);
-            ShowTutorial(currentTutorialID);
-            ExecuteAfterSeconds(overrideStartTime ? 1 : _SETTINGS.general.introCameraDuration, () => FadeX.FadeIn(inGameTutorialPanel));
+            FadeX.InstantTransparent(tutorialPanel);
+            FadeX.InstantTransparent(taskPanel);
+            HideArrows(true);
+            _GLOSSARY.SetInteractable(true);
         }
         else
-            FadeX.InstantTransparent(inGameTutorialPanel);
+        {
+            _GM.ChangeGameState(GameState.Tutorial);
+            ShowTutorial();
+            SetInitalPanels();
+            ExecuteAfterSeconds(overrideStartTime ? 1 : _SETTINGS.general.introCameraDuration, () => FadeX.FadeIn(tutorialPanel));
+        }
 
         inGameContinueButton.SetActive(false);
     }
 
+    private void SetInitalPanels()
+    {
+        FadeX.InstantAlphaValue(gamePanels.dayNightPanel, fadeStrength);
+        FadeX.InstantAlphaValue(gamePanels.treePanel, fadeStrength);
+        FadeX.InstantAlphaValue(gamePanels.toolPanel, fadeStrength);
+        FadeX.InstantAlphaValue(gamePanels.combatPanel, fadeStrength);
+        FadeX.InstantAlphaValue(gamePanels.speedPanel, fadeStrength);
+        FadeX.InstantAlphaValue(gamePanels.unitPanel, fadeStrength);
+        FadeX.InstantAlphaValue(gamePanels.resourcesPanel, fadeStrength);
+        FadeX.InstantAlphaValue(gamePanels.perksPanel, fadeStrength);
+        FadeX.InstantAlphaValue(gamePanels.mapPanel, fadeStrength);
+
+        FadeX.InstantOpaque(taskPanel);
+        HideArrows(true);
+        _GLOSSARY.SetInteractable(false);
+    }
+
+    private void ShowAllPanels()
+    {
+        //FadeX.FadeIn(gamePanels.dayNightPanel);
+        FadeX.FadeIn(gamePanels.treePanel);
+        FadeX.FadeIn(gamePanels.toolPanel);
+        FadeX.FadeIn(gamePanels.combatPanel);
+        FadeX.FadeIn(gamePanels.speedPanel);
+        FadeX.FadeIn(gamePanels.unitPanel);
+        FadeX.FadeIn(gamePanels.resourcesPanel);
+        FadeX.FadeIn(gamePanels.perksPanel);
+        FadeX.FadeIn(gamePanels.mapPanel);
+    }
+
+    private void SetArrows()
+    {
+        arrowList.Add(arrows.maegenArrow);
+        arrowList.Add(arrows.treeToolArrow);
+        arrowList.Add(arrows.unitArrow);
+        arrowList.Add(arrows.dayNightArrow);
+        arrowList.Add(arrows.populousArrow);
+        arrowList.Add(arrows.wildlifeArrow);
+    }
+
+    private void HideArrows(bool _instant = false)
+    {
+        for (int i = 0; i < arrowList.Count; i++)
+        {
+            if(_instant)
+                FadeX.InstantTransparent(arrowList[i]);
+            else
+                FadeX.FadeOut(arrowList[i]);
+        }
+    }
+
+    #region Setup
+    /// <summary>
+    /// Here we setup every aspect of the tutorial object
+    /// </summary>
+    /// <param name="_tutorial">The tutorial to setup</param>
     private void SetupTutorials(Tutorial _tutorial)
     {
         switch(_tutorial.tutorialID)
@@ -98,35 +177,126 @@ public class TutorialManager : GameBehaviour
             case TutorialID.CameraMove:
                 _tutorial.title = "Camera Controls";
                 _tutorial.description = "To MOVE the camera, use the ‘W,A,S,D’ keys or move the mouse cursor to the edge of the screen.\r\n<br>Hold shift to hasten camera movement.";
+                _tutorial.taskLine = moveCameraTask;
                 break;
             case TutorialID.CameraRotate:
                 _tutorial.title = "Camera Controls";
                 _tutorial.description = "To ROTATE the camera, click and drag the ‘Middle Mouse Button’ to the left or right.";
+                _tutorial.taskLine = rotateCameraTask;
                 break;
             case TutorialID.CameraZoom:
                 _tutorial.title = "Camera Controls";
                 _tutorial.description = "To ZOOM the camera, scroll the Mouse Wheel in and out.";
+                _tutorial.taskLine = zoomCameraTask;
                 break;
             case TutorialID.Maegen:
                 _tutorial.title = "Maegen";
                 _tutorial.description = "This is your MAEGEN. \r\n<br>MAEGEN is the wild energy within all natural things and serves as the lifeblood of our grove. Spend MAEGEN to grow TREES that will, in turn, produce more MAEGEN at the end of the DAY.";
+                _tutorial.showContinueButton = true;
+                _tutorial.showObjects.Add(gamePanels.resourcesPanel.gameObject);
+                _tutorial.showObjects.Add(arrows.maegenArrow.gameObject);
                 break;
             case TutorialID.Trees:
                 _tutorial.title = "Trees";
-                _tutorial.description = "The productivity of each TREE is determined by its proximity to others in the GROVE. TREES clustered together are less productive but easier to defend, while those spread out yield more MAEGEN but are more vulnerable to attack.\r\n<br>To grow a tree, click on the TREE button and Left-Click on an available space in our domain.";
+                _tutorial.description = "The productivity of each TREE is determined by its proximity to others in the GROVE. TREES clustered together are less productive but easier to defend, while those spread out yield more MAEGEN but are more vulnerable to attack.\r\n<br>To grow a tree, click on the TREE button and Left-Click on an available space in our domain.<br> You can only plant trees during NIGHT";
+                _tutorial.taskLine = treesTask;
+                _tutorial.showObjects.Add(gamePanels.treePanel.gameObject);
+                _tutorial.showObjects.Add(arrows.treeToolArrow.gameObject);
                 break;
+            case TutorialID.CreatureMovement:
+                _tutorial.title = "Creatures";
+                _tutorial.description = 
+                    "CREATURES are cool and needed to defend the forest.<br>" +
+                    "Each unit requires a different MAEGEN cost to summon<br>" +
+                    "Summon CREATURES from the creature panel<br>";
+                _tutorial.taskLine = creaturesTask;
+                _tutorial.showObjects.Add(gamePanels.unitPanel.gameObject);
+                _tutorial.showObjects.Add(arrows.unitArrow.gameObject);
+                break;
+            case TutorialID.HomeTree:
+                _tutorial.title = "Home Tree";
+                _tutorial.description =
+                    "You must protect the HOME TREE.<br>" +
+                    "If the HOME TREE is attacked to much, it is all over<br>" +
+                    "When you click on the HOME TREE, you can bring up the CREATURES that you can summon from it<br>" + 
+                    "Use CREATURES to defend the HOME TREE<br>";
+                _tutorial.showContinueButton = true;
+                break;
+            case TutorialID.Wildlife:
+                _tutorial.title = "Wildlife";
+                _tutorial.description =
+                    "WILDLIFE does stuff.<br>" +
+                    "More trees means more MAEGEN and WILDLIFE per day.<br>" +
+                    "Eat your wildlife!";
+                _tutorial.showContinueButton = true;
+                _tutorial.showObjects.Add(arrows.wildlifeArrow.gameObject);
+                break;
+            case TutorialID.Populous:
+                _tutorial.title = "Populous";
+                _tutorial.description =
+                    "There is a maximum population of CREATURES you can have at one time.<br>" +
+                    "Something else<br>" +
+                    "Sacrifice a unit to reduce populous!";
+                _tutorial.showContinueButton = true;
+                _tutorial.showObjects.Add(arrows.populousArrow.gameObject);
+                break;
+            case TutorialID.DayNightCycle:
+                _tutorial.title = "Day Night";
+                _tutorial.description =
+                    "Build during the night.<br>" +
+                    "Humans will attack during the day so get ready<br>" +
+                    "When you are ready, click the day/night button to begin defending the forest";
+                _tutorial.taskLine = startDayTask;
+                _tutorial.showObjects.Add(gamePanels.unitPanel.gameObject);
+                _tutorial.showObjects.Add(gamePanels.treePanel.gameObject);
+                _tutorial.showObjects.Add(gamePanels.dayNightPanel.gameObject);
+                _tutorial.showObjects.Add(arrows.dayNightArrow.gameObject);
+                _tutorial.showContinueButton = true;
+                break;
+        }
+        SetupTaskLines();
+    }
+
+    public void SetupTaskLines()
+    {
+        for (int i = 0; i < tutorials.Count; i++)
+        {
+            for(int j =0; j < taskLines.Count; j++)
+            {
+                if (tutorials[i].tutorialID == taskLines[j].taskID)
+                    taskLines[j].SetText(tutorials[i].taskLine);
+            }
         }
     }
 
-    public void ShowTutorial(TutorialID _tutorialID)
+    #endregion
+
+    private void GetNextTutorial()
+    {
+        if (tutorials.Count == 0) 
+            return;
+
+        tutorials.Remove(CurrentTutorial);
+
+        if (tutorials.Count == 0)
+        {
+            HideTutorialPanel();
+            return;
+        }
+        else
+            currentTutorialID = tutorials[0].tutorialID;
+    }
+
+
+    public void ShowTutorial()
     {
         if (CurrentTutorial == null)
             return;
 
         tutorialTitle.text = CurrentTutorial.title;
         tutorialDescription.text = CurrentTutorial.description;
-        ObjectX.ToggleObjects(CurrentTutorial.showObjects, true);
-        ObjectX.ToggleObjects(CurrentTutorial.hideObjects, false);
+        ToggleObjects();
+        FadeX.FadeIn(tutorialPanel);
 
         for (int i = 0; i < taskLines.Count; i++)
         {
@@ -134,234 +304,162 @@ public class TutorialManager : GameBehaviour
                 taskLines[i].ActivateTask();
         }
 
-        //tutorialList.Remove(t.tutorialID);
-        CheckTaskList();
+        inGameContinueButton.SetActive(CurrentTutorial.showContinueButton);
     }
 
-    public void NewTutorialAvailable(TutorialID id, string title)
+    public void HideTutorialPanel()
     {
-        currentTutorialID = id;
-        newTutorialTitle.text = title;
-        newTutorialButton.SetActive(true);
-        newTutorialButton.GetComponent<Animator>().SetTrigger("TutorialAvailable");
-        newTutorialButton.GetComponent<AudioSource>().Play();
+        FadeX.FadeOut(tutorialPanel);
+    }
+
+    private void ToggleObjects()
+    {
+        HideArrows();
+        for (int i = 0; i < CurrentTutorial.showObjects.Count; i++)
+        {
+            if (CurrentTutorial.showObjects[i].GetComponent<CanvasGroup>() != null)
+                FadeX.FadeIn(CurrentTutorial.showObjects[i].GetComponent<CanvasGroup>());
+        }
+        //for (int i = 0; i < CurrentTutorial.hideObjects.Count; i++)
+        //{
+        //    if (CurrentTutorial.hideObjects[i].GetComponent<CanvasGroup>() != null)
+        //        FadeX.FadeOut(CurrentTutorial.hideObjects[i].GetComponent<CanvasGroup>());
+        //}
     }
 
     public void ContinueButton()
     {
-        tutorialStage++;
-        CheckInGameTutorial();
-        CheckTaskList();
+        GetNextTutorial();
+        ShowTutorial();
+
+        //if (CurrentTutorial.closePanelAfter)
+        //    HideTutorialPanel();
     }
 
-    public void CheckInGameTutorial()
-    {
-        ShowTutorial(currentTutorialID);
-        /*if(tutorialStage == 0)
-        {
-            tutorialTitle.text = "Camera Controls";
-            tutorialDescription.text = "To MOVE the camera, use the ‘W,A,S,D’ keys or move the mouse cursor to the edge of the screen.\r\n<br>Hold shift to hasten camera movement.";
-        }
-        if (tutorialStage == 1)
-        {
-            tutorialTitle.text = "Camera Controls";
-            tutorialDescription.text = "To ROTATE the camera, click and drag the ‘Middle Mouse Button’ to the left or right.";
-        }
-        if (tutorialStage == 2)
-        {
-            tutorialTitle.text = "Camera Controls";
-            tutorialDescription.text = "To ZOOM the camera, scroll the Mouse Wheel in and out.";
-        }
-        if (tutorialStage == 3)
-        {
-            FadeX.FadeOut(inGameTutorialPanel);
-            taskPanel.SetActive(false);
-            currentTutorialID = TutorialID.DayNightCycle;
-         
-        }
-        if (tutorialStage == 4)
-        {
-            tutorialTitle.text = "Maegen";
-            tutorialDescription.text = "This is your MAEGEN. \r\n<br>MAEGEN is the wild energy within all natural things and serves as the lifeblood of our grove. Spend MAEGEN to grow TREES that will, in turn, produce more MAEGEN at the end of the DAY.";
-            inGameContinueButton.SetActive(true);
-            contextArrow.SetActive(true);
-            contextArrow.transform.rotation = Quaternion.Euler(0, 0, 180);
-            contextArrow.transform.position = maegenIcon.transform.position;
-        }
-        if (tutorialStage == 5)
-        {
-            tutorialTitle.text = "Trees";
-            tutorialDescription.text = "The productivity of each TREE is determined by its proximity to others in the GROVE. TREES clustered together are less productive but easier to defend, while those spread out yield more MAEGEN but are more vulnerable to attack.\r\n<br>To grow a tree, click on the TREE button and Left-Click on an available space in our domain.";
-            contextArrow.SetActive(true);
-            inGameContinueButton.SetActive(false);
-            contextArrow.transform.rotation = Quaternion.Euler(0, 0, 0);
-            contextArrow.transform.position = treeButton.transform.position;
-        }*/
-    }
-    public void CheckTaskList()
-    {
-        StartCoroutine(WaitForNextTask());
-
-        /*if (currentTutorialID == TutorialID.CameraMove)
-        {
-            taskText.text = "Move the camera around the Grove";
-            if(hasCompletedTask)
-            {
-                StartCoroutine(WaitForNextTask());
-            }
-        }
-        if (currentTutorialID == TutorialID.CameraRotate)
-        {
-            taskText.text = "Rotate the camera";
-            if (hasCompletedTask)
-            {
-                StartCoroutine(WaitForNextTask());
-            }
-        }
-        if (currentTutorialID == TutorialID.CameraZoom)
-        {
-            taskText.text = "Zoom the camera";
-            if (hasCompletedTask)
-            {
-                StartCoroutine(WaitForNextTask());
-            }
-        }*/
-    }
     private IEnumerator WaitForNextTask()
     {
         CurrentTutorial.completed = true;
-        for (int i = 0; i < taskLines.Count; i++)
+
+        if(CurrentTutorial.tutorialID == TutorialID.CameraMove || CurrentTutorial.tutorialID == TutorialID.CameraRotate || CurrentTutorial.tutorialID == TutorialID.CameraZoom)
         {
-            if(currentTutorialID == taskLines[i].taskID)
-                taskLines[i].CheckOffTask();
+            for (int i = 0; i < taskLines.Count; i++)
+            {
+                if (currentTutorialID == taskLines[i].taskID)
+                    taskLines[i].CheckOffTask();
+            }
+            yield return new WaitForSeconds(cameraTaskTime);
         }
 
-        //check.SetActive(true);
-        yield return new WaitForSeconds(3);
-        //tutorialList.Remove(currentTutorialID);
-        tutorialStage++;
-        hasCompletedTask = false;
-        //check.SetActive(false);
-        CheckTaskList();
-        CheckInGameTutorial();
+        GetNextTutorial();
+        ShowTutorial();
     }
 
     public void CheckCameraTutorial(TutorialID _tutorialID)
     {
+        if (tutorialComplete)
+            return;
+
         if (currentTutorialID != _tutorialID)
             return;
 
         if (CurrentTutorial.completed)
             return;
 
-        ShowTutorial(_tutorialID);
-        print(_tutorialID.ToString());
-        //if (isTutorial && current == _tutorialID)
-        //{
-        //    if (hasCompletedTask == false)
-        //    {
-        //        hasCompletedTask = true;
-        //        CheckTaskList();
-        //    }
-        //}
+        StartCoroutine(WaitForNextTask());
     }
 
     #region Events
-    public void OnDayBegin()
+    private void OnToolButtonPressed(ToolID _toolID)
     {
-        if (!playTutorial)
+        if (tutorialComplete)
             return;
 
-        if (firstPlay == false)
+        if (currentTutorialID != TutorialID.Trees)
+            return;
+
+        if (_toolID == ToolID.Tree)
+            HideTutorialPanel();
+    }
+
+    //Trees
+    private void OnTreePlaced(ToolID _toolID)
+    {
+        if (tutorialComplete)
+            return;
+
+        treeCount++;
+        taskLines.Find(x => x.taskID == TutorialID.Trees).text.text = "Grow 4 trees (" + treeCount + "/" + treeCompletionCount + ")";
+        if (treeCount == treeCompletionCount)
         {
-            if(_GM.level == LevelNumber.One && _GM.currentDay == 1)
-            {
-                NewTutorialAvailable(TutorialID.HumanClasses, "Human Classes");
-                StartCoroutine(WaitToAddCombatTutorial());
-            }
+            GetNextTutorial();
+            ShowTutorial();
+            taskLines.Find(x => x.taskID == TutorialID.Trees).CheckOffTask();
+            _PC.DeselectAllTools();
+            _GM.SetPlayMode(PlayMode.DefaultMode);
+            FadeX.FadeTo(gamePanels.treePanel, fadeStrength);
         }
     }
-    IEnumerator WaitToAddCombatTutorial()
+
+    //Summon Creatures
+    private void OnUnitButtonPressed(UnitData _unitData)
     {
-        yield return new WaitForSeconds(10);
-        NewTutorialAvailable(TutorialID.Combat, "Combat");
-    }
-    public void OnDayOver()
-    {
-        if(isTutorial)
+        if (tutorialComplete)
+            return;
+
+        if (currentTutorialID != TutorialID.CreatureMovement)
+            return;
+
+        HideTutorialPanel();
+
+        creatureCount++;
+        taskLines.Find(x => x.taskID == TutorialID.CreatureMovement).text.text = "Summon 3 Creatures (" + creatureCount + "/" + creatureCompletionCount + ")";
+        if (creatureCount == creatureCompletionCount)
         {
-            if(tutorialStage == 8)
-            {
-                GameEvents.ReportOnNextTutorial();
-            }
+            GetNextTutorial();
+            ShowTutorial();
+            taskLines.Find(x => x.taskID == TutorialID.CreatureMovement).CheckOffTask();
+            FadeX.FadeTo(gamePanels.unitPanel, fadeStrength);
         }
     }
-    public void OnContinueButton()
+
+
+    public void OnDayBegin()
     {
-        if(isTutorial)
-        {
-            //if(tutorialStage == 9)
-            //{
-            //    GameEvents.ReportOnNextTutorial();
-            //}
-        }
+        if (tutorialComplete)
+            return;
+
+        taskLines.Find(x => x.taskID == TutorialID.DayNightCycle).CheckOffTask();
+        ShowAllPanels();
+        HideArrows();
+        HideTutorialPanel();
+        _GLOSSARY.SetInteractable(true);
+        tutorialComplete = true;
+        _SAVE.SetTutorialComplete();
     }
-    void OnLevelWin(LevelID _levelID, int _score, int _maegen)
-    {
-        firstPlay = true;
-    }
-    void OnMineSpawned()
-    {
-        if(firstMine == false)
-        {
-            firstMine = true;
-            NewTutorialAvailable(TutorialID.Mines, "Mines");
-        }
-    }
-    void OnLordSpawned()
-    {
-        if (firstLord == false)
-        {
-            firstLord = true;
-            NewTutorialAvailable(TutorialID.LordsOfTheLand, "Lords of the Land");
-        }
-    }
-    void OnSpySpawned()
-    {
-        if(firstSpy == false)
-        {
-            firstSpy = true;
-            NewTutorialAvailable(TutorialID.Spies, "Spies");
-        }
-    }
+
     void OnHomeTreeSelected()
     {
-        if (firstPlay == false && firstHomeTree == false)
-        {
-            firstHomeTree = true;
-            NewTutorialAvailable(TutorialID.HomeTree, "Home Tree");
-        }
+        //if (firstPlay == false && firstHomeTree == false)
+        //{
+        //    firstHomeTree = true;
+        //    NewTutorialAvailable(TutorialID.HomeTree, "Home Tree");
+        //}
     }
     private void OnEnable()
     {
+        GameEvents.OnToolButtonPressed += OnToolButtonPressed;
+        GameEvents.OnTreePlaced += OnTreePlaced;
+        GameEvents.OnUnitButtonPressed += OnUnitButtonPressed;
         GameEvents.OnDayBegin += OnDayBegin;
-        GameEvents.OnDayOver += OnDayOver;
-        GameEvents.OnContinueButton += OnContinueButton;
-        GameEvents.OnLevelWin += OnLevelWin;
-        GameEvents.OnMineSpawned += OnMineSpawned;
-        GameEvents.OnLordSpawned += OnLordSpawned;
-        GameEvents.OnSpySpawned += OnSpySpawned;
         GameEvents.OnHomeTreeSelected += OnHomeTreeSelected;
     }
+
     private void OnDisable()
     {
+        GameEvents.OnToolButtonPressed -= OnToolButtonPressed;
+        GameEvents.OnTreePlaced -= OnTreePlaced;
+        GameEvents.OnUnitButtonPressed -= OnUnitButtonPressed;
         GameEvents.OnDayBegin -= OnDayBegin;
-        GameEvents.OnDayOver -= OnDayOver;
-        GameEvents.OnContinueButton -= OnContinueButton;
-        GameEvents.OnLevelWin -= OnLevelWin;
-        GameEvents.OnMineSpawned -= OnMineSpawned;
-        GameEvents.OnLordSpawned -= OnLordSpawned;
-        GameEvents.OnSpySpawned -= OnSpySpawned;
         GameEvents.OnHomeTreeSelected -= OnHomeTreeSelected;
     }
     #endregion
@@ -379,14 +477,16 @@ public class TutorialManager : GameBehaviour
             // Create property fields.
             var idField = new PropertyField(property.FindPropertyRelative("tutorialID"));
             var imageField = new PropertyField(property.FindPropertyRelative("image"));
+            //var continueField = new PropertyField(property.FindPropertyRelative("showContinueButton"));
             var showField = new PropertyField(property.FindPropertyRelative("showObjects"));
             var hideField = new PropertyField(property.FindPropertyRelative("hideObjects"));
 
             // Add fields to the container.
             container.Add(idField);
-            container.Add(imageField);
-            container.Add(showField);
-            container.Add(hideField);
+            //container.Add(imageField);
+            //container.Add(continueField);
+            //container.Add(showField);
+            //container.Add(hideField);
 
             //int i = container.childCount;
             //container.style.backgroundColor = i % 1 == 0 ? Color.green : Color.black;
@@ -403,8 +503,22 @@ public class Tutorial
     public TutorialID tutorialID;
     [HideInInspector] public string title;
     public Sprite image;
+    public bool showContinueButton;
+    public bool closePanelAfter;
     [HideInInspector] public string description;
+    [HideInInspector] public string taskLine;
     [HideInInspector] public bool completed;
-    public GameObject[] showObjects;
-    public GameObject[] hideObjects;
+    public List<GameObject> showObjects;
+    public List<GameObject> hideObjects;
+}
+
+[System.Serializable]
+public class TutorialArrow
+{
+    public CanvasGroup maegenArrow;
+    public CanvasGroup treeToolArrow;
+    public CanvasGroup wildlifeArrow;
+    public CanvasGroup populousArrow;
+    public CanvasGroup unitArrow;
+    public CanvasGroup dayNightArrow;
 }

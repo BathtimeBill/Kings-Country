@@ -76,6 +76,12 @@ public class PlayTimeObject
 }
 
 [Serializable]
+public class GlossaryObject
+{
+    public bool tutorialComplete;
+}
+
+[Serializable]
 public class SaveDataObject : BGG.GameDataBase
 {
     // Player info
@@ -92,6 +98,8 @@ public class SaveDataObject : BGG.GameDataBase
     public PlayTimeObject playTime = new PlayTimeObject();
     //Unit Stats
     public Dictionary<string, UnitStats> unitStats = new Dictionary<string, UnitStats>();
+    //Tutorial
+    public GlossaryObject glossary = new GlossaryObject();
 
     // Data getters
     public LevelSaveObject GetLevelSaveData(LevelID _levelID)
@@ -194,6 +202,8 @@ public class SaveManager : BGG.GameData
             save.playerSettings.miniMapRotation = true;
             save.playerSettings.panelColour = PanelColourID.Black;
             save.playTime = new PlayTimeObject();
+
+            save.glossary = new GlossaryObject();
         }
 
         timeofLastSave = DateTime.Now;
@@ -285,6 +295,17 @@ public class SaveManager : BGG.GameData
     {
         return save.playerSettings.panelColour;
     }
+    #endregion
+
+    #region Tutorial/Glossary
+    public void SetTutorialComplete()
+    {
+        save.glossary.tutorialComplete = true;
+        SaveData();
+    }
+    public bool GetTutorialStatus => save.glossary.tutorialComplete;
+
+
     #endregion
 
     #region Level Specific

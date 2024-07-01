@@ -39,7 +39,6 @@ public class DayNightSwitch : GameBehaviour
 
     public void TweenButtonRotation(Vector3 endRotation, float time)
     {
-        print("GJKHGB");
         TweenX.KillTweener(buttonRotationTween);
         buttonRotationTween = _UI.dayNightButton.transform.DORotate(endRotation, time).SetEase(Ease.InOutBack);
     }

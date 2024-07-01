@@ -63,7 +63,7 @@ public class UnitButton : InteractableButton
     public override void ClickedButton()
     {
         GameEvents.ReportOnUnitButtonPressed(unitData);
-        if (_GM.gameState != GameState.Build)
+        if (_GM.gameState == GameState.Play)
             unitPanel.StartCooldowns();
     }
     public override void OnPointerEnter(PointerEventData eventData)

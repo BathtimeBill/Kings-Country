@@ -41,6 +41,15 @@ public static class FadeX
         _canvasGroup.blocksRaycasts = _interactable;
     }
 
+    public static void FadeTo(CanvasGroup _canvasGroup, float _toValue = 0.5f, float _tweenTime = 0.5f, bool _interactable = false, Action _onSuccess = null)
+    {
+        if (_canvasGroup.alpha == _toValue) return;
+
+        _canvasGroup.DOFade(_toValue, _tweenTime).SetUpdate(true).OnComplete(() => _onSuccess.Invoke());
+        _canvasGroup.interactable = _interactable;
+        _canvasGroup.blocksRaycasts = _interactable;
+    }
+
     /// <summary>
     /// Makes a panel instantly opaque and optionally sets interactable (true by default)
     /// </summary>
@@ -66,4 +75,11 @@ public static class FadeX
         _canvasGroup.interactable = _interactable;
         _canvasGroup.blocksRaycasts = _interactable;
     }
+    public static void InstantAlphaValue(CanvasGroup _canvasGroup, float _alpha = 0.1f, bool _interactable = false)
+    {
+        _canvasGroup.alpha = _alpha;
+        _canvasGroup.interactable = _interactable;
+        _canvasGroup.blocksRaycasts = _interactable;
+    }
+
 }

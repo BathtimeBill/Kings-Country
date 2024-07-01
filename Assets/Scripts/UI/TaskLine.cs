@@ -13,6 +13,11 @@ public class TaskLine : GameBehaviour
         checkFill.SetActive(false);
     }
 
+    public void SetText(string _text)
+    {
+        text.text = _text;
+    }
+
     public void ActivateTask()
     {
         TweenX.TweenColor(text, _SETTINGS.colours.descriptionColor);

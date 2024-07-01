@@ -99,11 +99,13 @@ public class GameManager : Singleton<GameManager>
 
     public bool skipIntro;
 
+    public void SetPlayMode(PlayMode _mode) => playmode = _mode;
+
     void Start()
     {
         IncreaseMaegen(startingMaegen);
         currentDay = 0;
-        playmode = PlayMode.DefaultMode;
+        SetPlayMode(PlayMode.DefaultMode);
         SetGame();
         trees.AddRange(GameObject.FindGameObjectsWithTag("Tree"));
         if (!skipIntro)

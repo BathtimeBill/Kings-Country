@@ -31,6 +31,7 @@ public class GameBehaviour : BV.Behaviour
     public bool isPaused => _GM.gameState == GameState.Pause;
     public bool gameFinished => _GM.gameState == GameState.Finish;
     public bool buildPhase => _GM.gameState == GameState.Build;
+    public bool TutorialComplete => _TUTORIAL.tutorialComplete;
     public int CurrentDay => _GM.currentDay - 1;
 
     public Settings _SETTINGS => _DATA.settings;
@@ -39,8 +40,6 @@ public class GameBehaviour : BV.Behaviour
     public Icons _ICONS => _DATA.settings.icons;
     public PlayerSettings _PLAYER => _SAVE.save.playerSettings;
 }
-
-
 
 public enum UpgradeID
 {

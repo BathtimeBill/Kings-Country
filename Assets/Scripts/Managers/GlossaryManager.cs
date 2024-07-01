@@ -15,18 +15,26 @@ public class GlossaryManager : GameBehaviour
     public TMP_Text glossaryDescriptionText;
     public TMP_Text glossaryTitleText;
     public CanvasGroup glossaryPanel;
+    public UnityEngine.UI.Button glossaryButton;
     public Scrollbar scrollbar;
     private GlossaryID lastSelectedGlossayID;
+    public List<GlossaryButton> glossaryButtons;
+    [Header("New Glossary Item")]
+    public UnityEngine.UI.Image newEntryLabel;
+    public TMP_Text newEntryTitle;
 
     public GlossaryItem GetGlossaryItem(GlossaryID _id) => glossaryItems.Find(x=>x.glossaryID == _id);
+    private bool glossaryAvailable(GlossaryID _id) => GetGlossaryItem(_id).available;
 
     private void Start()
     {
+        glossaryButton.onClick.AddListener(()=> OpenGlossaryPanel());
         lastSelectedGlossayID = GlossaryID.CameraControls;
         for(int i=0; i<glossaryItems.Count; i++)
         {
             SetupGlossaryItems(GetGlossaryItem(glossaryItems[i].glossaryID));
         }
+        newEntryLabel.fillAmount = 0;
     }
 
     private void SetupGlossaryItems(GlossaryItem _glossaryItem)
@@ -129,6 +137,7 @@ public class GlossaryManager : GameBehaviour
         glossaryTitleText.text = gi.title;
         glossaryDescriptionText.text = gi.description;
         lastSelectedGlossayID = _glossaryID;
+        gi.available = true;
     }
 
     public void OpenGlossaryPanel()
@@ -142,6 +151,68 @@ public class GlossaryManager : GameBehaviour
         FadeX.FadeOut(glossaryPanel);
         _GM.ChangeGameState(GameState.Play);
     }
+
+    public void SetInteractable(bool _interactable)
+    {
+        glossaryButton.interactable = _interactable;
+    }
+
+    public void NewGlossaryAvailable(GlossaryID id, string title)
+    {
+        //currentTutorialID = id;
+        newEntryTitle.text = title;
+        TweenX.TweenFill(newEntryLabel, _TWEENING.UIButtonTweenTime, _TWEENING.UIButtonTweenEase, 1);
+        newEntryLabel.GetComponent<Animator>().SetTrigger("TutorialAvailable");
+        newEntryLabel.GetComponent<AudioSource>().Play();
+    }
+
+    #region Events
+    public void OnDayBegin()
+    {
+        if (glossaryAvailable(GlossaryID.HumanClasses))
+            return;
+
+        ExecuteAfterSeconds(1, () => NewGlossaryAvailable(GlossaryID.HumanClasses, "Human Classes"));
+
+        StartCoroutine(WaitToAddCombatTutorial());
+    }
+    IEnumerator WaitToAddCombatTutorial()
+    {
+        yield return new WaitForSeconds(10);
+        NewGlossaryAvailable(GlossaryID.Combat, "Combat");
+    }
+    void OnMineSpawned()
+    {
+        if (!glossaryAvailable(GlossaryID.Mines))
+            NewGlossaryAvailable(GlossaryID.Mines, "Mines");
+    }
+    void OnLordSpawned()
+    {
+        if (!glossaryAvailable(GlossaryID.LordsOfTheLand))
+            NewGlossaryAvailable(GlossaryID.LordsOfTheLand, "Lords of the Land");
+    }
+    void OnSpySpawned()
+    {
+        if (!glossaryAvailable(GlossaryID.Spies))
+            NewGlossaryAvailable(GlossaryID.Spies, "Spies");
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnDayBegin += OnDayBegin;
+        GameEvents.OnMineSpawned += OnMineSpawned;
+        GameEvents.OnLordSpawned += OnLordSpawned;
+        GameEvents.OnSpySpawned += OnSpySpawned;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnDayBegin -= OnDayBegin;
+        GameEvents.OnMineSpawned -= OnMineSpawned;
+        GameEvents.OnLordSpawned -= OnLordSpawned;
+        GameEvents.OnSpySpawned -= OnSpySpawned;
+    }
+    #endregion
 
     #region Editor
     // IngredientDrawerUIE
