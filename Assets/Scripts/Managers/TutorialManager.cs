@@ -198,7 +198,7 @@ public class TutorialManager : GameBehaviour
                 break;
             case TutorialID.Trees:
                 _tutorial.title = "Trees";
-                _tutorial.description = "The productivity of each TREE is determined by its proximity to others in the GROVE. TREES clustered together are less productive but easier to defend, while those spread out yield more MAEGEN but are more vulnerable to attack.\r\n<br>To grow a tree, click on the TREE button and Left-Click on an available space in our domain.<br> You can only plant trees during NIGHT";
+                _tutorial.description = "The productivity of each TREE is determined by its proximity to others in the GROVE. <br><br>TREES clustered together are less productive but easier to defend, while those spread out yield more MAEGEN but are more vulnerable to attack.\r\n<br>To grow a tree, click on the TREE button and Left-Click on an available space in our domain.<br> You can only plant trees during NIGHT";
                 _tutorial.taskLine = treesTask;
                 _tutorial.showObjects.Add(gamePanels.treePanel.gameObject);
                 _tutorial.showObjects.Add(arrows.treeToolArrow.gameObject);
@@ -206,9 +206,9 @@ public class TutorialManager : GameBehaviour
             case TutorialID.CreatureMovement:
                 _tutorial.title = "Creatures";
                 _tutorial.description = 
-                    "CREATURES are cool and needed to defend the forest.<br>" +
-                    "Each unit requires a different MAEGEN cost to summon<br>" +
-                    "Summon CREATURES from the creature panel<br>";
+                    "CREATURES are your servants. Use them to keep control of the GROVE!<br>" +
+                    "Each unit requires a different MAEGEN cost to summon it.<br>" +
+                    "Open the HOME TREE panel to start summoning creatures.<br>";
                 _tutorial.taskLine = creaturesTask;
                 _tutorial.showObjects.Add(gamePanels.unitPanel.gameObject);
                 _tutorial.showObjects.Add(arrows.unitArrow.gameObject);
@@ -216,18 +216,19 @@ public class TutorialManager : GameBehaviour
             case TutorialID.HomeTree:
                 _tutorial.title = "Home Tree";
                 _tutorial.description =
-                    "You must protect the HOME TREE.<br>" +
-                    "If the HOME TREE is attacked to much, it is all over<br>" +
-                    "When you click on the HOME TREE, you can bring up the CREATURES that you can summon from it<br>" + 
-                    "Use CREATURES to defend the HOME TREE<br>";
+                    "This is our HOME TREE, the heart of our GROVE and vital to its survival.<br>" +
+                    "If the HOME TREE is destroyed, the forest will fall.<br>" +
+                    "When you click on the HOME TREE, you can bring up the CREATURES that you can summon from it.<br>" + 
+                    "Use CREATURES to defend the GROVE<br>";
                 _tutorial.showContinueButton = true;
                 break;
             case TutorialID.Wildlife:
                 _tutorial.title = "Wildlife";
                 _tutorial.description =
-                    "WILDLIFE does stuff.<br>" +
-                    "More trees means more MAEGEN and WILDLIFE per day.<br>" +
-                    "Eat your wildlife!";
+                    "This represents your WILDLIFE.<br>" +
+                    "WILDLIFE are an important part of the GROVE and required for you to use your special powers.<br>" +
+                    "They will spawn in at the end of each wave, based on how many trees are in your GROVE.<br>" +
+                    "Hold down the ALT button to highlight your existing WILDLIFE and protect them at all costs!";
                 _tutorial.showContinueButton = true;
                 _tutorial.showObjects.Add(arrows.wildlifeArrow.gameObject);
                 break;
@@ -235,17 +236,17 @@ public class TutorialManager : GameBehaviour
                 _tutorial.title = "Populous";
                 _tutorial.description =
                     "There is a maximum population of CREATURES you can have at one time.<br>" +
-                    "Something else<br>" +
-                    "Sacrifice a unit to reduce populous!";
+                    "The max POPULOUS can be upgrade by +5 with a Perk.<br>" +
+                    "Press DELETE with a selected CREATURE to destroy it, in order to reduce your POPULOUS level";
                 _tutorial.showContinueButton = true;
                 _tutorial.showObjects.Add(arrows.populousArrow.gameObject);
                 break;
             case TutorialID.DayNightCycle:
-                _tutorial.title = "Day Night";
+                _tutorial.title = "Day/Night";
                 _tutorial.description =
-                    "Build during the night.<br>" +
-                    "Humans will attack during the day so get ready<br>" +
-                    "When you are ready, click the day/night button to begin defending the forest";
+                    "Under the cover of night, build and rebuild your GROVE.<br>" +
+                    "Humans will arrive during the day so be prepared to fight back.<br>" +
+                    "When you are ready, click the Day/Night button to begin defending the forest";
                 _tutorial.taskLine = startDayTask;
                 _tutorial.showObjects.Add(gamePanels.unitPanel.gameObject);
                 _tutorial.showObjects.Add(gamePanels.treePanel.gameObject);
