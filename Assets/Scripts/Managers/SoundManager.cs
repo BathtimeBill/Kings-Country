@@ -52,6 +52,8 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip menuDragSound;
     public AudioClip textGroupSound;
     public AudioClip nextTutorialSound;
+    public AudioClip taskCompleteSound;
+    public AudioClip tutorialChangeSound;
     public AudioClip timeSpeedUpSound;
     public AudioClip timeStopSound;
     public AudioClip targetEnemySound;

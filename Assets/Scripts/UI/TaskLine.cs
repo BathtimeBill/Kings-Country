@@ -25,6 +25,7 @@ public class TaskLine : GameBehaviour
 
     public void CheckOffTask()
     {
+        _SM.PlaySound(_SM.taskCompleteSound);
         checkFill.SetActive(true);
     }
 }

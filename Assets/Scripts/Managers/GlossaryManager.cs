@@ -150,6 +150,7 @@ public class GlossaryManager : GameBehaviour
     {
         FadeX.FadeOut(glossaryPanel);
         _GM.ChangeGameState(GameState.Play);
+        TweenX.TweenFill(newEntryLabel, _TWEENING.UIButtonTweenTime, _TWEENING.UIButtonTweenEase, 0);
     }
 
     public void SetInteractable(bool _interactable)
@@ -159,11 +160,11 @@ public class GlossaryManager : GameBehaviour
 
     public void NewGlossaryAvailable(GlossaryID id, string title)
     {
-        //currentTutorialID = id;
         newEntryTitle.text = title;
         TweenX.TweenFill(newEntryLabel, _TWEENING.UIButtonTweenTime, _TWEENING.UIButtonTweenEase, 1);
         newEntryLabel.GetComponent<Animator>().SetTrigger("TutorialAvailable");
         newEntryLabel.GetComponent<AudioSource>().Play();
+        lastSelectedGlossayID = id;
     }
 
     #region Events

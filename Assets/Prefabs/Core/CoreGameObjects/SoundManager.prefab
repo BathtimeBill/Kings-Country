@@ -42,7 +42,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9140295034157426830
 MonoBehaviour:
@@ -56,7 +56,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e2b8bb540eab74e88bb1c4edda29ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroy: 0
   treePlaceSound:
   - {fileID: 8300000, guid: 7f6832e17702c704c9ee44af09f3cb10, type: 3}
   - {fileID: 8300000, guid: e50d82c03b3465245afcbf21eecb9f9d, type: 3}
@@ -225,6 +224,8 @@ MonoBehaviour:
   menuDragSound: {fileID: 8300000, guid: 7892db49aad677b458076f93fe9cc0b7, type: 3}
   textGroupSound: {fileID: 8300000, guid: 7e8de22884a281346b6e4bcd290a3ba9, type: 3}
   nextTutorialSound: {fileID: 8300000, guid: 1f3c8ab99b316684e99c033c6de204ff, type: 3}
+  taskCompleteSound: {fileID: 8300000, guid: 28be7754746faa44d912ed67df0d67c5, type: 3}
+  tutorialChangeSound: {fileID: 8300000, guid: 9c83917a7b52d674387f4f2839c753e5, type: 3}
   timeSpeedUpSound: {fileID: 8300000, guid: 1684d9ad486231448b731987014d10e1, type: 3}
   timeStopSound: {fileID: 8300000, guid: 8e2c861d667db124fad82b01d4fc22e8, type: 3}
   targetEnemySound: {fileID: 8300000, guid: 2e284a8a8c800f5418f0731292063aea, type: 3}
@@ -578,7 +579,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c5744060fb8bbf41a0665d93798a459, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroy: 0
   musicPlayer: {fileID: 1669366741}
   combatMusic:
   - {fileID: 8300000, guid: e348b01165e77b245a276a92e9aeb17d, type: 3}

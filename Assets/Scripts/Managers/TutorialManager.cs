@@ -220,7 +220,9 @@ public class TutorialManager : GameBehaviour
                     "If the HOME TREE is destroyed, the forest will fall.<br>" +
                     "When you click on the HOME TREE, you can bring up the CREATURES that you can summon from it.<br>" + 
                     "Use CREATURES to defend the GROVE<br>";
+                inWorldArrow.SetActive(true);
                 _tutorial.showContinueButton = true;
+
                 break;
             case TutorialID.Wildlife:
                 _tutorial.title = "Wildlife";
@@ -253,6 +255,7 @@ public class TutorialManager : GameBehaviour
                 _tutorial.showObjects.Add(gamePanels.dayNightPanel.gameObject);
                 _tutorial.showObjects.Add(arrows.dayNightArrow.gameObject);
                 _tutorial.showContinueButton = true;
+                inWorldArrow.SetActive(false);
                 break;
         }
         SetupTaskLines();
