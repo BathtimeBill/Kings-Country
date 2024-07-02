@@ -925,12 +925,12 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    public void ChangeTreePercentagePanel(float _percentage, int _perDay, int _price)
+    public void ChangeTreePercentagePanel(float _percentage, int _perDay, int _price, bool _canPlace)
     {
-        treePercentageText.text = _percentage.ToString("0.0" + "%");
-        treePercentageText.color = _SETTINGS.colours.treePercentageGradient.Evaluate(_percentage);
-        treeResultText.text = "Every night, get " + _perDay.ToString() + "  <color=#D3C965><sprite name=\"MaegenIcon\">";
-        treeCostText.text = _price.ToString();
+        treePercentageText.text = _canPlace ? _percentage.ToString("0.0" + "%") : "-";
+        treePercentageText.color = _canPlace ? _SETTINGS.colours.treePercentageGradient.Evaluate(_percentage) : _COLOUR.cooldownColor;
+        treeResultText.text = _canPlace ? "Every night, get " + _perDay.ToString() + "  <color=#D3C965><sprite name=\"MaegenIcon\">" : "Can't place tree here";
+        treeCostText.text = _canPlace ? _price.ToString() : "-";
     }
     #endregion
 

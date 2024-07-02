@@ -40,6 +40,9 @@ public class TreePlacement : Singleton<TreePlacement>
 
     void Update()
     {
+        if (_GM.playmode != PlayMode.TreeMode)
+            return;
+
         if(_GM.trees.Count != 0)
         {
             distanceFromTree = Vector3.Distance(GetClosestTree().transform.position, transform.position);
@@ -65,7 +68,6 @@ public class TreePlacement : Singleton<TreePlacement>
             maegenPerWave = 3;
         }
         maegenCost = maegenPerWave + 1;
-        _UI.ChangeTreePercentagePanel(energyMultiplier, maegenPerWave, maegenCost);
         if (distanceFromTree >= 100 && tooFarAway == false)
         {
             tooFarAway = true;
@@ -81,6 +83,7 @@ public class TreePlacement : Singleton<TreePlacement>
                 SetMaterials(canPlaceMat);
             }
         }
+        _UI.ChangeTreePercentagePanel(energyMultiplier, maegenPerWave, maegenCost, canPlace);
 
         if(maegenPerWave <= 1)
         {
