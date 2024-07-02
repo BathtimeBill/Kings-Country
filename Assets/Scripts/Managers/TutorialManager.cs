@@ -44,7 +44,7 @@ public class TutorialManager : GameBehaviour
     public int tutorialStage;
     public bool isTutorial;
 
-    [HideInInspector] public bool tutorialComplete;
+/*    [HideInInspector] */public bool tutorialComplete;
     private int treeCount = 0;
     private int treeCompletionCount = 4;
 
@@ -65,6 +65,7 @@ public class TutorialManager : GameBehaviour
     private string zoomCameraTask   = "Zoom the camera";
     private string treesTask        = "Grow 4 Trees";
     private string creaturesTask    = "Summon 4 CREATURES";
+    private string movementTask     = "Position your CREATURES";
     private string startDayTask     = "Start the Day";
     private string winDayTask       = "Defend the GROVE from the HUMANS";
 
@@ -203,7 +204,7 @@ public class TutorialManager : GameBehaviour
                 _tutorial.showObjects.Add(gamePanels.treePanel.gameObject);
                 _tutorial.showObjects.Add(arrows.treeToolArrow.gameObject);
                 break;
-            case TutorialID.CreatureMovement:
+            case TutorialID.Creatures:
                 _tutorial.title = "Creatures";
                 _tutorial.description = 
                     "CREATURES are your servants. Use them to keep control of the GROVE!<br>" +
@@ -212,6 +213,13 @@ public class TutorialManager : GameBehaviour
                 _tutorial.taskLine = creaturesTask;
                 _tutorial.showObjects.Add(gamePanels.unitPanel.gameObject);
                 _tutorial.showObjects.Add(arrows.unitArrow.gameObject);
+                break;
+            case TutorialID.CreatureMovement:
+                _tutorial.title = "Creature Movement";
+                _tutorial.description =
+                    "To select a CREATURE, click on it with the LEFT MOUSE BUTTON or click and drag over multiple CREATURE to select more than one.<br>" + "<br>" +
+                    "With selected CREATURE(S), RIGHT CLICK on a location to send them there. Our CREATURES will defend that location if HUMANS come within their range.<br>";
+                _tutorial.showContinueButton = true;
                 break;
             case TutorialID.HomeTree:
                 _tutorial.title = "Home Tree";
@@ -410,18 +418,18 @@ public class TutorialManager : GameBehaviour
         if (tutorialComplete)
             return;
 
-        if (currentTutorialID != TutorialID.CreatureMovement)
+        if (currentTutorialID != TutorialID.Creatures)
             return;
 
         HideTutorialPanel();
 
         creatureCount++;
-        taskLines.Find(x => x.taskID == TutorialID.CreatureMovement).text.text = "Summon 3 Creatures (" + creatureCount + "/" + creatureCompletionCount + ")";
+        taskLines.Find(x => x.taskID == TutorialID.Creatures).text.text = "Summon 3 Creatures (" + creatureCount + "/" + creatureCompletionCount + ")";
         if (creatureCount == creatureCompletionCount)
         {
             GetNextTutorial();
             ShowTutorial();
-            taskLines.Find(x => x.taskID == TutorialID.CreatureMovement).CheckOffTask();
+            taskLines.Find(x => x.taskID == TutorialID.Creatures).CheckOffTask();
             FadeX.FadeTo(gamePanels.unitPanel, fadeStrength);
         }
     }

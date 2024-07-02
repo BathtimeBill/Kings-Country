@@ -197,6 +197,11 @@ public class GlossaryManager : GameBehaviour
         if (!glossaryAvailable(GlossaryID.Spies))
             NewGlossaryAvailable(GlossaryID.Spies, "Spies");
     }
+    void OnHomeTreeSelected()
+    {
+        if (!glossaryAvailable(GlossaryID.HomeTree) && _TUTORIAL.tutorialComplete == false)
+            NewGlossaryAvailable(GlossaryID.HomeTree, "Home Tree");
+    }
 
 
     private void OnEnable()
@@ -205,6 +210,7 @@ public class GlossaryManager : GameBehaviour
         GameEvents.OnMineSpawned += OnMineSpawned;
         GameEvents.OnLordSpawned += OnLordSpawned;
         GameEvents.OnSpySpawned += OnSpySpawned;
+        GameEvents.OnHomeTreeSelected += OnHomeTreeSelected;
     }
 
     private void OnDisable()
@@ -213,6 +219,7 @@ public class GlossaryManager : GameBehaviour
         GameEvents.OnMineSpawned -= OnMineSpawned;
         GameEvents.OnLordSpawned -= OnLordSpawned;
         GameEvents.OnSpySpawned -= OnSpySpawned;
+        GameEvents.OnHomeTreeSelected -= OnHomeTreeSelected;
     }
     #endregion
 

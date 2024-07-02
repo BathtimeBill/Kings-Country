@@ -340,6 +340,7 @@ public enum TutorialID
     CameraZoom,
     Maegen,
     Trees,
+    Creatures,
     CreatureMovement,
     Wildlife,
     Populous,
