@@ -822,7 +822,7 @@ public class UIManager : Singleton<UIManager>
                 TweenUpgradeIcon(homeTree);
                 break;
         }
-
+        _SM.PlaySound(_SM.upgradeSound);
     }
     
 
