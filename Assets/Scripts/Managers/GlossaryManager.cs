@@ -197,6 +197,11 @@ public class GlossaryManager : GameBehaviour
         if (!glossaryAvailable(GlossaryID.Spies))
             NewGlossaryAvailable(GlossaryID.Spies, "Spies");
     }
+    public void OnUnitSpawned(string _unitID)
+    {
+        if (!glossaryAvailable(GlossaryID.CreatureMovement))
+            NewGlossaryAvailable(GlossaryID.CreatureMovement, "Creature Movement");
+    }
 
     private void OnEnable()
     {
@@ -204,6 +209,7 @@ public class GlossaryManager : GameBehaviour
         GameEvents.OnMineSpawned += OnMineSpawned;
         GameEvents.OnLordSpawned += OnLordSpawned;
         GameEvents.OnSpySpawned += OnSpySpawned;
+        GameEvents.OnUnitSpawned += OnUnitSpawned;
     }
 
     private void OnDisable()
@@ -212,6 +218,7 @@ public class GlossaryManager : GameBehaviour
         GameEvents.OnMineSpawned -= OnMineSpawned;
         GameEvents.OnLordSpawned -= OnLordSpawned;
         GameEvents.OnSpySpawned -= OnSpySpawned;
+        GameEvents.OnUnitSpawned += OnUnitSpawned;
     }
     #endregion
 
