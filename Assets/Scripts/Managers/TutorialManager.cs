@@ -329,6 +329,7 @@ public class TutorialManager : GameBehaviour
         HideArrows();
         for (int i = 0; i < CurrentTutorial.showObjects.Count; i++)
         {
+            CurrentTutorial.showObjects[i].SetActive(true);
             if (CurrentTutorial.showObjects[i].GetComponent<CanvasGroup>() != null)
                 FadeX.FadeIn(CurrentTutorial.showObjects[i].GetComponent<CanvasGroup>());
         }
@@ -341,6 +342,9 @@ public class TutorialManager : GameBehaviour
 
     public void ContinueButton()
     {
+        if(currentTutorialID == TutorialID.DayNightCycle)
+            _GM.ChangeGameState(GameState.Build);
+
         GetNextTutorial();
         ShowTutorial();
 
@@ -357,7 +361,7 @@ public class TutorialManager : GameBehaviour
             for (int i = 0; i < taskLines.Count; i++)
             {
                 if (currentTutorialID == taskLines[i].taskID)
-                    taskLines[i].CheckOffTask();
+                    CheckOffTask(taskLines[i].taskID);
             }
             yield return new WaitForSeconds(cameraTaskTime);
         }
@@ -405,7 +409,7 @@ public class TutorialManager : GameBehaviour
         {
             GetNextTutorial();
             ShowTutorial();
-            taskLines.Find(x => x.taskID == TutorialID.Trees).CheckOffTask();
+            CheckOffTask(TutorialID.Trees);
             _PC.DeselectAllTools();
             _GM.SetPlayMode(PlayMode.DefaultMode);
             FadeX.FadeTo(gamePanels.treePanel, fadeStrength);
@@ -429,7 +433,7 @@ public class TutorialManager : GameBehaviour
         {
             GetNextTutorial();
             ShowTutorial();
-            taskLines.Find(x => x.taskID == TutorialID.Creatures).CheckOffTask();
+            CheckOffTask(TutorialID.Creatures);
             FadeX.FadeTo(gamePanels.unitPanel, fadeStrength);
         }
     }
@@ -440,13 +444,19 @@ public class TutorialManager : GameBehaviour
         if (tutorialComplete)
             return;
 
-        taskLines.Find(x => x.taskID == TutorialID.DayNightCycle).CheckOffTask();
+        CheckOffTask(TutorialID.DayNightCycle);
         ShowAllPanels();
         HideArrows();
         HideTutorialPanel();
         _GLOSSARY.SetInteractable(true);
         tutorialComplete = true;
         _SAVE.SetTutorialComplete();
+    }
+
+    private void CheckOffTask(TutorialID _id)
+    {
+        if (taskLines.Find(x => x.taskID == _id))
+            taskLines.Find(x => x.taskID == _id).CheckOffTask();
     }
 
     void OnHomeTreeSelected()

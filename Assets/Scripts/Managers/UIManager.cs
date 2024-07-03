@@ -78,11 +78,10 @@ public class UIManager : Singleton<UIManager>
     public TMP_Text treeResultText;
     public TMP_Text treeCostText;
 
-    [Header("Waves")]
-    public TMP_Text waveTitleText;
-    
-    public Animator waveTextAnimator;
-    public Button dayNightButton;
+    [Header("Days")]
+    public TMP_Text dayWinTitleText;
+    public Animator dayTextAnimator;
+    public DayButton dayNightButton;
     public Button treetoolButton;
 
     [Header("Day End Stats")]
@@ -177,6 +176,8 @@ public class UIManager : Singleton<UIManager>
     public string nightMessage = "Night";
     public string dayProgressMessage = "Humans Vanquished: ";
 
+    public void SetInteractable(InteractableButton _b, bool _i) => _b.SetInteractable(_i);
+
     private new void Awake()
     {
         base.Awake();
@@ -186,7 +187,6 @@ public class UIManager : Singleton<UIManager>
         CheckTreeUI();
         CheckWildlifeUI();
         CheckPopulousUI();
-        CheckWave();
         CheckUnitPrices();
         ResetAgroBar();
         fyreTimeLeft = 0;
@@ -267,7 +267,7 @@ public class UIManager : Singleton<UIManager>
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
                 break;
             case GameState.Play:
-                dayNightButton.interactable = false;
+                SetInteractable(dayNightButton, false);
                 TweenX.KillTweener(inGameCanvasTweener);
                 inGameCanvas.interactable = true;
                 inGameCanvasTweener = inGameCanvas.DOFade(1, 0.2f).SetUpdate(true);
@@ -275,7 +275,7 @@ public class UIManager : Singleton<UIManager>
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0, 0.2f).SetUpdate(true);
                 break;
             case GameState.Build:
-                dayNightButton.interactable = true;
+                SetInteractable(dayNightButton, true);
                 TweenX.KillTweener(inGameCanvasTweener);
                 inGameCanvas.interactable = true;
                 inGameCanvasTweener = inGameCanvas.DOFade(1, 0.2f).SetUpdate(true);
@@ -297,6 +297,7 @@ public class UIManager : Singleton<UIManager>
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
                 break;
             case GameState.Tutorial:
+                SetInteractable(dayNightButton, false);
                 //TweenX.KillTweener(inGameCanvasTweener);
                 inGameCanvas.interactable = true;
                 inGameCanvas.alpha = 1;
@@ -345,10 +346,6 @@ public class UIManager : Singleton<UIManager>
     {
         GameEvents.ReportOnContinueButton();
         //waveOverPanel.SetActive(false);
-    }
-    public void TriggerWaveTextAnimation()
-    {
-        waveTextAnimator.SetTrigger("newWave");
     }
     public void EnableTowerText()
     {
@@ -429,8 +426,7 @@ public class UIManager : Singleton<UIManager>
 
     public void CheckWave()
     {
-        waveText.text = dayMessage + ": " + _GM.currentDay.ToString() + "/" + _DATA.levelMaxDays;
-        TriggerWaveTextAnimation();
+        
     }
 
     public void CheckEldyr()
@@ -624,7 +620,7 @@ public class UIManager : Singleton<UIManager>
         TweenInPanel(wavePanel);
         _SM.PlaySound(_SM.waveOverSound);
         _SM.PlaySound(_SM.menuDragSound);
-        waveTitleText.text = dayMessage + " " + _GM.currentDay.ToString() + " is complete!";
+        dayWinTitleText.text = dayMessage + " " + _GM.currentDay.ToString() + " is complete!";
 
         totalTrees = _GM.trees.Count;
         totalMaegenDrops = GameObject.FindGameObjectsWithTag("MaegenDrop").Length;
@@ -772,7 +768,8 @@ public class UIManager : Singleton<UIManager>
         treeTool.SetInteractable(false);
         int enemyProgressTotal = _EM.GetDayTotalEnemyCount();
         enemyProgressText.text = dayProgressMessage + "0/" + enemyProgressTotal;
-        CheckWave();
+        waveText.text = dayMessage + ": " + _GM.currentDay.ToString() + "/" + _DATA.levelMaxDays;
+        dayTextAnimator.SetTrigger("NewDay");
     }
 
     public void OnPerkSelected(PerkID perkID)
