@@ -29,28 +29,36 @@ public class EnemyManager : Singleton<EnemyManager>
 
     public void BeginNewDay()
     {
-        currentDaySpawnAmount = spawnAmounts[CurrentDay];
+        currentDaySpawnAmount = spawnAmounts[_currentDay];
         enemies.Clear();
         FillDayEnemyList();
-        StartCoroutine(SpawnEnemy());
+        StartCoroutine(SpawnEnemies());
     }
 
     #region Spawning
-    IEnumerator SpawnEnemy()
+    IEnumerator SpawnEnemies()
     {
         yield return new WaitForEndOfFrame();
-        SpawnLoop();
-        yield return new WaitForSeconds(Random.Range(cooldown.min, cooldown.max));
-        if(!allEnemiesSpawned)
-            StartCoroutine(SpawnEnemy());
-    }
+        for (int i = 0; i < enemyIDList.Count; i++)
+        {
+            //Get a Random Spawn
+            int rndSpawn = Random.Range(0, _EM.spawnPoints.Count);
+            //Get the human model from the human data
+            GameObject go = Instantiate(_DATA.GetUnit(enemyIDList[i]).playModel, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
+            //Add to the enemies list
+            enemies.Add(go);
+            //Wat a random time before spawning in the next enemy so they aren't on top of each other
+            yield return new WaitForSeconds(Random.Range(0.3f, 1f));
+        }
 
+        yield return new WaitForSeconds(Random.Range(cooldown.min, cooldown.max));
+
+        if(_agroPhase)
+            StartCoroutine(SpawnEnemies());
+    }
 
     private void SpawnLoop()
     {
-        if (!_GM.agroWave)
-            return;
-
         int rndSpawn = Random.Range(0, _EM.spawnPoints.Count);
         //Get a random humanID from the current day list of available humans
         HumanID human = ListX.GetRandomItemFromList(enemyIDList);
@@ -117,9 +125,10 @@ public class EnemyManager : Singleton<EnemyManager>
 
     private void CheckEnemiesLeft()
     {
-        if (!allEnemiesDead)
+        if (!allEnemiesDead || _agroPhase)
             return;
 
+        StopCoroutine(SpawnEnemies());
         GameEvents.ReportOnWaveOver();
     }
 

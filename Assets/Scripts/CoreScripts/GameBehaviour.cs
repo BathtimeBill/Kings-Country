@@ -27,12 +27,14 @@ public class GameBehaviour : BV.Behaviour
     protected static TutorialManager _TUTORIAL { get { return _UI.tutorialManager; } }
     protected static GlossaryManager _GLOSSARY { get { return _UI.glossaryManager; } }
 
-    public bool hasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build || _GM.gameState == GameState.Tutorial;
-    public bool isPaused => _GM.gameState == GameState.Pause;
-    public bool gameFinished => _GM.gameState == GameState.Finish;
-    public bool buildPhase => _GM.gameState == GameState.Build;
-    public bool TutorialComplete => _TUTORIAL.tutorialComplete;
-    public int CurrentDay => _GM.currentDay - 1;
+    public bool _hasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build || _GM.gameState == GameState.Tutorial;
+    public bool _inDay => _GM.gameState == GameState.Play;
+    public bool _agroPhase => _GM.agroPhase;
+    public bool _isPaused => _GM.gameState == GameState.Pause;
+    public bool _gameFinished => _GM.gameState == GameState.Finish;
+    public bool _buildPhase => _GM.gameState == GameState.Build;
+    public bool _tutorialComplete => _TUTORIAL.tutorialComplete;
+    public int _currentDay => _GM.currentDay - 1;
 
     public Settings _SETTINGS => _DATA.settings;
     public Tweening _TWEENING => _DATA.settings.tweening;

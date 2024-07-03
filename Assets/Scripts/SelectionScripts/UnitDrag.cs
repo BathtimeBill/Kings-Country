@@ -23,7 +23,7 @@ public class UnitDrag : GameBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(hasInput)
+        if(_hasInput)
         {
             if (Input.GetMouseButtonDown(0))
             {

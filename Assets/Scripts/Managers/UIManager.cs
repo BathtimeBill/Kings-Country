@@ -21,6 +21,8 @@ public class UIManager : Singleton<UIManager>
     public TMP_Text populousText;
     public TMP_Text waveText;
     public TMP_Text enemyProgressText;
+    public Image agroBar;
+    public Image agroFill;
 
     [Header("Error")]
     public TMP_Text errorText;
@@ -186,6 +188,7 @@ public class UIManager : Singleton<UIManager>
         CheckPopulousUI();
         CheckWave();
         CheckUnitPrices();
+        ResetAgroBar();
         fyreTimeLeft = 0;
         stormerTimeLeft = 0;
 
@@ -456,6 +459,8 @@ public class UIManager : Singleton<UIManager>
         wildlifeText.text = _GM.wildlife.ToString();
     }
 
+    public void ResetAgroBar() => agroFill.fillAmount = 0;
+    public void UpdateAgroBar(float _current, float _max) => agroFill.fillAmount = MathX.MapTo01(_current, 0, _max);
 
     #region error messages
     public void SetError(ErrorID _errorID)
@@ -587,11 +592,11 @@ public class UIManager : Singleton<UIManager>
     #region Wave Over
 
 
-    public void OnWaveOver()
+    public void OnDayOver()
     {
         ExecuteNextFrame(() =>
         {
-            if (gameFinished)
+            if (_gameFinished)
             {
                 return;
             }
@@ -608,7 +613,7 @@ public class UIManager : Singleton<UIManager>
             wildlifeResultCanvas.alpha = 0;
             waveResultsPanel.alpha = 0;
             waveResultsPanel.transform.localScale = Vector3.one * 2;
-
+            ResetAgroBar();
             SetWaveEndStats();
         });
 
@@ -767,6 +772,7 @@ public class UIManager : Singleton<UIManager>
         treeTool.SetInteractable(false);
         int enemyProgressTotal = _EM.GetDayTotalEnemyCount();
         enemyProgressText.text = dayProgressMessage + "0/" + enemyProgressTotal;
+        CheckWave();
     }
 
     public void OnPerkSelected(PerkID perkID)
@@ -968,7 +974,7 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnFyrePlaced += OnFyrePlaced;
         GameEvents.OnStormerPlaced += OnStormerPlaced;
         GameEvents.OnRunePlaced += OnRunePlaced;
-        GameEvents.OnDayOver += OnWaveOver;
+        GameEvents.OnDayOver += OnDayOver;
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnJustStragglers += OnJustStragglers;
 
@@ -987,7 +993,7 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnFyrePlaced -= OnFyrePlaced;
         GameEvents.OnStormerPlaced -= OnStormerPlaced;
         GameEvents.OnRunePlaced -= OnRunePlaced;
-        GameEvents.OnDayOver -= OnWaveOver;
+        GameEvents.OnDayOver -= OnDayOver;
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnJustStragglers -= OnJustStragglers;
 

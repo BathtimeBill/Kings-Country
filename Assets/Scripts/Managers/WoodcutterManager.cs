@@ -73,7 +73,7 @@ public class WoodcutterManager : GameBehaviour
     {
         print("Spawn Loop");
         int rndSpawn = Random.Range(0, _EM.spawnPoints.Count);
-        if(_GM.agroWave)
+        if(_GM.agroPhase)
         {
             
             for (int i = 0; i < _EM.GetHumanDayLimit(HumanID.Logger); i++)

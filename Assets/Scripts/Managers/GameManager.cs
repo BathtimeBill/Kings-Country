@@ -26,12 +26,11 @@ public class GameManager : Singleton<GameManager>
     public int score;
     public int highScore;
 
-    [Header("Waves")]
+    [Header("Days")]
     public int currentDay;
-    public int agroWaveLength;
-    public int breakWaveLenth;
-    public bool agroWave;
-    public bool canFinishWave;
+    private float currentAgroTime;
+    private float dayAgroTimeLimit;
+    public bool agroPhase => currentAgroTime < dayAgroTimeLimit;
 
     [Header("Buildings Cooldown")]
     public float treeCooldown;
@@ -90,6 +89,7 @@ public class GameManager : Singleton<GameManager>
     public Volume globalVolume;
     private FilmGrain grain;
     private ChromaticAberration chromaticAberration;
+    
 
     public bool fyreAvailable => _DATA.CanUseTool(ToolID.Fyre);
     public bool stormerAvailable => _DATA.CanUseTool(ToolID.Stormer);
@@ -125,7 +125,14 @@ public class GameManager : Singleton<GameManager>
         timeSinceAttack += Time.deltaTime;
         timeSinceWildlifeKilled += Time.deltaTime;
 
+        if (_inDay)
+        {
+            currentAgroTime += Time.deltaTime;
+            _UI.UpdateAgroBar(currentAgroTime, dayAgroTimeLimit);
+        }
+
     }
+
     public float GetPercentageIncrease(float originalValue, float percentage)
     {
         float f = originalValue + (originalValue * percentage);
@@ -207,33 +214,19 @@ public class GameManager : Singleton<GameManager>
     public void BeginNewDay()
     {
         currentDay++;
+        dayAgroTimeLimit = 60 + (10 * currentDay);  //TODO adds 10 seconds per day 
         ChangeGameState(GameState.Play);
-        StartCoroutine(ManageWaveAgro());
-        StartCoroutine(WaitForCanFinishWave());
         _EM.BeginNewDay();
         _UI.BeginNewDay();
         GameEvents.ReportOnDayBegin();
+        ExecuteAfterSeconds(1, () => currentAgroTime = 0f);
         //boundry.SetActive(false);
-    }
-
-    //The wave system is managed by two coroutines. The 'agro' wave lasts 1 minute, during which enemies are spawned in (EnemyManager) and then a break period of 4 mins. 
-    IEnumerator ManageWaveAgro()
-    {
-        agroWave = true;
-        _UI.CheckWave();
-        yield return new WaitForSeconds(agroWaveLength);
-        agroWave = false;
-    }
-
-    IEnumerator WaitForCanFinishWave()
-    {
-        yield return new WaitForSeconds(60);
     }
 
     public void ContinueToNextRound()
     {
-        StartCoroutine(ManageWaveAgro());
-        StartCoroutine(WaitForCanFinishWave());
+        //StartCoroutine(ManageWaveAgro());
+        //StartCoroutine(WaitForCanFinishWave());
     }
 
     public void AddRune(GameObject _rune)
@@ -330,7 +323,6 @@ public class GameManager : Singleton<GameManager>
         }
         else
         {
-            agroWave = false;
             ChangeGameState(GameState.Win);
             GameEvents.ReportOnRuneDestroyed();
         }

@@ -28,7 +28,7 @@ public class HunterManager : GameBehaviour
     private void SpawnLoop()
     {
         int rndSpawn = Random.Range(0, _EM.spawnPoints.Count);
-        if (_GM.agroWave)
+        if (_GM.agroPhase)
         {
             for (int i = 0; i < _EM.GetHumanDayLimit(HumanID.Wathe); i++)
             {

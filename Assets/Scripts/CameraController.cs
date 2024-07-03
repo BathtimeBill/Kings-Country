@@ -48,7 +48,7 @@ public class CameraController : GameBehaviour
 
     private void Update()
     {
-        if(hasInput)
+        if(_hasInput)
         {
             HandleMovementInput();
             HandleMouseInput();

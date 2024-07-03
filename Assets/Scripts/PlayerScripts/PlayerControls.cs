@@ -63,7 +63,7 @@ public class PlayerControls : Singleton<PlayerControls>
 
     private void FixedUpdate()
     {
-        if (hasInput)
+        if (_hasInput)
         {
             RayCast();
         }
@@ -71,14 +71,14 @@ public class PlayerControls : Singleton<PlayerControls>
 
     private void SelectTreeMode()
     {
-        if(!TutorialComplete)
+        if(!_tutorialComplete)
         {
             _GM.SetPlayMode(PlayMode.TreeMode);
             treePlacement.SetActive(true);
             _UI.ShowTreeModifier(true);
         }
 
-        if(buildPhase)
+        if(_buildPhase)
         {
             _GM.SetPlayMode(PlayMode.TreeMode);
             treePlacement.SetActive(true);
@@ -129,7 +129,7 @@ public class PlayerControls : Singleton<PlayerControls>
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (hasInput)
+            if (_hasInput)
             {
                 _GM.previousState = _GM.gameState;
                 _GM.ChangeGameState(GameState.Pause);
@@ -137,7 +137,7 @@ public class PlayerControls : Singleton<PlayerControls>
                 return;
             }
 
-            if (isPaused)
+            if (_isPaused)
             {
                 if (_UI.warningPanel == null)
                     _GM.ChangeGameState(_GM.previousState);
@@ -146,7 +146,7 @@ public class PlayerControls : Singleton<PlayerControls>
             }
         }
 
-        if (hasInput)
+        if (_hasInput)
         {
             #region group control
             if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -435,7 +435,7 @@ public class PlayerControls : Singleton<PlayerControls>
 
             if (Input.GetKeyDown(KeyCode.F4))
             {
-                if (hasInput)
+                if (_hasInput)
                 {
                     _GM.SpeedGame();
                 }
@@ -443,7 +443,7 @@ public class PlayerControls : Singleton<PlayerControls>
             }
             if (Input.GetKeyDown(KeyCode.F3))
             {
-                if (hasInput)
+                if (_hasInput)
                 {
                     _GM.SetGame();
                 }

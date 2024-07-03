@@ -95,7 +95,7 @@ public class TutorialManager : GameBehaviour
         if (overrideTutorial)
             tutorialComplete = !showTutorial;
         else
-            tutorialComplete = _SAVE.TutorialComplete;
+            tutorialComplete = _SAVE._tutorialComplete;
 
         if (tutorialComplete)
         {
