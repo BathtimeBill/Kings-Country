@@ -153,6 +153,7 @@ public class TutorialManager : GameBehaviour
     {
         arrowList.Add(arrows.maegenArrow);
         arrowList.Add(arrows.treeToolArrow);
+        arrowList.Add(arrows.treeTopArrow);
         arrowList.Add(arrows.unitArrow);
         arrowList.Add(arrows.dayNightArrow);
         arrowList.Add(arrows.populousArrow);
@@ -199,7 +200,9 @@ public class TutorialManager : GameBehaviour
                 break;
             case TutorialID.Maegen:
                 _tutorial.title = "Maegen";
-                _tutorial.description = "This is your MAEGEN. \r\n<br>MAEGEN is the wild energy within all natural things and serves as the lifeblood of our grove. Spend MAEGEN to grow TREES that will, in turn, produce more MAEGEN at the end of the DAY.";
+                _tutorial.description = "This is your MAEGEN.<br>" +
+                    "MAEGEN is the wild energy within all natural things and serves as the lifeblood of our grove.<br>" + 
+                    "Spend MAEGEN to grow TREES that will, in turn, produce more MAEGEN at the end of the DAY.";
                 _tutorial.showContinueButton = true;
                 _tutorial.showObjects.Add(gamePanels.resourcesPanel.gameObject);
                 _tutorial.showObjects.Add(arrows.maegenArrow.gameObject);
@@ -207,7 +210,18 @@ public class TutorialManager : GameBehaviour
                 break;
             case TutorialID.Trees:
                 _tutorial.title = "Trees";
-                _tutorial.description = "The productivity of each TREE is determined by its proximity to others in the GROVE. <br><br>TREES clustered together are less productive but easier to defend, while those spread out yield more MAEGEN but are more vulnerable to attack.\r\n<br>To grow a tree, click on the TREE button and Left-Click on an available space in our domain.<br> You can only plant trees during NIGHT";
+                _tutorial.description = 
+                    "The productivity of each TREE is determined by its proximity to others in the GROVE. <br>" + 
+                    "TREES clustered together are less productive but easier to defend, while those spread out yield more MAEGEN but are more vulnerable to attack.";
+                _tutorial.showContinueButton = true;
+                _tutorial.showObjects.Add(arrows.treeTopArrow.gameObject);
+                _tutorial.unlockedGlossaryID = GlossaryID.Trees;
+                break;
+            case TutorialID.PlantTree:
+                _tutorial.title = "Trees";
+                _tutorial.description = 
+                    "To grow a tree, click on the TREE button and Left-Click on an available space in our domain.<br>" + 
+                    "You can only plant trees during NIGHT";
                 _tutorial.taskLine = treesTask;
                 _tutorial.showObjects.Add(gamePanels.treePanel.gameObject);
                 _tutorial.showObjects.Add(arrows.treeToolArrow.gameObject);
@@ -248,7 +262,7 @@ public class TutorialManager : GameBehaviour
                 _tutorial.description =
                     "This represents your WILDLIFE.<br>" +
                     "WILDLIFE are an important part of the GROVE and required for you to use your special powers.<br>" +
-                    "They will spawn in at the end of each wave, based on how many trees are in your GROVE.<br>" +
+                    "They will spawn in at the end of each day, based on how many trees are in your GROVE.<br>" +
                     "Hold down the ALT button to highlight your existing WILDLIFE and protect them at all costs!";
                 _tutorial.showContinueButton = true;
                 _tutorial.showObjects.Add(arrows.wildlifeArrow.gameObject);
@@ -319,7 +333,7 @@ public class TutorialManager : GameBehaviour
         if (CurrentTutorial == null)
             return;
 
-        if(currentTutorialID == TutorialID.Trees)
+        if(currentTutorialID == TutorialID.PlantTree)
             gamePanels.treePanel.GetComponent<InGamePanel>().ToggleOnActiveShiny();
 
         tutorialTitle.text = CurrentTutorial.title;
@@ -351,11 +365,6 @@ public class TutorialManager : GameBehaviour
             if (CurrentTutorial.showObjects[i].GetComponent<CanvasGroup>() != null)
                 FadeX.FadeIn(CurrentTutorial.showObjects[i].GetComponent<CanvasGroup>());
         }
-        //for (int i = 0; i < CurrentTutorial.hideObjects.Count; i++)
-        //{
-        //    if (CurrentTutorial.hideObjects[i].GetComponent<CanvasGroup>() != null)
-        //        FadeX.FadeOut(CurrentTutorial.hideObjects[i].GetComponent<CanvasGroup>());
-        //}
     }
 
     public void ContinueButton()
@@ -408,7 +417,7 @@ public class TutorialManager : GameBehaviour
         if (tutorialComplete)
             return;
 
-        if (currentTutorialID != TutorialID.Trees)
+        if (currentTutorialID != TutorialID.PlantTree)
             return;
 
         if (_toolID == ToolID.Tree)
@@ -422,12 +431,12 @@ public class TutorialManager : GameBehaviour
             return;
 
         treeCount++;
-        taskLines.Find(x => x.taskID == TutorialID.Trees).text.text = "Grow 4 trees (" + treeCount + "/" + treeCompletionCount + ")";
+        taskLines.Find(x => x.taskID == TutorialID.PlantTree).text.text = "Grow 4 trees (" + treeCount + "/" + treeCompletionCount + ")";
         if (treeCount == treeCompletionCount)
         {
             GetNextTutorial();
             ShowTutorial();
-            CheckOffTask(TutorialID.Trees);
+            CheckOffTask(TutorialID.PlantTree);
             _PC.DeselectAllTools();
             _GM.SetPlayMode(PlayMode.DefaultMode);
             FadeX.FadeTo(gamePanels.treePanel, fadeStrength);
@@ -562,6 +571,7 @@ public class TutorialArrow
 {
     public CanvasGroup maegenArrow;
     public CanvasGroup treeToolArrow;
+    public CanvasGroup treeTopArrow;
     public CanvasGroup wildlifeArrow;
     public CanvasGroup populousArrow;
     public CanvasGroup unitArrow;
