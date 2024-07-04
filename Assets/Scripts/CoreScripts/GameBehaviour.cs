@@ -363,5 +363,6 @@ public enum TutorialID
     Map,
     Survive,
     DayOver,
-    PlantTree
+    PlantTree,
+    Glossary
 }

@@ -160,6 +160,7 @@ public class GlossaryManager : GameBehaviour
         FadeX.FadeOut(glossaryPanel);
         _GM.ChangeGameState(_GM.previousState);
         TweenX.TweenFill(newEntryLabel, _TWEENING.UIButtonTweenTime, _TWEENING.UIButtonTweenEase, 0);
+        _TUTORIAL.ClosedGlossary();
     }
 
     public void SetInteractable(bool _interactable)

@@ -100,6 +100,7 @@ public class TutorialManager : GameBehaviour
             HideArrows(true);
             _GLOSSARY.SetInteractable(true);
             _GM.ChangeGameState(GameState.Build);
+            gameObject.SetActive(false);
         }
         else
         {
@@ -158,6 +159,7 @@ public class TutorialManager : GameBehaviour
         arrowList.Add(arrows.dayNightArrow);
         arrowList.Add(arrows.populousArrow);
         arrowList.Add(arrows.wildlifeArrow);
+        arrowList.Add(arrows.glossaryArrow);
     }
 
     private void HideArrows(bool _instant = false)
@@ -293,6 +295,14 @@ public class TutorialManager : GameBehaviour
                 inWorldArrow.SetActive(false);
                 _tutorial.unlockedGlossaryID = GlossaryID.DayNightCycle;
                 break;
+            case TutorialID.Glossary:
+                _tutorial.title = "Glossary";
+                _tutorial.description =
+                    "When you see this popup, it means there is new information.<br>" +
+                    "Click on the highlighted text or '?' to view.<br>" +
+                    "";
+                _tutorial.showObjects.Add(arrows.glossaryArrow.gameObject);
+                break;
         }
         SetupTaskLines();
     }
@@ -411,6 +421,20 @@ public class TutorialManager : GameBehaviour
         StartCoroutine(WaitForNextTask());
     }
 
+    public void ClosedGlossary()
+    {
+        if(_tutorialComplete || currentTutorialID != TutorialID.Glossary)
+            return;
+
+        HideArrows();
+        FadeX.InstantTransparent(tutorialPanel);
+        ExecuteAfterSeconds(2, () =>
+        {
+            GetNextTutorial();
+            ShowTutorial();
+        });
+    }
+
     #region Events
     private void OnToolButtonPressed(ToolID _toolID)
     {
@@ -434,6 +458,8 @@ public class TutorialManager : GameBehaviour
         taskLines.Find(x => x.taskID == TutorialID.PlantTree).text.text = "Grow 4 trees (" + treeCount + "/" + treeCompletionCount + ")";
         if (treeCount == treeCompletionCount)
         {
+            _GLOSSARY.NewGlossaryAvailable(GlossaryID.HomeTree, "Home Tree");
+            _GLOSSARY.SetInteractable(true);
             GetNextTutorial();
             ShowTutorial();
             CheckOffTask(TutorialID.PlantTree);
@@ -475,7 +501,6 @@ public class TutorialManager : GameBehaviour
         ShowAllPanels();
         HideArrows();
         HideTutorialPanel();
-        _GLOSSARY.SetInteractable(true);
         tutorialComplete = true;
         _SAVE.SetTutorialComplete();
 
@@ -576,4 +601,5 @@ public class TutorialArrow
     public CanvasGroup populousArrow;
     public CanvasGroup unitArrow;
     public CanvasGroup dayNightArrow;
+    public CanvasGroup glossaryArrow;
 }
