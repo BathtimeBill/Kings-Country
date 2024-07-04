@@ -6,8 +6,6 @@ using UnityEngine;
 public class Spy : Enemy
 {
     [Header("Components")]
-    public NavMeshAgent navAgent;
-    public Animator animator;
     public GameObject homeTree;
     public GameObject spawnParticle;
 
@@ -25,9 +23,9 @@ public class Spy : Enemy
         base.Start();
         health = maxHealth;
         soundPool = SFXPool.GetComponents<AudioSource>();
-        navAgent = gameObject.GetComponent<NavMeshAgent>();
+        agent = gameObject.GetComponent<NavMeshAgent>();
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
-        navAgent.SetDestination(homeTree.transform.position);
+        agent.SetDestination(homeTree.transform.position);
         GameEvents.ReportOnSpySpawned();
     }
 
@@ -35,11 +33,11 @@ public class Spy : Enemy
     void Update()
     {
 
-        if (navAgent.velocity != Vector3.zero)
+        if (agent.velocity != Vector3.zero)
         {
             animator.SetBool("hasStopped", false);
         }
-        if (navAgent.velocity == Vector3.zero)
+        if (agent.velocity == Vector3.zero)
         {
             animator.SetBool("hasStopped", true);
         }

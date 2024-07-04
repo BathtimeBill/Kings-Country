@@ -23,7 +23,6 @@ public class Warrior : Enemy
     private float damping = 5;
 
     [Header("Components")]
-    public Animator animator;
     public Transform closestUnit;
     public float distanceFromClosestUnit;
 
@@ -214,15 +213,15 @@ public class Warrior : Enemy
         }
         if (other.tag == "Explosion")
         {
-            TakeDamage(50, "Mine");//TODO where are these numbers from and from who?
-            animator.SetTrigger("Impact");
+            //TakeDamage(50, "Mine");//TODO where are these numbers from and from who?
+            //animator.SetTrigger("Impact");
             hasArrivedAtBeacon = false;
             state = EnemyState.Attack;
         }
         if (other.tag == "Explosion2")
         {
-            TakeDamage(100, "Mine");//TODO where are these numbers from and from who?
-            animator.SetTrigger("Impact");
+           // TakeDamage(100, "Mine");//TODO where are these numbers from and from who?
+           // animator.SetTrigger("Impact");
             hasArrivedAtBeacon = false;
             state = EnemyState.Attack;
         }

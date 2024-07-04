@@ -19,7 +19,6 @@ public class Hunter : Enemy
 
 
     [Header("Components")]
-    public Animator animator;
     public GameObject[] wildlife;
     public Transform closestWildlife;
     public float distanceFromClosestWildlife;

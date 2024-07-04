@@ -12,6 +12,7 @@ public class Enemy : GameBehaviour
     public int maxRandomDropChance;
     [Header("General AI")]
     [HideInInspector] public NavMeshAgent agent;
+    public Animator animator;
 
     public virtual void Awake()
     {
@@ -58,10 +59,14 @@ public class Enemy : GameBehaviour
 
     public virtual void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<UnitWeaponCollider>() != null)
-        {
-            TakeDamage(other.GetComponent<UnitWeaponCollider>().Damage, other.GetComponent<UnitWeaponCollider>().UnitID);
-        }
+        UnitWeaponCollider uwc = other.GetComponent<UnitWeaponCollider>();
+        if (uwc == null)
+            return;
+
+        if (uwc.unitType == UnitType.Human)
+            return;
+
+        TakeDamage(uwc.Damage, other.GetComponent<UnitWeaponCollider>().UnitID);
 
         if (other.tag == "PlayerWeapon")
         {
@@ -121,20 +126,22 @@ public class Enemy : GameBehaviour
         //        StartCoroutine(WaitForHorgr());
         //    }
         //}
-        //if (other.tag == "Explosion")
-        //{
-        //    TakeDamage(50);
-        //    animator.SetTrigger("Impact");
-        //    hasArrivedAtBeacon = false;
-        //    state = EnemyState.Attack;
-        //}
-        //if (other.tag == "Explosion2")
-        //{
-        //    TakeDamage(100);
-        //    animator.SetTrigger("Impact");
-        //    hasArrivedAtBeacon = false;
-        //    state = EnemyState.Attack;
-        //}
+        if (other.tag == "Explosion")
+        {
+            TakeDamage(50, "Fyre");
+            if(animator != null)
+                animator.SetTrigger("Impact");
+            //hasArrivedAtBeacon = false;
+            //state = EnemyState.Attack;
+        }
+        if (other.tag == "Explosion2")
+        {
+            TakeDamage(100, "Fyre");
+            if(animator != null)
+                animator.SetTrigger("Impact");
+            //hasArrivedAtBeacon = false;
+            //state = EnemyState.Attack;
+        }
         //if (other.tag == "Spit")
         //{
         //    navAgent.speed = speed / 2;

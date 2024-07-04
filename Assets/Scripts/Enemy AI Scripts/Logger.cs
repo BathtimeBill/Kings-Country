@@ -17,7 +17,6 @@ public class Logger : Enemy
 
     [Header("AI")]
     public EnemyState state;
-    public Animator animator;
     public Transform closestUnit;
     public float distanceFromClosestUnit;
 

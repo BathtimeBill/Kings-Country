@@ -5,10 +5,8 @@ using UnityEngine.AI;
 
 public class Dog : Enemy
 {
-    Animator animator;
     public GameObject targetTree;
     public GameObject explosion;
-    public GameObject bloodParticle1;
     List<GameObject> trees;
 
     public override void Awake()
