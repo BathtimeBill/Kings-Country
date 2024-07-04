@@ -4,31 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ToolPanel : GameBehaviour
+public class ToolPanel : InGamePanel
 {
-    [Header("Info Box")]
-    public CanvasGroup canvasGroup;
-    public TMP_Text titleText;
-    public TMP_Text descriptionText;
     public TMP_Text maegenPriceText;
     public TMP_Text wildlifePriceText;
 
-    private void Start()
+    public override void PointerEnter(ToolButton _toolButton)
     {
-        canvasGroup.gameObject.SetActive(false);
-    }
-
-    public void PointerEnter(ToolButton _toolButton)
-    {
-        canvasGroup.gameObject.SetActive(true);
-        titleText.text = _DATA.GetTool(_toolButton.toolID).name;
-        descriptionText.text = _DATA.GetTool(_toolButton.toolID).description;
+        base.PointerEnter();
         maegenPriceText.text = _DATA.GetTool(_toolButton.toolID).maegenPrice.ToString();
         wildlifePriceText.text = _DATA.GetTool(_toolButton.toolID).wildlifePrice.ToString();
     }
 
-    public void PointerExit()
+    public override void PointerExit()
     {
-        canvasGroup.gameObject.SetActive(false);
+        base.PointerExit();
     }
 }

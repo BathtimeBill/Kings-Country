@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Coffee.UIExtensions;
 
 public class ToggleButton : GameBehaviour
 {
@@ -7,12 +8,13 @@ public class ToggleButton : GameBehaviour
     public Image image;
     public string title;
     public string description;
-    public TogglePanel togglePanel;
+    public UnitPanel togglePanel;
     Toggle toggle;
-    public void Start()
+
+    private void Awake()
     {
         toggle = GetComponent<Toggle>();
-        if(toggle != null )
+        if (toggle != null)
             toggle.onValueChanged.AddListener((bool on) => PressedToggle(on));
     }
 
@@ -32,5 +34,11 @@ public class ToggleButton : GameBehaviour
     {
         if(toggle != null)
             toggle.interactable = _interactable;
+    }
+
+    public void SetShiny(bool _shiny)
+    {
+        if(GetComponent<ShinyEffectForUGUI>() != null)
+            GetComponent<ShinyEffectForUGUI>().enabled = _shiny;
     }
 }

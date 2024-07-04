@@ -192,6 +192,14 @@ public class HomeTree : GameBehaviour
         }
     }
 
+    private void OnGameStateChanged(GameState _gameState)
+    {
+        if(_inGame)
+            slider.gameObject.SetActive(true);
+        else
+            slider.gameObject.SetActive(false);
+    }
+
     private void OnEnable()
     {
         GameEvents.OnHomeTreeDeselected += OnHomeTreeDeselected;
@@ -199,7 +207,11 @@ public class HomeTree : GameBehaviour
         GameEvents.OnWinfallUpgrade += OnWinfallUpgrade;
         GameEvents.OnHomeTreeUpgrade += OnHomeTreeUpgrade;
         GameEvents.OnUnitButtonPressed += OnUnitButtonPressed;
+        GameEvents.OnGameStateChanged += OnGameStateChanged;
     }
+
+    
+
     private void OnDisable()
     {
 
@@ -208,6 +220,7 @@ public class HomeTree : GameBehaviour
         GameEvents.OnWinfallUpgrade -= OnWinfallUpgrade;
         GameEvents.OnHomeTreeUpgrade -= OnHomeTreeUpgrade;
         GameEvents.OnUnitButtonPressed -= OnUnitButtonPressed;
+        GameEvents.OnGameStateChanged -= OnGameStateChanged;
     }
 
 }

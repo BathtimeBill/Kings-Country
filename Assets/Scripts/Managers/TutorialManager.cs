@@ -124,8 +124,15 @@ public class TutorialManager : GameBehaviour
         FadeX.InstantAlphaValue(gamePanels.perksPanel, fadeStrength);
         FadeX.InstantAlphaValue(gamePanels.mapPanel, fadeStrength);
 
+        gamePanels.dayNightPanel.GetComponent<InGamePanel>().ToggleShiny(false);
+        gamePanels.treePanel.GetComponent<InGamePanel>().ToggleShiny(false);
+        gamePanels.toolPanel.GetComponent<InGamePanel>().ToggleShiny(false);
+        gamePanels.combatPanel.GetComponent<InGamePanel>().ToggleShiny(false);
+        gamePanels.speedPanel.GetComponent<InGamePanel>().ToggleShiny(false);
+
         FadeX.InstantOpaque(taskPanel);
         HideArrows(true);
+        _UI.SetBuildingToggleShiny(false);
         _GLOSSARY.SetInteractable(false);
     }
 
@@ -312,6 +319,9 @@ public class TutorialManager : GameBehaviour
         if (CurrentTutorial == null)
             return;
 
+        if(currentTutorialID == TutorialID.Trees)
+            gamePanels.treePanel.GetComponent<InGamePanel>().ToggleOnActiveShiny();
+
         tutorialTitle.text = CurrentTutorial.title;
         tutorialDescription.text = CurrentTutorial.description;
         ToggleObjects();
@@ -351,13 +361,13 @@ public class TutorialManager : GameBehaviour
     public void ContinueButton()
     {
         if(currentTutorialID == TutorialID.DayNightCycle)
+        {
+            gamePanels.dayNightPanel.GetComponent<InGamePanel>().ToggleOnActiveShiny();
             _GM.ChangeGameState(GameState.Build);
+        }
 
         GetNextTutorial();
         ShowTutorial();
-
-        //if (CurrentTutorial.closePanelAfter)
-        //    HideTutorialPanel();
     }
 
     private IEnumerator WaitForNextTask()
@@ -459,6 +469,10 @@ public class TutorialManager : GameBehaviour
         _GLOSSARY.SetInteractable(true);
         tutorialComplete = true;
         _SAVE.SetTutorialComplete();
+
+        gamePanels.toolPanel.GetComponent<InGamePanel>().ToggleOnActiveShiny();
+        gamePanels.combatPanel.GetComponent<InGamePanel>().ToggleOnActiveShiny();
+        gamePanels.speedPanel.GetComponent<InGamePanel>().ToggleOnActiveShiny();
     }
 
     private void CheckOffTask(TutorialID _id)

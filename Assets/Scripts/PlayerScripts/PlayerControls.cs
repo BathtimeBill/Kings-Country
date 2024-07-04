@@ -515,7 +515,7 @@ public class PlayerControls : Singleton<PlayerControls>
 
             if(hitPoint.collider.tag == "Home Tree")
             {
-                if (_GM.playmode == PlayMode.DefaultMode)
+                if (_GM.playmode == PlayMode.DefaultMode && _inGame)
                 {
                     _SM.PlaySound(_SM.openMenuSound);
                     GameEvents.ReportOnHomeTreeSelected();

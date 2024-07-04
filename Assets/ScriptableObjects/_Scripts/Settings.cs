@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using DG.Tweening;
 
 [CreateAssetMenu(fileName = "Settings", menuName = "BGG/Settings", order = 1)]
 public class Settings : ScriptableObject
@@ -230,23 +231,26 @@ public class CameraShake
 public class Tweening
 {
     public float UIButtonTweenTime = 0.3f;
-    public DG.Tweening.Ease UIButtonTweenEase;
+    public Ease UIButtonTweenEase;
     public float titlePanelTweenTime = 0.5f;
-    public DG.Tweening.Ease titlePanelTweenEase;
+    public Ease titlePanelTweenEase;
     public float errorTweenTime = 0.2f;
     public float errorTweenDuration = 2f;
-    public DG.Tweening.Ease errorTweenEase;
+    public Ease errorTweenEase;
+    [Header("In Game Panels")]
+    public float UITweenTime = 0.4f;
+    public Ease UITweenEase;
     [Header("Overworld Map")]
     public float mapTweenTime = 0.5f;
-    public DG.Tweening.Ease mapTweenEase;
+    public Ease mapTweenEase;
     [Header("Scene Transition")]
     public TransitionType sceneTransitionType;
     public float sceneTransitionTime = 5f;
-    public DG.Tweening.Ease sceneTransitionEase;
+    public Ease sceneTransitionEase;
     [Header("Game Log")]
     public float logTweenTime = 0.3f;
     public float logTweenDelay = 1.5f;
-    public DG.Tweening.Ease logEase;
+    public Ease logEase;
 }
 
 [Serializable]

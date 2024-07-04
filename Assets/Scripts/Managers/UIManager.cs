@@ -13,6 +13,7 @@ public class UIManager : Singleton<UIManager>
 
     [Header("In Game Panels")]
     public InGamePanels inGamePanels;
+    public ToggleButton[] buildingToggles;
 
     [Header("Resources Top")]
     public TMP_Text maegenText;
@@ -139,15 +140,6 @@ public class UIManager : Singleton<UIManager>
     public Image formationButtonImage;
     public Sprite smallFormation;
     public Sprite bigFormation;
-    [Header("Unit Prices")]
-    public TMP_Text satyrPriceText;
-    public TMP_Text orcusPriceText;
-    public TMP_Text leshyPriceText;
-    public TMP_Text skessaPriceText;
-    public TMP_Text goblinPriceText;
-    public TMP_Text huldraPriceText;
-    public TMP_Text mistcalfPriceText;
-    public TMP_Text fidhainPriceText;
 
     [Header("Panel Tweening")]
     public Ease panelEase = Ease.InOutSine;
@@ -187,7 +179,6 @@ public class UIManager : Singleton<UIManager>
         CheckTreeUI();
         CheckWildlifeUI();
         CheckPopulousUI();
-        CheckUnitPrices();
         ResetAgroBar();
         fyreTimeLeft = 0;
         stormerTimeLeft = 0;
@@ -265,6 +256,7 @@ public class UIManager : Singleton<UIManager>
                 inGameCanvasTweener = inGameCanvas.DOFade(0, 0.2f).SetUpdate(true);
                 TweenX.KillTweener(blackoutCanvasTweener);
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
+                SetBuildingToggleShiny(false);
                 break;
             case GameState.Play:
                 SetInteractable(dayNightButton, false);
@@ -273,6 +265,7 @@ public class UIManager : Singleton<UIManager>
                 inGameCanvasTweener = inGameCanvas.DOFade(1, 0.2f).SetUpdate(true);
                 TweenX.KillTweener(blackoutCanvasTweener);
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0, 0.2f).SetUpdate(true);
+                SetBuildingToggleShiny(true);
                 break;
             case GameState.Build:
                 SetInteractable(dayNightButton, true);
@@ -281,6 +274,7 @@ public class UIManager : Singleton<UIManager>
                 inGameCanvasTweener = inGameCanvas.DOFade(1, 0.2f).SetUpdate(true);
                 TweenX.KillTweener(blackoutCanvasTweener);
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0, 0.2f).SetUpdate(true);
+                SetBuildingToggleShiny(true);
                 break;
             case GameState.Finish:
                 TweenX.KillTweener(inGameCanvasTweener);
@@ -288,6 +282,7 @@ public class UIManager : Singleton<UIManager>
                 inGameCanvasTweener = inGameCanvas.DOFade(0, 0.2f).SetUpdate(true);
                 TweenX.KillTweener(blackoutCanvasTweener);
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
+                SetBuildingToggleShiny(false);
                 break;
             case GameState.Glossary:
                 TweenX.KillTweener(inGameCanvasTweener);
@@ -295,6 +290,7 @@ public class UIManager : Singleton<UIManager>
                 inGameCanvasTweener = inGameCanvas.DOFade(0, 0.2f).SetUpdate(true);
                 TweenX.KillTweener(blackoutCanvasTweener);
                 blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
+                SetBuildingToggleShiny(false);
                 break;
             case GameState.Tutorial:
                 SetInteractable(dayNightButton, false);
@@ -308,17 +304,6 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    private void CheckUnitPrices()
-    {
-        satyrPriceText.text = _DATA.GetUnit(CreatureID.Satyr).cost.ToString();
-        orcusPriceText.text = _DATA.GetUnit(CreatureID.Orcus).cost.ToString();
-        leshyPriceText.text = _DATA.GetUnit(CreatureID.Leshy).cost.ToString();
-        skessaPriceText.text = _DATA.GetUnit(CreatureID.Skessa).cost.ToString();
-        goblinPriceText.text = _DATA.GetUnit(CreatureID.Goblin).cost.ToString();
-        huldraPriceText.text = _DATA.GetUnit(CreatureID.Huldra).cost.ToString();
-        mistcalfPriceText.text = _DATA.GetUnit(CreatureID.Mistcalf).cost.ToString();
-        fidhainPriceText.text = _DATA.GetUnit(CreatureID.Fidhain).cost.ToString();
-}
     public void OnFormationSelected()
     {
         if(!largeFormationSelected)
@@ -403,6 +388,14 @@ public class UIManager : Singleton<UIManager>
         audioSource.clip = _SM.closeMenuSound;
         audioSource.Play();
         GameEvents.ReportOnHutDeselected();
+    }
+
+    public void SetBuildingToggleShiny(bool _shine)
+    {
+        for(int i=0;i<buildingToggles.Length;i++)
+        {
+            buildingToggles[i].SetShiny(_shine);
+        }
     }
 
     public void TogglePanel(GameObject _panel, bool _on)

@@ -77,10 +77,9 @@ public class UnitButton : InteractableButton
     }
     #endregion
 
-
-    #region Editor
-    public override void SetupButton()
+    public void SetupButton(UnitData _unitData)
     {
+        unitData = _unitData;
         icon.sprite = unitData.icon;
         title.text = unitData.name;
         cost.text = unitData.cost.ToString();
@@ -90,27 +89,4 @@ public class UnitButton : InteractableButton
             tooltip.SetValues(unitData.name, unitData.description);
         }
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(UnitButton))]
-    [CanEditMultipleObjects]
-
-    public class UnitButtonEditor : Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            UnitButton unit = (UnitButton)target;
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Setup"))
-            {
-                unit.SetupButton();
-                EditorUtility.SetDirty(unit);
-            }
-            GUILayout.EndHorizontal();
-           
-            DrawDefaultInspector();
-        }
-    }
-#endif
-    #endregion
 }

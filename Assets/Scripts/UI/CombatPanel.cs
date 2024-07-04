@@ -1,27 +1,17 @@
 using UnityEngine;
 using TMPro;
 
-public class CombatPanel : MonoBehaviour
+public class CombatPanel : InGamePanel
 {
-    [Header("Info Box")]
-    public CanvasGroup canvasGroup;
-    public TMP_Text titleText;
-    public TMP_Text descriptionText;
+    
 
-    private void Start()
+    public override void PointerEnter(CombatButton _combatButton)
     {
-        canvasGroup.gameObject.SetActive(false);
+        base.PointerEnter(_combatButton);
     }
 
-    public void PointerEnter(CombatButton _combatButton)
+    public override void PointerExit()
     {
-        canvasGroup.gameObject.SetActive(true);
-        titleText.text = _combatButton.title;
-        descriptionText.text = _combatButton.description;
-    }
-
-    public void PointerExit()
-    {
-        canvasGroup.gameObject.SetActive(false);
+        base.PointerExit();
     }
 }
