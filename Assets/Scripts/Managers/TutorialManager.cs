@@ -99,6 +99,7 @@ public class TutorialManager : GameBehaviour
             FadeX.InstantTransparent(taskPanel);
             HideArrows(true);
             _GLOSSARY.SetInteractable(true);
+            _GM.ChangeGameState(GameState.Build);
         }
         else
         {

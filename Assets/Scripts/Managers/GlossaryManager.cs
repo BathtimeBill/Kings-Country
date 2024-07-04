@@ -158,7 +158,7 @@ public class GlossaryManager : GameBehaviour
     public void CloseGlossaryPanel()
     {
         FadeX.FadeOut(glossaryPanel);
-        _GM.ChangeGameState(GameState.Play);
+        _GM.ChangeGameState(_GM.previousState);
         TweenX.TweenFill(newEntryLabel, _TWEENING.UIButtonTweenTime, _TWEENING.UIButtonTweenEase, 0);
     }
 

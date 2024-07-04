@@ -100,9 +100,11 @@ public class GameManager : Singleton<GameManager>
     public bool skipIntro;
 
     public void SetPlayMode(PlayMode _mode) => playmode = _mode;
+    public void SetPreviousState(GameState _gs) => previousState = _gs;
 
     void Start()
     {
+        SetPreviousState(GameState.Build);
         IncreaseMaegen(startingMaegen);
         currentDay = 0;
         SetPlayMode(PlayMode.DefaultMode);

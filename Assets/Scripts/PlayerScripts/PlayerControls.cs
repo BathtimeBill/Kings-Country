@@ -131,7 +131,7 @@ public class PlayerControls : Singleton<PlayerControls>
         {
             if (_hasInput)
             {
-                _GM.previousState = _GM.gameState;
+                _GM.SetPreviousState(_GM.gameState);
                 _GM.ChangeGameState(GameState.Pause);
                 _UI.TogglePanel(_UI.pausePanel, true);
                 return;
