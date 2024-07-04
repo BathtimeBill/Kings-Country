@@ -211,28 +211,10 @@ public class Warrior : Enemy
                 StartCoroutine(WaitForHorgr());
             }
         }
-        if (other.tag == "Explosion")
-        {
-            //TakeDamage(50, "Mine");//TODO where are these numbers from and from who?
-            //animator.SetTrigger("Impact");
-            hasArrivedAtBeacon = false;
-            state = EnemyState.Attack;
-        }
-        if (other.tag == "Explosion2")
-        {
-           // TakeDamage(100, "Mine");//TODO where are these numbers from and from who?
-           // animator.SetTrigger("Impact");
-            hasArrivedAtBeacon = false;
-            state = EnemyState.Attack;
-        }
-        if (other.tag == "Spit")
-        {
-            agent.speed = speed / 2;
-        }
-
     }
     public override void OnTriggerExit(Collider other)
     {
+        base.OnTriggerExit(other);
         if (other.tag == "Horgr")
         {
             if(spawnedFromBuilding == false)
@@ -241,10 +223,6 @@ public class Warrior : Enemy
                 hasArrivedAtHorgr = false;
             }
 
-        }
-        if (other.tag == "Spit")
-        {
-            agent.speed = speed;
         }
     }
     

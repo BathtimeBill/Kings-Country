@@ -68,15 +68,15 @@ public class Enemy : GameBehaviour
 
         TakeDamage(uwc.Damage, other.GetComponent<UnitWeaponCollider>().UnitID);
 
-        if (other.tag == "PlayerWeapon")
+        if (other.tag == "PlayerWeapon") // Satyr
         {
             TakeDamage(_DATA.GetUnit(CreatureID.Satyr).damage, CreatureID.Satyr.ToString());
         }
-        if (other.tag == "PlayerWeapon2")
+        if (other.tag == "PlayerWeapon2") //Orcus
         {
             TakeDamage(_DATA.GetUnit(CreatureID.Orcus).damage, CreatureID.Satyr.ToString());
         }
-        if (other.tag == "PlayerWeapon3")
+        if (other.tag == "PlayerWeapon3") //Leshy
         {
             if (_DATA.GetUnitType(unitID) == EnemyType.Woodcutter)
                 Die(this, _DATA.GetUnit(CreatureID.Leshy).id.ToString(), DeathID.Launch);
@@ -93,21 +93,22 @@ public class Enemy : GameBehaviour
                 TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage, CreatureID.Leshy.ToString());
         }
 
-        if (other.tag == "PlayerWeapon4")
+        if (other.tag == "PlayerWeapon4") //Skessa
         {
             TakeDamage(_DATA.GetUnit(CreatureID.Skessa).damage, CreatureID.Skessa.ToString());
         }
-        if (other.tag == "PlayerWeapon5")
+        if (other.tag == "PlayerWeapon5") //Goblin
         {
             TakeDamage(_DATA.GetUnit(CreatureID.Goblin).damage, CreatureID.Goblin.ToString());
         }
-        if (other.tag == "PlayerWeapon6")
+        if (other.tag == "PlayerWeapon6") //Mistcals
         {
             TakeDamage(_DATA.GetUnit(CreatureID.Mistcalf).damage, CreatureID.Mistcalf.ToString());
         }
-        if (other.tag == "Spit")
+        if (other.tag == "Spit") //Fidhein?
         {
             TakeDamage((int)_GM.spitDamage, "Spit");
+            agent.speed = speed / 2;
         }
         if (other.tag == "SpitExplosion")
         {
@@ -128,17 +129,28 @@ public class Enemy : GameBehaviour
         //}
         if (other.tag == "Explosion")
         {
-            TakeDamage(50, "Fyre");
-            if(animator != null)
-                animator.SetTrigger("Impact");
+            if (_DATA.GetUnitType(unitID) != EnemyType.Warrior)
+                Die(this, "Fyre", DeathID.Explosion);
+            else
+            {
+                TakeDamage(50, "Fyre");
+                if (animator != null)
+                    animator.SetTrigger("Impact");
+            }
+            
             //hasArrivedAtBeacon = false;
             //state = EnemyState.Attack;
         }
         if (other.tag == "Explosion2")
         {
-            TakeDamage(100, "Fyre");
-            if(animator != null)
-                animator.SetTrigger("Impact");
+            if (_DATA.GetUnitType(unitID) != EnemyType.Warrior)
+                Die(this, "Fyre", DeathID.Explosion);
+            else
+            {
+                TakeDamage(100, "Fyre");
+                if (animator != null)
+                    animator.SetTrigger("Impact");
+            }
             //hasArrivedAtBeacon = false;
             //state = EnemyState.Attack;
         }
@@ -156,7 +168,10 @@ public class Enemy : GameBehaviour
 
     public virtual void OnTriggerExit(Collider other)
     {
-
+        if (other.tag == "Spit")
+        {
+            agent.speed = speed;
+        }
     }
 
     private void RagdollDeath()

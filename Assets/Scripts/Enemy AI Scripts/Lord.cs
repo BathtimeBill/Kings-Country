@@ -109,7 +109,7 @@ public class Lord : Enemy
         if (other.tag == "SpitExplosion")
         {
             TakeDamage(_GM.spitExplosionDamage);
-        }*/
+        }
         if (other.tag == "Explosion")
         {
             TakeDamage(100, "Mine");//TODO where are these numbers from and from who?
@@ -117,11 +117,7 @@ public class Lord : Enemy
         if (other.tag == "Explosion2")
         {
             TakeDamage(200, "Mine");//TODO where are these numbers from and from who?
-        }
-        if (other.tag == "Spit")
-        {
-            agent.speed = speed / 2;
-        }
+        }*/
     }
     public override void OnTriggerExit(Collider other)
     {

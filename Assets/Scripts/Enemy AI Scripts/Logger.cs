@@ -169,19 +169,6 @@ public class Logger : Enemy
                 hasArrivedAtBeacon = true;
             }
         }
-        /*if(other.tag == "Explosion" || other.tag == "Explosion2")
-        {
-            GameObject go;
-            go = Instantiate(deadLoggerFire, transform.position, transform.rotation);
-            go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * 2000);
-            go.GetComponentInChildren<Rigidbody>().AddForce(transform.forward * -16000);
-            Destroy(go, 15);
-            Destroy(gameObject);
-        }*/
-        if (other.tag == "Spit")
-        {
-            agent.speed = speed / 2;
-        }
         if (other.tag == "Hand") //TODO what is the hand?
         {
             Die(this, "Hand", DeathID.Regular);
@@ -189,10 +176,7 @@ public class Logger : Enemy
     }
     public override void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Spit")
-        {
-            agent.speed = speed;
-        }
+        base.OnTriggerExit(other);
     }
     private int RandomCheerAnim()
     {

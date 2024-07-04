@@ -210,10 +210,6 @@ public class Hunter : Enemy
             }
 
         }
-        if (other.tag == "Spit")
-        {
-            agent.speed = speed / 2;
-        }
     }
 
     public override void OnTriggerExit(Collider other)
@@ -228,10 +224,6 @@ public class Hunter : Enemy
                 hasArrivedAtHorgr = false;
             }
 
-        }
-        if (other.tag == "Spit")
-        {
-            agent.speed = speed;
         }
     }
 
