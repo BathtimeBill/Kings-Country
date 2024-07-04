@@ -10,10 +10,6 @@ using UnityEngine.UIElements;
 public class TutorialManager : GameBehaviour
 {
     //TEMP
-    [Tooltip("Will override the save data values")]
-    public bool overrideTutorial;
-    [DrawIf("overrideTutorial", true)]
-    public bool showTutorial;
     [Tooltip("Just to skip the intro camera")]
     public bool overrideStartTime = true;
     public int debugStartOffset = 0;
@@ -92,10 +88,10 @@ public class TutorialManager : GameBehaviour
         //}
 
         //Debug Stuff
-        if (overrideTutorial)
-            tutorialComplete = !showTutorial;
+        if (_TESTING.overrideTutorial)
+            tutorialComplete = !_TESTING.showTutorial;
         else
-            tutorialComplete = _SAVE._tutorialComplete;
+            tutorialComplete = _SAVE.GetTutorialStatus;
 
         if (tutorialComplete)
         {
@@ -179,16 +175,19 @@ public class TutorialManager : GameBehaviour
                 _tutorial.title = "Camera Controls";
                 _tutorial.description = "To MOVE the camera, use the ‘W,A,S,D’ keys or move the mouse cursor to the edge of the screen.\r\n<br>Hold shift to hasten camera movement.";
                 _tutorial.taskLine = moveCameraTask;
+                _tutorial.unlockedGlossaryID = GlossaryID.CameraControls;
                 break;
             case TutorialID.CameraRotate:
                 _tutorial.title = "Camera Controls";
                 _tutorial.description = "To ROTATE the camera, click and drag the ‘Middle Mouse Button’ to the left or right.";
                 _tutorial.taskLine = rotateCameraTask;
+                _tutorial.unlockedGlossaryID = GlossaryID.CameraControls;
                 break;
             case TutorialID.CameraZoom:
                 _tutorial.title = "Camera Controls";
                 _tutorial.description = "To ZOOM the camera, scroll the Mouse Wheel in and out.";
                 _tutorial.taskLine = zoomCameraTask;
+                _tutorial.unlockedGlossaryID = GlossaryID.CameraControls;
                 break;
             case TutorialID.Maegen:
                 _tutorial.title = "Maegen";
@@ -196,6 +195,7 @@ public class TutorialManager : GameBehaviour
                 _tutorial.showContinueButton = true;
                 _tutorial.showObjects.Add(gamePanels.resourcesPanel.gameObject);
                 _tutorial.showObjects.Add(arrows.maegenArrow.gameObject);
+                _tutorial.unlockedGlossaryID = GlossaryID.Maegen;
                 break;
             case TutorialID.Trees:
                 _tutorial.title = "Trees";
@@ -203,6 +203,7 @@ public class TutorialManager : GameBehaviour
                 _tutorial.taskLine = treesTask;
                 _tutorial.showObjects.Add(gamePanels.treePanel.gameObject);
                 _tutorial.showObjects.Add(arrows.treeToolArrow.gameObject);
+                _tutorial.unlockedGlossaryID = GlossaryID.Trees;
                 break;
             case TutorialID.Creatures:
                 _tutorial.title = "Creatures";
@@ -213,6 +214,7 @@ public class TutorialManager : GameBehaviour
                 _tutorial.taskLine = creaturesTask;
                 _tutorial.showObjects.Add(gamePanels.unitPanel.gameObject);
                 _tutorial.showObjects.Add(arrows.unitArrow.gameObject);
+                _tutorial.unlockedGlossaryID = GlossaryID.CreatureMovement;
                 break;
             case TutorialID.CreatureMovement:
                 _tutorial.title = "Creature Movement";
@@ -220,6 +222,7 @@ public class TutorialManager : GameBehaviour
                     "To select a CREATURE, click on it with the LEFT MOUSE BUTTON or click and drag over multiple CREATURE to select more than one.<br>" + "<br>" +
                     "With selected CREATURE(S), RIGHT CLICK on a location to send them there. Our CREATURES will defend that location if HUMANS come within their range.<br>";
                 _tutorial.showContinueButton = true;
+                _tutorial.unlockedGlossaryID = GlossaryID.CreatureMovement;
                 break;
             case TutorialID.HomeTree:
                 _tutorial.title = "Home Tree";
@@ -230,7 +233,7 @@ public class TutorialManager : GameBehaviour
                     "Use CREATURES to defend the GROVE<br>";
                 inWorldArrow.SetActive(true);
                 _tutorial.showContinueButton = true;
-
+                _tutorial.unlockedGlossaryID = GlossaryID.HomeTree;
                 break;
             case TutorialID.Wildlife:
                 _tutorial.title = "Wildlife";
@@ -241,6 +244,7 @@ public class TutorialManager : GameBehaviour
                     "Hold down the ALT button to highlight your existing WILDLIFE and protect them at all costs!";
                 _tutorial.showContinueButton = true;
                 _tutorial.showObjects.Add(arrows.wildlifeArrow.gameObject);
+                _tutorial.unlockedGlossaryID = GlossaryID.Wildlife;
                 break;
             case TutorialID.Populous:
                 _tutorial.title = "Populous";
@@ -250,6 +254,7 @@ public class TutorialManager : GameBehaviour
                     "Press DELETE with a selected CREATURE to destroy it, in order to reduce your POPULOUS level";
                 _tutorial.showContinueButton = true;
                 _tutorial.showObjects.Add(arrows.populousArrow.gameObject);
+                _tutorial.unlockedGlossaryID = GlossaryID.Populous;
                 break;
             case TutorialID.DayNightCycle:
                 _tutorial.title = "Day/Night";
@@ -264,6 +269,7 @@ public class TutorialManager : GameBehaviour
                 _tutorial.showObjects.Add(arrows.dayNightArrow.gameObject);
                 _tutorial.showContinueButton = true;
                 inWorldArrow.SetActive(false);
+                _tutorial.unlockedGlossaryID = GlossaryID.DayNightCycle;
                 break;
         }
         SetupTaskLines();
@@ -316,6 +322,7 @@ public class TutorialManager : GameBehaviour
                 taskLines[i].ActivateTask();
         }
 
+        _GLOSSARY.UnlockGlossaryItem(CurrentTutorial.unlockedGlossaryID);
         inGameContinueButton.SetActive(CurrentTutorial.showContinueButton);
     }
 
@@ -532,6 +539,7 @@ public class Tutorial
     [HideInInspector] public bool completed;
     public List<GameObject> showObjects;
     public List<GameObject> hideObjects;
+    public GlossaryID unlockedGlossaryID;
 }
 
 [System.Serializable]

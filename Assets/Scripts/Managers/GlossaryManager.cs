@@ -22,6 +22,7 @@ public class GlossaryManager : GameBehaviour
     [Header("New Glossary Item")]
     public UnityEngine.UI.Image newEntryLabel;
     public TMP_Text newEntryTitle;
+    public List<GlossaryID> unlockedItems;
 
     public GlossaryItem GetGlossaryItem(GlossaryID _id) => glossaryItems.Find(x=>x.glossaryID == _id);
     private bool glossaryAvailable(GlossaryID _id) => GetGlossaryItem(_id).available;
@@ -35,6 +36,14 @@ public class GlossaryManager : GameBehaviour
             SetupGlossaryItems(GetGlossaryItem(glossaryItems[i].glossaryID));
         }
         newEntryLabel.fillAmount = 0;
+
+        unlockedItems = _SAVE.GetGlossaryItemsUnlocked;
+
+        ExecuteNextFrame(() =>
+        {
+            for (int i = 0; i < glossaryButtons.Count; i++)
+                glossaryButtons[i].Setup();
+        });
     }
 
     private void SetupGlossaryItems(GlossaryItem _glossaryItem)
@@ -165,6 +174,20 @@ public class GlossaryManager : GameBehaviour
         newEntryLabel.GetComponent<Animator>().SetTrigger("TutorialAvailable");
         newEntryLabel.GetComponent<AudioSource>().Play();
         lastSelectedGlossayID = id;
+        UnlockGlossaryItem(id);
+    }
+
+
+    public void UnlockGlossaryItem(GlossaryID _id)
+    {
+        if (unlockedItems.Contains(_id))
+            return;
+
+        unlockedItems.Add(_id);
+        _SAVE.SetGlossaryItemsUnlocked(unlockedItems);
+
+        if (glossaryButtons.Find(x => x.glossaryID == _id) != null)
+            glossaryButtons.Find(x=>x.glossaryID == _id).Unlock(true);
     }
 
     #region Events

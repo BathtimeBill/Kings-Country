@@ -6,6 +6,9 @@ public class GlossaryButton : GameBehaviour, IPointerEnterHandler, IPointerExitH
     public GlossaryID glossaryID;
     private Button button;
     private TMP_Text buttonText;
+    public bool unlocked = false;
+
+    private void SetInteractable(bool _interactable) => button.interactable = _interactable;
 
     private void Awake()
     {
@@ -16,19 +19,31 @@ public class GlossaryButton : GameBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void Setup()
     {
-        buttonText.text = _GLOSSARY.GetGlossaryItem(glossaryID).title;
-        //TODO if not unlocked through the tutorial, then text is ??? and grayed out
+        unlocked = _SAVE.GetGlossaryItemUnlocked(glossaryID);
+
+        if(_TESTING.allGlossaryUnlocked)
+            unlocked = true;
+
+        Unlock(unlocked);
     }
+
+    public void Unlock(bool _unlock)
+    {
+        unlocked = _unlock;
+        buttonText.text = unlocked ? _GLOSSARY.GetGlossaryItem(glossaryID).title : "?????????";
+        SetInteractable(unlocked);
+    }
+
 
     private void OnClick()
     {
-
         _GLOSSARY.ShowGlossaryItem(glossaryID);
     }
 
     public void HighlightButton(bool _highlight)
     {
-        TweenX.TweenColor(buttonText, _highlight ? _COLOUR.titleColor : _COLOUR.descriptionColor);
+        buttonText.color = _highlight ? _COLOUR.titleColor : _COLOUR.descriptionColor;
+       // TweenX.TweenColor(buttonText, _highlight ? _COLOUR.titleColor : _COLOUR.descriptionColor);
     }
 
     public void OnPointerEnter(PointerEventData eventData) 

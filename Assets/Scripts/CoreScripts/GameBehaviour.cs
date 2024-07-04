@@ -41,6 +41,7 @@ public class GameBehaviour : BV.Behaviour
     public Colours _COLOUR => _DATA.settings.colours;
     public Icons _ICONS => _DATA.settings.icons;
     public PlayerSettings _PLAYER => _SAVE.save.playerSettings;
+    public Testing _TESTING => _DATA.settings.testing;
 }
 
 public enum UpgradeID

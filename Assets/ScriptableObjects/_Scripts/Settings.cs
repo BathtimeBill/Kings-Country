@@ -6,6 +6,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Settings", menuName = "BGG/Settings", order = 1)]
 public class Settings : ScriptableObject
 {
+    [Header("Debug Testing - Turn all off for release")]
+    public Testing testing;
+
     [Header("Camera Shakes")]
     public CameraShake cameraShake;
 
@@ -297,4 +300,14 @@ public class General
     public float introCameraDuration = 5;
     public GameObject maegenPickup;
     public GameObject healObject;
+}
+
+[Serializable]
+public class Testing
+{
+    public bool allGlossaryUnlocked = false;
+    [Tooltip("Will override the save data values")]
+    public bool overrideTutorial;
+    [DrawIf("overrideTutorial", true)]
+    public bool showTutorial;
 }

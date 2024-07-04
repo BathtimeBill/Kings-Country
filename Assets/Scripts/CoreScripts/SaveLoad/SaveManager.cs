@@ -79,6 +79,7 @@ public class PlayTimeObject
 public class GlossaryObject
 {
     public bool tutorialComplete;
+    public List<GlossaryID> glossaryIDs;
 }
 
 [Serializable]
@@ -204,6 +205,7 @@ public class SaveManager : BGG.GameData
             save.playTime = new PlayTimeObject();
 
             save.glossary = new GlossaryObject();
+            save.glossary.glossaryIDs = new List<GlossaryID>();
         }
 
         timeofLastSave = DateTime.Now;
@@ -304,7 +306,21 @@ public class SaveManager : BGG.GameData
         SaveData();
     }
     public bool GetTutorialStatus => save.glossary.tutorialComplete;
+    public void SetGlossaryItemUnlocked(GlossaryID _id)
+    {
+        if (save.glossary.glossaryIDs.Contains(_id))
+            return;
 
+        save.glossary.glossaryIDs.Add(_id);
+        SaveData();
+    }
+    public bool GetGlossaryItemUnlocked(GlossaryID _id) => save.glossary.glossaryIDs.Contains(_id); 
+    public void SetGlossaryItemsUnlocked(List<GlossaryID> _items)
+    {
+        save.glossary.glossaryIDs = _items;
+        SaveData();
+    }
+    public List<GlossaryID> GetGlossaryItemsUnlocked => save.glossary.glossaryIDs; 
 
     #endregion
 
