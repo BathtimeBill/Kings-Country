@@ -352,6 +352,9 @@ public class TutorialManager : GameBehaviour
         if(currentTutorialID == TutorialID.PlantTree)
             gamePanels.treePanel.GetComponent<InGamePanel>().ToggleOnActiveShiny();
 
+        if (currentTutorialID == TutorialID.Wildlife)
+            _FM.WildlifeInstantiate();
+
         tutorialTitle.text = CurrentTutorial.title;
         tutorialDescription.text = CurrentTutorial.description;
         ToggleObjects();

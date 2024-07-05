@@ -29,6 +29,7 @@ public class GameBehaviour : BV.Behaviour
 
     public bool _hasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build || _GM.gameState == GameState.Tutorial;
     public bool _inGame => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build;
+    public bool _inTutorial => _GM.gameState == GameState.Tutorial;
     public bool _inDay => _GM.gameState == GameState.Play;
     public bool _agroPhase => _GM.agroPhase;
     public bool _isPaused => _GM.gameState == GameState.Pause;

@@ -30,9 +30,8 @@ public class ForestManager : Singleton<ForestManager>
 
         spawnLocation = new Vector3(5, 0, 5);
         CheckTreesForWildlife();
-        WildlifeInstantiate();
         _GM.wildlife = CheckWildlife();
-        if(spawnRocks)
+        if (spawnRocks)
         {
             int amount;
             for (amount = 0; amount < amountOfRocks; amount++)
@@ -40,6 +39,12 @@ public class ForestManager : Singleton<ForestManager>
                 SpawnRocks();
             }
         }
+
+        ExecuteNextFrame(() =>
+        {
+            if(!_inTutorial)
+                WildlifeInstantiate();
+        });
     }
 
     //This function checks how many animals are in the scene.
