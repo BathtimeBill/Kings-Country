@@ -251,55 +251,37 @@ public class UIManager : Singleton<UIManager>
         switch(_gameState)
         {
             case GameState.Pause:
-                TweenX.KillTweener(inGameCanvasTweener);
-                inGameCanvas.interactable = false;
-                inGameCanvasTweener = inGameCanvas.DOFade(0, 0.2f).SetUpdate(true);
-                TweenX.KillTweener(blackoutCanvasTweener);
-                blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
+                FadeX.FadeOut(inGameCanvas, _TWEENING.blackoutPanelTime);
+                FadeX.FadeTo(pauseBlackoutPanel, _TWEENING.blackoutPanelFade, _TWEENING.blackoutPanelTime);
                 SetBuildingToggleShiny(false);
                 break;
             case GameState.Play:
                 SetInteractable(dayNightButton, false);
-                TweenX.KillTweener(inGameCanvasTweener);
-                inGameCanvas.interactable = true;
-                inGameCanvasTweener = inGameCanvas.DOFade(1, 0.2f).SetUpdate(true);
-                TweenX.KillTweener(blackoutCanvasTweener);
-                blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0, 0.2f).SetUpdate(true);
+                FadeX.FadeIn(inGameCanvas, _TWEENING.blackoutPanelTime);
+                FadeX.FadeOut(pauseBlackoutPanel, _TWEENING.blackoutPanelTime);
                 SetBuildingToggleShiny(true);
                 break;
             case GameState.Build:
                 SetInteractable(dayNightButton, true);
-                TweenX.KillTweener(inGameCanvasTweener);
-                inGameCanvas.interactable = true;
-                inGameCanvasTweener = inGameCanvas.DOFade(1, 0.2f).SetUpdate(true);
-                TweenX.KillTweener(blackoutCanvasTweener);
-                blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0, 0.2f).SetUpdate(true);
+                FadeX.FadeIn(inGameCanvas, _TWEENING.blackoutPanelTime);
+                FadeX.FadeOut(pauseBlackoutPanel, _TWEENING.blackoutPanelTime);
                 SetBuildingToggleShiny(true);
                 break;
             case GameState.Finish:
-                TweenX.KillTweener(inGameCanvasTweener);
-                inGameCanvas.interactable = false;
-                inGameCanvasTweener = inGameCanvas.DOFade(0, 0.2f).SetUpdate(true);
-                TweenX.KillTweener(blackoutCanvasTweener);
-                blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
+                FadeX.FadeOut(inGameCanvas, _TWEENING.blackoutPanelTime);
+                FadeX.FadeTo(pauseBlackoutPanel, _TWEENING.blackoutPanelFade, _TWEENING.blackoutPanelTime);
                 SetBuildingToggleShiny(false);
                 break;
             case GameState.Glossary:
-                TweenX.KillTweener(inGameCanvasTweener);
-                inGameCanvas.interactable = false;
-                inGameCanvasTweener = inGameCanvas.DOFade(0, 0.2f).SetUpdate(true);
-                TweenX.KillTweener(blackoutCanvasTweener);
-                blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
+                FadeX.FadeOut(inGameCanvas, _TWEENING.blackoutPanelTime);
+                FadeX.FadeTo(pauseBlackoutPanel, _TWEENING.blackoutPanelFade, _TWEENING.blackoutPanelTime);
                 SetBuildingToggleShiny(false);
                 break;
             case GameState.Tutorial:
                 SetInteractable(dayNightButton, false);
-                //TweenX.KillTweener(inGameCanvasTweener);
                 inGameCanvas.interactable = true;
                 inGameCanvas.alpha = 1;
-                //inGameCanvasTweener = inGameCanvas.DOFade(0, 0.2f).SetUpdate(true);
-                //TweenX.KillTweener(blackoutCanvasTweener);
-                //blackoutCanvasTweener = pauseBlackoutPanel.DOFade(0.5f, 0.2f).SetUpdate(true);
+                FadeX.FadeOut(pauseBlackoutPanel, _TWEENING.blackoutPanelTime);
                 break;
         }
     }

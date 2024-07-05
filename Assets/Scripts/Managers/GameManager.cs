@@ -165,6 +165,7 @@ public class GameManager : Singleton<GameManager>
                 break;
             case GameState.Tutorial:
                 Time.timeScale = 1;
+                _UI.TogglePanel(_UI.pausePanel, false);
                 break;
         }
         GameEvents.ReportOnGameStateChanged(gameState);

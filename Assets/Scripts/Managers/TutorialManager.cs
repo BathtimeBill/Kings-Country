@@ -420,7 +420,7 @@ public class TutorialManager : GameBehaviour
             else
             {
                 _EFFECTS.TweenVignetteReset();
-                FadeX.FadeTo(blackoutPanel, 0.8f);
+                FadeX.FadeTo(blackoutPanel, _TWEENING.blackoutPanelFade);
             }
         }
         else

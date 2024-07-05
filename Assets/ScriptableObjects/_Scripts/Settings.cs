@@ -240,6 +240,8 @@ public class Tweening
     [Header("In Game Panels")]
     public float UITweenTime = 0.4f;
     public Ease UITweenEase;
+    public float blackoutPanelFade = 0.8f;
+    public float blackoutPanelTime = 0.3f;
     [Header("Overworld Map")]
     public float mapTweenTime = 0.5f;
     public Ease mapTweenEase;
