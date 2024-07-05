@@ -27,6 +27,7 @@ public class GameManager : Singleton<GameManager>
     public int currentDay;
     private float currentAgroTime;
     private float dayAgroTimeLimit;
+    public float initialAgroLength;
     public bool agroPhase => currentAgroTime < dayAgroTimeLimit;
 
     [Header("Buildings Cooldown")]
@@ -206,7 +207,7 @@ public class GameManager : Singleton<GameManager>
     public void BeginNewDay()
     {
         currentDay++;
-        dayAgroTimeLimit = 60 + (10 * currentDay);  //TODO adds 10 seconds per day 
+        dayAgroTimeLimit = initialAgroLength + (10 * currentDay);  //TODO adds 10 seconds per day 
         ChangeGameState(GameState.Play);
         _EM.BeginNewDay();
         _UI.BeginNewDay();

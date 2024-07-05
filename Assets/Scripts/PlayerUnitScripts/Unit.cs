@@ -34,6 +34,7 @@ public class Unit : GameBehaviour
     public GameObject pointer;
     public bool hasStopped = false;
     public GameObject trackTarget;
+    public float spawnInMoveDistance;
 
     [Header("Death Objects")]
     public GameObject deadSatyr;
@@ -81,6 +82,7 @@ public class Unit : GameBehaviour
         Setup();
         UnitSelection.Instance.unitList.Add(gameObject);
         GameEvents.ReportOnUnitSpawned(unitID.ToString());
+        SpawnInMove();
     }
 
     private void Setup()
@@ -544,7 +546,14 @@ public class Unit : GameBehaviour
         state = UnitState.Moving;
         navAgent.SetDestination(transform.position);
     }
-
+    void SpawnInMove()
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * spawnInMoveDistance;
+        NavMeshHit hit;
+        NavMesh.SamplePosition(randomDirection, out hit, spawnInMoveDistance, 1);
+        Vector3 finalPosition = hit.position;
+        navAgent.SetDestination(finalPosition);
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Axe1")
