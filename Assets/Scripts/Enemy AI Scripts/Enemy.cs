@@ -200,6 +200,7 @@ public class Enemy : GameBehaviour
 
     public virtual void LaunchDeath()
     {
+        print("Launching");
         bool isColliding = false;
         if (_HUTM.enemies.Contains(gameObject))
             _HUTM.enemies.Remove(gameObject);
