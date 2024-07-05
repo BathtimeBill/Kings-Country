@@ -47,6 +47,9 @@ public class TutorialManager : GameBehaviour
     private int creatureCount = 0;
     private int creatureCompletionCount = 3;
 
+    private int moveCreatureCount = 0;
+    private int moveCreatureCompletionCount = 3;
+
     private float fadeStrength = 0.1f;
 
     private InGamePanels gamePanels;
@@ -61,7 +64,7 @@ public class TutorialManager : GameBehaviour
     private string zoomCameraTask   = "Zoom the camera";
     private string treesTask        = "Grow 4 Trees";
     private string creaturesTask    = "Summon 4 CREATURES";
-    private string movementTask     = "Position your CREATURES";
+    private string movementTask     = "Move your CREATURES";
     private string startDayTask     = "Start the Day";
     private string winDayTask       = "Defend the GROVE from the HUMANS";
 
@@ -222,7 +225,9 @@ public class TutorialManager : GameBehaviour
             case TutorialID.PlantTree:
                 _tutorial.title = "Trees";
                 _tutorial.description = 
-                    "To grow a tree, click on the TREE button and Left-Click on an available space in our domain.<br>" + 
+                    "To grow a tree, click on the TREE tool then Left-Click on an available space in our GROVE.<br>" +
+                    "To deselect the TREE tool, Right-Click.<br>" +
+                    "The higher the %, the better your MAEGEN yield.<br>" +
                     "You can only plant trees during NIGHT";
                 _tutorial.taskLine = treesTask;
                 _tutorial.showObjects.Add(gamePanels.treePanel.gameObject);
@@ -234,7 +239,8 @@ public class TutorialManager : GameBehaviour
                 _tutorial.description = 
                     "CREATURES are your servants. Use them to keep control of the GROVE!<br>" +
                     "Each unit requires a different MAEGEN cost to summon it.<br>" +
-                    "Open the HOME TREE panel to start summoning creatures.<br>";
+                    "Open the HOME TREE panel to start summoning creatures.<br>" +
+                    "You can also click on the HOME TREE panel to start summoning creatures.<br>";
                 _tutorial.taskLine = creaturesTask;
                 _tutorial.showObjects.Add(gamePanels.unitPanel.gameObject);
                 _tutorial.showObjects.Add(arrows.unitArrow.gameObject);
@@ -245,7 +251,7 @@ public class TutorialManager : GameBehaviour
                 _tutorial.description =
                     "To select a CREATURE, click on it with the LEFT MOUSE BUTTON or click and drag over multiple CREATURE to select more than one.<br>" + "<br>" +
                     "With selected CREATURE(S), RIGHT CLICK on a location to send them there. Our CREATURES will defend that location if HUMANS come within their range.<br>";
-                _tutorial.showContinueButton = true;
+                _tutorial.taskLine = movementTask;
                 _tutorial.unlockedGlossaryID = GlossaryID.CreatureMovement;
                 break;
             case TutorialID.HomeTree:
@@ -421,6 +427,11 @@ public class TutorialManager : GameBehaviour
         StartCoroutine(WaitForNextTask());
     }
 
+    public void CheckCreatureMovement()
+    {
+
+    }
+
     public void ClosedGlossary()
     {
         if(_tutorialComplete || currentTutorialID != TutorialID.Glossary)
@@ -455,7 +466,9 @@ public class TutorialManager : GameBehaviour
             return;
 
         treeCount++;
-        taskLines.Find(x => x.taskID == TutorialID.PlantTree).text.text = "Grow 4 trees (" + treeCount + "/" + treeCompletionCount + ")";
+        TaskLine tl = taskLines.Find(x => x.taskID == TutorialID.PlantTree);
+        tl.text.text = treesTask + " (" + treeCount + "/" + treeCompletionCount + ")";
+        tl.PulseTask();
         if (treeCount == treeCompletionCount)
         {
             _GLOSSARY.NewGlossaryAvailable(GlossaryID.HomeTree, "Home Tree");
@@ -472,16 +485,15 @@ public class TutorialManager : GameBehaviour
     //Summon Creatures
     private void OnUnitButtonPressed(UnitData _unitData)
     {
-        if (tutorialComplete)
-            return;
-
-        if (currentTutorialID != TutorialID.Creatures)
+        if (tutorialComplete || currentTutorialID != TutorialID.Creatures)
             return;
 
         HideTutorialPanel();
 
         creatureCount++;
-        taskLines.Find(x => x.taskID == TutorialID.Creatures).text.text = "Summon 3 Creatures (" + creatureCount + "/" + creatureCompletionCount + ")";
+        TaskLine tl = taskLines.Find(x => x.taskID == TutorialID.Creatures);
+        tl.text.text = creaturesTask + " (" + creatureCount + "/" + creatureCompletionCount + ")";
+        tl.PulseTask();
         if (creatureCount == creatureCompletionCount)
         {
             GetNextTutorial();
@@ -491,6 +503,24 @@ public class TutorialManager : GameBehaviour
         }
     }
 
+    private void OnUnitMove()
+    {
+        if (tutorialComplete || currentTutorialID != TutorialID.CreatureMovement)
+            return;
+
+        HideTutorialPanel();
+
+        moveCreatureCount++;
+        TaskLine tl = taskLines.Find(x => x.taskID == TutorialID.CreatureMovement);
+        tl.text.text = movementTask + " (" + moveCreatureCount + "/" + moveCreatureCompletionCount + ")";
+        tl.PulseTask();
+        if (moveCreatureCount == moveCreatureCompletionCount)
+        {
+            GetNextTutorial();
+            ShowTutorial();
+            CheckOffTask(TutorialID.CreatureMovement);
+        }
+    }
 
     public void OnDayBegin()
     {
@@ -507,6 +537,8 @@ public class TutorialManager : GameBehaviour
         gamePanels.toolPanel.GetComponent<InGamePanel>().ToggleOnActiveShiny();
         gamePanels.combatPanel.GetComponent<InGamePanel>().ToggleOnActiveShiny();
         gamePanels.speedPanel.GetComponent<InGamePanel>().ToggleOnActiveShiny();
+
+        ExecuteAfterSeconds(3, () => FadeX.FadeOut(taskPanel));
     }
 
     private void CheckOffTask(TutorialID _id)
@@ -523,20 +555,25 @@ public class TutorialManager : GameBehaviour
         //    NewTutorialAvailable(TutorialID.HomeTree, "Home Tree");
         //}
     }
+    
     private void OnEnable()
     {
         GameEvents.OnToolButtonPressed += OnToolButtonPressed;
         GameEvents.OnTreePlaced += OnTreePlaced;
         GameEvents.OnUnitButtonPressed += OnUnitButtonPressed;
+        GameEvents.OnUnitMove += OnUnitMove;
         GameEvents.OnDayBegin += OnDayBegin;
         GameEvents.OnHomeTreeSelected += OnHomeTreeSelected;
     }
+
+    
 
     private void OnDisable()
     {
         GameEvents.OnToolButtonPressed -= OnToolButtonPressed;
         GameEvents.OnTreePlaced -= OnTreePlaced;
         GameEvents.OnUnitButtonPressed -= OnUnitButtonPressed;
+        GameEvents.OnUnitMove -= OnUnitMove;
         GameEvents.OnDayBegin -= OnDayBegin;
         GameEvents.OnHomeTreeSelected -= OnHomeTreeSelected;
     }
