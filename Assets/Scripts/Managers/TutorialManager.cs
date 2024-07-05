@@ -49,6 +49,7 @@ public class TutorialManager : GameBehaviour
     private int moveCreatureCompletionCount = 3;
 
     private float fadeStrength = 0.1f;
+    private float panelDelay = 1f;
 
     private InGamePanels gamePanels;
     private List<CanvasGroup> arrowList = new List<CanvasGroup>();
@@ -476,7 +477,7 @@ public class TutorialManager : GameBehaviour
 
         HideArrows();
         FadeX.InstantTransparent(tutorialPanel);
-        ExecuteAfterSeconds(2, () =>
+        ExecuteAfterSeconds(panelDelay, () =>
         {
             GetNextTutorial();
             ShowTutorial();
@@ -551,11 +552,15 @@ public class TutorialManager : GameBehaviour
         TaskLine tl = taskLines.Find(x => x.taskID == TutorialID.CreatureMovement);
         tl.text.text = movementTask + " (" + moveCreatureCount + "/" + moveCreatureCompletionCount + ")";
         tl.PulseTask();
+
         if (moveCreatureCount == moveCreatureCompletionCount)
         {
-            GetNextTutorial();
-            ShowTutorial();
-            CheckOffTask(TutorialID.CreatureMovement);
+            ExecuteAfterSeconds(panelDelay, () =>
+            {
+                GetNextTutorial();
+                ShowTutorial();
+                CheckOffTask(TutorialID.CreatureMovement);
+            });
         }
     }
 
