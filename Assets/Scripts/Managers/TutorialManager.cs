@@ -35,9 +35,6 @@ public class TutorialManager : GameBehaviour
     public GameObject inGameContinueButton;
     public GameObject treeButton;
     public GameObject maegenIcon;
-    public bool hasCompletedTask;
-    public GameObject contextArrow;
-    public GameObject inWorldArrow;
     public int tutorialStage;
     public bool isTutorial;
 
@@ -271,7 +268,6 @@ public class TutorialManager : GameBehaviour
                     "If the HOME TREE is destroyed, the forest will fall.<br>" +
                     "When you click on the HOME TREE, you can bring up the CREATURES that you can summon from it.<br>" + 
                     "Use CREATURES to defend the GROVE<br>";
-                inWorldArrow.SetActive(true);
                 _tutorial.showContinueButton = true;
                 _tutorial.unlockedGlossaryID = GlossaryID.HomeTree;
                 break;
@@ -313,7 +309,6 @@ public class TutorialManager : GameBehaviour
                 _tutorial.showObjects.Add(gamePanels.dayNightPanel.gameObject);
                 _tutorial.showObjects.Add(arrows.dayNightArrow.gameObject);
                 _tutorial.showContinueButton = true;
-                inWorldArrow.SetActive(false);
                 _tutorial.unlockedGlossaryID = GlossaryID.DayNightCycle;
                 break;
             case TutorialID.Glossary:

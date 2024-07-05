@@ -96,6 +96,12 @@ public class ForestManager : Singleton<ForestManager>
 
     public void TutorialWildlifeInstantiate()
     {
+        if (tutorialSpawnLocation == null)
+        {
+            WildlifeInstantiate();
+            return;
+        }
+
         Instantiate(spawnableAnimals[0], tutorialSpawnLocation.position, tutorialSpawnLocation.rotation);
         Instantiate(wildlifeSpawnParticle, tutorialSpawnLocation.position, tutorialSpawnLocation.rotation);
 
