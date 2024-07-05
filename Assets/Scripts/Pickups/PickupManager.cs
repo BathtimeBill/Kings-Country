@@ -14,7 +14,7 @@ public class PickupManager : GameBehaviour
 
     IEnumerator SpawnPickups()
     {
-        if(!_buildPhase)
+        if(!_buildPhase || !_inTutorial)
         {
             SpawnPickup();
         }

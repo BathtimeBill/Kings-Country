@@ -5,6 +5,7 @@ public static class GameEvents
 {
 
     public static event Action<GameState> OnGameStateChanged = null;
+    public static event Action OnTutorialFinished = null;
     
     public static event Action<int> OnWildlifeValueChange = null;
     public static event Action OnWildlifeKilled = null;
@@ -80,6 +81,7 @@ public static class GameEvents
     {
         OnGameStateChanged?.Invoke(_gameState);
     }
+    public static void ReportOnTutorialFinished() => OnTutorialFinished?.Invoke();
     public static void ReportOnPerkButtonPressed()
     {
         OnPerkButtonPressed?.Invoke();

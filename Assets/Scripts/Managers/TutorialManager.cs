@@ -580,6 +580,8 @@ public class TutorialManager : GameBehaviour
         gamePanels.combatPanel.GetComponent<InGamePanel>().ToggleOnActiveShiny();
         gamePanels.speedPanel.GetComponent<InGamePanel>().ToggleOnActiveShiny();
 
+        GameEvents.ReportOnTutorialFinished();
+
         ExecuteAfterSeconds(3, () => FadeX.FadeOut(taskPanel));
     }
 
