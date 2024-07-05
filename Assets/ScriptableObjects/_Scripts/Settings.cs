@@ -251,6 +251,8 @@ public class Tweening
     public float logTweenTime = 0.3f;
     public float logTweenDelay = 1.5f;
     public Ease logEase;
+    [Header("Effects")]
+    public float effectsTweenTime = 1f;
 }
 
 [Serializable]

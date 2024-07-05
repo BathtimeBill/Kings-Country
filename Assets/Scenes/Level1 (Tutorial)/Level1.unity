@@ -2157,6 +2157,7 @@ Transform:
   - {fileID: 1341806626}
   - {fileID: 695293556}
   - {fileID: 979385087}
+  - {fileID: 224918043}
   m_Father: {fileID: 908462719540279016}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3260,9 +3261,7 @@ GameObject:
   m_Component:
   - component: {fileID: 135427402}
   - component: {fileID: 135427403}
-  - component: {fileID: 135427404}
   - component: {fileID: 135427405}
-  - component: {fileID: 135427408}
   - component: {fileID: 135427407}
   - component: {fileID: 8290771809881183327}
   m_Layer: 0
@@ -3340,37 +3339,7 @@ MonoBehaviour:
   warningSprite: {fileID: 6463376580486566839, guid: 97dda30723d3c2544bd97b2cd7e9527a,
     type: 3}
   timeAudioSource: {fileID: 135427407}
-  globalVolume: {fileID: 4622495008245642916}
   skipIntro: 1
---- !u!114 &135427404
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 135427401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a43f28164e8ff74c93a3c85ec704b06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnRocks: 0
-  rockPlacementRadius: 250
-  levelRocks: {fileID: 2137070294761209132, guid: 747109bd94a13e74b97b29f6a1298d4e,
-    type: 3}
-  amountOfRocks: 25
-  totalTrees: 0
-  numberOfWildlifeToSpawn: 0
-  rabbit: {fileID: 7333044533837775725, guid: f61bde3145262634d8a682812be35263, type: 3}
-  deer: {fileID: 1110297117584734567, guid: 8092213cea6521948b647c0e11538b8b, type: 3}
-  boar: {fileID: 571176725606196648, guid: f5fdb5bf49c76044b945e70b5645da5d, type: 3}
-  spawnableAnimals: []
-  minSpawnRate: 5
-  maxSpawnRate: 6
-  wildlifeSpawnRadius: 60
-  wildlifeSpawnParticle: {fileID: 15948004919313363, guid: 95895b27e8346d9499c2fd665f1d0a27,
-    type: 3}
-  spawnLocation: {x: 0, y: 0, z: 0}
 --- !u!114 &135427405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3483,18 +3452,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &135427408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 135427401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49bf857d33210ba4bac9d36eeba0006e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &137298353
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4488,54 +4445,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 187129950}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &187887305 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6909580103352951377, guid: c8a465780fb9b2f4686a1ec851c1a4f7,
-    type: 3}
-  m_PrefabInstance: {fileID: 1190588418}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &187887312
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 187887305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 785891345}
-          m_TargetAssemblyTypeName: GlossaryManager, Assembly-CSharp
-          m_MethodName: OpenGlossaryPanel
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 9140295032925581158}
-          m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
-          m_MethodName: PlaySound
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 8300000, guid: 4c4fba990e1cc9e4998b78d92348f328,
-              type: 3}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!4 &194004657 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 222249952555268557, guid: aa2902b2ff1570949b5f54eb3da0b7dd,
@@ -4988,6 +4897,69 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 650859992}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &224918042
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 224918043}
+  - component: {fileID: 224918044}
+  m_Layer: 0
+  m_Name: ForestManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &224918043
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 224918042}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1900971912}
+  m_Father: {fileID: 93676440}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &224918044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 224918042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a43f28164e8ff74c93a3c85ec704b06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnRocks: 0
+  rockPlacementRadius: 250
+  levelRocks: {fileID: 2137070294761209132, guid: 747109bd94a13e74b97b29f6a1298d4e,
+    type: 3}
+  amountOfRocks: 25
+  totalTrees: 0
+  numberOfWildlifeToSpawn: 0
+  rabbit: {fileID: 7333044533837775725, guid: f61bde3145262634d8a682812be35263, type: 3}
+  deer: {fileID: 1110297117584734567, guid: 8092213cea6521948b647c0e11538b8b, type: 3}
+  boar: {fileID: 571176725606196648, guid: f5fdb5bf49c76044b945e70b5645da5d, type: 3}
+  spawnableAnimals: []
+  minSpawnRate: 5
+  maxSpawnRate: 6
+  wildlifeSpawnRadius: 60
+  wildlifeSpawnParticle: {fileID: 15948004919313363, guid: 95895b27e8346d9499c2fd665f1d0a27,
+    type: 3}
+  spawnLocation: {x: 0, y: 0, z: 0}
+  tutorialSpawnLocation: {fileID: 1900971912}
 --- !u!1 &227248406
 GameObject:
   m_ObjectHideFlags: 0
@@ -17439,7 +17411,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 740920548}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.6000214, y: 6.0000257, z: 17.600008}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -18267,18 +18239,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 279344564}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &785891345 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6123626432910050368, guid: c8a465780fb9b2f4686a1ec851c1a4f7,
-    type: 3}
-  m_PrefabInstance: {fileID: 1190588418}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adc8b8e32ab1b934fb01f5ff14523667, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &794511730
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21215,7 +21175,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961739749}
   m_LocalRotation: {x: 0.38268343, y: -0, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 46, z: -64}
+  m_LocalPosition: {x: 0, y: 42, z: -42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -27321,7 +27281,7 @@ PrefabInstance:
     - target: {fileID: 3237383853794780539, guid: c8a465780fb9b2f4686a1ec851c1a4f7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000030517578
+      value: -0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 3237383853798932233, guid: c8a465780fb9b2f4686a1ec851c1a4f7,
         type: 3}
@@ -27663,6 +27623,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5447045874319258702, guid: c8a465780fb9b2f4686a1ec851c1a4f7,
+        type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 9140295032925581158}
     - target: {fileID: 5574211572106316153, guid: c8a465780fb9b2f4686a1ec851c1a4f7,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -28226,11 +28191,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6909580103352951377, guid: c8a465780fb9b2f4686a1ec851c1a4f7,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 187887312}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8a465780fb9b2f4686a1ec851c1a4f7, type: 3}
 --- !u!224 &1190588419 stripped
 RectTransform:
@@ -40642,6 +40603,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 412101646}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1900971911
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1900971912}
+  m_Layer: 0
+  m_Name: TutorialWildlifeSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1900971912
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900971911}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.09, y: 3.2, z: -14.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 224918043}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1913092576
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -56649,18 +56641,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4622495008245642914}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4622495008245642916 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4622495009266512664, guid: 906a6dd52222557438d0db8d6c62121a,
-    type: 3}
-  m_PrefabInstance: {fileID: 4622495008245642914}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &4694079918582082093
 PrefabInstance:
   m_ObjectHideFlags: 0

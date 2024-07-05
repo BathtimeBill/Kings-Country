@@ -45,6 +45,8 @@ public static class FadeX
     {
         if (_canvasGroup.alpha == _toValue) return;
 
+        _canvasGroup.gameObject.SetActive(true);
+
         _canvasGroup.DOFade(_toValue, _tweenTime).SetUpdate(true).OnComplete(() => _onSuccess.Invoke());
         _canvasGroup.interactable = _interactable;
         _canvasGroup.blocksRaycasts = _interactable;

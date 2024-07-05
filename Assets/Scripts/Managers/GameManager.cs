@@ -2,9 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Analytics;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -86,10 +83,6 @@ public class GameManager : Singleton<GameManager>
 
     [Header("Time")]
     public AudioSource timeAudioSource;
-    public Volume globalVolume;
-    private FilmGrain grain;
-    private ChromaticAberration chromaticAberration;
-    
 
     public bool fyreAvailable => _DATA.CanUseTool(ToolID.Fyre);
     public bool stormerAvailable => _DATA.CanUseTool(ToolID.Stormer);
@@ -182,20 +175,16 @@ public class GameManager : Singleton<GameManager>
         maxMaegen = _UI.totalMaegen + maegen;
         timeAudioSource.clip = _SM.timeStopSound;
         timeAudioSource.Play();
-        globalVolume.profile.TryGet(out grain);
-        globalVolume.profile.TryGet(out chromaticAberration);
-        chromaticAberration.intensity.value = 0;
-        grain.intensity.value = 0;
+        _EFFECTS.SetChromatic(0);
+        _EFFECTS.SetGrain(0);
         Time.timeScale = 1;
     }
     public void SpeedGame()
     {
         timeAudioSource.clip = _SM.timeSpeedUpSound;
         timeAudioSource.Play();
-        globalVolume.profile.TryGet(out grain);
-        globalVolume.profile.TryGet(out chromaticAberration);
-        chromaticAberration.intensity.value = 1;
-        grain.intensity.value = 1;
+        _EFFECTS.SetChromatic(1);
+        _EFFECTS.SetGrain(1);
         Time.timeScale = 3;
     }
 

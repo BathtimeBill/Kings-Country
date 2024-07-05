@@ -23,7 +23,7 @@ public class ForestManager : Singleton<ForestManager>
     public float wildlifeSpawnRadius;
     public GameObject wildlifeSpawnParticle;
     public Vector3 spawnLocation;
-
+    public Transform tutorialSpawnLocation;
 
     void Start()
     {
@@ -90,6 +90,14 @@ public class ForestManager : Singleton<ForestManager>
         Vector3 finalPosition = hit.position;
         Instantiate(spawnableAnimals[rnd], hit.position, transform.rotation);
         Instantiate(wildlifeSpawnParticle, hit.position, transform.rotation);
+
+        GameEvents.ReportOnWildlifeValueChanged(CheckWildlife());
+    }
+
+    public void TutorialWildlifeInstantiate()
+    {
+        Instantiate(spawnableAnimals[0], tutorialSpawnLocation.position, tutorialSpawnLocation.rotation);
+        Instantiate(wildlifeSpawnParticle, tutorialSpawnLocation.position, tutorialSpawnLocation.rotation);
 
         GameEvents.ReportOnWildlifeValueChanged(CheckWildlife());
     }

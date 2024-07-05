@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class GameBehaviour : BV.Behaviour
 {
@@ -12,6 +13,7 @@ public class GameBehaviour : BV.Behaviour
     protected static EnemyManager _EM { get { return EnemyManager.instance; } }
     protected static UIManager _UI { get { return UIManager.instance; } }
     protected static PlayerControls _PC { get { return PlayerControls.instance; } }
+    protected static CameraController _CAMERA { get { return CameraController.instance; } }
     protected static SoundManager _SM { get { return SoundManager.instance; } }
     protected static TreePlacement _TPlace { get { return TreePlacement.instance; } }
     protected static RunePlacement _RPlace { get { return RunePlacement.instance; } }
@@ -26,6 +28,7 @@ public class GameBehaviour : BV.Behaviour
     protected static StatsData _STATS { get { return StatsData.instance; } }
     protected static TutorialManager _TUTORIAL { get { return _UI.tutorialManager; } }
     protected static GlossaryManager _GLOSSARY { get { return _UI.glossaryManager; } }
+    protected static EffectsManager _EFFECTS { get { return EffectsManager.instance; } }
 
     public bool _hasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build || _GM.gameState == GameState.Tutorial;
     public bool _inGame => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build;

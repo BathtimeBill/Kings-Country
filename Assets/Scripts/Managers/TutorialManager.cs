@@ -23,6 +23,7 @@ public class TutorialManager : GameBehaviour
     [Header("Basic")]
     public TutorialArrow arrows;
     public CanvasGroup glossaryPanel;
+    public CanvasGroup blackoutPanel;
 
     [Header("In Game Tutorial")]
     public TMP_Text tutorialTitle;
@@ -79,6 +80,7 @@ public class TutorialManager : GameBehaviour
 
         FadeX.InstantTransparent(glossaryPanel);
         FadeX.InstantTransparent(tutorialPanel);
+        FadeX.InstantTransparent(blackoutPanel);
         SetArrows();
 
         //if(debugStartOffset > 0)
@@ -100,6 +102,7 @@ public class TutorialManager : GameBehaviour
         {
             FadeX.InstantTransparent(tutorialPanel);
             FadeX.InstantTransparent(taskPanel);
+            
             HideArrows(true);
             _GLOSSARY.SetInteractable(true);
             _GM.ChangeGameState(GameState.Build);
@@ -212,6 +215,9 @@ public class TutorialManager : GameBehaviour
                 _tutorial.showObjects.Add(gamePanels.resourcesPanel.gameObject);
                 _tutorial.showObjects.Add(arrows.maegenArrow.gameObject);
                 _tutorial.unlockedGlossaryID = GlossaryID.Maegen;
+                _tutorial.resetCamera = true;
+                _tutorial.lockCamera = true;
+                _tutorial.blackout = true;
                 break;
             case TutorialID.Trees:
                 _tutorial.title = "Trees";
@@ -221,6 +227,9 @@ public class TutorialManager : GameBehaviour
                 _tutorial.showContinueButton = true;
                 _tutorial.showObjects.Add(arrows.treeTopArrow.gameObject);
                 _tutorial.unlockedGlossaryID = GlossaryID.Trees;
+                _tutorial.resetCamera = true;
+                _tutorial.lockCamera = true;
+                _tutorial.blackout = true;
                 break;
             case TutorialID.PlantTree:
                 _tutorial.title = "Trees";
@@ -233,6 +242,7 @@ public class TutorialManager : GameBehaviour
                 _tutorial.showObjects.Add(gamePanels.treePanel.gameObject);
                 _tutorial.showObjects.Add(arrows.treeToolArrow.gameObject);
                 _tutorial.unlockedGlossaryID = GlossaryID.Trees;
+
                 break;
             case TutorialID.Creatures:
                 _tutorial.title = "Creatures";
@@ -275,6 +285,9 @@ public class TutorialManager : GameBehaviour
                 _tutorial.showContinueButton = true;
                 _tutorial.showObjects.Add(arrows.wildlifeArrow.gameObject);
                 _tutorial.unlockedGlossaryID = GlossaryID.Wildlife;
+                _tutorial.resetCamera = true;
+                _tutorial.lockCamera = true;
+                _tutorial.blackout = true;
                 break;
             case TutorialID.Populous:
                 _tutorial.title = "Populous";
@@ -285,6 +298,8 @@ public class TutorialManager : GameBehaviour
                 _tutorial.showContinueButton = true;
                 _tutorial.showObjects.Add(arrows.populousArrow.gameObject);
                 _tutorial.unlockedGlossaryID = GlossaryID.Populous;
+                _tutorial.lockCamera = true;
+                _tutorial.blackout = true;
                 break;
             case TutorialID.DayNightCycle:
                 _tutorial.title = "Day/Night";
@@ -308,6 +323,9 @@ public class TutorialManager : GameBehaviour
                     "Click on the highlighted text or '?' to view.<br>" +
                     "";
                 _tutorial.showObjects.Add(arrows.glossaryArrow.gameObject);
+                _tutorial.resetCamera = true;
+                _tutorial.lockCamera = true;
+                _tutorial.blackout = true;
                 break;
         }
         SetupTaskLines();
@@ -349,15 +367,10 @@ public class TutorialManager : GameBehaviour
         if (CurrentTutorial == null)
             return;
 
-        if(currentTutorialID == TutorialID.PlantTree)
-            gamePanels.treePanel.GetComponent<InGamePanel>().ToggleOnActiveShiny();
-
-        if (currentTutorialID == TutorialID.Wildlife)
-            _FM.WildlifeInstantiate();
-
         tutorialTitle.text = CurrentTutorial.title;
         tutorialDescription.text = CurrentTutorial.description;
         ToggleObjects();
+        Blackout();
         FadeX.FadeIn(tutorialPanel);
 
         for (int i = 0; i < taskLines.Count; i++)
@@ -368,6 +381,15 @@ public class TutorialManager : GameBehaviour
 
         _GLOSSARY.UnlockGlossaryItem(CurrentTutorial.unlockedGlossaryID);
         inGameContinueButton.SetActive(CurrentTutorial.showContinueButton);
+
+        _CAMERA.ResetCameraToStart(CurrentTutorial.resetCamera);
+        _CAMERA.LockCamera(CurrentTutorial.lockCamera);
+
+        if (currentTutorialID == TutorialID.PlantTree)
+            gamePanels.treePanel.GetComponent<InGamePanel>().ToggleOnActiveShiny();
+
+        if (currentTutorialID == TutorialID.Wildlife)
+            _FM.TutorialWildlifeInstantiate();
     }
 
     public void HideTutorialPanel()
@@ -383,6 +405,28 @@ public class TutorialManager : GameBehaviour
             CurrentTutorial.showObjects[i].SetActive(true);
             if (CurrentTutorial.showObjects[i].GetComponent<CanvasGroup>() != null)
                 FadeX.FadeIn(CurrentTutorial.showObjects[i].GetComponent<CanvasGroup>());
+        }
+    }
+
+    private void Blackout()
+    {
+        if (CurrentTutorial.blackout)
+        {
+            if (currentTutorialID == TutorialID.Wildlife)
+            {
+                _EFFECTS.TweenVignette(1);
+                FadeX.FadeOut(blackoutPanel);
+            }
+            else
+            {
+                _EFFECTS.TweenVignetteReset();
+                FadeX.FadeTo(blackoutPanel, 0.8f);
+            }
+        }
+        else
+        {
+            _EFFECTS.TweenVignetteReset();
+            FadeX.FadeOut(blackoutPanel);
         }
     }
 
@@ -428,11 +472,6 @@ public class TutorialManager : GameBehaviour
             return;
 
         StartCoroutine(WaitForNextTask());
-    }
-
-    public void CheckCreatureMovement()
-    {
-
     }
 
     public void ClosedGlossary()
@@ -619,13 +658,16 @@ public class TutorialManager : GameBehaviour
 public class Tutorial
 {
     public TutorialID tutorialID;
-    [HideInInspector] public string title;
+    public string title;
     public Sprite image;
     public bool showContinueButton;
     public bool closePanelAfter;
-    [HideInInspector] public string description;
-    [HideInInspector] public string taskLine;
-    [HideInInspector] public bool completed;
+    public bool resetCamera;
+    public bool lockCamera;
+    public bool blackout;
+    public string description;
+    public string taskLine;
+    public bool completed;
     public List<GameObject> showObjects;
     public List<GameObject> hideObjects;
     public GlossaryID unlockedGlossaryID;

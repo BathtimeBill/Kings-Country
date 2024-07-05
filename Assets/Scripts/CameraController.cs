@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class CameraController : GameBehaviour
+public class CameraController : Singleton<CameraController>
 {
     public Transform cameraTransform;
 
@@ -39,25 +39,25 @@ public class CameraController : GameBehaviour
     public bool hasReachMaxZ;
     public bool hasReachMaxY;
 
+    private Vector3 startZoom;
+    private Vector3 startPos;
+    private Quaternion startRot;
+    private bool lockCamera = false;
+
     private void Start()
     {
-        newPosition = transform.position;
-        newRotation = transform.rotation;
-        newZoom = cameraTransform.localPosition;
+        startPos = newPosition = transform.position;
+        startRot = newRotation = transform.rotation;
+        startZoom = newZoom = cameraTransform.localPosition;
     }
 
     private void Update()
     {
-        if(_hasInput)
-        {
-            HandleMovementInput();
-            HandleMouseInput();
-            //EdgeScroll();
-        }
-        else
-        {
+        if (lockCamera || !_hasInput)
             return;
-        }
+
+        HandleMovementInput();
+        HandleMouseInput();
     }
 
     void HandleMouseInput()
@@ -190,4 +190,22 @@ public class CameraController : GameBehaviour
     {
         transform.DOShakeRotation(1.5f, new Vector3(_shakeIntensity, _shakeIntensity, _shakeIntensity), _SETTINGS.cameraShake.shakeVibrato, _SETTINGS.cameraShake.shakeRandomness, true);
     }
+
+    public void ResetCameraToStart(bool _reset)
+    {
+        if (!_reset)
+            return;
+
+        float resetTime = 2f;
+        lockCamera = true;
+        newRotation = startRot;
+        newPosition = startPos;
+        newZoom = startZoom;
+        transform.DOLocalMove(startPos, resetTime).SetEase(Ease.OutBack);
+        cameraTransform.DOLocalMove(startZoom, resetTime).SetEase(Ease.OutBack);
+        transform.DOLocalRotateQuaternion(startRot, resetTime).SetEase(Ease.OutSine);
+        //ExecuteAfterSeconds(resetTime + 0.1f, () => lockCamera = false);
+    }
+
+    public void LockCamera(bool _lock) => lockCamera = _lock;
 }

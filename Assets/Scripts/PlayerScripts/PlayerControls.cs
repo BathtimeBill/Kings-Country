@@ -50,14 +50,10 @@ public class PlayerControls : Singleton<PlayerControls>
     public Vector2 hotSpot = Vector2.zero;
     public Vector2 hotSpotEnemy;
 
-    private CameraController cameraController;
-
     public void DeselectAllTools() => DeslectAllModes();
-
 
     private void Start()
     {
-        cameraController = GetComponent<CameraController>();
         treeTooClose = false;
     }
 
@@ -395,12 +391,12 @@ public class PlayerControls : Singleton<PlayerControls>
                         if (_PERK.HasPerk(PerkID.Fyre))
                         {
                             Instantiate(explosion2, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
-                            cameraController.CameraShake(_SETTINGS.cameraShake.fyreShakeIntensity * 2);
+                            _CAMERA.CameraShake(_SETTINGS.cameraShake.fyreShakeIntensity * 2);
                         }
                         else
                         {
                             Instantiate(explosion, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
-                            cameraController.CameraShake(_SETTINGS.cameraShake.fyreShakeIntensity);
+                            _CAMERA.CameraShake(_SETTINGS.cameraShake.fyreShakeIntensity);
                         }
 
                         beaconPlacement.SetActive(false);
@@ -416,7 +412,7 @@ public class PlayerControls : Singleton<PlayerControls>
                         stormerPlacement.SetActive(false);
                         DeslectAllModes();
                         GameEvents.ReportOnStormerPlaced();
-                        cameraController.CameraShake(_SETTINGS.cameraShake.stormerShakeIntensity);
+                        _CAMERA.CameraShake(_SETTINGS.cameraShake.stormerShakeIntensity);
                     }
                 }
                 //Default
