@@ -417,7 +417,6 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnPopulousUpgrade += OnPopulousUpgrade;
         GameEvents.OnTreeHit += OnTreeHit;
         GameEvents.OnDayOver += OnDayOver;
-        //GameEvents.OnWaveBegin += OnWaveBegin;
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnWildlifeKilled += OnWildlifeKilled;
         GameEvents.OnWildlifeValueChange += OnWildlifeValueChange;
@@ -435,7 +434,6 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnPopulousUpgrade -= OnPopulousUpgrade;
         GameEvents.OnTreeHit -= OnTreeHit;
         GameEvents.OnDayOver -= OnDayOver;
-        //GameEvents.OnWaveBegin -= OnWaveBegin;
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnWildlifeKilled -= OnWildlifeKilled;
         GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange;

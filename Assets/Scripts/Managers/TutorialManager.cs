@@ -62,7 +62,7 @@ public class TutorialManager : GameBehaviour
     private string rotateCameraTask = "Rotate the camera";
     private string zoomCameraTask   = "Zoom the camera";
     private string treesTask        = "Grow 4 Trees";
-    private string creaturesTask    = "Summon 4 CREATURES";
+    private string creaturesTask    = "Summon 3 CREATURES";
     private string movementTask     = "Move your CREATURES";
     private string startDayTask     = "Start the Day";
     private string winDayTask       = "Defend the GROVE from the HUMANS";

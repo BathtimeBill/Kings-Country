@@ -40,6 +40,8 @@ public class GameBehaviour : BV.Behaviour
     public bool _buildPhase => _GM.gameState == GameState.Build;
     public bool _tutorialComplete => _TUTORIAL.tutorialComplete;
     public int _currentDay => _GM.currentDay - 1;
+    public GameState _currentGameState => _GM.gameState;
+    public GameState _previousGameState => _GM.previousState;
 
     public Settings _SETTINGS => _DATA.settings;
     public Tweening _TWEENING => _DATA.settings.tweening;
