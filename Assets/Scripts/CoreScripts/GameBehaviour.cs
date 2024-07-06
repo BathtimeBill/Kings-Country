@@ -49,6 +49,8 @@ public class GameBehaviour : BV.Behaviour
     public Icons _ICONS => _DATA.settings.icons;
     public PlayerSettings _PLAYER => _SAVE.save.playerSettings;
     public Testing _TESTING => _DATA.settings.testing;
+
+    public Experience _EXP(int i) => _SETTINGS.experience.Find(x=> x.level == i);
 }
 
 public enum UpgradeID

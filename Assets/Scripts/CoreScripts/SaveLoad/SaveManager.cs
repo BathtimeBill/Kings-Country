@@ -83,6 +83,13 @@ public class GlossaryObject
 }
 
 [Serializable]
+public class ExperienceObject
+{
+    public int currentLevel;
+    public int currentEXP;
+}
+
+[Serializable]
 public class SaveDataObject : BGG.GameDataBase
 {
     // Player info
@@ -101,6 +108,8 @@ public class SaveDataObject : BGG.GameDataBase
     public Dictionary<string, UnitStats> unitStats = new Dictionary<string, UnitStats>();
     //Tutorial
     public GlossaryObject glossary = new GlossaryObject();
+    //Experience
+    public ExperienceObject experience = new ExperienceObject();
 
     // Data getters
     public LevelSaveObject GetLevelSaveData(LevelID _levelID)
@@ -206,6 +215,10 @@ public class SaveManager : BGG.GameData
 
             save.glossary = new GlossaryObject();
             save.glossary.glossaryIDs = new List<GlossaryID>();
+
+            save.experience = new ExperienceObject();
+            save.experience.currentLevel = 1;
+            save.experience.currentEXP = 0;
         }
 
         timeofLastSave = DateTime.Now;
@@ -325,18 +338,18 @@ public class SaveManager : BGG.GameData
     #endregion
 
     #region Level Specific
-    public void SetLevelScore(LevelID _levelID, int score, bool completed)
+    public void SetLevelScore(LevelID _levelID, int _score, bool _completed)
     {
         save.levelsPlayed++;
         LevelSaveObject level = save.GetLevelSaveData(_levelID);
         if (level != null)
         {
-            if (score > level.highScore)
-                level.highScore = score;
-            if (completed)
+            if (_score > level.highScore)
+                level.highScore = _score;
+            if (_completed)
             {
                 level.playCount++;
-                level.completed = completed;
+                level.completed = _completed;
             }
             Debug.Log("GameData:: COMPLETED level [" + _levelID + "] highScore [" + level.highScore + "] playCount [" + level.playCount + "]");
         }
@@ -456,6 +469,15 @@ public class SaveManager : BGG.GameData
 
     #endregion
 
+    #region Experience
+    public ExperienceObject GetExperience() => save.experience;
+
+    public void SetExperience(ExperienceObject _experience)
+    {
+        save.experience = _experience;
+    }
+    #endregion
+
     #region Achievements
     //TODO Once implemented
     /*
@@ -487,14 +509,14 @@ public class SaveManager : BGG.GameData
     //
     // Events
     //
-    void OnLevelWin(LevelID _levelID, int _score, int _maegen)
+    private void OnLevelWin(LevelID _levelID, int _score, int _maegen)
     {
         IncrementMaegen(_maegen);
         SetLevelScore(_levelID, _score, true);
         SaveTimePlayed();
         SaveData();
     }
-    void OnEnable()
+    private void OnEnable()
     {
         GameEvents.OnLevelWin += OnLevelWin;
         GameEvents.OnUnitOutlines += SetUnitOutline;
@@ -505,7 +527,7 @@ public class SaveManager : BGG.GameData
     }
 
 
-    void OnDisable()
+    private void OnDisable()
     {
         GameEvents.OnLevelWin -= OnLevelWin;
         GameEvents.OnUnitOutlines -= SetUnitOutline;

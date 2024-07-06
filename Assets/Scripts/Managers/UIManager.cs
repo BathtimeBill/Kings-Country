@@ -10,6 +10,7 @@ public class UIManager : Singleton<UIManager>
     [Header("Managers")]
     public GlossaryManager glossaryManager;
     public TutorialManager tutorialManager;
+    public ExperienceMeter experienceMeter;
 
     [Header("In Game Panels")]
     public InGamePanels inGamePanels;
@@ -820,6 +821,7 @@ public class UIManager : Singleton<UIManager>
     {
         winPanel.GetComponentInChildren<Button>().interactable = false;
         TweenInPanel(finalScorePanel);
+        
     }
 
     public void MouseCancel()
@@ -928,6 +930,7 @@ public class UIManager : Singleton<UIManager>
         winWildlifeText.text = "+ " + _wildlife.ToString() + " x2 = " + _wildlife * 2;
         winScoreText.text = _score.ToString();
         winHighScoreText.text = _GAMESAVE.GetLevelHighScore(_DATA.currentLevelID).ToString();
+        ExecuteAfterSeconds(3, () => experienceMeter.IncreaseExperience(_score));
     }
 
     private void OnEnemyUnitKilled(Enemy _unitID, string _killedBy)

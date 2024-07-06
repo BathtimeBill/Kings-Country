@@ -19,7 +19,13 @@ public class DebugManager : GameBehaviour
         if (Input.GetKeyDown(KeyCode.M))
             _GM.IncreaseMaegen(6);
 
-        if(Input.GetKeyDown(KeyCode.U))
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            if (FindObjectOfType<ExperienceMeter>())
+                FindObjectOfType<ExperienceMeter>().IncreaseExperience(100);
+        }
+
+        if (Input.GetKeyDown(KeyCode.U))
         {
             if(FindObjectOfType<UpgradePanel>())
                 FindObjectOfType<UpgradePanel>().ToggleCanvasPosition();

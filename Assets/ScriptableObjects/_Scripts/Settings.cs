@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using DG.Tweening;
+using BGG;
 
 [CreateAssetMenu(fileName = "Settings", menuName = "BGG/Settings", order = 1)]
 public class Settings : ScriptableObject
 {
+    [Header("CSV Files")]
+    public TextAsset experienceFile;
+
     [Header("Debug Testing - Turn all off for release")]
     public Testing testing;
 
@@ -34,7 +38,57 @@ public class Settings : ScriptableObject
     [Header("General")]
     public General general;
 
+    [Header("Experience")]
+    public List<Experience> experience;
+
     #region Editor
+    public void LoadDataFromFile()
+    {
+        string[,] grid = CSVReader.GetCSVGrid("/Assets/_Balancing/" + experienceFile.name + ".csv");
+        experience.Clear();
+        experience = new List<Experience>();
+        List<string> keys = new List<string>();
+
+        //First create a list for holding our key values
+        for (int y = 0; y < grid.GetUpperBound(0); ++y)
+        {
+            keys.Add(grid[y, 0]);
+        }
+
+        //Loop through the rows, adding the value to the appropriate key
+        for (int x = 1; x < grid.GetUpperBound(1); x++)
+        {
+            Dictionary<string, string> columnData = new Dictionary<string, string>();
+            for (int k = 0; k < keys.Count; k++)
+            {
+                columnData.Add(keys[k], grid[k, x]);
+                //Debug.Log("Key: " + keys[k] + ", Value: " + grid[x, k]);
+            }
+
+            Experience exp = new Experience();
+            //Loop through the dictionary using the key values
+            foreach (KeyValuePair<string, string> item in columnData)
+            {
+                //Gets a experience data based off the ID and updates it
+                if (item.Key.Contains("Level"))
+                    exp.level = int.TryParse(item.Value, out exp.level) ? exp.level : 0;
+
+                if (item.Key.Contains("Requirement"))
+                    exp.requirement = int.TryParse(item.Value, out exp.requirement) ? exp.requirement : 0;
+
+                if (item.Key.Contains("Title"))
+                    exp.title = item.Value;
+            }
+            experience.Add(exp);
+
+            //flag the object as "dirty" in the editor so it will be saved
+            EditorUtility.SetDirty(this);
+
+            // Prompt the editor database to save dirty assets, committing your changes to disk.
+            AssetDatabase.SaveAssets();
+        }
+    }
+
 #if UNITY_EDITOR
     [CustomEditor(typeof(Settings))]
     [CanEditMultipleObjects]
@@ -79,6 +133,19 @@ public class Settings : ScriptableObject
             GUI.backgroundColor = Color.white;
             GUILayout.EndHorizontal();
             GUILayout.Space(20);
+            GUILayout.BeginHorizontal();
+            GUI.backgroundColor = Color.green;
+            if (GUILayout.Button("Load Data from file?"))
+            {
+                if (EditorUtility.DisplayDialog("Load Spreadsheet Data", "Are you sure you want to load experience data? This will overwrite any existing data", "Yes", "No"))
+                {
+                    settings.LoadDataFromFile();
+                    EditorUtility.SetDirty(settings);
+                }
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.Space(20);
+            GUI.backgroundColor = Color.white;
             DrawDefaultInspector();
         }
     }
@@ -255,6 +322,10 @@ public class Tweening
     public Ease logEase;
     [Header("Effects")]
     public float effectsTweenTime = 1f;
+    [Header("ExperienceMeter")]
+    public Ease experienceEase;
+    public float experienceDelay = 1f;
+    public float experienceDuration = 2f;
 }
 
 [Serializable]
@@ -318,4 +389,12 @@ public class Testing
     public bool overrideTutorial;
     [DrawIf("overrideTutorial", true)]
     public bool showTutorial;
+}
+
+[Serializable]
+public class Experience
+{
+    public int level;
+    public int requirement;
+    public string title;
 }
