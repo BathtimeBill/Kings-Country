@@ -26,6 +26,9 @@ public class SettingsManager : GameBehaviour
     [SerializeField] private Toggle colourGreenToggle;
     [SerializeField] private Toggle colourRedToggle;
     [SerializeField] private ToggleGroup colourToggles;
+    [Header("Data")]
+    [SerializeField] private CanvasGroup deleteDataPopup;
+    [SerializeField] private CanvasGroup blackoutImage;
 
     void Awake()
     {
@@ -77,6 +80,10 @@ public class SettingsManager : GameBehaviour
                 colourRedToggle.isOn = true;
                 break;
         }
+
+        //Data
+        FadeX.InstantTransparent(deleteDataPopup);
+        FadeX.InstantTransparent(blackoutImage);
     }
 
     #region Audio
@@ -111,5 +118,24 @@ public class SettingsManager : GameBehaviour
     }
     #endregion
 
+    #region Data
+    public void ToggleDeletePopup(bool _on)
+    {
+        if (_on)
+        {
+            FadeX.FadeIn(deleteDataPopup);
+            FadeX.FadeIn(blackoutImage);
+        }
+        else
+        {
+            FadeX.FadeOut(deleteDataPopup);
+            FadeX.FadeOut(blackoutImage);
+        }
+    }
+    public void DeleteData()
+    {
+        _SAVE.DeleteData();
+    }
 
+    #endregion
 }

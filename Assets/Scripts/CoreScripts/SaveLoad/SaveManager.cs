@@ -163,63 +163,64 @@ public class SaveManager : BGG.GameData
         _instance = this;
         if (dontDestroyOnLoad) DontDestroyOnLoad(gameObject);
 
-        // Initialize preferences (not synched)
-        //BV.Prefs.InitializeFloat(GamePreferences.MusicVolume, 1f);
-        //BV.Prefs.InitializeInt(GamePreferences.GraphicsQuality, (int)PrefGraphicsQuality.High);
-
         // Load Game data
         save = LoadDataObject<SaveDataObject>();
         if (save == null)
+            InitialiseData();
+
+        timeofLastSave = DateTime.Now;
+    }
+
+    private void InitialiseData()
+    {
+        //Debug.Log("RESETTING GAME DATA");
+        save = new SaveDataObject();
+
+        // Initialize Game Data
+        save.levels = new Dictionary<LevelID, LevelSaveObject>();
+        for (int l = 0; l < _DATA.levelData.Count; l++)
         {
-            Debug.Log("NEW GAME DATA");
-            save = new SaveDataObject();
-
-            // Initialize Game Data
-            save.levels = new Dictionary<LevelID, LevelSaveObject>();
-            for (int l = 0; l < _DATA.levelData.Count; l++)
+            LevelData ld = _DATA.levelData[l];
+            LevelID levelID = ld.id;
+            save.levels[levelID] = new LevelSaveObject
             {
-                LevelData ld = _DATA.levelData[l];
-                LevelID levelID = ld.id;
-                save.levels[levelID] = new LevelSaveObject
-                {
-                    levelID = ld.id,
-                    highScore = 0,
-                    playCount = 0,
-                    completed = false
-                };
-            }
-
-            save.perks = new Dictionary<PerkID, PerkSaveObject>();
-            for(int p = 0; p < _DATA.perkData.Count; p++)
-            {
-                PerkData pd = _DATA.perkData[p];
-                save.perks[pd.id] = new PerkSaveObject
-                {
-                    perkID = pd.id,
-                    unlocked = false,
-                };
-            }
-
-            save.unitStats = new Dictionary<string, UnitStats>();
-
-            save.playerSettings = new PlayerSettings();
-            save.playerSettings.musicVolume = 0.8f;
-            save.playerSettings.sfxVolume = 0.8f;
-            save.playerSettings.unitOutlines = true;
-            save.playerSettings.unitHealthBars = true;
-            save.playerSettings.miniMapShowing = true;
-            save.playerSettings.miniMapIcons = true;
-            save.playerSettings.miniMapRotation = true;
-            save.playerSettings.panelColour = PanelColourID.Black;
-            save.playTime = new PlayTimeObject();
-
-            save.glossary = new GlossaryObject();
-            save.glossary.glossaryIDs = new List<GlossaryID>();
-
-            save.experience = new ExperienceObject();
-            save.experience.currentLevel = 1;
-            save.experience.currentEXP = 0;
+                levelID = ld.id,
+                highScore = 0,
+                playCount = 0,
+                completed = false
+            };
         }
+
+        save.perks = new Dictionary<PerkID, PerkSaveObject>();
+        for (int p = 0; p < _DATA.perkData.Count; p++)
+        {
+            PerkData pd = _DATA.perkData[p];
+            save.perks[pd.id] = new PerkSaveObject
+            {
+                perkID = pd.id,
+                unlocked = false,
+            };
+        }
+
+        save.unitStats = new Dictionary<string, UnitStats>();
+
+        save.playerSettings = new PlayerSettings();
+        save.playerSettings.musicVolume = 0.8f;
+        save.playerSettings.sfxVolume = 0.8f;
+        save.playerSettings.unitOutlines = true;
+        save.playerSettings.unitHealthBars = true;
+        save.playerSettings.miniMapShowing = true;
+        save.playerSettings.miniMapIcons = true;
+        save.playerSettings.miniMapRotation = true;
+        save.playerSettings.panelColour = PanelColourID.Black;
+        save.playTime = new PlayTimeObject();
+
+        save.glossary = new GlossaryObject();
+        save.glossary.glossaryIDs = new List<GlossaryID>();
+
+        save.experience = new ExperienceObject();
+        save.experience.currentLevel = 1;
+        save.experience.currentEXP = 0;
 
         timeofLastSave = DateTime.Now;
     }
@@ -232,6 +233,7 @@ public class SaveManager : BGG.GameData
     public override void DeleteData()
     {
         DeleteDataObject();
+        InitialiseData();
     }
     #endregion
 
