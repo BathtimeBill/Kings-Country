@@ -44,10 +44,21 @@ MonoBehaviour:
     logTweenDelay: 1.5
     logEase: 7
     effectsTweenTime: 1
-    experienceEase: 0
+    experienceEase: 4
     experienceDelay: 1
     experienceDuration: 2
   colours:
+    objectColor:
+    - id: 23
+      color: {r: 0, g: 1, b: 0, a: 1}
+    - id: 21
+      color: {r: 0, g: 0.80784315, b: 1, a: 1}
+    - id: 25
+      color: {r: 0.8988345, g: 0.99215686, b: 0, a: 1}
+    - id: 0
+      color: {r: 0, g: 0, b: 0, a: 0}
+    - id: 0
+      color: {r: 0, g: 0, b: 0, a: 0}
     highlightedColor: {r: 0, g: 1, b: 0, a: 1}
     cooldownColor: {r: 1, g: 0, b: 0, a: 1}
     upgradeIconsColor: {r: 0.82745105, g: 0.78823537, b: 0.39607847, a: 1}
@@ -103,24 +114,6 @@ MonoBehaviour:
     toggleIconDisabledColor: {r: 1, g: 1, b: 1, a: 0.047058824}
     toggleIconHighlightColor: {r: 0.9803922, g: 0.6784314, b: 0.08627451, a: 1}
     transparentColor: {r: 0, g: 0, b: 0, a: 0}
-    homeTreeUnitColor: {r: 0, g: 0.6037736, b: 0, a: 1}
-    hutUnitColor: {r: 0, g: 0.35427666, b: 1, a: 1}
-    hogyrUnitColor: {r: 0, g: 0.84648275, b: 1, a: 1}
-    woodcutterTypeColor: {r: 0.9911022, g: 0.79129815, b: 0.11443538, a: 1}
-    hunterTypeColor: {r: 1, g: 0.42438906, b: 0, a: 1}
-    warriorTypeColor: {r: 0.90588236, g: 0.14082865, b: 0, a: 1}
-    specialTypeColor: {r: 0.7735849, g: 0, b: 0.58291465, a: 1}
-    objectColor:
-    - id: 23
-      color: {r: 0, g: 1, b: 0, a: 1}
-    - id: 21
-      color: {r: 0, g: 0.80784315, b: 1, a: 1}
-    - id: 25
-      color: {r: 0.8988345, g: 0.99215686, b: 0, a: 1}
-    - id: 0
-      color: {r: 0, g: 0, b: 0, a: 0}
-    - id: 0
-      color: {r: 0, g: 0, b: 0, a: 0}
   miniMap:
     visible: 1
     showIcons: 1
@@ -149,4 +142,67 @@ MonoBehaviour:
       type: 3}
     healObject: {fileID: 8515745610419126221, guid: a0cb9389dc9bcf940ba11a727ef70625,
       type: 3}
-  experience: []
+  experience:
+  - level: 1
+    requirement: 0
+    title: Grove Ling 1
+  - level: 2
+    requirement: 200
+    title: Grove Ling 2
+  - level: 3
+    requirement: 300
+    title: Grove Ling 3
+  - level: 4
+    requirement: 400
+    title: Grove Ling 4
+  - level: 5
+    requirement: 500
+    title: Grove Ling 5
+  - level: 6
+    requirement: 600
+    title: Grove Ling 6
+  - level: 7
+    requirement: 700
+    title: Grove Squire 1
+  - level: 8
+    requirement: 800
+    title: Grove Squire 2
+  - level: 9
+    requirement: 900
+    title: Grove Squire 3
+  - level: 10
+    requirement: 1000
+    title: Grove Squire 4
+  - level: 11
+    requirement: 1100
+    title: Grove Squire 5
+  - level: 12
+    requirement: 1200
+    title: Grove Squire 6
+  - level: 13
+    requirement: 1300
+    title: Grove Squire 7
+  - level: 14
+    requirement: 1400
+    title: Grove Knight 1
+  - level: 15
+    requirement: 1500
+    title: Grove Knight 2
+  - level: 16
+    requirement: 1600
+    title: Grove Knight 3
+  - level: 17
+    requirement: 1700
+    title: Grove Knight 4
+  - level: 18
+    requirement: 1800
+    title: Grove Knight 5
+  - level: 19
+    requirement: 1900
+    title: Grove Knight 6
+  - level: 20
+    requirement: 2000
+    title: Grove Knight 7
+  - level: 21
+    requirement: 2100
+    title: Grove Lord
