@@ -45,7 +45,7 @@ public class GameLog : GameBehaviour
 
     private void OnEnemyUnitKilled(Enemy _unitID, string _killedBy)
     {
-        string unit = GetName(EnumX.ToEnum<ObjectID>(_unitID.ToString()));
+        string unit = GetName(EnumX.ToEnum<ObjectID>(_unitID.unitID.ToString()));
         string killer = GetName(EnumX.ToEnum<ObjectID>(_killedBy));
         ChangeLogLine(unit + " was killed by " + killer);
     }
