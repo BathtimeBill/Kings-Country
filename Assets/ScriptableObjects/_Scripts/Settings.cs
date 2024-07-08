@@ -4,6 +4,8 @@ using UnityEditor;
 using UnityEngine;
 using DG.Tweening;
 using BGG;
+using UnityEditor.UIElements;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu(fileName = "Settings", menuName = "BGG/Settings", order = 1)]
 public class Settings : ScriptableObject
@@ -156,6 +158,11 @@ public class Settings : ScriptableObject
 [System.Serializable]
 public class Colours
 {
+    [Header("Object Colours")]
+    //[BV.EnumList(typeof(ObjectID))]
+    public List<ObjectColor> objectColor;
+
+    [Header("In Game")]
     public Color highlightedColor;
     public Color cooldownColor;
     public Color upgradeIconsColor;
@@ -187,18 +194,16 @@ public class Colours
     public Color toggleIconHighlightColor;
     [Header("General")]
     public Color transparentColor;
-    [Header("Unit Colours")]
-    public Color homeTreeUnitColor;
-    public Color hutUnitColor;
-    public Color hogyrUnitColor;
-    public Color woodcutterTypeColor;
-    public Color hunterTypeColor;
-    public Color warriorTypeColor;
-    public Color specialTypeColor;
+    //[Header("Unit Colours")]
+    //public Color homeTreeUnitColor;
+    //public Color hutUnitColor;
+    //public Color hogyrUnitColor;
+    //public Color woodcutterTypeColor;
+    //public Color hunterTypeColor;
+    //public Color warriorTypeColor;
+    //public Color specialTypeColor;
 
-    [Header("Unit Colours")]
-    [BV.EnumList(typeof(ColorID))]
-    public List<ObjectColor> objectColor;
+    
 
     public string GetIncreaseColorString => ColorX.GetColorHex(upgradeIncreaseColor);
     public string GetDecreaseColorString => ColorX.GetColorHex(upgradeDecreaseColor);
@@ -217,7 +222,7 @@ public class Colours
             return redPanels;
     }
 
-    public Color GetUnitColor(UnitData _creatureData)
+    /*public Color GetUnitColor(UnitData _creatureData)
     {
         Color c = Color.white;
         if (_creatureData.home == BuildingID.HomeTree)
@@ -253,16 +258,40 @@ public class Colours
         if (_buildingData.id == BuildingID.Hogyr)
             c = hogyrUnitColor;
         return c;
+    }*/
+
+    /// <summary>
+    /// Gets the name of a key object/unit formatted within it's colour
+    /// </summary>
+    /// <param name="_object">The object</param>
+    /// <param name="_plural">Whether it is a plural or not</param>
+    /// <param name="_toUpper">Whether it should be uppercase (default)</param>
+    /// <returns></returns>
+    public string GetName(ObjectID _object, bool _plural = false, bool _toUpper = true)
+    {
+        ObjectColor oc = objectColor.Find(x => x.id == _object);
+        if (oc == null)
+            return _object.ToString();
+
+
+        string c = ColorX.GetColorHex(oc.color);
+        string n = _toUpper ? (oc.id.ToString().ToUpper() + (_plural ? "S" : "")) : (oc.id.ToString() + (_plural ? "s" : ""));
+        return "<color=#" + c + ">" + n + "</color>";
     }
 
-    public string GetColoredUnitName(UnitData _creatureData)
-    {
-        return "<color=#" + ColorX.GetColorHex(GetUnitColor(_creatureData)) + ">" + _creatureData.name + "</color>";
-    }
-    public string GetColoredUnitName(EnemyData _humanData)
-    {
-        return "<color=#" + ColorX.GetColorHex(GetUnitColor(_humanData)) + ">" + _humanData.name + "</color>";
-    }
+    //public string GetNameFormatted(UnitData _creatureData)
+    //{
+    //    return "<color=#" + ColorX.GetColorHex(GetUnitColor(_creatureData)) + ">" + _creatureData.name + "</color>";
+    //}
+    //public string GetNameFormatted(EnemyData _humanData)
+    //{
+    //    return "<color=#" + ColorX.GetColorHex(GetUnitColor(_humanData)) + ">" + _humanData.name + "</color>";
+    //}
+
+    //public string GetUnitFormatted()
+    //{
+    //    return "<color=#" + ColorX.GetColorHex(GetUnitColor(_humanData)) + ">" + _humanData.name + "</color>";
+    //}
 
     public void ChangePanelColour(PanelColourID _color, SaveManager _save)
     {
@@ -282,6 +311,40 @@ public class Colours
             }
         }
     }
+
+#if UNITY_EDITOR
+    [CustomPropertyDrawer(typeof(ObjectColor))]
+    public class ObjectColorDrawer : PropertyDrawer
+    {
+        // Draw the property inside the given rect
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            // Using BeginProperty / EndProperty on the parent property means that
+            // prefab override logic works on the entire property.
+            EditorGUI.BeginProperty(position, label, property);
+
+            // Draw label
+            position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
+
+            // Don't make child fields be indented
+            var indent = EditorGUI.indentLevel;
+            EditorGUI.indentLevel = 0;
+
+            // Calculate rects
+            var idRect = new Rect(position.x, position.y, 150, position.height);
+            var colorRect = new Rect(position.x + 155, position.y, 100, position.height);
+
+            // Draw fields - pass GUIContent.none to each so they are drawn without labels
+            EditorGUI.PropertyField(idRect, property.FindPropertyRelative("id"), GUIContent.none);
+            EditorGUI.PropertyField(colorRect, property.FindPropertyRelative("color"), GUIContent.none);
+
+            // Set indent back to what it was
+            EditorGUI.indentLevel = indent;
+
+            EditorGUI.EndProperty();
+        }
+    }
+#endif
 }
 
 [System.Serializable]
@@ -369,7 +432,7 @@ public class MiniMap
 [Serializable]
 public class ObjectColor
 {
-    public ColorID id;
+    public ObjectID id;
     public Color color;
 }
 

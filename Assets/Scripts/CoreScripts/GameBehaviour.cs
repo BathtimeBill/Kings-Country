@@ -51,6 +51,14 @@ public class GameBehaviour : BV.Behaviour
     public Testing _TESTING => _DATA.settings.testing;
 
     public Experience _EXP(int i) => _SETTINGS.experience.Find(x=> x.level == i);
+
+    /// <summary>
+    /// Gets the name of a key object/unit formatted within it's colour
+    /// </summary>
+    /// <param name="_object">The object</param>
+    /// <param name="_plural">Whether it is a plural or not</param>
+    /// <param name="_toUpper">Whether it should be uppercase (default)</param>
+    public string GetName(ObjectID _id, bool _plural = false, bool _toUpper = true) => _COLOUR.GetName(_id, _plural, _toUpper);
 }
 
 public enum UpgradeID
@@ -305,15 +313,16 @@ public enum ErrorID
     SpyClose
 }
 
-public enum ColorID
+public enum ObjectID
 {
     HomeTree, Hut, Hogyr, 
-    Tree, Tool, Wildlife, Maegen, 
+    Tree, Tool, Wildlife, Maegen, Populous, 
     Logger, Lumberjack, Logcutter,
     Hunter, Wathe, Bjornjeger,
     Berzerkr, Drend, Knight,
     Lord, Spy, Dog, Mine,
-    Day, Night,
+    Satyr, Orcus, Leshy, Goblin, Skessa, Fidhain, Mistcalf, Huldra,
+    Day, Night, Creature, Human, Grove,
 }
 
 public enum DayID

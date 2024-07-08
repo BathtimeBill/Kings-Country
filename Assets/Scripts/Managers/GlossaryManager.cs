@@ -29,6 +29,12 @@ public class GlossaryManager : GameBehaviour
 
     private void Start()
     {
+        int X = 2;
+        int Y = 3;
+        var pointMessage = $"The point {X}, {Y} is {_SETTINGS.colours.redPanels} from the origin";
+        print(pointMessage);
+
+
         glossaryButton.onClick.AddListener(()=> OpenGlossaryPanel());
         lastSelectedGlossayID = GlossaryID.CameraControls;
         for(int i=0; i<glossaryItems.Count; i++)
@@ -53,17 +59,25 @@ public class GlossaryManager : GameBehaviour
             case GlossaryID.CameraControls:
                 _glossaryItem.title = "Camera Controls";
                 _glossaryItem.description =
-                    "To move the camera, use the <b>‘W,A,S,D’</b> keys or move the mouse cursor to the edge of the screen.\r\n<br>Hold <b>Left Shift</b> to hasten camera movement.\r\n<br>To rotate the camera, click and drag the <b>Middle Mouse Button</b> to the left or right.\r\n<br>To zoom the camera, scroll the <b>Mouse Wheel</b> in and out.";
+                    "To move the camera, use the <b>‘W,A,S,D’</b> keys or move the mouse cursor to the edge of the screen.<br>" +
+                    "Hold <b>Left Shift</b> to hasten camera movement.<br><br>" +
+                    "<sprite name=MiddleMouseRotateIcon> to ROTATE the camera.<br><br>" +
+                    "<sprite name=MiddleMouseZoomIcon> to ZOOM the camera.";
                 break;
             case GlossaryID.CreatureMovement:
                 _glossaryItem.title = "Creature Movement";
                 _glossaryItem.description =
-                    "To select a <color=#3A9F87><b>Creature</b></color>, click on it with the <b>Left Mouse Button</b> or click and drag over multiple <color=#3A9F87><b>Creatures</b></color> to select more than one.\r\n<br>With a selected <color=#3A9F87><b>Creature(s)</b></color>, <b>Right Cick</b> on a location to send them there. \r\n<br>Our <color=#3A9F87><b>Creatures</b></color> will defend that location if <color=#FE4E2D><b>Humans</b></color> come within their range.";
+                    $"To select a {GetName(ObjectID.Creature)}, click on it with the <b>Left Mouse Button</b> or click and drag over multiple {GetName(ObjectID.Creature, true)} to select more than one.<br>" + 
+                    $"With a selected {GetName(ObjectID.Creature)}, <b>Right Cick</b> on a location to send them there.<br>" +
+                    $"Our {GetName(ObjectID.Creature, true)} will defend that location if {GetName(ObjectID.Human, true)} come within their range.";
                 break;
             case GlossaryID.Maegen:
                 _glossaryItem.title = "Maegen";
                 _glossaryItem.description =
-                    "<color=#FCA343><b>Maegen</b></color> is the raw, wild energy of the <color=#9665cd><b>Grove</b></color>. It functions as the main currency of the game.\r\n<br><color=#FCA343><b>Maegen</b></color> is created by <color=#6d8659><b>Trees</b></color> at the end of each <color=#FCA343><b>Day</b></color> and is used to grow more <color=#6d8659><b>Trees</b></color> and spawn <color=#3A9F87><b>Creatures</b></color>.\r\n<br>Sometimes when a <color=#FE4E2D><b>Human</b></color> is killed, the <color=#9665cd><b>Grove</b></color> can harvest <color=#FCA343><b>Maegen</b></color> from their soul.";
+                    $"{GetName(ObjectID.Maegen)} is the raw, wild energy of the {GetName(ObjectID.Maegen)}.<br>" + 
+                    $"It functions as the main currency of the game.<br>"+
+                    $"{GetName(ObjectID.Maegen)} is created by {GetName(ObjectID.Tree, true)} at the end of each {GetName(ObjectID.Day)} and is used to grow more {GetName(ObjectID.Tree, true)} and spawn {GetName(ObjectID.Creature, true)}.<br>" +
+                    $"Sometimes when a {GetName(ObjectID.Human)} is killed, the {GetName(ObjectID.Grove)} can harvest {GetName(ObjectID.Maegen)} from their soul.";
                 break;
             case GlossaryID.Trees:
                 _glossaryItem.title = "Trees";

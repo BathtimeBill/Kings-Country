@@ -32,46 +32,21 @@ public class GameLog : GameBehaviour
     }
     private void OnUnitSpawned(string _unitID)
     {
-        string unit = _unitID;
-        if (_DATA.IsCreatureUnit(_unitID))
-            unit = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<CreatureID>(_unitID)));
-        if(_DATA.IsHumanUnit(_unitID))
-            unit = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<HumanID>(_unitID)));
-
+        string unit = GetName(EnumX.ToEnum<ObjectID>(_unitID));
         ChangeLogLine(unit + " was spawned in ");
     }
 
     private void OnUnitKilled(string _unitID, string _killedBy)
     {
-        string unit = _unitID;
-        if (_DATA.IsCreatureUnit(_unitID))
-            unit = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<CreatureID>(_unitID)));
-        if (_DATA.IsHumanUnit(_unitID))
-            unit = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<HumanID>(_unitID)));
-
-        string killer = _killedBy;
-        if (_DATA.IsCreatureUnit(_killedBy))
-            killer = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<CreatureID>(_killedBy)));
-        if (_DATA.IsHumanUnit(_killedBy))
-            killer = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<HumanID>(_killedBy)));
-
+        string unit = GetName(EnumX.ToEnum<ObjectID>(_unitID));
+        string killer = GetName(EnumX.ToEnum<ObjectID>(_killedBy));
         ChangeLogLine(unit + " was killed by " + killer);
     }
 
     private void OnEnemyUnitKilled(Enemy _unitID, string _killedBy)
     {
-        string unit = _unitID.unitID.ToString();
-        if (_DATA.IsCreatureUnit(unit))
-            unit = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<CreatureID>(unit)));
-        if (_DATA.IsHumanUnit(unit))
-            unit = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<HumanID>(unit)));
-
-        string killer = _killedBy;
-        if (_DATA.IsCreatureUnit(_killedBy))
-            killer = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<CreatureID>(_killedBy)));
-        if (_DATA.IsHumanUnit(_killedBy))
-            killer = _COLOUR.GetColoredUnitName(_DATA.GetUnit(EnumX.ToEnum<HumanID>(_killedBy)));
-
+        string unit = GetName(EnumX.ToEnum<ObjectID>(_unitID.ToString()));
+        string killer = GetName(EnumX.ToEnum<ObjectID>(_killedBy));
         ChangeLogLine(unit + " was killed by " + killer);
     }
 

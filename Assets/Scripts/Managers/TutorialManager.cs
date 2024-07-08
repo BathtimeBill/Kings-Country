@@ -194,13 +194,13 @@ public class TutorialManager : GameBehaviour
                 break;
             case TutorialID.CameraRotate:
                 _tutorial.title = "Camera Controls";
-                _tutorial.description = "To ROTATE the camera, click and drag the ‘Middle Mouse Button’ to the left or right.";
+                _tutorial.description = "<sprite name=MiddleMouseRotateIcon> to ROTATE the camera.";
                 _tutorial.taskLine = rotateCameraTask;
                 _tutorial.unlockedGlossaryID = GlossaryID.CameraControls;
                 break;
             case TutorialID.CameraZoom:
                 _tutorial.title = "Camera Controls";
-                _tutorial.description = "To ZOOM the camera, scroll the Mouse Wheel in and out.";
+                _tutorial.description = "<sprite name=MiddleMouseZoomIcon> to ZOOM the camera.";
                 _tutorial.taskLine = zoomCameraTask;
                 _tutorial.unlockedGlossaryID = GlossaryID.CameraControls;
                 break;
@@ -231,9 +231,9 @@ public class TutorialManager : GameBehaviour
                 break;
             case TutorialID.PlantTree:
                 _tutorial.title = "Trees";
-                _tutorial.description = 
-                    "To grow a tree, click on the TREE tool then Left-Click on an available space in our GROVE.<br>" +
-                    "To deselect the TREE tool, Right-Click.<br>" +
+                _tutorial.description =
+                    "To grow a tree, click on the TREE tool then <sprite name=LeftMouseClickIcon> on an available space in our GROVE.<br>" +
+                    "To deselect the TREE tool, <sprite name=RightMouseClickIcon>.<br>" +
                     "The higher the %, the better your MAEGEN yield.<br>" +
                     "You can only plant trees during NIGHT";
                 _tutorial.taskLine = treesTask;
@@ -257,8 +257,9 @@ public class TutorialManager : GameBehaviour
             case TutorialID.CreatureMovement:
                 _tutorial.title = "Creature Movement";
                 _tutorial.description =
-                    "To select a CREATURE, click on it with the LEFT MOUSE BUTTON or click and drag over multiple CREATURE to select more than one.<br>" + "<br>" +
-                    "With selected CREATURE(S), RIGHT CLICK on a location to send them there. Our CREATURES will defend that location if HUMANS come within their range.<br>";
+                    "<sprite name=LeftMouseClickIcon> on a CREATURE to select it or <sprite name=LeftMouseClickIcon> and drag over multiple CREATURE to select more than one.<br>" + 
+                    "With selected CREATURE(S), <sprite name=RightMouseClickIcon> on a location to send them there..<br>" + 
+                    "Our CREATURES will defend that location if HUMANS come within their range.<br>";
                 _tutorial.taskLine = movementTask;
                 _tutorial.unlockedGlossaryID = GlossaryID.CreatureMovement;
                 break;
