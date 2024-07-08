@@ -193,17 +193,7 @@ public class Colours
     public Color toggleIconDisabledColor;
     public Color toggleIconHighlightColor;
     [Header("General")]
-    public Color transparentColor;
-    //[Header("Unit Colours")]
-    //public Color homeTreeUnitColor;
-    //public Color hutUnitColor;
-    //public Color hogyrUnitColor;
-    //public Color woodcutterTypeColor;
-    //public Color hunterTypeColor;
-    //public Color warriorTypeColor;
-    //public Color specialTypeColor;
-
-    
+    public Color transparentColor;    
 
     public string GetIncreaseColorString => ColorX.GetColorHex(upgradeIncreaseColor);
     public string GetDecreaseColorString => ColorX.GetColorHex(upgradeDecreaseColor);
@@ -221,44 +211,6 @@ public class Colours
         else 
             return redPanels;
     }
-
-    /*public Color GetUnitColor(UnitData _creatureData)
-    {
-        Color c = Color.white;
-        if (_creatureData.home == BuildingID.HomeTree)
-            c = homeTreeUnitColor;
-        if(_creatureData.home == BuildingID.Hut)
-            c = hutUnitColor;
-        if(_creatureData.home == BuildingID.Hogyr)
-            c = hogyrUnitColor;
-        return c;
-    }
-
-    public Color GetUnitColor(EnemyData _humanData)
-    {
-        Color c = Color.white;
-        if (_humanData.type == EnemyType.Woodcutter)
-            c = woodcutterTypeColor;
-        if (_humanData.type == EnemyType.Hunter)
-            c = hunterTypeColor;
-        if (_humanData.type == EnemyType.Warrior)
-            c = warriorTypeColor;
-        if (_humanData.type == EnemyType.Special)
-            c = specialTypeColor;
-        return c;
-    }
-
-    public Color GetUnitColor(BuildingData _buildingData)
-    {
-        Color c = Color.white;
-        if (_buildingData.id == BuildingID.HomeTree)
-            c = homeTreeUnitColor;
-        if (_buildingData.id == BuildingID.Hut)
-            c = hutUnitColor;
-        if (_buildingData.id == BuildingID.Hogyr)
-            c = hogyrUnitColor;
-        return c;
-    }*/
 
     /// <summary>
     /// Gets the name of a key object/unit formatted within it's colour
@@ -279,19 +231,20 @@ public class Colours
         return "<color=#" + c + ">" + n + "</color>";
     }
 
-    //public string GetNameFormatted(UnitData _creatureData)
-    //{
-    //    return "<color=#" + ColorX.GetColorHex(GetUnitColor(_creatureData)) + ">" + _creatureData.name + "</color>";
-    //}
-    //public string GetNameFormatted(EnemyData _humanData)
-    //{
-    //    return "<color=#" + ColorX.GetColorHex(GetUnitColor(_humanData)) + ">" + _humanData.name + "</color>";
-    //}
+    public Color GetColour(ObjectID _id)
+    {
+        ObjectColor oc = objectColor.Find(x => x.id == _id);
+        if (oc == null)
+            return Color.white;
 
-    //public string GetUnitFormatted()
-    //{
-    //    return "<color=#" + ColorX.GetColorHex(GetUnitColor(_humanData)) + ">" + _humanData.name + "</color>";
-    //}
+        return oc.color;
+    }
+
+    public Color GetColour(CreatureID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
+    public Color GetColour(HumanID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
+    public Color GetColour(ToolID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
+    public Color GetColour(BuildingID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
+
 
     public void ChangePanelColour(PanelColourID _color, SaveManager _save)
     {
@@ -417,6 +370,15 @@ public class Icons
     public Sprite healthIcon;
     public Sprite speedIcon;
     public Sprite cooldownIcon;
+
+    [Header("Input")]
+    public Sprite mouseZoom;
+    public Sprite mouseRotate;
+    public Sprite mouseLeftClick;
+    public Sprite mouseRightClick;
+
+    public string GetTMPIcon(Sprite _icon) => $"<sprite name={_icon.name}>";
+
 }
 
 [Serializable]

@@ -194,21 +194,22 @@ public class TutorialManager : GameBehaviour
                 break;
             case TutorialID.CameraRotate:
                 _tutorial.title = "Camera Controls";
-                _tutorial.description = "<sprite name=MiddleMouseRotateIcon> to ROTATE the camera.";
+                _tutorial.description = $"{_ICONS.GetTMPIcon(_ICONS.mouseRotate)} to ROTATE the camera.";
                 _tutorial.taskLine = rotateCameraTask;
                 _tutorial.unlockedGlossaryID = GlossaryID.CameraControls;
                 break;
             case TutorialID.CameraZoom:
                 _tutorial.title = "Camera Controls";
-                _tutorial.description = "<sprite name=MiddleMouseZoomIcon> to ZOOM the camera.";
+                _tutorial.description = $"{_ICONS.GetTMPIcon(_ICONS.mouseZoom)} to ZOOM the camera.";
                 _tutorial.taskLine = zoomCameraTask;
                 _tutorial.unlockedGlossaryID = GlossaryID.CameraControls;
                 break;
             case TutorialID.Maegen:
                 _tutorial.title = "Maegen";
-                _tutorial.description = "This is your MAEGEN.<br>" +
-                    "MAEGEN is the wild energy within all natural things and serves as the lifeblood of our grove.<br>" + 
-                    "Spend MAEGEN to grow TREES that will, in turn, produce more MAEGEN at the end of the DAY.";
+                _tutorial.description = 
+                    $"This is your {GetName(ObjectID.Maegen)}.<br>" +
+                    $"{GetName(ObjectID.Maegen)} is the wild energy within all natural things and serves as the lifeblood of our {GetName(ObjectID.Grove)}.<br>" + 
+                    $"Spend {GetName(ObjectID.Maegen)} to grow {GetName(ObjectID.Tree, true)} that will, in turn, produce more {GetName(ObjectID.Maegen)} at the end of the {GetName(ObjectID.Day)}.";
                 _tutorial.showContinueButton = true;
                 _tutorial.showObjects.Add(gamePanels.resourcesPanel.gameObject);
                 _tutorial.showObjects.Add(arrows.maegenArrow.gameObject);
@@ -219,9 +220,9 @@ public class TutorialManager : GameBehaviour
                 break;
             case TutorialID.Trees:
                 _tutorial.title = "Trees";
-                _tutorial.description = 
-                    "The productivity of each TREE is determined by its proximity to others in the GROVE. <br>" + 
-                    "TREES clustered together are less productive but easier to defend, while those spread out yield more MAEGEN but are more vulnerable to attack.";
+                _tutorial.description =
+                    $"The productivity of each {GetName(ObjectID.Tree)} is determined by its proximity to others in the {GetName(ObjectID.Grove)}. <br>" + 
+                    $"{GetName(ObjectID.Tree, true)} clustered together are less productive but easier to defend, while those spread out yield more {GetName(ObjectID.Maegen)} but are more vulnerable to attack.";
                 _tutorial.showContinueButton = true;
                 _tutorial.showObjects.Add(arrows.treeTopArrow.gameObject);
                 _tutorial.unlockedGlossaryID = GlossaryID.Trees;
@@ -232,10 +233,10 @@ public class TutorialManager : GameBehaviour
             case TutorialID.PlantTree:
                 _tutorial.title = "Trees";
                 _tutorial.description =
-                    "To grow a tree, click on the TREE tool then <sprite name=LeftMouseClickIcon> on an available space in our GROVE.<br>" +
-                    "To deselect the TREE tool, <sprite name=RightMouseClickIcon>.<br>" +
-                    "The higher the %, the better your MAEGEN yield.<br>" +
-                    "You can only plant trees during NIGHT";
+                    $"To grow a {GetName(ObjectID.Tree)}, click on the {GetName(ObjectID.Tree)} tool then {_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} on an available space in our {GetName(ObjectID.Grove)}.<br>" +
+                    $"To deselect the {GetName(ObjectID.Tree)} tool, {_ICONS.GetTMPIcon(_ICONS.mouseRightClick)}.<br>" +
+                    $"The higher the %, the better your {GetName(ObjectID.Maegen)} yield.<br>" +
+                    $"You can only plant trees during {GetName(ObjectID.Night)}";
                 _tutorial.taskLine = treesTask;
                 _tutorial.showObjects.Add(gamePanels.treePanel.gameObject);
                 _tutorial.showObjects.Add(arrows.treeToolArrow.gameObject);
@@ -245,10 +246,10 @@ public class TutorialManager : GameBehaviour
             case TutorialID.Creatures:
                 _tutorial.title = "Creatures";
                 _tutorial.description = 
-                    "CREATURES are your servants. Use them to keep control of the GROVE!<br>" +
-                    "Each unit requires a different MAEGEN cost to summon it.<br>" +
-                    "Open the HOME TREE panel to start summoning creatures.<br>" +
-                    "You can also click on the HOME TREE panel to start summoning creatures.<br>";
+                    $"{GetName(ObjectID.Creature, true)} are your servants. Use them to keep control of the {GetName(ObjectID.Grove)}!<br>" +
+                    $"Each {GetName(ObjectID.Creature)} requires a different {GetName(ObjectID.Maegen)} cost to summon it.<br>" +
+                    $"Open the {GetName(ObjectID.HomeTree)} panel to start summoning {GetName(ObjectID.Maegen, true)}.<br>" +
+                    $"You can also {_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} on the {GetName(ObjectID.HomeTree)} panel to start summoning {GetName(ObjectID.Creature, true)}.<br>";
                 _tutorial.taskLine = creaturesTask;
                 _tutorial.showObjects.Add(gamePanels.unitPanel.gameObject);
                 _tutorial.showObjects.Add(arrows.unitArrow.gameObject);
@@ -257,29 +258,29 @@ public class TutorialManager : GameBehaviour
             case TutorialID.CreatureMovement:
                 _tutorial.title = "Creature Movement";
                 _tutorial.description =
-                    "<sprite name=LeftMouseClickIcon> on a CREATURE to select it or <sprite name=LeftMouseClickIcon> and drag over multiple CREATURE to select more than one.<br>" + 
-                    "With selected CREATURE(S), <sprite name=RightMouseClickIcon> on a location to send them there..<br>" + 
-                    "Our CREATURES will defend that location if HUMANS come within their range.<br>";
+                    $"{_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} on a {GetName(ObjectID.Creature)} to select it or {_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} and drag over multiple {GetName(ObjectID.Creature, true)} to select more than one.<br>" +
+                    $"With selected {GetName(ObjectID.Creature)}(S), {_ICONS.GetTMPIcon(_ICONS.mouseRightClick)} on a location to send them there.<br>" +
+                    $"Our {GetName(ObjectID.Creature, true)} will defend that location if {GetName(ObjectID.Human, true)} come within their range.<br>";
                 _tutorial.taskLine = movementTask;
                 _tutorial.unlockedGlossaryID = GlossaryID.CreatureMovement;
                 break;
             case TutorialID.HomeTree:
                 _tutorial.title = "Home Tree";
                 _tutorial.description =
-                    "This is our HOME TREE, the heart of our GROVE and vital to its survival.<br>" +
-                    "If the HOME TREE is destroyed, the forest will fall.<br>" +
-                    "When you click on the HOME TREE, you can bring up the CREATURES that you can summon from it.<br>" + 
-                    "Use CREATURES to defend the GROVE<br>";
+                    $"This is our {GetName(ObjectID.HomeTree)}, the heart of our {GetName(ObjectID.Grove)} and vital to its survival.<br>" +
+                    $"If the {GetName(ObjectID.HomeTree)} is destroyed, the forest will fall.<br>" +
+                    $"When you {_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} on the {GetName(ObjectID.HomeTree)}, you can bring up the {GetName(ObjectID.Creature, true)} that you can summon from it.<br>" +
+                    $"Use {GetName(ObjectID.Creature, true)} to defend the {GetName(ObjectID.Grove)}.<br>";
                 _tutorial.showContinueButton = true;
                 _tutorial.unlockedGlossaryID = GlossaryID.HomeTree;
                 break;
             case TutorialID.Wildlife:
                 _tutorial.title = "Wildlife";
                 _tutorial.description =
-                    "This represents your WILDLIFE.<br>" +
-                    "WILDLIFE are an important part of the GROVE and required for you to use your special powers.<br>" +
-                    "They will spawn in at the end of each day, based on how many trees are in your GROVE.<br>" +
-                    "Hold down the ALT button to highlight your existing WILDLIFE and protect them at all costs!";
+                    $"This represents your {GetName(ObjectID.Wildlife)}.<br>" +
+                    $"{GetName(ObjectID.Wildlife)} are an important part of the {GetName(ObjectID.Grove)} and required for you to use your special powers.<br>" +
+                    $"They will spawn in at the end of each day, based on how many trees are in your {GetName(ObjectID.Grove)}.<br>" +
+                    $"Hold down the ALT button to highlight your existing {GetName(ObjectID.Wildlife)} and protect them at all costs!";
                 _tutorial.showContinueButton = true;
                 _tutorial.showObjects.Add(arrows.wildlifeArrow.gameObject);
                 _tutorial.unlockedGlossaryID = GlossaryID.Wildlife;
@@ -290,9 +291,9 @@ public class TutorialManager : GameBehaviour
             case TutorialID.Populous:
                 _tutorial.title = "Populous";
                 _tutorial.description =
-                    "There is a maximum population of CREATURES you can have at one time.<br>" +
-                    "The max POPULOUS can be upgrade by +5 with a Perk.<br>" +
-                    "Press DELETE with a selected CREATURE to destroy it, in order to reduce your POPULOUS level";
+                    $"There is a maximum population of {GetName(ObjectID.Creature, true)} you can have at one time.<br>" +
+                    $"The max {GetName(ObjectID.Populous)} can be upgrade by +5 with a {GetName(ObjectID.Perk)}.<br>" +
+                    $"Press DELETE with a selected {GetName(ObjectID.Creature)} to destroy it, in order to reduce your {GetName(ObjectID.Populous)} level";
                 _tutorial.showContinueButton = true;
                 _tutorial.showObjects.Add(arrows.populousArrow.gameObject);
                 _tutorial.unlockedGlossaryID = GlossaryID.Populous;
@@ -302,9 +303,9 @@ public class TutorialManager : GameBehaviour
             case TutorialID.DayNightCycle:
                 _tutorial.title = "Day/Night";
                 _tutorial.description =
-                    "Under the cover of night, build and rebuild your GROVE.<br>" +
-                    "Humans will arrive during the day so be prepared to fight back.<br>" +
-                    "When you are ready, click the Day/Night button to begin defending the forest";
+                    $"Under the cover of {GetName(ObjectID.Night)}, build and rebuild your {GetName(ObjectID.Grove)}.<br>" +
+                    $"{GetName(ObjectID.Human, true)} will arrive during the day so be prepared to fight back.<br>" +
+                    $"When you are ready, click the {GetName(ObjectID.Day)}/{GetName(ObjectID.Night)} button to begin defending the forest";
                 _tutorial.taskLine = startDayTask;
                 _tutorial.showObjects.Add(gamePanels.unitPanel.gameObject);
                 _tutorial.showObjects.Add(gamePanels.treePanel.gameObject);

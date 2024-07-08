@@ -29,12 +29,6 @@ public class GlossaryManager : GameBehaviour
 
     private void Start()
     {
-        int X = 2;
-        int Y = 3;
-        var pointMessage = $"The point {X}, {Y} is {_SETTINGS.colours.redPanels} from the origin";
-        print(pointMessage);
-
-
         glossaryButton.onClick.AddListener(()=> OpenGlossaryPanel());
         lastSelectedGlossayID = GlossaryID.CameraControls;
         for(int i=0; i<glossaryItems.Count; i++)
@@ -61,8 +55,8 @@ public class GlossaryManager : GameBehaviour
                 _glossaryItem.description =
                     "To move the camera, use the <b>‘W,A,S,D’</b> keys or move the mouse cursor to the edge of the screen.<br>" +
                     "Hold <b>Left Shift</b> to hasten camera movement.<br><br>" +
-                    "<sprite name=MiddleMouseRotateIcon> to ROTATE the camera.<br><br>" +
-                    "<sprite name=MiddleMouseZoomIcon> to ZOOM the camera.";
+                    $"{_ICONS.GetTMPIcon(_ICONS.mouseRotate)} to ROTATE the camera.<br><br>" +
+                    $"{_ICONS.GetTMPIcon(_ICONS.mouseZoom)} to ZOOM the camera.";
                 break;
             case GlossaryID.CreatureMovement:
                 _glossaryItem.title = "Creature Movement";
@@ -75,14 +69,18 @@ public class GlossaryManager : GameBehaviour
                 _glossaryItem.title = "Maegen";
                 _glossaryItem.description =
                     $"{GetName(ObjectID.Maegen)} is the raw, wild energy of the {GetName(ObjectID.Maegen)}.<br>" + 
-                    $"It functions as the main currency of the game.<br>"+
-                    $"{GetName(ObjectID.Maegen)} is created by {GetName(ObjectID.Tree, true)} at the end of each {GetName(ObjectID.Day)} and is used to grow more {GetName(ObjectID.Tree, true)} and spawn {GetName(ObjectID.Creature, true)}.<br>" +
+                    $"It functions as the main currency of the game.<br><br>" +
+                    $"{GetName(ObjectID.Maegen)} is created by {GetName(ObjectID.Tree, true)} at the end of each {GetName(ObjectID.Day)} and is used to grow more {GetName(ObjectID.Tree, true)} and spawn {GetName(ObjectID.Creature, true)}.<br><br>" +
                     $"Sometimes when a {GetName(ObjectID.Human)} is killed, the {GetName(ObjectID.Grove)} can harvest {GetName(ObjectID.Maegen)} from their soul.";
                 break;
             case GlossaryID.Trees:
                 _glossaryItem.title = "Trees";
                 _glossaryItem.description =
-                    "<color=#6d8659><b>Trees</b></color> are how we increase our power and earn more <color=#FCA343><b>Maegen</b></color>.\r\n<br>The productivity of each <color=#6d8659><b>Tree</b></color> is determined by its proximity to others in the <color=#9665cd><b>Grove</b></color>. <color=#6d8659><b>Trees</b></color> clustered together are less productive but easier to defend, while those spread out yield more <color=#FCA343><b>Maegen</b></color> but are more vulnerable to attack. \r\n<br>To grow a <color=#6d8659><b>Tree</b></color>, click on the <color=#6d8659><b>Tree</b></color> button and <b>Left-Click</b> on an available space in our domain.\r\n<br><b>Right-Click</b> to deselect <color=#6d8659><b>Tree</b></color> mode.";
+                    $"{GetName(ObjectID.Tree, true)} are how we increase our power and earn more {GetName(ObjectID.Maegen)}.<br>" +
+                    $"The productivity of each {GetName(ObjectID.Tree)} is determined by its proximity to others in the {GetName(ObjectID.Grove, true)}.<br>" +
+                    $"{GetName(ObjectID.Tree, true)} clustered together are less productive but easier to defend, while those spread out yield more {GetName(ObjectID.Maegen)} but are more vulnerable to attack.<br> " +
+                    $"To grow a {GetName(ObjectID.Tree)}, click on the {GetName(ObjectID.Tree)} button and {_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} on an available space in our domain.<br>" +
+                    $"{_ICONS.GetTMPIcon(_ICONS.mouseRightClick)} to deselect {GetName(ObjectID.Tree)} mode.";
                 break;
             case GlossaryID.Wildlife:
                 _glossaryItem.title = "Wildlife";

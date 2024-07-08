@@ -315,14 +315,15 @@ public enum ErrorID
 
 public enum ObjectID
 {
-    HomeTree, Hut, Hogyr, 
-    Tree, Tool, Wildlife, Maegen, Populous, 
-    Logger, Lumberjack, Logcutter,
-    Hunter, Wathe, Bjornjeger,
-    Berzerkr, Drend, Knight,
-    Lord, Spy, Dog, Mine,
-    Satyr, Orcus, Leshy, Goblin, Skessa, Fidhain, Mistcalf, Huldra,
-    Day, Night, Creature, Human, Grove,
+    Resource    = 0,  Wildlife, Maegen, Populous, Day, Night, Creature, Human, Grove, Perk,
+    Tool        = 20, Tree, Rune, Fyre,    
+    HomeTree    = 30, Satyr, Orcus, Leshy,
+    Hut         = 40, Goblin, Skessa, Fidhain,
+    Hogyr       = 50, Mistcalf, Huldra, Skuggi,
+    Woodcutter  = 60, Logger, Lumberjack, Logcutter,
+    Hunter      = 70, Wathe, Bjornjeger,
+    Warrior     = 80, Berzerkr, Dreng, Knight,
+    Special     = 90, Lord, Spy, Dog, Mine,
 }
 
 public enum DayID

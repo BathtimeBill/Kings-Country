@@ -46,17 +46,17 @@ public class MapIconRotator : GameBehaviour
         {
             case UnitType.Creature:
                 sprite.sprite = _DATA.GetUnit(creatureID).mapIcon;
-                //sprite.color = _COLOUR.GetUnitColor(_DATA.GetUnit(creatureID));
+                sprite.color = _COLOUR.GetColour(_DATA.GetUnit(creatureID).id);
                 sprite.transform.localScale = Vector3.one * _SETTINGS.miniMap.creatureIconSize;
                 break;
             case UnitType.Human:
                 sprite.sprite = _DATA.GetUnit(humanID).mapIcon;
-                //sprite.color = _COLOUR.GetUnitColor(_DATA.GetUnit(humanID));
+                sprite.color = _COLOUR.GetColour(_DATA.GetUnit(humanID).id);
                 sprite.transform.localScale = Vector3.one * _SETTINGS.miniMap.humanIconSize;
                 break;
             case UnitType.Building:
                 sprite.sprite = _DATA.GetUnit(buildingID).mapIcon;
-                //sprite.color = _COLOUR.GetUnitColor(_DATA.GetUnit(buildingID)); 
+                sprite.color = _COLOUR.GetColour(_DATA.GetUnit(buildingID).id); 
                 sprite.transform.localScale = Vector3.one * _SETTINGS.miniMap.buildingIconSize;
                 break;
         }
