@@ -558,23 +558,23 @@ public class Unit : GameBehaviour
     {
         if (other.tag == "Axe1")
         {
-            TakeDamage(_DATA.GetUnit(HumanID.Logger).damage);
+            TakeDamage(_DATA.GetUnit(HumanID.Logger).id.ToString(), _DATA.GetUnit(HumanID.Logger).damage);
             other.enabled = false;
         }
         if (other.tag == "Axe2")
         {
-            TakeDamage(_DATA.GetUnit(HumanID.Lumberjack).damage);
+            TakeDamage(_DATA.GetUnit(HumanID.Lumberjack).id.ToString(), _DATA.GetUnit(HumanID.Lumberjack).damage);
             other.enabled = false;
         }
         if (other.tag == "Sword2")
         {
             if(unitID != CreatureID.Leshy)
             {
-                TakeDamage(_DATA.GetUnit(HumanID.Dreng).damage);
+                TakeDamage(_DATA.GetUnit(HumanID.Dreng).id.ToString(), _DATA.GetUnit(HumanID.Dreng).damage);
             }
             else
             {
-                TakeDamage(50);
+                TakeDamage("Unknown", 50);
             }
  
             other.enabled = false;
@@ -583,11 +583,11 @@ public class Unit : GameBehaviour
         {
             if (unitID != CreatureID.Leshy)
             {
-                TakeDamage(_DATA.GetUnit(HumanID.Bezerker).damage);
+                TakeDamage(_DATA.GetUnit(HumanID.Bezerker).id.ToString(), _DATA.GetUnit(HumanID.Bezerker).damage);
             }
             else
             {
-                TakeDamage(65);
+                TakeDamage("Unknown", 65);
             }
             other.enabled = false;
         }
@@ -599,11 +599,11 @@ public class Unit : GameBehaviour
             StartCoroutine(HitByArrowDelay());
             if (unitID == CreatureID.Skessa)
             {
-                TakeDamage(_DATA.GetUnit(HumanID.Wathe).damage * 3);
+                TakeDamage(_DATA.GetUnit(HumanID.Wathe).id.ToString(), _DATA.GetUnit(HumanID.Wathe).damage * 3);
             }
             else
             {
-                TakeDamage(_DATA.GetUnit(HumanID.Wathe).damage);
+                TakeDamage(_DATA.GetUnit(HumanID.Wathe).id.ToString(), _DATA.GetUnit(HumanID.Wathe).damage);
             }
 
             Destroy(other.gameObject);
@@ -616,11 +616,11 @@ public class Unit : GameBehaviour
             StartCoroutine(HitByArrowDelay());
             if (unitID == CreatureID.Skessa)
             {
-                TakeDamage(_DATA.GetUnit(HumanID.Hunter).damage * 3);
+                TakeDamage(_DATA.GetUnit(HumanID.Hunter).id.ToString(), _DATA.GetUnit(HumanID.Hunter).damage * 3);
             }
             else
             {
-                TakeDamage(_DATA.GetUnit(HumanID.Hunter).damage);
+                TakeDamage(_DATA.GetUnit(HumanID.Hunter).id.ToString(), _DATA.GetUnit(HumanID.Hunter).damage);
             }
 
             Destroy(other.gameObject);
@@ -659,7 +659,7 @@ public class Unit : GameBehaviour
         //}
         if (other.tag == "LordWeapon")
         {
-            TakeDamage(_DATA.GetUnit(HumanID.Lord).damage);
+            TakeDamage(_DATA.GetUnit(HumanID.Lord).id.ToString(), _DATA.GetUnit(HumanID.Lord).damage);
         }
         if (other.tag == "Lord")
         {
@@ -667,7 +667,7 @@ public class Unit : GameBehaviour
         }
         if (other.tag == "Explosion3")
         {
-            TakeDamage(100);
+            TakeDamage("Dog", 100);
         }
         if (other.tag == "Rune")
         {
@@ -708,7 +708,7 @@ public class Unit : GameBehaviour
             slider.value = slider.value = CalculateHealth();
             if(health < 0)
             {
-                Die();
+                Die("Unknown");
             }
         }
         if(other.tag == "Rune")
@@ -728,17 +728,17 @@ public class Unit : GameBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(string attacker, float damage)
     {
         state = UnitState.Attack;
         GameObject go = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
         //go.transform.rotation = Quaternion.Inverse(transform.rotation);
         health -= damage;
-        Die();
+        Die(attacker);
         slider.value = slider.value = CalculateHealth();
     }
 
-    private void Die()
+    private void Die(string _attacker)
     {
         bool isColliding = false;
         if (health <= 0)

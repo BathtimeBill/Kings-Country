@@ -25,7 +25,6 @@ public class GameBehaviour : BV.Behaviour
     protected static SaveManager _GAMESAVE { get { return SaveManager.instance; } }
     protected static UpgradeManager _UPGRADE { get { return UpgradeManager.instance; } }
     protected static SaveManager _SAVE { get { return SaveManager.instance; } }
-    protected static StatsData _STATS { get { return StatsData.instance; } }
     protected static TutorialManager _TUTORIAL { get { return _UI.tutorialManager; } }
     protected static GlossaryManager _GLOSSARY { get { return _UI.glossaryManager; } }
     protected static EffectsManager _EFFECTS { get { return EffectsManager.instance; } }
@@ -323,7 +322,7 @@ public enum ObjectID
     Woodcutter  = 60, Logger, Lumberjack, Logcutter,
     Hunter      = 70, Wathe, Bjornjeger,
     Warrior     = 80, Berzerkr, Dreng, Knight,
-    Special     = 90, Lord, Spy, Dog, Mine,
+    Special     = 90, Lord, Spy, Dog, Mine, Unknown
 }
 
 public enum DayID

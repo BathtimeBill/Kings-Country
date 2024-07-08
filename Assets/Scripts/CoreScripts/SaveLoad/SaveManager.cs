@@ -41,7 +41,8 @@ public class PerkSaveObject
 public class UnitStats
 {
     public string unitID;
-    public List<KillStat> killStats;
+    public List<KillStat> killedBy;
+    public List<KillStat> iHaveKilled;
 }
 
 [Serializable]
@@ -105,7 +106,7 @@ public class SaveDataObject : BGG.GameDataBase
     // Times
     public PlayTimeObject playTime = new PlayTimeObject();
     //Unit Stats
-    public Dictionary<string, UnitStats> unitStats = new Dictionary<string, UnitStats>();
+    public List<UnitStats> unitStats = new List<UnitStats>();
     //Tutorial
     public GlossaryObject glossary = new GlossaryObject();
     //Experience
@@ -124,18 +125,8 @@ public class SaveDataObject : BGG.GameDataBase
             return perks[_perkID];
         return null;
     }
-    public UnitStats GetUnitStats(string _unitID)
-    {
-        if(unitStats.ContainsKey(_unitID))
-            return unitStats[_unitID];
-        return null;
-    }
-    public void AddUnitStats(UnitStats _unitStats)
-    {
-        if (unitStats.ContainsKey(_unitStats.unitID))
-            return;
-        unitStats.Add(_unitStats.unitID, _unitStats);
-    }
+    public UnitStats GetUnitStats(string _unitID) => unitStats.Find(x => x.unitID == _unitID);
+    public void AddUnitStats(UnitStats _unitStats) => unitStats.Add(_unitStats);
 }
 
 //
@@ -202,7 +193,7 @@ public class SaveManager : BGG.GameData
             };
         }
 
-        save.unitStats = new Dictionary<string, UnitStats>();
+        save.unitStats = new List<UnitStats>();
 
         save.playerSettings = new PlayerSettings();
         save.playerSettings.musicVolume = 0.8f;
@@ -411,29 +402,55 @@ public class SaveManager : BGG.GameData
     {
         UnitStats stat = save.GetUnitStats(_unitID);
         if (stat == null) return 0;
-        int killAmount = stat.killStats.Find(x=>x.killedID == _killedID).amount;
+        int killAmount = stat.iHaveKilled.Find(x=>x.killedID == _killedID).amount;
         return killAmount;
     }
-    public void SetKillCount(string _unitID, string _killedID, int _amount)
+
+    public void OnUnitKilled(string _creature, string _killer)
     {
-        UnitStats stat = save.GetUnitStats(_unitID);
+        UnitStats stat = save.GetUnitStats(_creature);
         if (stat == null)
         {
             stat = new UnitStats();
-            stat.unitID = _unitID;
-            stat.killStats = new List<KillStat>();
+            stat.unitID = _creature;
+            stat.killedBy = new List<KillStat>();
             save.AddUnitStats(stat);
         }
-        List<KillStat> killStats = stat.killStats;
-        KillStat ks = killStats.Find(x=> x.killedID==_killedID);
-        print(killStats.Count + " " + ks.killedID);
+        List<KillStat> killStats = stat.killedBy;
+        KillStat ks = killStats.Find(x=> x.killedID==_killer);
         if (ks == null)
         {
-            ks.killedID = _killedID;
+            ks = new KillStat();
+            ks.killedID = _killer;
             ks.amount = 0;
             killStats.Add(ks);
         }
-        ks.amount += _amount;
+        ks.amount += 1;
+        //print(stat.unitID + " has been killed by " + ks.killedID + " " + ks.amount + " times");
+        SaveData();
+    }
+
+    public void OnEnemyUnitKilled(Enemy _enemy, string _creature)
+    {
+        UnitStats stat = save.GetUnitStats(_creature);
+        if (stat == null)
+        {
+            stat = new UnitStats();
+            stat.unitID = _creature;
+            stat.iHaveKilled = new List<KillStat>();
+            save.AddUnitStats(stat);
+        }
+        List<KillStat> killStats = stat.iHaveKilled;
+        KillStat ks = killStats.Find(x => x.killedID == _enemy.unitID.ToString());
+        if (ks == null)
+        {
+            ks = new KillStat();
+            ks.killedID = _enemy.unitID.ToString();
+            ks.amount = 0;
+            killStats.Add(ks);
+        }
+        ks.amount += 1;
+        //print(stat.unitID + " has killed " + ks.killedID + " " + ks.amount + " times");
         SaveData();
     }
 
@@ -526,6 +543,9 @@ public class SaveManager : BGG.GameData
         GameEvents.OnMiniMapShow += SetMiniMapShow;
         GameEvents.OnMiniMapIcons += SetMiniMapIcons;
         GameEvents.OnMiniMapRotation += SetMiniMapRotation;
+
+        GameEvents.OnUnitKilled += OnUnitKilled;
+        GameEvents.OnEnemyUnitKilled += OnEnemyUnitKilled;
     }
 
 
@@ -537,6 +557,9 @@ public class SaveManager : BGG.GameData
         GameEvents.OnMiniMapShow -= SetMiniMapShow;
         GameEvents.OnMiniMapIcons -= SetMiniMapIcons;
         GameEvents.OnMiniMapRotation -= SetMiniMapRotation;
+
+        GameEvents.OnUnitKilled -= OnUnitKilled;
+        GameEvents.OnEnemyUnitKilled += OnEnemyUnitKilled;
     }
 
     #region Editor
