@@ -190,9 +190,10 @@ public enum HumanID
     Bezerker,
     Knight,
     Dog,
-    Mine,
     Spy,
-    Lord
+    Lord,
+    Mine,
+    Unknown,
 }
 
 public enum UnitType

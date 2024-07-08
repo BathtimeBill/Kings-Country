@@ -762,7 +762,7 @@ public class Unit : GameBehaviour
                 Destroy(go, 15);
             }
             _UI.CheckPopulousUI();
-            GameEvents.ReportOnUnitKilled(unitID.ToString(), "Unknown");
+            GameEvents.ReportOnUnitKilled(unitID.ToString(), _attacker);
             CheckIfUnitIsInGroup();
             Destroy(gameObject);
         }

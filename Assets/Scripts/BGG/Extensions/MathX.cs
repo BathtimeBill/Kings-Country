@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-
-public static class MathX 
+public static class MathX
 {
     /// <summary>
     /// Maps a value from one range to another
@@ -277,5 +274,24 @@ public static class MathX
         float temp = _initialValue / 100f;
         temp *= _increase;
         return temp;
+    }
+
+    /// <summary>
+    /// Calculates a win loss percentage between 100% and -100%
+    /// </summary>
+    /// <param name="playerOneWins"></param>
+    /// <param name="playerTwoWins"></param>
+    /// <returns></returns>
+    static public double CalculateWinLossRatio(int playerOneWins, int playerTwoWins)
+    {
+        int totalGames = playerOneWins + playerTwoWins;
+
+        if (totalGames == 0)
+        {
+            return 0; // Avoid division by zero
+        }
+
+        double winLossRatio = (double)(playerOneWins - playerTwoWins) / totalGames;
+        return winLossRatio * 100;
     }
 }

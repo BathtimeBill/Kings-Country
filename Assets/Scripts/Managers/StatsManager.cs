@@ -1,10 +1,147 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class StatsManager : GameBehaviour
 {
-    
+    public UnitKillStats unit1;
+    public UnitKillStats unit2;
+    public UnitKillStats unit3;
+
+    public Button homeTreeButton;
+    public Button hutButton;
+    public Button hogyrButton;
+
+    public void Start()
+    {
+        homeTreeButton.onClick.AddListener(() => FillStatPanel(BuildingID.HomeTree));
+        hutButton.onClick.AddListener(() => FillStatPanel(BuildingID.Hut));
+        hogyrButton.onClick.AddListener(() => FillStatPanel(BuildingID.Hogyr));
+
+        FillStatPanel(BuildingID.HomeTree);
+    }
+
+    public void FillStatPanel(BuildingID _buildingID)
+    {
+        switch(_buildingID)
+        {
+            case BuildingID.HomeTree:
+                GetUnitStats(unit1, CreatureID.Satyr);
+                GetUnitStats(unit2, CreatureID.Orcus);
+                GetUnitStats(unit3, CreatureID.Leshy);
+                break;
+            case BuildingID.Hut:
+                GetUnitStats(unit1, CreatureID.Goblin);
+                GetUnitStats(unit2, CreatureID.Skessa);
+                GetUnitStats(unit3, CreatureID.Fidhain);
+                break;
+            case BuildingID.Hogyr:
+                GetUnitStats(unit1, CreatureID.Huldra);
+                GetUnitStats(unit2, CreatureID.Mistcalf);
+                GetUnitStats(unit3, CreatureID.Unknown);
+                break;
+        }
+        
+    }
+
+    public void GetUnitStats(UnitKillStats _stats, CreatureID _creatureID)
+    {
+        _stats.unitNameText.text = _creatureID.ToString();
+        _stats.unitIcon.sprite = _DATA.GetUnit(_creatureID).icon;
+
+        UnitStats us = _SAVE.GetUnitStats(_creatureID.ToString());
+        if (us == null)
+        {
+            NoStats(_stats);
+            return;
+        }
+
+        FillUnitStat(us, HumanID.Logger, _stats, 0);
+        FillUnitStat(us, HumanID.Lumberjack, _stats, 1);
+        FillUnitStat(us, HumanID.LogCutter, _stats, 2);
+        FillUnitStat(us, HumanID.Hunter, _stats, 3);
+        FillUnitStat(us, HumanID.Wathe, _stats, 4);
+        FillUnitStat(us, HumanID.Bjornjeger, _stats, 5);
+        FillUnitStat(us, HumanID.Dreng, _stats, 6);
+        FillUnitStat(us, HumanID.Bezerker, _stats, 7);
+        FillUnitStat(us, HumanID.Knight, _stats, 8);
+        FillUnitStat(us, HumanID.Dog, _stats, 9);
+        FillUnitStat(us, HumanID.Spy, _stats, 10);
+        FillUnitStat(us, HumanID.Lord, _stats, 11);
+    }
+
+    private void FillUnitStat(UnitStats _us, HumanID _id, UnitKillStats _uks, int _position)
+    {
+        //int 
+        //Kills
+        KillStat kills = _us.iHaveKilled.Find(x => x.killedID == _id.ToString());
+        int killAmount = kills == null ? 0 : kills.amount;
+        _uks.kills[_position].text = killAmount.ToString();
+
+        //Deaths
+        KillStat deaths = _us.killedBy.Find(x => x.killedID == _id.ToString());
+        int deathAmount = deaths == null ? 0 : deaths.amount;
+        _uks.deaths[_position].text = deathAmount.ToString();
+
+        //Ratio
+        double winLossPercentage = MathX.CalculateWinLossRatio(killAmount, deathAmount);
+        _uks.ratio[_position].text = winLossPercentage.ToString()+"%";
+
+        //if (winLossPercentage > 1) _uks.ratio[_position].color = _COLOUR.upgradeIncreaseColor;
+        //else if (winLossPercentage < 1) _uks.ratio[_position].color = _COLOUR.upgradeDecreaseColor;
+        //else
+        //    _uks.ratio[_position].color = Color.white;
+
+        //Total Kills
+        int totalKillAmount = 0;
+        for (int i = 0; i < _uks.kills.Count; i++)
+        {
+            int totalValue;
+            int.TryParse(_uks.kills[i].text, out totalValue);
+            totalKillAmount += totalValue;
+        }
+        _uks.totalKillsText.text = totalKillAmount.ToString();
+
+        //Total Deaths
+        int totalDeathAmount = 0;
+        for (int i = 0; i < _uks.deaths.Count; i++)
+        {
+            int totalValue;
+            int.TryParse(_uks.deaths[i].text, out totalValue);
+            totalDeathAmount += totalValue;
+        }
+        _uks.totalDeathsText.text = totalDeathAmount.ToString();
+
+        double totalWinLossPercentage = MathX.CalculateWinLossRatio(totalKillAmount, totalDeathAmount);
+        _uks.totalRatioText.text = totalWinLossPercentage.ToString() + "%";
+        //_uks.totalRatioText.color = winLossPercentage > 1 ? _COLOUR.upgradeIncreaseColor : winLossPercentage < 0 ? _COLOUR.upgradeDecreaseColor : Color.white;
+    }
+
+    private void NoStats(UnitKillStats _stats)
+    {
+        for(int i=0; i < _stats.kills.Count; i++)
+        {
+            _stats.kills[i].text = "0";
+            _stats.deaths[i].text = "0";
+            _stats.ratio[i].text = "0.0%";
+        }
+        _stats.totalKillsText.text = "0";
+        _stats.totalDeathsText.text = "0";
+        _stats.totalRatioText.text = "0.0%";
+    }
+}
+
+[System.Serializable]
+public class UnitKillStats
+{
+    public TMP_Text unitNameText;
+    public Image unitIcon;
+    public List<TMP_Text> kills;
+    public List<TMP_Text> deaths;
+    public List<TMP_Text> ratio;
+    public TMP_Text totalKillsText;
+    public TMP_Text totalDeathsText;
+    public TMP_Text totalRatioText;
 }
 
 

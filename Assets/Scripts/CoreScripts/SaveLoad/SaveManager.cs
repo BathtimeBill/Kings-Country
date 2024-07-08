@@ -125,8 +125,8 @@ public class SaveDataObject : BGG.GameDataBase
             return perks[_perkID];
         return null;
     }
-    public UnitStats GetUnitStats(string _unitID) => unitStats.Find(x => x.unitID == _unitID);
-    public void AddUnitStats(UnitStats _unitStats) => unitStats.Add(_unitStats);
+    //public UnitStats GetUnitStats(string _unitID) => unitStats.Find(x => x.unitID == _unitID);
+    //public void AddUnitStats(UnitStats _unitStats) => unitStats.Add(_unitStats);
 }
 
 //
@@ -398,9 +398,12 @@ public class SaveManager : BGG.GameData
     #endregion
 
     #region Unit Stats
+    public UnitStats GetUnitStats(string _unitID) => save.unitStats.Find(x => x.unitID == _unitID);
+
+    public void AddUnitStats(UnitStats _unitStats) => save.unitStats.Add(_unitStats);
     public int GetKillCount(string _unitID, string _killedID)
     {
-        UnitStats stat = save.GetUnitStats(_unitID);
+        UnitStats stat = GetUnitStats(_unitID);
         if (stat == null) return 0;
         int killAmount = stat.iHaveKilled.Find(x=>x.killedID == _killedID).amount;
         return killAmount;
@@ -408,13 +411,13 @@ public class SaveManager : BGG.GameData
 
     public void OnUnitKilled(string _creature, string _killer)
     {
-        UnitStats stat = save.GetUnitStats(_creature);
+        UnitStats stat = GetUnitStats(_creature);
         if (stat == null)
         {
             stat = new UnitStats();
             stat.unitID = _creature;
             stat.killedBy = new List<KillStat>();
-            save.AddUnitStats(stat);
+            AddUnitStats(stat);
         }
         List<KillStat> killStats = stat.killedBy;
         KillStat ks = killStats.Find(x=> x.killedID==_killer);
@@ -432,13 +435,13 @@ public class SaveManager : BGG.GameData
 
     public void OnEnemyUnitKilled(Enemy _enemy, string _creature)
     {
-        UnitStats stat = save.GetUnitStats(_creature);
+        UnitStats stat = GetUnitStats(_creature);
         if (stat == null)
         {
             stat = new UnitStats();
             stat.unitID = _creature;
             stat.iHaveKilled = new List<KillStat>();
-            save.AddUnitStats(stat);
+            AddUnitStats(stat);
         }
         List<KillStat> killStats = stat.iHaveKilled;
         KillStat ks = killStats.Find(x => x.killedID == _enemy.unitID.ToString());
