@@ -411,6 +411,7 @@ public class SaveManager : BGG.GameData
 
     public void OnUnitKilled(string _creature, string _killer)
     {
+        print(_creature + " was killed by " + _killer);
         UnitStats stat = GetUnitStats(_creature);
         if (stat == null)
         {

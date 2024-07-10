@@ -13,7 +13,7 @@ using UnityEngine;
 
 [DisallowMultipleComponent]
 
-public class Outline : MonoBehaviour {
+public class Outline : GameBehaviour {
   private static HashSet<Mesh> registeredMeshes = new HashSet<Mesh>();
 
   public enum Mode {
@@ -79,6 +79,7 @@ public class Outline : MonoBehaviour {
   private Material outlineFillMaterial;
 
   private bool needsUpdate;
+  public ObjectID myID;
 
   void Awake() {
 
@@ -99,7 +100,12 @@ public class Outline : MonoBehaviour {
     needsUpdate = true;
   }
 
-  void OnEnable() {
+    private void Start()
+    {
+        outlineColor = _COLOUR.GetColour(myID);
+    }
+
+    void OnEnable() {
     foreach (var renderer in renderers) {
 
       // Append outline shaders

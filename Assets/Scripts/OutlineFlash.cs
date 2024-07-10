@@ -13,12 +13,12 @@ public class OutlineFlash : GameBehaviour
     private void Awake()
     {
         outline = GetComponentInChildren<Outline>();
-        originalColour = outline.OutlineColor;
         isInvincible = true;
         timerLength = 5;
     }
     private void Start()
     {
+        originalColour = outline.OutlineColor;
         StartCoroutine(WaitToTurnOffInvincible());
         StartCoroutine(OutlineFlashColour());
     }
