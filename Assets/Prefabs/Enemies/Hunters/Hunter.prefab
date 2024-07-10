@@ -501,25 +501,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitID: 4
+  health: 0
+  maxHealth: 0
+  damage: 0
+  speed: 0
+  maxRandomDropChance: 5
+  agent: {fileID: 0}
+  animator: {fileID: 3562527007140417029}
   invincible: 1
   type: 1
   seconds: 0.5
-  health: 0
-  maxHealth: 0
   state: 0
   hasArrivedAtBeacon: 0
   fyreBeacon: {fileID: 0}
-  deadHunterFire: {fileID: 6651862902898196266, guid: 123165840eaf97f4185ec3ec4e812aeb,
-    type: 3}
-  deathObject: {fileID: 6651862902898196266, guid: 8087190c9270c2c4394793fe6c3b31c4,
-    type: 3}
-  bloodParticle1: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}
   stoppingDistance: 0
-  maegenPickup: {fileID: 1244892433919609755, guid: f6c8136a3fd58064198b300f4c94f5a3,
-    type: 3}
-  maxRandomDropChance: 5
-  speed: 0
-  animator: {fileID: 3562527007140417029}
   wildlife: []
   closestWildlife: {fileID: 0}
   distanceFromClosestWildlife: 0
@@ -1112,6 +1107,7 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+  myID: 0
 --- !u!4 &6177749405173620496 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3321919801592875672, guid: d87eabf9e2235f540ab415975cd9ce2f,
@@ -1371,6 +1367,7 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+  myID: 70
 --- !u!4 &5226947891543997967 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7b389b99c99a343419a527d0ccca2df3,
