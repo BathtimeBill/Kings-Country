@@ -66,10 +66,6 @@ public class Warrior : Enemy
         {
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
         }
-        else
-        {
-            OnGameOver();
-        }
         distanceFromClosestHorgr = Vector3.Distance(horgr.transform.position, transform.position);
 
 

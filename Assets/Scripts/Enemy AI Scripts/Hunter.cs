@@ -85,13 +85,6 @@ public class Hunter : Enemy
         }
 
 
-        if (wildlife.Length == 0 && UnitSelection.Instance.unitList.Count == 0)
-        {
-            StopCoroutine(Tick());
-            state = EnemyState.Cheer;
-            animator.SetTrigger("Cheer" + RandomCheerAnim());
-            agent.SetDestination(transform.position);
-        }
         //if (wildlife.Length > 0 || UnitSelection.Instance.unitList.Count > 0)
         //{
 
@@ -365,7 +358,10 @@ public class Hunter : Enemy
 
     private void OnGameOver()
     {
+        StopCoroutine(Tick());
         state = EnemyState.Cheer;
+        animator.SetTrigger("Cheer" + RandomCheerAnim());
+        agent.SetDestination(transform.position);
     }
 
     private void OnEnable()

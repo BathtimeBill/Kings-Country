@@ -72,10 +72,6 @@ public class Logger : Enemy
 
         if (UnitSelection.Instance.unitList.Count == 0)
         {
-            if(_GM.trees.Count == 0)
-            {
-                OnGameOver();
-            }
             state = EnemyState.Work;
         }
 
@@ -363,5 +359,14 @@ public class Logger : Enemy
         state = EnemyState.Cheer;
         animator.SetTrigger("Cheer" + RandomCheerAnim());
         agent.SetDestination(transform.position);
+    }
+    private void OnEnable()
+    {
+        GameEvents.OnGameOver += OnGameOver;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnGameOver -= OnGameOver;
     }
 }

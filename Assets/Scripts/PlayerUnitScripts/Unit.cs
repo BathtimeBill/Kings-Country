@@ -548,7 +548,7 @@ public class Unit : GameBehaviour
     }
     void SpawnInMove()
     {
-        Vector3 randomDirection = Random.insideUnitSphere * spawnInMoveDistance;
+        Vector3 randomDirection = transform.position + Random.insideUnitSphere * spawnInMoveDistance;
         NavMeshHit hit;
         NavMesh.SamplePosition(randomDirection, out hit, spawnInMoveDistance, 1);
         Vector3 finalPosition = hit.position;
