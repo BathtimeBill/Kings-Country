@@ -32,7 +32,7 @@ public class UpgradeManager : Singleton<UpgradeManager>
 
     private void Start()
     {
-        //ChangeCategory(UpgradeCategoryID.Tree);
+        ChangeCategory(UpgradeCategoryID.HomeTree);
     }
 
     public void ChangeCategory(UpgradeCategoryID _category)
@@ -41,6 +41,12 @@ public class UpgradeManager : Singleton<UpgradeManager>
         TurnOffCategories();
         ShowParticles();
         upgradeCategories[(int)_category].SetActive(true);
+
+        UpgradeSlot ugs = upgradeSlots.Find(x => x.upgradeCategory == _category);
+        if (ugs == null) 
+            return;
+
+        ChangeUpgrade(ugs.upgradeSlots[0].GetComponent<UpgradeObject>());
     }
 
     public void ChangeUpgrade(UpgradeObject _upgradeObject)

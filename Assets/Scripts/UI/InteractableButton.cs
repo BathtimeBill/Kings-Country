@@ -38,6 +38,13 @@ public class InteractableButton : GameBehaviour, IPointerEnterHandler, IPointerE
     public virtual void OnPointerUp(PointerEventData eventData) {}
     public virtual void SetupButton(){}
 
+    public virtual void ChangeHighlightColor(Color _c)
+    {
+        var colors = button.colors;
+        colors.highlightedColor = _c;
+        button.colors = colors;
+    }
+
     #region Editor
 #if UNITY_EDITOR
     [CustomEditor(typeof(InteractableButton))]

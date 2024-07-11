@@ -25,6 +25,7 @@ public class TitleManager : GameBehaviour
     [Header("Managers")]
     public OverWorldManager overworldManager;
     public SceneManager sceneManager;
+    public ProgressManager progressManager;
 
     private void Start()
     {
@@ -81,7 +82,7 @@ public class TitleManager : GameBehaviour
         TurnOffCameras();
         settingsCamera.SetActive(true);
 
-        FadeX.FadeOut(progressCanvas, _DATA.settings.tweening.titlePanelTweenTime);
+        FadeX.FadeIn(progressCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOut(homeCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOut(unitCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOut(mapCanvas, _DATA.settings.tweening.titlePanelTweenTime);
@@ -94,7 +95,7 @@ public class TitleManager : GameBehaviour
         TurnOffCameras();
         statsCamera.SetActive(true);
 
-        FadeX.FadeOut(progressCanvas, _DATA.settings.tweening.titlePanelTweenTime);
+        FadeX.FadeIn(progressCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOut(homeCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOut(unitCanvas, _DATA.settings.tweening.titlePanelTweenTime);
         FadeX.FadeOut(mapCanvas, _DATA.settings.tweening.titlePanelTweenTime);
@@ -174,7 +175,7 @@ public class TitleManager : GameBehaviour
                 titleManager.TurnOffCameras();
                 titleManager.TurnOffPanels();
                 FadeX.InstantOpaque(titleManager.settingsCanvas);
-                FadeX.InstantTransparent(titleManager.progressCanvas);
+                FadeX.InstantOpaque(titleManager.progressCanvas);
                 titleManager.ShowSettings();
                 EditorUtility.SetDirty(titleManager);
             }

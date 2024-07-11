@@ -68,6 +68,14 @@ public class PlayerSettings
 }
 
 [Serializable]
+public class PlayerStats
+{
+    public int currentMaegen;
+    public int totalMaegen;
+    public int daysPlayed;
+}
+
+[Serializable]
 public class PlayTimeObject
 {
     public int hoursPlayed = 0;
@@ -95,7 +103,8 @@ public class SaveDataObject : BGG.GameDataBase
 {
     // Player info
     public PlayerSettings playerSettings = new PlayerSettings();
-    public int maegen;
+    //Player Stats
+    public PlayerStats playerStats = new PlayerStats();
     // Level data
     public Dictionary<LevelID, LevelSaveObject> levels = new Dictionary<LevelID, LevelSaveObject>();
     public int levelsPlayed = 0;
@@ -125,8 +134,6 @@ public class SaveDataObject : BGG.GameDataBase
             return perks[_perkID];
         return null;
     }
-    //public UnitStats GetUnitStats(string _unitID) => unitStats.Find(x => x.unitID == _unitID);
-    //public void AddUnitStats(UnitStats _unitStats) => unitStats.Add(_unitStats);
 }
 
 //
@@ -204,6 +211,9 @@ public class SaveManager : BGG.GameData
         save.playerSettings.miniMapIcons = true;
         save.playerSettings.miniMapRotation = true;
         save.playerSettings.panelColour = PanelColourID.Black;
+
+        save.playerStats = new PlayerStats();
+
         save.playTime = new PlayTimeObject();
 
         save.glossary = new GlossaryObject();
@@ -232,17 +242,24 @@ public class SaveManager : BGG.GameData
     //Maegen
     public void SetMaegen(int _maegen)
     {
-        save.maegen = _maegen;
+        save.playerStats.currentMaegen = _maegen;
     }
     public void IncrementMaegen(int _maegen)
     {
-        save.maegen += _maegen;
+        save.playerStats.currentMaegen += _maegen;
+        save.playerStats.totalMaegen += _maegen;
+    }
+    public void DecrementMaegen(int _amount)
+    {
+        save.playerStats.currentMaegen -= _amount;
+        SaveData();
     }
 
-    public int GetMaegen()
-    {
-        return save.maegen;
-    }
+    public int GetCurrentMaegen => save.playerStats.currentMaegen;
+    public int GetTotalMaegen => save.playerStats.totalMaegen;
+
+    //Days
+    public int GetTotalDays => save.playerStats.daysPlayed;
 
     
     //Audio
@@ -372,6 +389,11 @@ public class SaveManager : BGG.GameData
         foreach (LevelID levelID in Enum.GetValues(typeof(LevelID)))
         {
             LevelSaveObject lso = save.GetLevelSaveData(levelID);
+            if(lso == null)
+            {
+                lso = new LevelSaveObject();
+                lso.levelID = levelID;
+            }
             count += lso.completed ? 1 : 0;
         }
         return count;
@@ -528,10 +550,7 @@ public class SaveManager : BGG.GameData
     }*/
     #endregion
 
-
-    //
-    // Events
-    //
+    #region Events
     private void OnLevelWin(LevelID _levelID, int _score, int _maegen)
     {
         IncrementMaegen(_maegen);
@@ -539,9 +558,16 @@ public class SaveManager : BGG.GameData
         SaveTimePlayed();
         SaveData();
     }
+
+    private void OnDayOver()
+    {
+        save.playerStats.daysPlayed += 1;
+        SaveData();
+    }
     private void OnEnable()
     {
         GameEvents.OnLevelWin += OnLevelWin;
+        GameEvents.OnDayOver += OnDayOver;
         GameEvents.OnUnitOutlines += SetUnitOutline;
         GameEvents.OnUnitHealthBars += SetUnitHealthBars;
         GameEvents.OnMiniMapShow += SetMiniMapShow;
@@ -552,10 +578,12 @@ public class SaveManager : BGG.GameData
         GameEvents.OnEnemyUnitKilled += OnEnemyUnitKilled;
     }
 
+    
 
     private void OnDisable()
     {
         GameEvents.OnLevelWin -= OnLevelWin;
+        GameEvents.OnDayOver -= OnDayOver;
         GameEvents.OnUnitOutlines -= SetUnitOutline;
         GameEvents.OnUnitHealthBars -= SetUnitHealthBars;
         GameEvents.OnMiniMapShow -= SetMiniMapShow;
@@ -565,6 +593,8 @@ public class SaveManager : BGG.GameData
         GameEvents.OnUnitKilled -= OnUnitKilled;
         GameEvents.OnEnemyUnitKilled += OnEnemyUnitKilled;
     }
+
+    #endregion
 
     #region Editor
 #if UNITY_EDITOR

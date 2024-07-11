@@ -6,6 +6,7 @@ using UnityEditor;
 
 public class UpgradePanel : GameBehaviour
 {
+    public TitleManager titleManager;
     [Header("Core")]
     public Image icon;
     public Image mapIcon;
@@ -76,6 +77,9 @@ public class UpgradePanel : GameBehaviour
     private ToolData activeTool;
     public ToolID ActiveTool => activeTool.id;
 
+    private WildlifeData activeWildlife;
+    public WildlifeID ActiveWildlife => activeWildlife.id;
+
     private int currentStat1 = 0;
     private int currentStat2 = 0;
     private int currentStat3 = 0;
@@ -95,6 +99,8 @@ public class UpgradePanel : GameBehaviour
     Vector3 worldScale = new Vector3(0.013f, 0.013f, 0.013f);
     Vector3 worldRotation = new Vector3(90, 0, 0);
     bool worldCanvas = false;
+
+    public int upgradeCost = 100;
 
 
     private void Awake()
@@ -150,6 +156,8 @@ public class UpgradePanel : GameBehaviour
         stat3Icon.sprite = _ICONS.healthIcon;
         stat4Icon.sprite = _ICONS.speedIcon;
 
+        //TODO Setup values for each upgrade upgradeCost = activeUnit.upgradeLevel;
+
         SetStatValues();
     }
 
@@ -170,12 +178,31 @@ public class UpgradePanel : GameBehaviour
         stat3Icon.sprite = _ICONS.cooldownIcon;
         stat4Icon.sprite = _ICONS.emptyIcon;
 
+        //TODO Setup values for each upgrade upgradeCost = activeTool.upgradeLevel;
+
         SetStatValues();
     }
 
     public void ChangeUpgrade(WildlifeID _wildlifeID)
     {
+        activeWildlife = _DATA.GetWildlife(_wildlifeID);
+        icon.sprite = activeWildlife.icon;
+        mapIcon.sprite = _ICONS.emptyIcon;
+        nameText.text = activeWildlife.name;
+        descriptionText.text = activeWildlife.description;
+        currentStat1 = 0;// activeTool.maegenPrice;
+        currentStat2 = 0;// activeTool.wildlifePrice;
+        currentStat3 = 5;// activeTool.cooldownTime;
+        currentStat4 = 0;
 
+        stat1Icon.sprite = _ICONS.maegenIcon;
+        stat2Icon.sprite = _ICONS.wildlifeIcon;
+        stat3Icon.sprite = _ICONS.cooldownIcon;
+        stat4Icon.sprite = _ICONS.emptyIcon;
+
+        //TODO Setup values for each upgrade upgradeCost = activeTool.upgradeLevel;
+
+        SetStatValues();
     }
 
     public void SetStatValues()
@@ -208,6 +235,8 @@ public class UpgradePanel : GameBehaviour
         maegenTotalChangeValue.text = "";
 
         level2Anim.SetTrigger("Reset");
+
+        titleManager.progressManager.ResetMaegenChange();
     }
 
     public void ShowStatsUpgrade()
@@ -236,7 +265,7 @@ public class UpgradePanel : GameBehaviour
         int damageTotalUpgrade = damageTotal + damageUpgradePercentage;
         int healthTotalUpgrade = healthTotal + healthUpgradePercentage;
         int speedTotalUpgrade = speedTotal + speedUpgradePercentage;
-        int maegenTotalUpgrade = maegenTotal + speedUpgradePercentage;
+        int maegenTotalUpgrade = maegenTotal + maegenUpgradePercentage;
 
         CheckStatColours(damageTotalChangeValue, damageTotal, damageTotalUpgrade, damageTotalIcon, damageTotalAnim);
         CheckStatColours(healthTotalChangeValue, healthTotal, healthTotalUpgrade, healthTotalIcon, healthTotalAnim);
@@ -246,6 +275,8 @@ public class UpgradePanel : GameBehaviour
         //Level Stars
         //TODO actually hook into level values
         level2Anim.SetTrigger("Pulse");
+
+        titleManager.progressManager.MaegenChange(upgradeCost);
     }
 
     private void CheckStatColours(TMP_Text _text, int _current, int _change, Image _icon, Animator _anim, bool _isMaegen = false)
