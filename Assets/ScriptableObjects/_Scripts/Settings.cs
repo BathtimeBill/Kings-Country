@@ -376,6 +376,8 @@ public class Icons
     public Sprite mouseRotate;
     public Sprite mouseLeftClick;
     public Sprite mouseRightClick;
+    public Sprite keyboardMoveIcon;
+    public Sprite keyboardShiftIcon;
 
     public string GetTMPIcon(Sprite _icon) => $"<sprite name={_icon.name}>";
 

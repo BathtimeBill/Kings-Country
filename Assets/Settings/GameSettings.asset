@@ -16,7 +16,7 @@ MonoBehaviour:
   testing:
     allGlossaryUnlocked: 1
     overrideTutorial: 1
-    showTutorial: 0
+    showTutorial: 1
   cameraShake:
     shakeDuration: 1.5
     shakeVibrato: 10
@@ -50,13 +50,13 @@ MonoBehaviour:
   colours:
     objectColor:
     - id: 0
-      color: {r: 0.9960785, g: 0.90196085, b: 0.37254903, a: 1}
+      color: {r: 1, g: 0.90196085, b: 0, a: 1}
     - id: 1
-      color: {r: 0.9960785, g: 0.90196085, b: 0.37254903, a: 1}
+      color: {r: 1, g: 0.90196085, b: 0, a: 1}
     - id: 2
-      color: {r: 0.9960785, g: 0.90196085, b: 0.37254903, a: 1}
+      color: {r: 1, g: 0.90196085, b: 0, a: 1}
     - id: 3
-      color: {r: 0.9960785, g: 0.90196085, b: 0.37254903, a: 1}
+      color: {r: 1, g: 0.90196085, b: 0, a: 1}
     - id: 4
       color: {r: 0.46257564, g: 0.8302193, b: 0.9339623, a: 1}
     - id: 5
@@ -206,10 +206,14 @@ MonoBehaviour:
     healthIcon: {fileID: 563654076, guid: 932a504f2cacdae4b98f9944f39959b2, type: 3}
     speedIcon: {fileID: -1217322714, guid: 932a504f2cacdae4b98f9944f39959b2, type: 3}
     cooldownIcon: {fileID: 21300000, guid: f5d1393a7ccd3f345b1edb7a3da51d6e, type: 3}
-    mouseZoom: {fileID: -980281384, guid: 932a504f2cacdae4b98f9944f39959b2, type: 3}
-    mouseRotate: {fileID: -943711029, guid: 932a504f2cacdae4b98f9944f39959b2, type: 3}
-    mouseLeftClick: {fileID: 2114024143, guid: 932a504f2cacdae4b98f9944f39959b2, type: 3}
-    mouseRightClick: {fileID: -955317017, guid: 932a504f2cacdae4b98f9944f39959b2,
+    mouseZoom: {fileID: -980281384, guid: f85c776db8f38bd41bf404e0cbab4ae0, type: 3}
+    mouseRotate: {fileID: -943711029, guid: f85c776db8f38bd41bf404e0cbab4ae0, type: 3}
+    mouseLeftClick: {fileID: 2114024143, guid: f85c776db8f38bd41bf404e0cbab4ae0, type: 3}
+    mouseRightClick: {fileID: -955317017, guid: f85c776db8f38bd41bf404e0cbab4ae0,
+      type: 3}
+    keyboardMoveIcon: {fileID: 1690605036, guid: f85c776db8f38bd41bf404e0cbab4ae0,
+      type: 3}
+    keyboardShiftIcon: {fileID: -237552176, guid: f85c776db8f38bd41bf404e0cbab4ae0,
       type: 3}
   audio:
     soundVolume: 1

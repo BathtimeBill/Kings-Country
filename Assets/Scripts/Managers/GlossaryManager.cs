@@ -53,8 +53,8 @@ public class GlossaryManager : GameBehaviour
             case GlossaryID.CameraControls:
                 _glossaryItem.title = "Camera Controls";
                 _glossaryItem.description =
-                    "To move the camera, use the <b>‘W,A,S,D’</b> keys or move the mouse cursor to the edge of the screen.<br>" +
-                    "Hold <b>Left Shift</b> to hasten camera movement.<br><br>" +
+                    $"{_ICONS.GetTMPIcon(_ICONS.keyboardMoveIcon)}or move the mouse cursor to the edge of the screen to MOVE the camera.<br><br>" +
+                    $"Hold {_ICONS.GetTMPIcon(_ICONS.keyboardShiftIcon)} to hasten camera movement.<br><br>" +
                     $"{_ICONS.GetTMPIcon(_ICONS.mouseRotate)} to ROTATE the camera.<br><br>" +
                     $"{_ICONS.GetTMPIcon(_ICONS.mouseZoom)} to ZOOM the camera.";
                 break;

@@ -188,7 +188,9 @@ public class TutorialManager : GameBehaviour
         {
             case TutorialID.CameraMove:
                 _tutorial.title = "Camera Controls";
-                _tutorial.description = "To MOVE the camera, use the ‘W,A,S,D’ keys or move the mouse cursor to the edge of the screen.\r\n<br>Hold shift to hasten camera movement.";
+                _tutorial.description = 
+                    $"{_ICONS.GetTMPIcon(_ICONS.keyboardMoveIcon)}or move the mouse cursor to the edge of the screen to MOVE the camera.<br><br>" +
+                    $"Hold {_ICONS.GetTMPIcon(_ICONS.keyboardShiftIcon)} to hasten camera movement.";
                 _tutorial.taskLine = moveCameraTask;
                 _tutorial.unlockedGlossaryID = GlossaryID.CameraControls;
                 break;
@@ -235,7 +237,7 @@ public class TutorialManager : GameBehaviour
                 _tutorial.description =
                     $"To grow a {GetName(ObjectID.Tree)}, click on the {GetName(ObjectID.Tree)} tool then {_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} on an available space in our {GetName(ObjectID.Grove)}.<br>" +
                     $"To deselect the {GetName(ObjectID.Tree)} tool, {_ICONS.GetTMPIcon(_ICONS.mouseRightClick)}.<br>" +
-                    $"The higher the %, the better your {GetName(ObjectID.Maegen)} yield.<br>" +
+                    $"The higher the %, the better your {GetName(ObjectID.Maegen)} yield. " +
                     $"You can only plant trees during {GetName(ObjectID.Night)}";
                 _tutorial.taskLine = treesTask;
                 _tutorial.showObjects.Add(gamePanels.treePanel.gameObject);

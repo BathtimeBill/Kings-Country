@@ -201,8 +201,8 @@ public class CameraController : Singleton<CameraController>
         newRotation = startRot;
         newPosition = startPos;
         newZoom = startZoom;
-        transform.DOLocalMove(startPos, resetTime).SetEase(Ease.OutBack);
-        cameraTransform.DOLocalMove(startZoom, resetTime).SetEase(Ease.OutBack);
+        transform.DOLocalMove(startPos, resetTime).SetEase(Ease.OutSine);
+        cameraTransform.DOLocalMove(startZoom, resetTime).SetEase(Ease.OutSine);
         transform.DOLocalRotateQuaternion(startRot, resetTime).SetEase(Ease.OutSine);
         //ExecuteAfterSeconds(resetTime + 0.1f, () => lockCamera = false);
     }
