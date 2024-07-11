@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
 using Unity.VisualScripting;
+using UnityEngine.Analytics;
 
 public class Warrior : Enemy
 {
@@ -64,6 +65,10 @@ public class Warrior : Enemy
         if (UnitSelection.Instance.unitList.Count != 0)
         {
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
+        }
+        else
+        {
+            OnGameOver();
         }
         distanceFromClosestHorgr = Vector3.Distance(horgr.transform.position, transform.position);
 
@@ -142,6 +147,10 @@ public class Warrior : Enemy
 
                     }
                 }
+                break;
+            case EnemyState.Cheer:
+                agent.SetDestination(transform.position);
+
                 break;
         }
         if (agent.velocity != Vector3.zero || distanceFromClosestUnit >= 10)
@@ -330,13 +339,22 @@ public class Warrior : Enemy
     {
         state = EnemyState.Attack;
     }
+    private void OnGameOver()
+    {
+        state = EnemyState.Cheer;
+        StopCoroutine(Tick());
+        animator.SetTrigger("Cheer" + RandomCheerAnim());
+        agent.SetDestination(transform.position);
+    }
     private void OnEnable()
     {
         GameEvents.OnUnitArrivedAtHorgr += OnArrivedAtHorgr;
+        GameEvents.OnGameOver += OnGameOver;
     }
 
     private void OnDisable()
     {
         GameEvents.OnUnitArrivedAtHorgr -= OnArrivedAtHorgr;
+        GameEvents.OnGameOver -= OnGameOver;
     }
 }

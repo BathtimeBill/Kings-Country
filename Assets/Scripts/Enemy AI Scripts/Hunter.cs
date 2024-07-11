@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class Hunter : Enemy
 {
@@ -84,16 +85,18 @@ public class Hunter : Enemy
         }
 
 
-        if (wildlife.Length == 0 || UnitSelection.Instance.unitList.Count == 0)
+        if (wildlife.Length == 0 && UnitSelection.Instance.unitList.Count == 0)
         {
-
-            animator.SetBool("allWildlifeDead", true);
+            StopCoroutine(Tick());
+            state = EnemyState.Cheer;
+            animator.SetTrigger("Cheer" + RandomCheerAnim());
+            agent.SetDestination(transform.position);
         }
-        if (wildlife.Length > 0 || UnitSelection.Instance.unitList.Count > 0)
-        {
+        //if (wildlife.Length > 0 || UnitSelection.Instance.unitList.Count > 0)
+        //{
 
-            animator.SetBool("allWildlifeDead", false);
-        }
+        //    animator.SetBool("allWildlifeDead", false);
+        //}
         if (distanceFromClosestUnit < range && UnitSelection.Instance.unitList.Count != 0)
         {
             state = EnemyState.Attack;
@@ -148,6 +151,10 @@ public class Hunter : Enemy
 
                     }
                 }
+                break;
+            case EnemyState.Cheer:
+                agent.SetDestination(transform.position);
+
                 break;
         }
 
@@ -356,13 +363,20 @@ public class Hunter : Enemy
         state = EnemyState.Attack;
     }
 
+    private void OnGameOver()
+    {
+        state = EnemyState.Cheer;
+    }
+
     private void OnEnable()
     {
         GameEvents.OnUnitArrivedAtHut += OnArrivedAtHut;
+        GameEvents.OnGameOver += OnGameOver;
     }
 
     private void OnDisable()
     {
         GameEvents.OnUnitArrivedAtHut -= OnArrivedAtHut;
+        GameEvents.OnGameOver -= OnGameOver;
     }
 }

@@ -149,6 +149,7 @@ public enum EnemyState
     Flee,
     Beacon,
     Horgr,
+    Cheer,
 }
 public enum UnitState
 {

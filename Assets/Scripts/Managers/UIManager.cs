@@ -330,7 +330,6 @@ public class UIManager : Singleton<UIManager>
         audioSource.clip = _SM.gameOverSound;
         audioSource.Play();
         gameOverPanel.SetActive(true);
-        Time.timeScale = 4;
         deathCameraRotator.SetActive(true);
         //_GM.gameState = GameState.Pause;
     }    

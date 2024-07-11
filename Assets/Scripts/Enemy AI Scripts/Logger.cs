@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.Analytics;
 
 public class Logger : Enemy
 {
@@ -71,6 +72,10 @@ public class Logger : Enemy
 
         if (UnitSelection.Instance.unitList.Count == 0)
         {
+            if(_GM.trees.Count == 0)
+            {
+                OnGameOver();
+            }
             state = EnemyState.Work;
         }
 
@@ -106,12 +111,21 @@ public class Logger : Enemy
                 break;
 
             case EnemyState.Attack:
-                if (distanceFromClosestUnit >= 30)
+                if(UnitSelection.Instance.unitList.Count != 0)
                 {
-                    state = EnemyState.Work;
+                    if (distanceFromClosestUnit >= 30)
+                    {
+                        state = EnemyState.Work;
+                    }
+                    FindUnit();
+                    SmoothFocusOnEnemy();
                 }
-                FindUnit();
-                SmoothFocusOnEnemy();
+                else
+                {
+                    agent.SetDestination(transform.position);
+                    state = EnemyState.Cheer;
+                }
+
                 if (closestUnit.tag == "LeshyUnit")
                 {
                     if (woodcutterType != WoodcutterType.LogCutter)
@@ -128,6 +142,10 @@ public class Logger : Enemy
                     agent.SetDestination(fyreBeacon.transform.position);
                 else
                     agent.SetDestination(transform.position);
+
+                break;
+            case EnemyState.Cheer:
+                agent.SetDestination(transform.position);
 
                 break;
         }
@@ -328,15 +346,22 @@ public class Logger : Enemy
     }
     public void FindUnit()
     {
-        if(UnitSelection.Instance.unitList.Count == 0)
+        if(UnitSelection.Instance.unitList.Count == 0 && _GM.trees.Count > 0)
         {
             state = EnemyState.Work;
         }
-        agent.SetDestination(closestUnit.transform.position);
+
     }
     public void FindHomeTree()
     {
         print("Finding Home Tree");
         agent.SetDestination(homeTree.transform.position);
+    }
+    private void OnGameOver()
+    {
+        StopCoroutine(Tick());
+        state = EnemyState.Cheer;
+        animator.SetTrigger("Cheer" + RandomCheerAnim());
+        agent.SetDestination(transform.position);
     }
 }
