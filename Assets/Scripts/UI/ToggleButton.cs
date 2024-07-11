@@ -28,6 +28,25 @@ public class ToggleButton : GameBehaviour
 
         image.color = _SETTINGS.colours.titleColor;
         togglePanel.ShowPanel(this.baseID);
+
+        if (baseID == BuildingID.HomeTree)
+        {
+            GameEvents.ReportOnHomeTreeSelected();
+            GameEvents.ReportOnHutDeselected();
+            GameEvents.ReportOnHorgrDeselected();
+        }
+        if (baseID == BuildingID.Hut)
+        {
+            GameEvents.ReportOnHomeTreeDeselected();
+            GameEvents.ReportOnHutSelected();
+            GameEvents.ReportOnHorgrDeselected();
+        }
+        if (baseID == BuildingID.Hogyr)
+        {
+            GameEvents.ReportOnHomeTreeDeselected();
+            GameEvents.ReportOnHutDeselected();
+            GameEvents.ReportOnHorgrSelected();
+        }
     }
 
     public void SetInteractable(bool _interactable)

@@ -30,8 +30,9 @@ public class UnitPanel : GameBehaviour
         homeTreeButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(BuildingID.HomeTree));
         hutButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(BuildingID.Hut));
         horgrButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(BuildingID.Hogyr));
+        homeTreeButton.GetComponent<UnityEngine.UI.Toggle>().isOn = true;
         //TODO hacky workaround. Revisit 
-        ExecuteAfterFrames(2, ()=>
+        ExecuteAfterFrames(1, ()=>
         {
             ShowUnitPanel(false);
         });
