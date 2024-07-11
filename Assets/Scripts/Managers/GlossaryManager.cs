@@ -25,7 +25,7 @@ public class GlossaryManager : GameBehaviour
     public List<GlossaryID> unlockedItems;
 
     public GlossaryItem GetGlossaryItem(GlossaryID _id) => glossaryItems.Find(x=>x.glossaryID == _id);
-    private bool glossaryAvailable(GlossaryID _id) => GetGlossaryItem(_id).available;
+    private bool glossaryAvailable(GlossaryID _id) => unlockedItems.Contains(_id);
 
     private void Start()
     {
@@ -158,7 +158,6 @@ public class GlossaryManager : GameBehaviour
         glossaryTitleText.text = gi.title;
         glossaryDescriptionText.text = gi.description;
         lastSelectedGlossayID = _glossaryID;
-        gi.available = true;
     }
 
     public void OpenGlossaryPanel()
@@ -195,6 +194,8 @@ public class GlossaryManager : GameBehaviour
 
     public void UnlockGlossaryItem(GlossaryID _id)
     {
+        unlockedItems = _SAVE.GetGlossaryItemsUnlocked;
+
         if (unlockedItems.Contains(_id))
             return;
 
@@ -208,17 +209,11 @@ public class GlossaryManager : GameBehaviour
     #region Events
     public void OnDayBegin()
     {
-        if (glossaryAvailable(GlossaryID.HumanClasses))
-            return;
+        if (!glossaryAvailable(GlossaryID.HumanClasses))
+            ExecuteAfterSeconds(1, () => NewGlossaryAvailable(GlossaryID.HumanClasses, "Human Classes"));
 
-        ExecuteAfterSeconds(1, () => NewGlossaryAvailable(GlossaryID.HumanClasses, "Human Classes"));
-
-        StartCoroutine(WaitToAddCombatTutorial());
-    }
-    IEnumerator WaitToAddCombatTutorial()
-    {
-        yield return new WaitForSeconds(10);
-        NewGlossaryAvailable(GlossaryID.Combat, "Combat");
+        if (!glossaryAvailable(GlossaryID.Combat))
+            ExecuteAfterSeconds(10, () => NewGlossaryAvailable(GlossaryID.Combat, "Combat"));
     }
     void OnMineSpawned()
     {
@@ -237,7 +232,7 @@ public class GlossaryManager : GameBehaviour
     }
     void OnHomeTreeSelected()
     {
-        if (!glossaryAvailable(GlossaryID.HomeTree) && _TUTORIAL.tutorialComplete == false)
+       if (!glossaryAvailable(GlossaryID.HomeTree) && _TUTORIAL.tutorialComplete == false)
             NewGlossaryAvailable(GlossaryID.HomeTree, "Home Tree");
     }
 
@@ -293,5 +288,4 @@ public class GlossaryItem
     public Sprite image;
     //[TextArea]
     [HideInInspector] public string description;
-    [HideInInspector] public bool available;
 }
