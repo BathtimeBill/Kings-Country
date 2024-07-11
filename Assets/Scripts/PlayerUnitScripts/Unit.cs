@@ -616,11 +616,11 @@ public class Unit : GameBehaviour
             StartCoroutine(HitByArrowDelay());
             if (unitID == CreatureID.Skessa)
             {
-                TakeDamage(_DATA.GetUnit(HumanID.Hunter).id.ToString(), _DATA.GetUnit(HumanID.Hunter).damage * 3);
+                TakeDamage(_DATA.GetUnit(HumanID.Poacher).id.ToString(), _DATA.GetUnit(HumanID.Poacher).damage * 3);
             }
             else
             {
-                TakeDamage(_DATA.GetUnit(HumanID.Hunter).id.ToString(), _DATA.GetUnit(HumanID.Hunter).damage);
+                TakeDamage(_DATA.GetUnit(HumanID.Poacher).id.ToString(), _DATA.GetUnit(HumanID.Poacher).damage);
             }
 
             Destroy(other.gameObject);

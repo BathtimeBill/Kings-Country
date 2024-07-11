@@ -617,7 +617,6 @@ public class UIManager : Singleton<UIManager>
         waveResultsPanel.DOFade(1, 0.4f).SetUpdate(true);
         waveResultsPanel.transform.DOScale(Vector3.one, 0.6f).SetUpdate(true).SetEase(boxEase);
 
-        Debug.Log("Bringing in text groups");
         yield return new WaitForSecondsRealtime(1.6f);
         _SM.PlaySound(_SM.textGroupSound);
         treeResultCanvas.alpha = 1;//.DOFade(1, panelTweenTime).SetUpdate(true); 

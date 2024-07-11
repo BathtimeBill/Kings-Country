@@ -59,7 +59,7 @@ public class StatsManager : GameBehaviour
         FillUnitStat(us, HumanID.Logger, _stats, 0);
         FillUnitStat(us, HumanID.Lumberjack, _stats, 1);
         FillUnitStat(us, HumanID.LogCutter, _stats, 2);
-        FillUnitStat(us, HumanID.Hunter, _stats, 3);
+        FillUnitStat(us, HumanID.Poacher, _stats, 3);
         FillUnitStat(us, HumanID.Wathe, _stats, 4);
         FillUnitStat(us, HumanID.Bjornjeger, _stats, 5);
         FillUnitStat(us, HumanID.Dreng, _stats, 6);

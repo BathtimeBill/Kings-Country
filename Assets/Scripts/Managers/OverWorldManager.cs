@@ -137,7 +137,7 @@ public class OverWorldManager : GameBehaviour
         humanLevelIcons.lumberjackIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Lumberjack) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         humanLevelIcons.logCutterIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.LogCutter) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         humanLevelIcons.watheIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Wathe) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        humanLevelIcons.hunterIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Hunter) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        humanLevelIcons.hunterIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Poacher) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         humanLevelIcons.bjornjegerIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Bjornjeger) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         humanLevelIcons.drengIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Dreng) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         humanLevelIcons.bezerkrIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Bezerker) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);

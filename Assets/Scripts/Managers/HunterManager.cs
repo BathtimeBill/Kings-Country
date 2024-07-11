@@ -34,7 +34,7 @@ public class HunterManager : GameBehaviour
             {
                 Instantiate(wathe, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
             }
-            for (int i = 0; i < _EM.GetHumanDayLimit(HumanID.Hunter); i++)
+            for (int i = 0; i < _EM.GetHumanDayLimit(HumanID.Poacher); i++)
             {
                 Instantiate(hunter, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
             }

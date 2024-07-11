@@ -70,7 +70,7 @@ public class LevelData : ScriptableObject
                 if (item.Key.Contains(HumanID.Wathe.ToString()))
                     sa.wathe = int.TryParse(item.Value, out sa.wathe) ? sa.wathe : 0;
 
-                if (item.Key.Contains(HumanID.Hunter.ToString()))
+                if (item.Key.Contains(HumanID.Poacher.ToString()))
                     sa.hunter = int.TryParse(item.Value, out sa.hunter) ? sa.hunter : 0;
 
                 if (item.Key.Contains(HumanID.Bjornjeger.ToString()))

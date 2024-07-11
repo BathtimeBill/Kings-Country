@@ -96,7 +96,7 @@ public class EnemyManager : Singleton<EnemyManager>
                 return currentDaySpawnAmount.logcutter;
             case HumanID.Wathe:
                 return currentDaySpawnAmount.wathe;
-            case HumanID.Hunter:
+            case HumanID.Poacher:
                 return currentDaySpawnAmount.hunter;
             case HumanID.Bjornjeger:
                 return currentDaySpawnAmount.bjornjeger;
@@ -148,7 +148,7 @@ public class EnemyManager : Singleton<EnemyManager>
         for (int i = 0; i < currentDaySpawnAmount.wathe; i++)
             enemyIDList.Add(HumanID.Wathe);
         for (int i = 0; i < currentDaySpawnAmount.hunter; i++)
-            enemyIDList.Add(HumanID.Hunter);
+            enemyIDList.Add(HumanID.Poacher);
         for (int i = 0; i < currentDaySpawnAmount.bjornjeger; i++)
             enemyIDList.Add(HumanID.Bjornjeger);
         for (int i = 0; i < currentDaySpawnAmount.dreng; i++)

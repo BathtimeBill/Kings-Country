@@ -184,7 +184,7 @@ public enum HumanID
     Lumberjack,
     LogCutter,
     Wathe,
-    Hunter,
+    Poacher,
     Bjornjeger,
     Dreng,
     Bezerker,
@@ -251,7 +251,7 @@ public enum WoodcutterType
 public enum HunterType
 {
     Wathe,
-    Hunter,
+    Poacher,
     Bjornjeger,
 }
 public enum WarriorType
@@ -321,7 +321,7 @@ public enum ObjectID
     Hut         = 40, Goblin, Skessa, Fidhain,
     Hogyr       = 50, Mistcalf, Huldra, Skuggi,
     Woodcutter  = 60, Logger, Lumberjack, Logcutter,
-    Hunter      = 70, Wathe, Bjornjeger,
+    Hunter      = 70, Poacher, Wathe, Bjornjeger,
     Warrior     = 80, Berzerkr, Dreng, Knight,
     Special     = 90, Lord, Spy, Dog, Mine, Unknown
 }
