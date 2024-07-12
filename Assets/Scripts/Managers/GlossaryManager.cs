@@ -68,7 +68,7 @@ public class GlossaryManager : GameBehaviour
             case GlossaryID.Maegen:
                 _glossaryItem.title = "Maegen";
                 _glossaryItem.description =
-                    $"{GetName(ObjectID.Maegen)} is the raw, wild energy of the {GetName(ObjectID.Maegen)}.<br>" + 
+                    $"{GetName(ObjectID.Maegen)} is the raw, wild energy of the {GetName(ObjectID.Grove)}.<br>" + 
                     $"It functions as the main currency of the game.<br><br>" +
                     $"{GetName(ObjectID.Maegen)} is created by {GetName(ObjectID.Tree, true)} at the end of each {GetName(ObjectID.Day)} and is used to grow more {GetName(ObjectID.Tree, true)} and spawn {GetName(ObjectID.Creature, true)}.<br><br>" +
                     $"Sometimes when a {GetName(ObjectID.Human)} is killed, the {GetName(ObjectID.Grove)} can harvest {GetName(ObjectID.Maegen)} from their soul.";
@@ -77,75 +77,109 @@ public class GlossaryManager : GameBehaviour
                 _glossaryItem.title = "Trees";
                 _glossaryItem.description =
                     $"{GetName(ObjectID.Tree, true)} are how we increase our power and earn more {GetName(ObjectID.Maegen)}.<br>" +
-                    $"The productivity of each {GetName(ObjectID.Tree)} is determined by its proximity to others in the {GetName(ObjectID.Grove, true)}.<br>" +
+                    $"The productivity of each {GetName(ObjectID.Tree)} is determined by its proximity to others in the {GetName(ObjectID.Grove)}.<br>" +
                     $"{GetName(ObjectID.Tree, true)} clustered together are less productive but easier to defend, while those spread out yield more {GetName(ObjectID.Maegen)} but are more vulnerable to attack.<br> " +
-                    $"To grow a {GetName(ObjectID.Tree)}, click on the {GetName(ObjectID.Tree)} button and {_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} on an available space in our domain.<br>" +
+                    $"To grow a {GetName(ObjectID.Tree)}, click on the {GetName(ObjectID.Tree)} button and {_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} on an available space in our {GetName(ObjectID.Grove)}.<br>" +
                     $"{_ICONS.GetTMPIcon(_ICONS.mouseRightClick)} to deselect {GetName(ObjectID.Tree)} mode.";
                 break;
             case GlossaryID.Wildlife:
                 _glossaryItem.title = "Wildlife";
                 _glossaryItem.description =
-                    "<color=#da691e><b>Wildlife</b></color> is spawned into the <color=#9665cd><b>Grove</b></color> at the end of each <color=#FCA343><b>Day</b></color>, based on the number of <color=#6d8659><b>Trees</b></color> we have and is required for us to use our Powers.\r\n<br>Hold down <b>Left-Alt</b> to see our <color=#da691e><b>Wildlife</b></color> highlighted.";
+                    $"{GetName(ObjectID.Wildlife)} is spawned into the {GetName(ObjectID.Grove)} at the end of each {GetName(ObjectID.Day)}, based on the number of {GetName(ObjectID.Tree, true)}.<br><br>" + 
+                    $"{GetName(ObjectID.Wildlife)} is required for us to use our Powers.<br><br>"+
+                    $"Hold down <b>Left-Alt</b> to see our {GetName(ObjectID.Wildlife)} highlighted.";
                 break;
             case GlossaryID.Populous:
                 _glossaryItem.title = "Populous";
                 _glossaryItem.description =
-                    "<color=#523c52><b>Populous</b></color> is the maximum number of <color=#3A9F87><b>Creatures</b></color> you can command in one <color=#9665cd><b>Grove</b></color>.\r\n<br>Each <color=#3A9F87><b>Creature</b></color> takes up 1 <color=#523c52><b>Populous</b></color> point.\r\n<br><color=#523c52><b>Populous</b></color> can be upgraded by +5 with a <color=#caad87><b>Perk</b></color>.";
+                    $"{GetName(ObjectID.Populous)} is the maximum number of {GetName(ObjectID.Creature, true)} you can command in one {GetName(ObjectID.Grove)}.<br><br>" +
+                    $"Each {GetName(ObjectID.Creature)} takes up 1 {GetName(ObjectID.Populous)} point.<br><br>" +
+                    $"{GetName(ObjectID.Populous)} can be upgraded by +5 with a {GetName(ObjectID.Perk)}.";
                 break;
             case GlossaryID.HomeTree:
                 _glossaryItem.title = "Home Tree";
                 _glossaryItem.description =
-                    "This is our <color=#FEE65F><b>Home Tree</b></color>, the heart of our <color=#9665cd><b>Grove</b></color> and vital to its survival.\r\n<br>From here, you can summon <color=#3A9F87><b>Creatures</b></color> to fight for us. If the <color=#FEE65F><b>Home Tree</b></color> is ever destroyed, the game is over.\r\n<br>To open the <color=#FEE65F><b>Home Tree</b></color> menu, either click on it in the game world or press <b>Tab</b>";
+                    $"This is our {GetName(ObjectID.HomeTree)}, the heart of our {GetName(ObjectID.Grove)} and vital to its survival.<br><br>" +
+                    $"From here, you can summon {GetName(ObjectID.Creature, true)} to fight for us.<br><br>"+
+                    $"If the {GetName(ObjectID.HomeTree)} is ever destroyed, the game is over.<br><br>"+
+                    $"To open the {GetName(ObjectID.HomeTree)} menu, either click on it in the game world or press <b>Tab</b>";
                 break;
             case GlossaryID.WitchsHut:
                 _glossaryItem.title = "Witch's Hut";
                 _glossaryItem.description =
-                    "A lone witch in the woods allows the grove’s <color=#3A9F87><b>Creatures</b></color> to gather here.\r\n<br><color=#FE4E2D><b>Humans</b></color> will attempt to claim this site for themselves, which they do by being in its vicinity without opposition from any <color=#3A9F87><b>Creatures</b></color>, at which point they will begin to spawn their top tier <color=#FE4E2D><b>Human</b></color> units into the game. \r\n<br>You'll need to either defend it or attack it before the <color=#FCA343><b>Day</b></color> is over.\r\n<br>If the <color=#3A9F87><b>Creatures</b></color> outnumber the <color=#FE4E2D><b>Humans</b></color> in the vicinity of the site, it will begin to be claimed back. \r\n<br>The more units, the more quickly it will be claimed.\r\n<br><color=#3A9F87><b>Creatures</b></color> from this site cannot be purchased unless you have control of the <color=#4d705d><b>Witch's Hut</b></color>.";
+                    $"A lone witch in the woods allows the {GetName(ObjectID.Grove)}’s {GetName(ObjectID.HomeTree, true)} to gather here.<br><br>"+
+                    $"{GetName(ObjectID.Human, true)} will attempt to claim this site for themselves, which they do by being in its vicinity without opposition from any {GetName(ObjectID.Creature, true)}, at which point they will begin to spawn their top tier {GetName(ObjectID.Human)} units into the game.<br><br>"+
+                    $"You'll need to either defend it or attack it before the {GetName(ObjectID.Day)} is over.<br><br>" +
+                    $"If the {GetName(ObjectID.Creature, true)} outnumber the {GetName(ObjectID.Human, true)} in the vicinity of the site, it will begin to be claimed back. The more units, the more quickly it will be claimed.<br><br>" +
+                    $"{GetName(ObjectID.Creature, true)} from this site cannot be purchased unless you have control of the {GetName(ObjectID.Hut)}.";
                 break;
             case GlossaryID.Horgr:
                 _glossaryItem.title = "Horgr";
                 _glossaryItem.description =
-                    "This is a magical shrine that is valuable to both the <color=#FE4E2D><b>Humans</b></color> and the <color=#9665cd><b>Grove</b></color>.\r\n<br>Enemies will attempt to claim this site for themselves, at which point they will begin to spawn their own Knights into the game, so you'll need to either defend it or attack it before the wave is over.\r\n<br>If the <color=#3A9F87><b>Creatures</b></color> outnumber the <color=#FE4E2D><b>Humans</b></color> in the vicinity of the site, it will begin to be claimed back.\r\n<br>The more units, the more quickly it will be claimed.\r\n<br><color=#3A9F87><b>Creatures</b></color> cannot be purchased unless you have control of the <color=#4d705d><b>Horgr</b></color>.";
+                    $"This is a magical shrine that is valuable to both the {GetName(ObjectID.Human, true)} and the {GetName(ObjectID.Grove)}.<br><br>" +
+                    $"Enemies will attempt to claim this site for themselves, at which point they will begin to spawn their own {GetName(ObjectID.Knight, true)} into the game, so you'll need to either defend it or attack it before the wave is over.<br><br>" +
+                    $"If the {GetName(ObjectID.Creature, true)} outnumber the {GetName(ObjectID.Human, true)} in the vicinity of the site, it will begin to be claimed back. The more units, the more quickly it will be claimed.<br><br>" +
+                    $"{GetName(ObjectID.Creature, true)} cannot be purchased unless you have control of the {GetName(ObjectID.Horgr, true)}.";
                 break;
             case GlossaryID.Powers:
                 _glossaryItem.title = "Powers";
                 _glossaryItem.description =
-                    "<color=#abb4ca><b>Rune</b></color>:<br><color=#abb4ca><b>Runes</b></color> are ancient, magical zones of wild energy that heal our <color=#3A9F87><b>Creatures</b></color> over time.\r\n<br><color=#caad87><b>Fyre</b></color>:<br><color=#caad87><b>Fyre</b></color> creates an explosion dealing damage to all <color=#FE4E2D><b>Humans</b></color> in its radius.\r\n<br><color=#aeaecf><b>Stormer</b></color>:<br>Allows you to create an intense storm that will randomly strike down <color=#FE4E2D><b>Humans</b></color> with lightning for a period of 1 minute.";
+                    $"{GetName(ObjectID.Rune, true)} are ancient, magical zones of wild energy that heal our {GetName(ObjectID.Creature, true)} over time.<br><br>" +
+                    $"{GetName(ObjectID.Fyre)} creates an explosion dealing damage to all {GetName(ObjectID.Human, true)} in its radius.<br><br>" +
+                    $"{GetName(ObjectID.Stormer)} allows you to create an intense storm that will randomly strike down {GetName(ObjectID.Human, true)} with lightning for a period of 1 minute.";
                 break;
             case GlossaryID.DayNightCycle:
                 _glossaryItem.title = "Day/Night Cycle";
                 _glossaryItem.description =
-                    "The game is divided into two phases: <color=#FCA343><b>Day</b></color> and <color=#24455A><b>Night</b></color>.<br>\r\nDuring the <color=#FCA343><b>Day</b></color>, <color=#FE4E2D><b>Human</b></color> settlers will encroach upon our <color=#9665cd><b>Grove</b></color>, seeking to cut down our <color=#6d8659><b>Trees</b></color> and hunt our <color=#da691e><b>Wildlife</b></color>. You must protect us against them until the <color=#FCA343><b>Day</b></color> is done.<br>\r\nAt <color=#24455A><b>Night</b></color>, we can recover and expand our <color=#9665cd><b>Grove</b></color>.";
+                    $"The game is divided into two phases: {GetName(ObjectID.Day)} and {GetName(ObjectID.Night)}.<br><br>" +
+                    $"During the {GetName(ObjectID.Day)}, {GetName(ObjectID.Human)} settlers will encroach upon our {GetName(ObjectID.Grove)}, seeking to cut down our {GetName(ObjectID.Tree, true)} and hunt our {GetName(ObjectID.Wildlife)}. You must protect the {GetName(ObjectID.Grove)} against them until the {GetName(ObjectID.Day)} is done.<br><br>" +
+                    $"At {GetName(ObjectID.Night)}, we can recover and expand our {GetName(ObjectID.Grove)}.";
                 break;
             case GlossaryID.HumanClasses:
                 _glossaryItem.title = "Human Classes";
                 _glossaryItem.description =
-                    "There are 4 <color=#FE4E2D><b>Human</b></color> classes that you will encounter.\r\n<br><color=#FFFF69><b>Woodcutters</b></color> are marked in <color=#FFFF69><b>YELLOW</b></color> on the Minimap.\r\n<br>Their primary target are your <color=#6d8659><b>Trees</b></color> and will prioritize cutting them down unless they are confronted by your <color=#3A9F87><b>Creatures</b></color>.\r\n<br><color=#30FE2C><b>Hunters</b></color> are marked in <color=#30FE2C><b>GREEN</b></color> on the Minimap.\r\n<br>Their main focus is your <color=#da691e><b>Wildlife</b></color> and will attempt to hunt your <color=#9665cd><b>Grove</b></color> into extinction unless a <color=#4d705d><b>Witch's Hut</b></color> or one of your <color=#3A9F87><b>Creatures</b></color> is closer.\r\n<br><color=#FE4E2D><b>Warriors</b></color> are marked in <color=#FE4E2D><b>RED</b></color> on the Minimap.\r\n<br>Their main goal is to kill all of your <color=#3A9F87><b>Creatures</b></color> and they will attempt to claim your <color=#4d705d><b>Horgr</b></color> if they are closer to it than they are to your <color=#3A9F87><b>Creatures</b></color>.";
+                    $"There are 4 {GetName(ObjectID.Human)} classes that you will encounter.<br><br>" +
+                    $"{GetName(ObjectID.Woodcutter, true)} primary target are your {GetName(ObjectID.Tree, true)} and will prioritize cutting them down unless they are confronted by your {GetName(ObjectID.Creature, true)}.<br><br>" +
+                    $"{GetName(ObjectID.Hunter, true)} main focus are your {GetName(ObjectID.Wildlife)} and will attempt to hunt your {GetName(ObjectID.Grove)} into extinction unless a {GetName(ObjectID.Hut)} or one of your {GetName(ObjectID.Creature, true)} is closer.<br><br>" +
+                    $"{GetName(ObjectID.Warrior, true)} main goal are to kill all of your {GetName(ObjectID.Creature, true)} and they will attempt to claim your {GetName(ObjectID.Horgr, true)} if they are closer to it than they are to your {GetName(ObjectID.Creature, true)}.";
                 break;
             case GlossaryID.Dogs:
                 _glossaryItem.title = "Dogs";
                 _glossaryItem.description =
-                    "These ferocious hounds have explosives strapped to their backs.<br>\r\n<br>They will appear at the beginning of a <color=#FCA343><b>Day</b></color> if there are plentiful <color=#6d8659><b>Trees</b></color> populating the <color=#9665cd><b>Grove</b></color> and will attempt to blow up your <color=#6d8659><b>trees</b></color>.<br>\r\n<br>They are easy to stop if you can intercept them but they’re fast moving.";
+                    $"These ferocious hounds have explosives strapped to their backs.<br><br>" +
+                    $"They will appear at the beginning of a {GetName(ObjectID.Day)} if there are plentiful {GetName(ObjectID.Tree, true)} populating the {GetName(ObjectID.Grove, true)} and will attempt to blow up your {GetName(ObjectID.Tree, true)}.<br><br>" +
+                    $"They are easy to stop if you can intercept them but they’re fast moving!";
                 break;
             case GlossaryID.Mines:
                 _glossaryItem.title = "Mines";
                 _glossaryItem.description =
-                    "Occasionally, the <color=#FE4E2D><b>Humans</b></color> will bore through the earth and set up their iron mines, this creates a new spawn point that enemies can arrive from.<br>\r\nAny <color=#6d8659><b>Trees</b></color> in the area will be destroyed as it emerges.";
+                    $"Occasionally, the {GetName(ObjectID.Human, true)} will bore through the earth and set up their Iron Mines<br><br>" +
+                    $"This creates a new spawn point that {GetName(ObjectID.Human, true)} can arrive from.<br><br>" +
+                    $"Any {GetName(ObjectID.Tree, true)} in the area will be destroyed as it emerges.";
                 break;
             case GlossaryID.Spies:
                 _glossaryItem.title = "Spies";
                 _glossaryItem.description =
-                    "Spies are unique <color=#FE4E2D><b>Humans</b></color> that will attempt to sneak through your defences and attack your <color=#FEE65F><b>Home Tree</b></color> directly.<br>\r\nThey will arrive on the map at a random location and are marked in BLACK.<br>\r\nThey will move towards your <color=#FEE65F><b>Home Tree</b></color>, ignoring everything else in their path to destroy it.<br>\r\nThey will spawn in more regularly as the <color=#FCA343><b>Days</b></color> go by and can emerge at any time, even at <color=#24455A><b>Night</b></color>.";
+                    $"{GetName(ObjectID.Spy, true)} are unique {GetName(ObjectID.Human, true)} that will attempt to sneak through your defences and attack your {GetName(ObjectID.HomeTree, true)} directly.<br><br>" +
+                    $"They will arrive on the map at a random location and are marked in BLACK.<br><br>" +
+                    $"They will move towards your {GetName(ObjectID.HomeTree, true)}, ignoring everything else in their path to destroy it.<br><br>" +
+                    $"They will spawn in more regularly as the {GetName(ObjectID.Day, true)} go by and can emerge at any time, even at {GetName(ObjectID.Night)}.";
                 break;
             case GlossaryID.LordsOfTheLand:
                 _glossaryItem.title = "Lords of the Land";
                 _glossaryItem.description =
-                    "These are high ranking members of the King’s Court, tasked with weakening the defences of the <color=#9665cd><b>Grove</b></color>.<br>\r\nThey are incredibly deadly fighters that will appear sporadically to cause as much chaos as possible.<br>\r\nIf you’re not prepared, they can easily cut through your <color=#3A9F87><b>Creatures</b></color> and destroy your <color=#FEE65F><b>Home Tree</b></color>.";
+                    $"These are high ranking members of the King’s Court, tasked with weakening the defences of the {GetName(ObjectID.Grove)}.<br><br>" +
+                    $"They are incredibly deadly fighters that will appear sporadically to cause as much chaos as possible.<br><br>" +
+                    $"If you’re not prepared, they can easily cut through your {GetName(ObjectID.Creature, true)} and destroy your {GetName(ObjectID.HomeTree, true)}.";
                 break;
             case GlossaryID.Combat:
                 _glossaryItem.title = "Combat";
                 _glossaryItem.description =
-                    "When a <color=#FE4E2D><b>Human</b></color> first arrives, they are invincible for 5 seconds.\r\n<br><b>Right Clicking</b> on an <color=#FE4E2D><b>Human</b></color> will order a selected <color=#3A9F87><b>Creature</b></color> to target it. They will track down the <color=#FE4E2D><b>Human</b></color> until they catch up to them.\r\n<br>The <color=#3A9F87><b>Creature</b></color> will behave differently, depending on which Combat Mode you have selected. This is represented by an icon above the <color=#3A9F87><b>Creature</b></color>.\r\n<br>Attack Mode:<br>Selecting <b>Attack Mode</b> allows the <color=#3A9F87><b>Creature</b></color> to move freely about the <color=#9665cd><b>Grove</b></color>, attacking any <color=#FE4E2D><b>Humans</b></color> that come within its range.\r\n<br>This is the default Combat Mode.\r\n<br><b>Defend Mode:</b>\r\n<br>Selecting <b>Defend Mode</b> orders the <color=#3A9F87><b>Creature</b></color> to defend its current position.\r\n<br>Its range is reduced and will move small distances to attack <color=#FE4E2D><b>Humans</b></color> but will always return to its original defence position.\r\n<br><b>Formations:</b>\r\n<br>Clicking the <b>Formations</b> button will change how spread out <color=#3A9F87><b>Creatures</b></color> are. You can choose to have them bunch them together to allow a more concentrated force or spread out to cover more ground.";
+                    $"When a {GetName(ObjectID.Human)} first arrives, they are invincible for 5 seconds.<br><br>" +
+                    $"<b>Right Clicking</b> on an {GetName(ObjectID.Human)} will order a selected {GetName(ObjectID.Creature)} to target it. They will track down the {GetName(ObjectID.Human)} until they catch up to them.<br>The {GetName(ObjectID.Creature)} will behave differently, depending on which Combat Mode you have selected. This is represented by an icon above the {GetName(ObjectID.Creature)}.<br><br>" +
+                    $"Attack Mode:<br>Selecting <b>Attack Mode</b> allows the {GetName(ObjectID.Creature)} to move freely about the {GetName(ObjectID.Grove)}, attacking any {GetName(ObjectID.Human, true)} that come within its range.<br>This is the default Combat Mode.<br><br>" +
+                    $"<b>Defend Mode:</b><br>Selecting <b>Defend Mode</b> orders the {GetName(ObjectID.Creature)} to defend its current position.<br>It's range is reduced and will move small distances to attack {GetName(ObjectID.Human, true)} but will always return to its original defence position.<br><br>" +
+                    $"<b>Formations:</b><br>Clicking the <b>Formations</b> button will change how spread out {GetName(ObjectID.Creature, true)} are. You can choose to have them bunch them together to allow a more concentrated force or spread out to cover more ground.";
                 break;
         }
     }

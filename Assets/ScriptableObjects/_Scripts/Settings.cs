@@ -225,7 +225,7 @@ public class Colours
         if (oc == null)
             return _object.ToString();
 
-
+        _toUpper = false;
         string c = ColorX.GetColorHex(oc.color);
         string n = _toUpper ? (oc.id.ToString().ToUpper() + (_plural ? "S" : "")) : (oc.id.ToString() + (_plural ? "s" : ""));
         return "<color=#" + c + ">" + n + "</color>";

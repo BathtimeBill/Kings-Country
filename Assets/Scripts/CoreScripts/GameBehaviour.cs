@@ -317,10 +317,10 @@ public enum ErrorID
 public enum ObjectID
 {
     Resource    = 0,  Wildlife, Maegen, Populous, Day, Night, Creature, Human, Grove, Perk,
-    Tool        = 20, Tree, Rune, Fyre,    
+    Tool        = 20, Tree, Rune, Fyre, Stormer,
     HomeTree    = 30, Satyr, Orcus, Leshy,
     Hut         = 40, Goblin, Skessa, Fidhain,
-    Hogyr       = 50, Mistcalf, Huldra, Skuggi,
+    Horgr       = 50, Mistcalf, Huldra, Skuggi,
     Woodcutter  = 60, Logger, Lumberjack, Logcutter,
     Hunter      = 70, Poacher, Wathe, Bjornjeger,
     Warrior     = 80, Berzerkr, Dreng, Knight,
