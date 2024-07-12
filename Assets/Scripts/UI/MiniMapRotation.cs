@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class MiniMapRotation : GameBehaviour
 {
+    public Camera miniMapCamera;
     private GameObject playerCam;
     private Quaternion targetRotation;
     private Quaternion defaultRotation;
@@ -23,5 +24,23 @@ public class MiniMapRotation : GameBehaviour
 
         targetRotation = Quaternion.Euler(90, playerCam.transform.localEulerAngles.y, 0);
         transform.rotation = targetRotation;
+    }
+
+    private void OnGameStateChanged(GameState _gameState)
+    {
+        if(_gameState == GameState.Pause || _gameState == GameState.Finish || _gameState == GameState.Win || _gameState == GameState.Glossary)
+            miniMapCamera.enabled = false;
+        else
+            miniMapCamera.enabled = true;
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnGameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnGameStateChanged -= OnGameStateChanged;
     }
 }

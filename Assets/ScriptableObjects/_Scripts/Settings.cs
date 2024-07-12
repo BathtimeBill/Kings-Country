@@ -227,7 +227,10 @@ public class Colours
 
         _toUpper = false;
         string c = ColorX.GetColorHex(oc.color);
-        string n = _toUpper ? (oc.id.ToString().ToUpper() + (_plural ? "S" : "")) : (oc.id.ToString() + (_plural ? "s" : ""));
+        string n = oc.id.ToString();
+        if (oc.id == ObjectID.Hut)  //Exceptions here
+            n = "Witch's Hut";
+        n = _toUpper ? (n.ToUpper() + (_plural ? "S" : "")) : (n + (_plural ? "s" : ""));
         return "<color=#" + c + ">" + n + "</color>";
     }
 
