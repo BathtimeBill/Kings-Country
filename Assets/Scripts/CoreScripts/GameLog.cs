@@ -30,20 +30,29 @@ public class GameLog : GameBehaviour
     {
         _text.DOFade(1, _TWEENING.logTweenTime).SetEase(_TWEENING.logEase).OnComplete(() => _text.DOFade(0, _TWEENING.logTweenTime).SetEase(_TWEENING.logEase).SetDelay(_TWEENING.logTweenDelay));
     }
-    private void OnUnitSpawned(string _unitID)
+    private void OnHumanSpawned(HumanID _unitID)
     {
-        string unit = GetName(EnumX.ToEnum<ObjectID>(_unitID));
+        string str = _unitID.ToString();
+        ObjectID id = EnumX.ToEnum<ObjectID>(str);
+        string unit = GetName(id);
+        ChangeLogLine(unit + " was spawned in ");
+    }
+    private void OnCreatureSpawned(CreatureID _unitID)
+    {
+        string str = _unitID.ToString();
+        ObjectID id = EnumX.ToEnum<ObjectID>(str);
+        string unit = GetName(id);
         ChangeLogLine(unit + " was spawned in ");
     }
 
-    private void OnUnitKilled(string _unitID, string _killedBy)
+    private void OnUnitKilled(string _unitID, string _killedBy, int _daysSurvived)
     {
         string unit = GetName(EnumX.ToEnum<ObjectID>(_unitID));
         string killer = GetName(EnumX.ToEnum<ObjectID>(_killedBy));
-        ChangeLogLine(unit + " was killed by " + killer);
+        ChangeLogLine(unit + " was killed by " + killer + " after " + _daysSurvived + " days");
     }
 
-    private void OnEnemyUnitKilled(Enemy _unitID, string _killedBy)
+    private void OnHumanKilled(Enemy _unitID, string _killedBy)
     {
         string unit = GetName(EnumX.ToEnum<ObjectID>(_unitID.unitID.ToString()));
         string killer = GetName(EnumX.ToEnum<ObjectID>(_killedBy));
@@ -62,9 +71,10 @@ public class GameLog : GameBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnUnitSpawned    += OnUnitSpawned;
-        GameEvents.OnUnitKilled     += OnUnitKilled;
-        GameEvents.OnEnemyUnitKilled += OnEnemyUnitKilled;
+        GameEvents.OnHumanSpawned    += OnHumanSpawned;
+        GameEvents.OnCreatureSpawned    += OnCreatureSpawned;
+        GameEvents.OnCreatureKilled     += OnUnitKilled;
+        GameEvents.OnHumanKilled += OnHumanKilled;
         GameEvents.OnDayOver       += OnDayOver;
         GameEvents.OnTreePlaced     += OnTreePlaced;
     }
@@ -73,9 +83,10 @@ public class GameLog : GameBehaviour
 
     private void OnDisable()
     {
-        GameEvents.OnUnitSpawned    -= OnUnitSpawned;
-        GameEvents.OnUnitKilled     -= OnUnitKilled;
-        GameEvents.OnEnemyUnitKilled -= OnEnemyUnitKilled;
+        GameEvents.OnHumanSpawned -= OnHumanSpawned;
+        GameEvents.OnCreatureSpawned -= OnCreatureSpawned;
+        GameEvents.OnCreatureKilled     -= OnUnitKilled;
+        GameEvents.OnHumanKilled -= OnHumanKilled;
         GameEvents.OnDayOver       -= OnDayOver;
         GameEvents.OnTreePlaced     -= OnTreePlaced;
     }

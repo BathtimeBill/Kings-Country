@@ -75,14 +75,17 @@ public class Unit : GameBehaviour
     private Sprite defendSprite;
     private UnitData unitData => _DATA.GetUnit(unitID);
 
+    private int startingDay;
+
     void Start()
     {
         soundPool = SFXPool.GetComponents<AudioSource>();
         pointer = GameObject.FindGameObjectWithTag("Pointer");
         Setup();
         UnitSelection.Instance.unitList.Add(gameObject);
-        GameEvents.ReportOnUnitSpawned(unitID.ToString());
+        GameEvents.ReportOnCreatureSpawned(unitID);
         SpawnInMove();
+        startingDay = _currentDay;
     }
 
     private void Setup()
@@ -311,7 +314,8 @@ public class Unit : GameBehaviour
                     go = Instantiate(deadSatyr, transform.position, transform.rotation);
                     Destroy(go, 15);
                     _UI.CheckPopulousUI();
-                    GameEvents.ReportOnUnitKilled(unitID.ToString(), "Unknown");
+                    int daysSurvived = _currentDay - startingDay;
+                    GameEvents.ReportOnCreatureKilled(unitID.ToString(), "Unknown", daysSurvived);
                     CheckIfUnitIsInGroup();
                     Destroy(gameObject);
                 }
@@ -762,7 +766,8 @@ public class Unit : GameBehaviour
                 Destroy(go, 15);
             }
             _UI.CheckPopulousUI();
-            GameEvents.ReportOnUnitKilled(unitID.ToString(), _attacker);
+            int daysSurvived = _currentDay - startingDay;
+            GameEvents.ReportOnCreatureKilled(unitID.ToString(), _attacker, daysSurvived);
             CheckIfUnitIsInGroup();
             Destroy(gameObject);
         }

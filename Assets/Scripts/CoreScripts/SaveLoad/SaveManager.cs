@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -41,6 +42,9 @@ public class PerkSaveObject
 public class UnitStats
 {
     public string unitID;
+    public int summonCount;
+    public int mostDaysSurvived;     //total days survived
+    public int totalDaysSurvived;
     public List<KillStat> killedBy;
     public List<KillStat> iHaveKilled;
 }
@@ -73,6 +77,21 @@ public class PlayerStats
     public int currentMaegen;
     public int totalMaegen;
     public int daysPlayed;
+
+    public int treesPlanted;
+    public int treesLost;
+    public int willowsPlanted;
+    public int willowsLost;
+    public int ficusPlanted;
+    public int ficusLost;
+
+    //public int satyrSummoned;
+    //public int satyrKilled;
+    //public int orcusSummoned;
+    //public int orcusKilled;
+    //public int satyrSummoned;
+    //public int satyrKilled;
+
 }
 
 [Serializable]
@@ -239,6 +258,7 @@ public class SaveManager : BGG.GameData
     #endregion
 
     #region Player Stats
+    public PlayerStats GetPlayerStats => save.playerStats;
     //Maegen
     public void SetMaegen(int _maegen)
     {
@@ -431,9 +451,9 @@ public class SaveManager : BGG.GameData
         return killAmount;
     }
 
-    public void OnUnitKilled(string _creature, string _killer)
+    public void OnCreatureKilled(string _creature, string _killer, int _daysSurvived)
     {
-        print(_creature + " was killed by " + _killer);
+        //print(_creature + " was killed by " + _killer);
         UnitStats stat = GetUnitStats(_creature);
         if (stat == null)
         {
@@ -452,11 +472,15 @@ public class SaveManager : BGG.GameData
             killStats.Add(ks);
         }
         ks.amount += 1;
+
+        if(_daysSurvived > stat.mostDaysSurvived)
+            stat.mostDaysSurvived = _daysSurvived;
+        stat.totalDaysSurvived += 1;
         //print(stat.unitID + " has been killed by " + ks.killedID + " " + ks.amount + " times");
         SaveData();
     }
 
-    public void OnEnemyUnitKilled(Enemy _enemy, string _creature)
+    public void OnHumanKilled(Enemy _enemy, string _creature)
     {
         UnitStats stat = GetUnitStats(_creature);
         if (stat == null)
@@ -466,7 +490,7 @@ public class SaveManager : BGG.GameData
             stat.iHaveKilled = new List<KillStat>();
             AddUnitStats(stat);
         }
-        List<KillStat> killStats = stat.iHaveKilled;
+        List<KillStat> killStats = stat.iHaveKilled == null ? new List<KillStat>() : stat.iHaveKilled;
         KillStat ks = killStats.Find(x => x.killedID == _enemy.unitID.ToString());
         if (ks == null)
         {
@@ -476,10 +500,22 @@ public class SaveManager : BGG.GameData
             killStats.Add(ks);
         }
         ks.amount += 1;
-        //print(stat.unitID + " has killed " + ks.killedID + " " + ks.amount + " times");
+        print(stat.unitID + " has killed " + ks.killedID + " " + ks.amount + " times");
         SaveData();
     }
 
+    private void OnCreatureSpawned(CreatureID _id)
+    {
+        UnitStats stat = GetUnitStats(_id.ToString());
+        if (stat == null)
+        {
+            stat = new UnitStats();
+            stat.unitID = _id.ToString();
+            stat.killedBy = new List<KillStat>();
+            AddUnitStats(stat);
+        }
+        stat.summonCount += 1;
+    }
 
     #endregion
 
@@ -564,6 +600,32 @@ public class SaveManager : BGG.GameData
         save.playerStats.daysPlayed += 1;
         SaveData();
     }
+
+    private void OnHumanSpawned(HumanID _id)
+    {
+        
+    }
+
+    public void OnTreePlaced(ToolID _id)
+    {
+        if(_id == ToolID.Tree)
+            save.playerStats.treesPlanted += 1;
+        if(_id == ToolID.Willow)
+            save.playerStats.willowsPlanted += 1;
+        if (_id == ToolID.Ficus)
+            save.playerStats.ficusPlanted += 1;
+    }
+    private void OnTreeDestroyed(ToolID _id)
+    {
+        if (_id == ToolID.Tree)
+            save.playerStats.treesLost += 1;
+        if (_id == ToolID.Willow)
+            save.playerStats.willowsLost += 1;
+        if (_id == ToolID.Ficus)
+            save.playerStats.ficusLost += 1;
+    }
+
+
     private void OnEnable()
     {
         GameEvents.OnLevelWin += OnLevelWin;
@@ -574,8 +636,13 @@ public class SaveManager : BGG.GameData
         GameEvents.OnMiniMapIcons += SetMiniMapIcons;
         GameEvents.OnMiniMapRotation += SetMiniMapRotation;
 
-        GameEvents.OnUnitKilled += OnUnitKilled;
-        GameEvents.OnEnemyUnitKilled += OnEnemyUnitKilled;
+        GameEvents.OnCreatureKilled += OnCreatureKilled;
+        GameEvents.OnHumanKilled += OnHumanKilled;
+        GameEvents.OnHumanSpawned += OnHumanSpawned;
+        GameEvents.OnCreatureSpawned += OnCreatureSpawned;
+
+        GameEvents.OnTreePlaced += OnTreePlaced;
+        GameEvents.OnTreeDestroyed += OnTreeDestroyed;
     }
 
     
@@ -590,8 +657,13 @@ public class SaveManager : BGG.GameData
         GameEvents.OnMiniMapIcons -= SetMiniMapIcons;
         GameEvents.OnMiniMapRotation -= SetMiniMapRotation;
 
-        GameEvents.OnUnitKilled -= OnUnitKilled;
-        GameEvents.OnEnemyUnitKilled += OnEnemyUnitKilled;
+        GameEvents.OnCreatureKilled -= OnCreatureKilled;
+        GameEvents.OnHumanKilled -= OnHumanKilled;
+        GameEvents.OnHumanSpawned -= OnHumanSpawned;
+        GameEvents.OnCreatureSpawned -= OnCreatureSpawned;
+
+        GameEvents.OnTreePlaced -= OnTreePlaced;
+        GameEvents.OnTreeDestroyed -= OnTreeDestroyed;
     }
 
     #endregion

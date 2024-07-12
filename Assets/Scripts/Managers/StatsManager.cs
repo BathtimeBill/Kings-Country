@@ -1,29 +1,74 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
-
+using UnityEngine;
 public class StatsManager : GameBehaviour
 {
+    [Header("Trees")]
+    public TreeStats treeStats;
+
+
+    [Header("Detailed Kill Stats")]
     public UnitKillStats unit1;
     public UnitKillStats unit2;
     public UnitKillStats unit3;
 
+    [Header("Panels")]
+    public GameObject mainPanel;
+    public GameObject detailedPanel;
+
+    [Header("Panel Buttons")]
+    public Button mainButton;
     public Button homeTreeButton;
     public Button hutButton;
     public Button hogyrButton;
 
     public void Start()
     {
-        homeTreeButton.onClick.AddListener(() => FillStatPanel(BuildingID.HomeTree));
-        hutButton.onClick.AddListener(() => FillStatPanel(BuildingID.Hut));
-        hogyrButton.onClick.AddListener(() => FillStatPanel(BuildingID.Hogyr));
+        mainButton.onClick.AddListener(() => FillMainPage());
+        homeTreeButton.onClick.AddListener(() => FillDetailedStatPanel(BuildingID.HomeTree));
+        hutButton.onClick.AddListener(() => FillDetailedStatPanel(BuildingID.Hut));
+        hogyrButton.onClick.AddListener(() => FillDetailedStatPanel(BuildingID.Hogyr));
 
-        FillStatPanel(BuildingID.HomeTree);
+        //FillDetailedStatPanel(BuildingID.HomeTree);
+        FillMainPage();
     }
 
-    public void FillStatPanel(BuildingID _buildingID)
+    public void FillMainPage()
     {
-        switch(_buildingID)
+        mainPanel.SetActive(true);
+        detailedPanel.SetActive(false);
+
+        PlayerStats stats = _SAVE.GetPlayerStats;
+        if (stats == null)
+            return;
+
+        //Trees
+        int treesPlanted = stats.treesPlanted;
+        int treesDestroyed = stats.treesLost;
+        int willowPlanted = stats.willowsPlanted;
+        int willowDestroyed = stats.willowsLost;
+        int ficusPlanted = stats.ficusPlanted;
+        int ficusDestroyed = stats.ficusLost;
+        treeStats.treePlanted.text = treesPlanted.ToString();
+        treeStats.treeDestroyed.text = treesDestroyed.ToString();
+        treeStats.willowPlanted.text = willowPlanted.ToString();
+        treeStats.willowDestroyed.text = willowDestroyed.ToString();
+        treeStats.ficusPlanted.text = ficusPlanted.ToString();
+        treeStats.ficusDestroyed.text = ficusDestroyed.ToString();
+        treeStats.treePlanted.text = stats.treesPlanted.ToString();
+
+        treeStats.totalPlanted.text = (treesPlanted + willowPlanted + ficusPlanted).ToString();
+        treeStats.totalDestroyed.text = (treesDestroyed + willowDestroyed + ficusDestroyed).ToString();
+
+    }
+
+    public void FillDetailedStatPanel(BuildingID _buildingID)
+    {
+        mainPanel.SetActive(false);
+        detailedPanel.SetActive(true);
+
+        switch (_buildingID)
         {
             case BuildingID.HomeTree:
                 GetUnitStats(unit1, CreatureID.Satyr);
@@ -144,4 +189,21 @@ public class UnitKillStats
     public TMP_Text totalRatioText;
 }
 
+[System.Serializable]
+public class TreeStats
+{
+    public TMP_Text treePlanted;
+    public TMP_Text treeDestroyed;
+    public TMP_Text treeRatio;
+    public TMP_Text willowPlanted;
+    public TMP_Text willowDestroyed;
+    public TMP_Text willowRatio;
+    public TMP_Text ficusPlanted;
+    public TMP_Text ficusDestroyed;
+    public TMP_Text ficusRatio;
+
+    public TMP_Text totalPlanted;
+    public TMP_Text totalDestroyed;
+    public TMP_Text totalRatio;
+}
 

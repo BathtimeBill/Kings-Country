@@ -10,7 +10,7 @@ public static class GameEvents
     public static event Action<int> OnWildlifeValueChange = null;
     public static event Action OnWildlifeKilled = null;
     public static event Action<ToolID> OnTreePlaced = null;
-    public static event Action OnTreeDestroyed = null;
+    public static event Action<ToolID> OnTreeDestroyed = null;
     public static event Action OnUnitMove = null;
     public static event Action OnUnitArrivedAtHorgr = null;
     public static event Action OnUnitArrivedAtHut = null;
@@ -280,9 +280,9 @@ public static class GameEvents
     {
         OnTreePlaced?.Invoke(_treeID);
     }
-    public static void ReportOnTreeDestroy()
+    public static void ReportOnTreeDestroy(ToolID _id)
     {
-        OnTreeDestroyed?.Invoke();
+        OnTreeDestroyed?.Invoke(_id);
     }
 
     public static void ReportOnGroundClicked()
@@ -302,12 +302,14 @@ public static class GameEvents
     }
 
     #region Unit Management
-    public static event Action<string, string> OnUnitKilled = null;
-    public static event Action<Enemy, string> OnEnemyUnitKilled = null;
-    public static event Action<string> OnUnitSpawned = null;
-    public static void ReportOnUnitKilled(string _unitID, string _killedBy) => OnUnitKilled?.Invoke(_unitID, _killedBy);
-    public static void ReportOnEnemyUnitKilled(Enemy _unitID, string _killedBy) => OnEnemyUnitKilled?.Invoke(_unitID, _killedBy);
-    public static void ReportOnUnitSpawned(string _unitID) => OnUnitSpawned?.Invoke(_unitID);
+    public static event Action<string, string, int> OnCreatureKilled = null;
+    public static event Action<Enemy, string> OnHumanKilled = null;
+    public static event Action<HumanID> OnHumanSpawned = null;
+    public static event Action<CreatureID> OnCreatureSpawned = null;
+    public static void ReportOnCreatureKilled(string _unitID, string _killedBy, int _daysSurvived) => OnCreatureKilled?.Invoke(_unitID, _killedBy, _daysSurvived);
+    public static void ReportOnEnemyUnitKilled(Enemy _unitID, string _killedBy) => OnHumanKilled?.Invoke(_unitID, _killedBy);
+    public static void ReportOnHumanSpawned(HumanID _ID) => OnHumanSpawned?.Invoke(_ID);
+    public static void ReportOnCreatureSpawned(CreatureID _ID) => OnCreatureSpawned?.Invoke(_ID);
     #endregion
 
     #region Settings

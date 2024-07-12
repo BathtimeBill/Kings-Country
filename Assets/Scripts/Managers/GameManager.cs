@@ -259,7 +259,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     //When a tree is destroyed, we wait one frame and update the tree count and UI.
-    private void OnTreeDestroy()
+    private void OnTreeDestroy(ToolID _id)
     {
         StartCoroutine(WaitForTreeDestroy());
     }
@@ -335,7 +335,7 @@ public class GameManager : Singleton<GameManager>
         if(maegen > maxMaegen)
             maegen = maxMaegen;
     }
-    private void OnUnitKilled(string _unitID, string _killedBy)
+    private void OnUnitKilled(string _unitID, string _killedBy, int _daysSurvived)
     {
         if (!_DATA.IsCreatureUnit(_unitID))
             return;
@@ -408,7 +408,7 @@ public class GameManager : Singleton<GameManager>
     private void OnEnable()
     {
         GameEvents.OnGameStateChanged += OnGameStateChanged;
-        GameEvents.OnUnitKilled += OnUnitKilled;
+        GameEvents.OnCreatureKilled += OnUnitKilled;
         GameEvents.OnWispDestroy += OnWispDestroy;
         GameEvents.OnTreePlaced += OnTreePlaced;
         GameEvents.OnTreeDestroyed += OnTreeDestroy;
@@ -425,7 +425,7 @@ public class GameManager : Singleton<GameManager>
     private void OnDisable()
     {
         GameEvents.OnGameStateChanged -= OnGameStateChanged;
-        GameEvents.OnUnitKilled -= OnUnitKilled;
+        GameEvents.OnCreatureKilled -= OnUnitKilled;
         GameEvents.OnWispDestroy -= OnWispDestroy;
         GameEvents.OnTreePlaced -= OnTreePlaced;
         GameEvents.OnTreeDestroyed -= OnTreeDestroy;

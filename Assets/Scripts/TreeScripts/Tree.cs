@@ -36,7 +36,7 @@ public class Tree : GameBehaviour
     public Material summerFoilage;
     public Material winterFoilage;
 
-
+    public ToolID _treeID = ToolID.Tree;
 
  
     void Start()
@@ -181,7 +181,7 @@ public class Tree : GameBehaviour
             fallTree.transform.localScale = transform.localScale;
         }
 
-        GameEvents.ReportOnTreeDestroy();
+        GameEvents.ReportOnTreeDestroy(_treeID);
         Destroy(gameObject);
     }
 

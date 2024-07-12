@@ -22,7 +22,7 @@ public class Enemy : GameBehaviour
     public virtual void Start()
     {
         Setup();
-        GameEvents.ReportOnUnitSpawned(unitID.ToString());
+        GameEvents.ReportOnHumanSpawned(unitID);
     }
 
     private void Setup()

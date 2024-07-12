@@ -955,7 +955,7 @@ public class UIManager : Singleton<UIManager>
 
         GameEvents.OnWildlifeValueChange += OnWildlifeValueChange;
         GameEvents.OnFormationSelected += OnFormationSelected;
-        GameEvents.OnEnemyUnitKilled += OnEnemyUnitKilled;
+        GameEvents.OnHumanKilled += OnEnemyUnitKilled;
     }
 
     private void OnDisable()
@@ -974,7 +974,7 @@ public class UIManager : Singleton<UIManager>
 
         GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange;
         GameEvents.OnFormationSelected -= OnFormationSelected;
-        GameEvents.OnEnemyUnitKilled -= OnEnemyUnitKilled;
+        GameEvents.OnHumanKilled -= OnEnemyUnitKilled;
     }
 }
 

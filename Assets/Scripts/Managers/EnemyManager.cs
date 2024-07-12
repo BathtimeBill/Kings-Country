@@ -174,13 +174,13 @@ public class EnemyManager : Singleton<EnemyManager>
 
     private void OnEnable()
     {
-        GameEvents.OnEnemyUnitKilled += OnEnemyUnitKilled;
+        GameEvents.OnHumanKilled += OnEnemyUnitKilled;
 
     }
 
     private void OnDisable()
     {
-        GameEvents.OnEnemyUnitKilled -= OnEnemyUnitKilled;
+        GameEvents.OnHumanKilled -= OnEnemyUnitKilled;
     }
 }
 
