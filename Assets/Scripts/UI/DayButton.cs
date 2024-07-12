@@ -2,6 +2,7 @@ using UnityEngine.EventSystems;
 
 public class DayButton : InteractableButton
 {
+    public InGamePanel dayPanel;
     public override void Start()
     {
         base.Start();
@@ -15,11 +16,16 @@ public class DayButton : InteractableButton
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
+        base.OnPointerEnter(eventData);
         _SM.PlaySound(_SM.buttonClickSound);
+        if(_buildPhase)
+            dayPanel.PointerEnter(eventData);
     }
 
     public override void OnPointerExit(PointerEventData eventData)
     {
+        base.OnPointerEnter(eventData);
+        dayPanel.PointerExit(eventData);
         //_SM.PlaySound(_SM.buttonClickSound);
     }
 

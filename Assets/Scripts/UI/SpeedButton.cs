@@ -1,4 +1,3 @@
-using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,6 +6,7 @@ public class SpeedButton : InteractableButton
     public bool isFast;
     public Sprite normalSpeedIcon;
     public Sprite fastSpeedIcon;
+    public InGamePanel speedPanel;
 
     public override void Start()
     {
@@ -32,16 +32,21 @@ public class SpeedButton : InteractableButton
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
+        base.OnPointerEnter(eventData);
+        speedPanel.PointerEnter(eventData);
         _SM.PlaySound(_SM.buttonClickSound);
     }
 
     public override void OnPointerExit(PointerEventData eventData)
     {
+        base.OnPointerExit(eventData);
+        speedPanel.PointerExit(eventData);
         //_SM.PlaySound(_SM.buttonClickSound);
     }
 
     public override void OnPointerClick(PointerEventData eventData)
     {
+        base.OnPointerClick(eventData);
         _SM.PlaySound(_SM.buttonClickSound);
     }
     #endregion

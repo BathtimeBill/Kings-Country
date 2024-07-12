@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class ToolPanel : InGamePanel
 {
@@ -11,13 +8,13 @@ public class ToolPanel : InGamePanel
 
     public override void PointerEnter(ToolButton _toolButton)
     {
-        base.PointerEnter();
+        base.PointerEnter(_toolButton);
         maegenPriceText.text = _DATA.GetTool(_toolButton.toolID).maegenPrice.ToString();
         wildlifePriceText.text = _DATA.GetTool(_toolButton.toolID).wildlifePrice.ToString();
     }
 
-    public override void PointerExit()
+    public override void PointerExit(PointerEventData eventData)
     {
-        base.PointerExit();
+        base.PointerExit(eventData);
     }
 }

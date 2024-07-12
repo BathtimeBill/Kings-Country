@@ -39,7 +39,7 @@ public class ToolButton : InteractableButton
     {
         if (toolPanel == null)
             return;
-        toolPanel.PointerExit();
+        toolPanel.PointerExit(eventData);
     }
 
     #endregion

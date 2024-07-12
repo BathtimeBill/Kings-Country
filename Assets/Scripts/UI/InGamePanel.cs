@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Coffee.UIExtensions;
+using UnityEngine.EventSystems;
 
 public class InGamePanel : GameBehaviour
 {
@@ -32,12 +33,12 @@ public class InGamePanel : GameBehaviour
         descriptionText.text = _DATA.GetTool(_toolButton.toolID).description;
     }
 
-    public virtual void PointerEnter()
+    public virtual void PointerEnter(PointerEventData eventData)
     {
         canvasGroup.gameObject.SetActive(true);
     }
 
-    public virtual void PointerExit()
+    public virtual void PointerExit(PointerEventData eventData)
     {
         canvasGroup.gameObject.SetActive(false);
     }

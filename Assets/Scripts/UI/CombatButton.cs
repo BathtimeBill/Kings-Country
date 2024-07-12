@@ -37,6 +37,6 @@ public class CombatButton : InteractableButton
 
     public override void OnPointerExit(PointerEventData eventData)
     {
-        combatPanel.PointerExit();
+        combatPanel.PointerExit(eventData);
     }
 }
