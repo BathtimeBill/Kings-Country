@@ -211,7 +211,7 @@ public class GameManager : Singleton<GameManager>
     public void BeginNewDay()
     {
         currentDay++;
-        dayAgroTimeLimit = initialAgroLength + (10 * currentDay);  //TODO adds 10 seconds per day 
+        dayAgroTimeLimit = initialAgroLength + 10;  //TODO adds 10 seconds per day 
         ChangeGameState(GameState.Play);
         _EM.BeginNewDay();
         _UI.BeginNewDay();
