@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -167,6 +168,9 @@ public class GameManager : Singleton<GameManager>
             case GameState.Tutorial:
                 Time.timeScale = 1;
                 _UI.TogglePanel(_UI.pausePanel, false);
+                break;
+            case GameState.Lose:
+                Time.timeScale = 1;
                 break;
         }
         GameEvents.ReportOnGameStateChanged(gameState);
@@ -405,6 +409,11 @@ public class GameManager : Singleton<GameManager>
             ChangeGameState(_gameState);
     }
 
+    private void OnGameOver()
+    {
+        ChangeGameState(GameState.Lose);
+    }
+
     private void OnEnable()
     {
         GameEvents.OnGameStateChanged += OnGameStateChanged;
@@ -420,6 +429,7 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnWildlifeKilled += OnWildlifeKilled;
         GameEvents.OnWildlifeValueChange += OnWildlifeValueChange;
+        GameEvents.OnGameOver += OnGameOver;
     }
 
     private void OnDisable()
@@ -437,5 +447,6 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnWildlifeKilled -= OnWildlifeKilled;
         GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange;
+        GameEvents.OnGameOver -= OnGameOver;
     }
 }

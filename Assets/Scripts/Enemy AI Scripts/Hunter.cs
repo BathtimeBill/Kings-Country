@@ -53,14 +53,28 @@ public class Hunter : Enemy
         base.Start();
         horgr = GameObject.FindGameObjectWithTag("HutRally");
         agent.stoppingDistance = range;
-        StartCoroutine(Tick());
+        if (_GM.gameState == GameState.Lose)
+        {
+            OnGameOver();
+        }
+        else
+        {
+            StartCoroutine(Tick());
+        }
         StartCoroutine(WaitForInvincible());
+
     }
     #endregion
 
+
     #region AI
+
     IEnumerator Tick()
     {//Tracks the closest animal and player unit.
+        if (_GM.gameState == GameState.Lose)
+        {
+            StopAllCoroutines();
+        }
         wildlife = GameObject.FindGameObjectsWithTag("Wildlife");
         closestUnit = GetClosestUnit();
         closestWildlife = GetClosestWildlife();

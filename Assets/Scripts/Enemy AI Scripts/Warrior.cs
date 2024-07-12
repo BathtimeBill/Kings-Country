@@ -52,7 +52,14 @@ public class Warrior : Enemy
         base.Start();
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
         horgr = GameObject.FindGameObjectWithTag("HorgrRally");
-        StartCoroutine(Tick());
+        if(_GM.gameState == GameState.Lose)
+        {
+            OnGameOver();
+        }
+        else
+        {
+            StartCoroutine(Tick());
+        }
         StartCoroutine(WaitForInvincible());
     }
     #endregion
@@ -60,6 +67,10 @@ public class Warrior : Enemy
     #region AI
     IEnumerator Tick()
     {
+        if (_GM.gameState == GameState.Lose)
+        {
+            StopAllCoroutines();
+        }
         closestUnit = GetClosestUnit();
 
         if (UnitSelection.Instance.unitList.Count != 0)

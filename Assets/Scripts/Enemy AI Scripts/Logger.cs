@@ -51,7 +51,14 @@ public class Logger : Enemy
         base.Start();
         state = EnemyState.Work;
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
-        StartCoroutine(Tick());
+        if (_GM.gameState == GameState.Lose)
+        {
+            OnGameOver();
+        }
+        else
+        {
+            StartCoroutine(Tick());
+        }
         StartCoroutine(WaitForInvincible());
     }
     #endregion
@@ -59,6 +66,11 @@ public class Logger : Enemy
     #region AI
     IEnumerator Tick()
     {
+        if (_GM.gameState == GameState.Lose)
+        {
+            StopAllCoroutines();
+        }
+
         if (UnitSelection.Instance.unitList.Count != 0)
         {
             closestUnit = GetClosestUnit();
@@ -70,13 +82,14 @@ public class Logger : Enemy
             distanceFromClosestTree = Vector3.Distance(closestTree.transform.position, transform.position);
         }
 
-        if (UnitSelection.Instance.unitList.Count == 0)
-        {
-            state = EnemyState.Work;
-        }
+        //if (UnitSelection.Instance.unitList.Count == 0)
+        //{
+        //    state = EnemyState.Work;
+        //}
 
         switch (state)
         {
+
             case EnemyState.Work:
 
                 if (distanceFromClosestUnit < 30)
@@ -107,7 +120,7 @@ public class Logger : Enemy
                 break;
 
             case EnemyState.Attack:
-                if(UnitSelection.Instance.unitList.Count != 0)
+                if(UnitSelection.Instance.unitList.Count > 0)
                 {
                     if (distanceFromClosestUnit >= 30)
                     {
@@ -118,20 +131,9 @@ public class Logger : Enemy
                 }
                 else
                 {
-                    agent.SetDestination(transform.position);
                     state = EnemyState.Cheer;
                 }
 
-                if (closestUnit.tag == "LeshyUnit")
-                {
-                    if (woodcutterType != WoodcutterType.LogCutter)
-                        agent.stoppingDistance = 6;
-
-                }
-                else
-                {
-                    agent.stoppingDistance = loggerStoppingDistance;
-                }
                 break;
             case EnemyState.Beacon:
                 if (!hasArrivedAtBeacon)
@@ -346,7 +348,7 @@ public class Logger : Enemy
         {
             state = EnemyState.Work;
         }
-
+        agent.SetDestination(closestUnit.transform.position);
     }
     public void FindHomeTree()
     {

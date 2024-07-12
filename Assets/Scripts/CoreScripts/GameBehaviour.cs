@@ -133,6 +133,7 @@ public enum GameState
     Glossary,
     Tutorial,
     Transitioning,
+    Lose,
 }
 public enum PlayMode
 {
