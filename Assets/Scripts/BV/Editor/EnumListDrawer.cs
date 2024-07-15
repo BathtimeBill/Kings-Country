@@ -1,27 +1,11 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
+using System;
 using UnityEditor;
+using UnityEngine;
 
-// Based on: https://forum.unity3d.com/threads/generic-editor-array-propertyattribute-tools.240895/
 namespace BV
 {
-	public class EnumListAttribute : PropertyAttribute
-	{
-		public readonly Type enumType;
-		public readonly int startIndex;
-		public EnumListAttribute (Type t) {
-			enumType = t;
-			startIndex = 0;
-		}
-		public EnumListAttribute (Type t, int i) {
-			enumType = t;
-			startIndex = i;
-		}
-	}
-
     [CustomPropertyDrawer(typeof(EnumListAttribute))]
-    public class EnumListAttributeDrawer : PropertyDrawer
+    public class EnumListDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {

@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.UIElements;
+#if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.UIElements;
+#endif
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -291,6 +293,7 @@ public class GlossaryManager : GameBehaviour
     #endregion
 
     #region Editor
+    #if UNITY_EDITOR
     // IngredientDrawerUIE
     [CustomPropertyDrawer(typeof(GlossaryItem))]
     public class GlossaryItemUIE : PropertyDrawer
@@ -311,7 +314,8 @@ public class GlossaryManager : GameBehaviour
             return container;
         }
     }
-    #endregion
+#endif
+#endregion
 }
 
 [System.Serializable]

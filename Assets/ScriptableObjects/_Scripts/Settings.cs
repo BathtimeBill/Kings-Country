@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using DG.Tweening;
-using BGG;
-using UnityEditor.UIElements;
-using UnityEngine.UIElements;
 
 [CreateAssetMenu(fileName = "Settings", menuName = "BGG/Settings", order = 1)]
 public class Settings : ScriptableObject
@@ -44,6 +43,7 @@ public class Settings : ScriptableObject
     public List<Experience> experience;
 
     #region Editor
+#if UNITY_EDITOR
     public void LoadDataFromFile()
     {
         string[,] grid = CSVReader.GetCSVGrid("/Assets/_Balancing/" + experienceFile.name + ".csv");
@@ -91,7 +91,7 @@ public class Settings : ScriptableObject
         }
     }
 
-#if UNITY_EDITOR
+
     [CustomEditor(typeof(Settings))]
     [CanEditMultipleObjects]
 
@@ -417,7 +417,7 @@ public class Testing
     public bool allGlossaryUnlocked = false;
     [Tooltip("Will override the save data values")]
     public bool overrideTutorial;
-    [DrawIf("overrideTutorial", true)]
+    [BV.DrawIf("overrideTutorial", true)]
     public bool showTutorial;
 }
 

@@ -13,7 +13,7 @@ public class StartLevelButton : HoldButton
     {
         base.OnButtonFilled();
         SetInteractable(false);
-        titleManager.sceneManager.LoadScene(_DATA.GetLevel(titleManager.overworldManager.selectedLevel).levelScene);
+        titleManager.sceneManager.LoadScene(_DATA.GetLevel(titleManager.overworldManager.selectedLevel).levelReference);
         GameEvents.ReportOnLevelStart();
     }
 

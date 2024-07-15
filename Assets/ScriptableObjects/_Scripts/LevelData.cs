@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Level Data", menuName = "BGG/Level Data", order = 6)]
@@ -7,6 +9,8 @@ public class LevelData : ScriptableObject
 {
     public LevelID id;
     public new string name;
+    [Tooltip("The name of the unity scene")]
+    public string levelReference;
     [TextArea]
     public string description;
     public LevelNumber number;
@@ -14,7 +18,6 @@ public class LevelData : ScriptableObject
     public int days;
     public int spawnPoints;
     public Sprite icon;
-    public SceneAsset levelScene;
     public bool unlocked;
     [BV.EnumList(typeof(SeasonID))]
     public List<SeasonID> unlockedSeasons;
@@ -28,6 +31,7 @@ public class LevelData : ScriptableObject
     public List<SpawnAmounts> spawnAmounts;
 
     #region Editor
+#if UNITY_EDITOR
     [Header("CSV File")]
     public TextAsset csvFile;
     public void LoadDataFromFile()
@@ -100,7 +104,7 @@ public class LevelData : ScriptableObject
         AssetDatabase.SaveAssets();
     }
 
-#if UNITY_EDITOR
+
     [CustomEditor(typeof(LevelData))]
     public class LevelDataEditor : Editor
     {

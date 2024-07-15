@@ -1,11 +1,11 @@
 public class UnitWeaponCollider : GameBehaviour
 {
     public UnitType unitType;
-    [DrawIf("unitType", UnitType.Creature)]
+    [BV.DrawIf("unitType", UnitType.Creature)]
     public CreatureID creatureID;
-    [DrawIf("unitType", UnitType.Human)]
+    [BV.DrawIf("unitType", UnitType.Human)]
     public HumanID humanID;
-    [DrawIf("unitType", UnitType.Building)]
+    [BV.DrawIf("unitType", UnitType.Building)]
     public BuildingID buildingID;
 
     private int damage;

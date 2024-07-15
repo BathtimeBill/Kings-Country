@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using UnityEditor.UIElements;
+#if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.UIElements;
+#endif
 using UnityEngine.UIElements;
 
 public class TutorialManager : GameBehaviour
@@ -628,6 +630,7 @@ public class TutorialManager : GameBehaviour
     #endregion
 
     #region Editor
+    #if UNITY_EDITOR
     // IngredientDrawerUIE
     [CustomPropertyDrawer(typeof(Tutorial))]
     public class TutorialUIE : PropertyDrawer
@@ -657,7 +660,8 @@ public class TutorialManager : GameBehaviour
             return container;
         }
     }
-    #endregion
+#endif
+#endregion
 }
 
 [System.Serializable]

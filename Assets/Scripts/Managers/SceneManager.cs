@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class SceneManager : GameBehaviour
 {
@@ -25,10 +27,10 @@ public class SceneManager : GameBehaviour
     {
         sceneToLoad = _sceneName;
     }
-    public void LoadScene(SceneAsset _scene)
-    {
-        TransitionOut(_scene.name);
-    }
+    //public void LoadScene(SceneAsset _scene)
+    //{
+    //    TransitionOut(_scene.name);
+    //}
     public void LoadScene(string _scene)
     {
         TransitionOut(_scene);

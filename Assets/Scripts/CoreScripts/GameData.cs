@@ -74,6 +74,7 @@ public class GameData : Singleton<GameData>
     #endregion
 
     #region Editor
+#if UNITY_EDITOR
     [Header("Unit CSV Files")]
     public TextAsset creatureDataSheet;
     public TextAsset humanDataSheet;
@@ -219,7 +220,7 @@ public class GameData : Singleton<GameData>
         AssetDatabase.SaveAssets();
     }
 
-#if UNITY_EDITOR
+
     [CustomEditor(typeof(GameData))]
     public class GameDataEditor : Editor
     {
