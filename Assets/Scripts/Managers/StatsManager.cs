@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine;
+//using UnityEngine.UIElements;
 public class StatsManager : GameBehaviour
 {
     [Header("Trees")]
     public TreeStats treeStats;
 
+    [Header("Death Stats")]
+    public HumanDeathStats humanDeathStats;
 
     [Header("Detailed Kill Stats")]
     public UnitKillStats unit1;
@@ -52,15 +55,20 @@ public class StatsManager : GameBehaviour
         int ficusDestroyed = stats.ficusLost;
         treeStats.treePlanted.text = treesPlanted.ToString();
         treeStats.treeDestroyed.text = treesDestroyed.ToString();
+        treeStats.treeRatio.text = MathX.CalculateWinLossRatio(treesPlanted, treesDestroyed).ToString("F2") + "%";
         treeStats.willowPlanted.text = willowPlanted.ToString();
         treeStats.willowDestroyed.text = willowDestroyed.ToString();
+        treeStats.willowRatio.text = MathX.CalculateWinLossRatio(willowPlanted, willowDestroyed).ToString("F2") + "%";
         treeStats.ficusPlanted.text = ficusPlanted.ToString();
         treeStats.ficusDestroyed.text = ficusDestroyed.ToString();
-        treeStats.treePlanted.text = stats.treesPlanted.ToString();
+        treeStats.ficusRatio.text = MathX.CalculateWinLossRatio(ficusPlanted, ficusDestroyed).ToString("F2") + "%";
 
         treeStats.totalPlanted.text = (treesPlanted + willowPlanted + ficusPlanted).ToString();
         treeStats.totalDestroyed.text = (treesDestroyed + willowDestroyed + ficusDestroyed).ToString();
+        treeStats.totalRatio.text = MathX.CalculateWinLossRatio((treesPlanted + willowPlanted + ficusPlanted), (treesDestroyed + willowDestroyed + ficusDestroyed)).ToString("F2") + "%";
 
+        //Humans
+        SetHumanDeathCount();
     }
 
     public void FillDetailedStatPanel(BuildingID _buildingID)
@@ -101,21 +109,21 @@ public class StatsManager : GameBehaviour
             return;
         }
 
-        FillUnitStat(us, HumanID.Logger, _stats, 0);
-        FillUnitStat(us, HumanID.Lumberjack, _stats, 1);
-        FillUnitStat(us, HumanID.LogCutter, _stats, 2);
-        FillUnitStat(us, HumanID.Poacher, _stats, 3);
-        FillUnitStat(us, HumanID.Wathe, _stats, 4);
-        FillUnitStat(us, HumanID.Bjornjeger, _stats, 5);
-        FillUnitStat(us, HumanID.Dreng, _stats, 6);
-        FillUnitStat(us, HumanID.Berserkr, _stats, 7);
-        FillUnitStat(us, HumanID.Knight, _stats, 8);
-        FillUnitStat(us, HumanID.Dog, _stats, 9);
-        FillUnitStat(us, HumanID.Spy, _stats, 10);
-        FillUnitStat(us, HumanID.Lord, _stats, 11);
+        FillUnitStatDetailed(us, HumanID.Logger, _stats, 0);
+        FillUnitStatDetailed(us, HumanID.Lumberjack, _stats, 1);
+        FillUnitStatDetailed(us, HumanID.LogCutter, _stats, 2);
+        FillUnitStatDetailed(us, HumanID.Poacher, _stats, 3);
+        FillUnitStatDetailed(us, HumanID.Wathe, _stats, 4);
+        FillUnitStatDetailed(us, HumanID.Bjornjeger, _stats, 5);
+        FillUnitStatDetailed(us, HumanID.Dreng, _stats, 6);
+        FillUnitStatDetailed(us, HumanID.Berserkr, _stats, 7);
+        FillUnitStatDetailed(us, HumanID.Knight, _stats, 8);
+        FillUnitStatDetailed(us, HumanID.Dog, _stats, 9);
+        FillUnitStatDetailed(us, HumanID.Spy, _stats, 10);
+        FillUnitStatDetailed(us, HumanID.Lord, _stats, 11);
     }
 
-    private void FillUnitStat(UnitStats _us, HumanID _id, UnitKillStats _uks, int _position)
+    private void FillUnitStatDetailed(UnitStats _us, HumanID _id, UnitKillStats _uks, int _position)
     {
         //int 
         //Kills
@@ -130,7 +138,7 @@ public class StatsManager : GameBehaviour
 
         //Ratio
         double winLossPercentage = MathX.CalculateWinLossRatio(killAmount, deathAmount);
-        _uks.ratio[_position].text = winLossPercentage.ToString()+"%";
+        _uks.ratio[_position].text = winLossPercentage.ToString("F2") +"%";
 
         //if (winLossPercentage > 1) _uks.ratio[_position].color = _COLOUR.upgradeIncreaseColor;
         //else if (winLossPercentage < 1) _uks.ratio[_position].color = _COLOUR.upgradeDecreaseColor;
@@ -158,7 +166,7 @@ public class StatsManager : GameBehaviour
         _uks.totalDeathsText.text = totalDeathAmount.ToString();
 
         double totalWinLossPercentage = MathX.CalculateWinLossRatio(totalKillAmount, totalDeathAmount);
-        _uks.totalRatioText.text = totalWinLossPercentage.ToString() + "%";
+        _uks.totalRatioText.text = totalWinLossPercentage.ToString("F2") + "%";
         //_uks.totalRatioText.color = winLossPercentage > 1 ? _COLOUR.upgradeIncreaseColor : winLossPercentage < 0 ? _COLOUR.upgradeDecreaseColor : Color.white;
     }
 
@@ -173,6 +181,22 @@ public class StatsManager : GameBehaviour
         _stats.totalKillsText.text = "0";
         _stats.totalDeathsText.text = "0";
         _stats.totalRatioText.text = "0.0%";
+    }
+
+    public void SetHumanDeathCount()
+    {
+        humanDeathStats.logger.text     = _SAVE.GetDeathCount(HumanID.Logger.ToString()).ToString();
+        humanDeathStats.lumberjack.text = _SAVE.GetDeathCount(HumanID.Lumberjack.ToString()).ToString();
+        humanDeathStats.logCutter.text  = _SAVE.GetDeathCount(HumanID.LogCutter.ToString()).ToString();
+        humanDeathStats.wathe.text      = _SAVE.GetDeathCount(HumanID.Wathe.ToString()).ToString();
+        humanDeathStats.poacher.text    = _SAVE.GetDeathCount(HumanID.Poacher.ToString()).ToString();
+        humanDeathStats.bjornjeger.text = _SAVE.GetDeathCount(HumanID.Bjornjeger.ToString()).ToString();
+        humanDeathStats.dreng.text      = _SAVE.GetDeathCount(HumanID.Dreng.ToString()).ToString();
+        humanDeathStats.berserkr.text   = _SAVE.GetDeathCount(HumanID.Berserkr.ToString()).ToString();
+        humanDeathStats.knight.text     = _SAVE.GetDeathCount(HumanID.Knight.ToString()).ToString();
+        humanDeathStats.spy.text        = _SAVE.GetDeathCount(HumanID.Spy.ToString()).ToString();
+        humanDeathStats.dog.text        = _SAVE.GetDeathCount(HumanID.Dog.ToString()).ToString();
+        humanDeathStats.lord.text       = _SAVE.GetDeathCount(HumanID.Lord.ToString()).ToString();
     }
 }
 
@@ -207,3 +231,19 @@ public class TreeStats
     public TMP_Text totalRatio;
 }
 
+[System.Serializable]
+public class HumanDeathStats
+{
+    public TMP_Text logger;
+    public TMP_Text lumberjack;
+    public TMP_Text logCutter;
+    public TMP_Text wathe;
+    public TMP_Text poacher;
+    public TMP_Text bjornjeger;
+    public TMP_Text dreng;
+    public TMP_Text berserkr;
+    public TMP_Text knight;
+    public TMP_Text spy;
+    public TMP_Text dog;
+    public TMP_Text lord;
+}

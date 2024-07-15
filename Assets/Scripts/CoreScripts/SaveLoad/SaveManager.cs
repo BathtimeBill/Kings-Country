@@ -83,13 +83,7 @@ public class PlayerStats
     public int ficusPlanted;
     public int ficusLost;
 
-    //public int satyrSummoned;
-    //public int satyrKilled;
-    //public int orcusSummoned;
-    //public int orcusKilled;
-    //public int satyrSummoned;
-    //public int satyrKilled;
-
+    public Dictionary<string, int> deaths = new Dictionary<string, int>();
 }
 
 [Serializable]
@@ -235,6 +229,7 @@ Debug.unityLogger.filterLogType = LogType.Exception;
         save.playerSettings.panelColour = PanelColourID.Black;
 
         save.playerStats = new PlayerStats();
+        save.playerStats.deaths = new Dictionary<string, int>();
 
         save.playTime = new PlayTimeObject();
 
@@ -453,9 +448,28 @@ Debug.unityLogger.filterLogType = LogType.Exception;
         int killAmount = stat.iHaveKilled.Find(x=>x.killedID == _killedID).amount;
         return killAmount;
     }
+    public int GetDeathCount(string _unitID)
+    {
+        if (save.playerStats.deaths.ContainsKey(_unitID))
+            return save.playerStats.deaths[_unitID];
+        else
+        {
+            save.playerStats.deaths.Add(_unitID.ToString(), 0);
+            return 0;
+        }
+    }
+    public void IncrementDeathCount(string _unitID)
+    {
+        int currentDeathCount = GetDeathCount(_unitID.ToString());
+        currentDeathCount += 1;
+        //Debug.Log(_unitID + " has been killed a total of " + currentDeathCount);
+        save.playerStats.deaths[_unitID] = currentDeathCount;
+    }
 
     public void OnCreatureKilled(string _creature, string _killer, int _daysSurvived)
     {
+        IncrementDeathCount(_creature);
+
         //print(_creature + " was killed by " + _killer);
         UnitStats stat = GetUnitStats(_creature);
         if (stat == null)
@@ -485,6 +499,8 @@ Debug.unityLogger.filterLogType = LogType.Exception;
 
     public void OnHumanKilled(Enemy _enemy, string _creature)
     {
+        IncrementDeathCount(_enemy.unitID.ToString());
+
         UnitStats stat = GetUnitStats(_creature);
         if (stat == null)
         {
