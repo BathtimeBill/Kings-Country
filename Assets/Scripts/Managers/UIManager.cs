@@ -641,8 +641,8 @@ public class UIManager : Singleton<UIManager>
             PerkID perk2 = _PERK.GetRandomPerk();
             _PERK.RemovePerk(perk2);
 
-            print(upgradeButton1.name);
-            print(upgradeButton2.name);
+            //print(upgradeButton1.name);
+            //print(upgradeButton2.name);
             upgradeButton1.SetUpgrade(perk1);
             upgradeButton2.SetUpgrade(perk2);
 

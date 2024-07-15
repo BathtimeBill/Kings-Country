@@ -77,10 +77,10 @@ public class EnemyManager : Singleton<EnemyManager>
             currentDaySpawnAmount.lumberjack +
             currentDaySpawnAmount.logcutter +
             currentDaySpawnAmount.wathe + 
-            currentDaySpawnAmount.hunter + 
+            currentDaySpawnAmount.poacher + 
             currentDaySpawnAmount.bjornjeger + 
             currentDaySpawnAmount.dreng + 
-            currentDaySpawnAmount.bezerker + 
+            currentDaySpawnAmount.berserkr + 
             currentDaySpawnAmount.knight;
     }
 
@@ -97,13 +97,13 @@ public class EnemyManager : Singleton<EnemyManager>
             case HumanID.Wathe:
                 return currentDaySpawnAmount.wathe;
             case HumanID.Poacher:
-                return currentDaySpawnAmount.hunter;
+                return currentDaySpawnAmount.poacher;
             case HumanID.Bjornjeger:
                 return currentDaySpawnAmount.bjornjeger;
             case HumanID.Dreng:
                 return currentDaySpawnAmount.dreng;
-            case HumanID.Bezerker:
-                return currentDaySpawnAmount.bezerker;
+            case HumanID.Berserkr:
+                return currentDaySpawnAmount.berserkr;
             case HumanID.Knight:
                 return currentDaySpawnAmount.knight;
             default:
@@ -147,14 +147,14 @@ public class EnemyManager : Singleton<EnemyManager>
             enemyIDList.Add(HumanID.LogCutter);
         for (int i = 0; i < currentDaySpawnAmount.wathe; i++)
             enemyIDList.Add(HumanID.Wathe);
-        for (int i = 0; i < currentDaySpawnAmount.hunter; i++)
+        for (int i = 0; i < currentDaySpawnAmount.poacher; i++)
             enemyIDList.Add(HumanID.Poacher);
         for (int i = 0; i < currentDaySpawnAmount.bjornjeger; i++)
             enemyIDList.Add(HumanID.Bjornjeger);
         for (int i = 0; i < currentDaySpawnAmount.dreng; i++)
             enemyIDList.Add(HumanID.Dreng);
-        for (int i = 0; i < currentDaySpawnAmount.bezerker; i++)
-            enemyIDList.Add(HumanID.Bezerker);
+        for (int i = 0; i < currentDaySpawnAmount.berserkr; i++)
+            enemyIDList.Add(HumanID.Berserkr);
         for (int i = 0; i < currentDaySpawnAmount.knight; i++)
             enemyIDList.Add(HumanID.Knight);
 
@@ -165,7 +165,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
     private void OnEnemyUnitKilled(Enemy _enemy, string _killedBy)
     {
-        print(_enemy.unitID + " was killed");
+        //print(_enemy.unitID + " was killed");
         enemies.Remove(_enemy.gameObject);
         CheckEnemiesLeft();
         currentKillCount += 1;
@@ -191,9 +191,9 @@ public class SpawnAmounts
     public int lumberjack;
     public int logcutter;
     public int wathe;
-    public int hunter;
+    public int poacher;
     public int bjornjeger;
     public int dreng;
-    public int bezerker;
+    public int berserkr;
     public int knight;
 }

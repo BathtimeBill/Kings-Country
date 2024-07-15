@@ -310,7 +310,7 @@ public class GameManager : Singleton<GameManager>
 
     public void OnDayOver()
     {
-        print(currentDay + " / " + _DATA.levelMaxDays);
+        //print(currentDay + " / " + _DATA.levelMaxDays);
         if(currentDay == _DATA.levelMaxDays)
         {
             SetGame();

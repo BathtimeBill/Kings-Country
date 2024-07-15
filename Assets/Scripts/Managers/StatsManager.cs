@@ -108,7 +108,7 @@ public class StatsManager : GameBehaviour
         FillUnitStat(us, HumanID.Wathe, _stats, 4);
         FillUnitStat(us, HumanID.Bjornjeger, _stats, 5);
         FillUnitStat(us, HumanID.Dreng, _stats, 6);
-        FillUnitStat(us, HumanID.Bezerker, _stats, 7);
+        FillUnitStat(us, HumanID.Berserkr, _stats, 7);
         FillUnitStat(us, HumanID.Knight, _stats, 8);
         FillUnitStat(us, HumanID.Dog, _stats, 9);
         FillUnitStat(us, HumanID.Spy, _stats, 10);

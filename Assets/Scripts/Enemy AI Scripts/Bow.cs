@@ -51,13 +51,13 @@ public class Bow : GameBehaviour
     {
         if (_HUTM.enemies.Contains(transform.parent.gameObject))
         {
-            Debug.Log(name + " is in the enemy list");
+            //Debug.Log(name + " is in the enemy list");
             if (_HUTM.units.Count == 0)
                 animator.SetBool("allWildlifeDead", true);
         }
         else
         {
-            Debug.Log(name + " is NOT the enemy list");
+            //Debug.Log(name + " is NOT the enemy list");
         }
     }
 

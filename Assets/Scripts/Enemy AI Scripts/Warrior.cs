@@ -18,9 +18,6 @@ public class Warrior : Enemy
     public GameObject fyreBeacon;
     public GameObject deadWarriorFire;
 
-    [Header("Death Objects")]
-    private float damping = 5;
-
     [Header("Components")]
     public Transform closestUnit;
     public float distanceFromClosestUnit;

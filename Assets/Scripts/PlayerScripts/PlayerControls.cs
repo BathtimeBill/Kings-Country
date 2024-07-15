@@ -548,7 +548,7 @@ public class PlayerControls : Singleton<PlayerControls>
 
     public void OnUnitMove()
     {
-        Debug.Log("Target Moving");
+        //Debug.Log("Target Moving");
         targetPointerGraphics.GetComponent<Animator>().SetTrigger("Move");
     }
     IEnumerator DisablePointerDelay()

@@ -25,8 +25,9 @@ public class UpgradeManager : Singleton<UpgradeManager>
 
     private Animator anim;
 
-    private void Awake()
+    private new void Awake()
     {
+        base.Awake();
         anim = GetComponent<Animator>();
     }
 

@@ -189,7 +189,7 @@ public enum HumanID
     Poacher,
     Bjornjeger,
     Dreng,
-    Bezerker,
+    Berserkr,
     Knight,
     Dog,
     Spy,
@@ -324,7 +324,7 @@ public enum ObjectID
     Horgr       = 50, Mistcalf, Huldra, Skuggi,
     Woodcutter  = 60, Logger, Lumberjack, Logcutter,
     Hunter      = 70, Poacher, Wathe, Bjornjeger,
-    Warrior     = 80, Berzerkr, Dreng, Knight,
+    Warrior     = 80, Berserkr, Dreng, Knight,
     Special     = 90, Lord, Spy, Dog, Mine, Unknown
 }
 

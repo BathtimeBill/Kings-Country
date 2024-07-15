@@ -96,7 +96,18 @@ public class SceneManager : GameBehaviour
     //Quit Button
     public void QuitGame()
     {
-        Application.Quit();
+        
+        switch (_TWEENING.sceneTransitionType)
+        {
+            case TransitionType.Fade:
+                FadeX.FadeIn(transitionPanel, 2f, _TWEENING.sceneTransitionEase, true, () => Application.Quit());
+                break;
+            case TransitionType.Fill:
+                transitionImage.fillAmount = 0;
+                transitionPanel.alpha = 1;
+                TweenX.TweenFill(transitionImage, 2f, _TWEENING.sceneTransitionEase, 1f, () => Application.Quit());
+                break;
+        }
     }
 }
 

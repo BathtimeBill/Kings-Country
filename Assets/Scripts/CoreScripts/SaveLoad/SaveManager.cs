@@ -158,6 +158,11 @@ public class SaveDataObject : BGG.GameDataBase
 //
 public class SaveManager : BGG.GameData
 {
+
+#if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
+Debug.unityLogger.filterLogType = LogType.Exception;
+#endif
+
     public Settings settings;
     //[HideInInspector]
     public SaveDataObject save = new SaveDataObject();
@@ -498,7 +503,7 @@ public class SaveManager : BGG.GameData
             killStats.Add(ks);
         }
         ks.amount += 1;
-        print(stat.unitID + " has killed " + ks.killedID + " " + ks.amount + " times");
+        //print(stat.unitID + " has killed " + ks.killedID + " " + ks.amount + " times");
         SaveData();
     }
 

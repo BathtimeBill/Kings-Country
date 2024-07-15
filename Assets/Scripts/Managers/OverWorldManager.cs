@@ -34,6 +34,7 @@ public class OverWorldManager : GameBehaviour
     [Header("Level Icons")]
     public BuildingLevelIcons buildingLevelIcons;
     public HumanLevelIcons humanLevelIcons;
+    public Image[] levelStars;
 
     private LevelData levelData = null;
 
@@ -140,11 +141,26 @@ public class OverWorldManager : GameBehaviour
         humanLevelIcons.hunterIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Poacher) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         humanLevelIcons.bjornjegerIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Bjornjeger) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         humanLevelIcons.drengIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Dreng) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        humanLevelIcons.bezerkrIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Bezerker) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        humanLevelIcons.bezerkrIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Berserkr) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         humanLevelIcons.knightIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Knight) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         humanLevelIcons.lordIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Lord) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         humanLevelIcons.dogIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Dog) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         humanLevelIcons.spyIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Spy) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+
+        ShowStars(_levelData);
+    }
+
+    private void ShowStars(LevelData _levelData)
+    {
+        int amount = (int)_levelData.difficultyRating;
+        for(int i=0;i<levelStars.Length;i++)
+        {
+            if(i <= amount)
+                levelStars[i].DOColor(_COLOUR.toggleIconHighlightColor, levelIconsTweenTime);
+            else
+                levelStars[i].DOColor(Color.black, levelIconsTweenTime);
+        }
+
     }
 
     public void ChangeSeason(SeasonID _seasonID)
@@ -190,9 +206,9 @@ public class OverWorldManager : GameBehaviour
         }
         else
         {
-            seasonUnlockCondition.text = "Unlock at EXP lvl 21 (Grove Master)";
+            //seasonUnlockCondition.text = "Unlock at EXP lvl 21 (Grove Master)";
+            seasonUnlockCondition.text = "Not available in this demo.";
         }
-        
     }
 }
 

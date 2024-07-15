@@ -33,7 +33,7 @@ public class WarriorManager : GameBehaviour
             {
                 Instantiate(dreng, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
             }
-            for (int i = 0; i < _EM.GetHumanDayLimit(HumanID.Bezerker); i++)
+            for (int i = 0; i < _EM.GetHumanDayLimit(HumanID.Berserkr); i++)
             {
                 Instantiate(berserkr, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
             }

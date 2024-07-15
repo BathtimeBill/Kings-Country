@@ -13,7 +13,6 @@ public class LevelData : ScriptableObject
     public string levelReference;
     [TextArea]
     public string description;
-    public LevelNumber number;
     public DifficultyRating difficultyRating;
     public int days;
     public int spawnPoints;
@@ -75,7 +74,7 @@ public class LevelData : ScriptableObject
                     sa.wathe = int.TryParse(item.Value, out sa.wathe) ? sa.wathe : 0;
 
                 if (item.Key.Contains(HumanID.Poacher.ToString()))
-                    sa.hunter = int.TryParse(item.Value, out sa.hunter) ? sa.hunter : 0;
+                    sa.poacher = int.TryParse(item.Value, out sa.poacher) ? sa.poacher : 0;
 
                 if (item.Key.Contains(HumanID.Bjornjeger.ToString()))
                     sa.bjornjeger = int.TryParse(item.Value, out sa.bjornjeger) ? sa.bjornjeger : 0;
@@ -83,8 +82,8 @@ public class LevelData : ScriptableObject
                 if (item.Key.Contains(HumanID.Dreng.ToString()))
                     sa.dreng = int.TryParse(item.Value, out sa.dreng) ? sa.dreng : 0;
 
-                if (item.Key.Contains(HumanID.Bezerker.ToString()))
-                    sa.bezerker = int.TryParse(item.Value, out sa.bezerker) ? sa.bezerker : 0;
+                if (item.Key.Contains(HumanID.Berserkr.ToString()))
+                    sa.berserkr = int.TryParse(item.Value, out sa.berserkr) ? sa.berserkr : 0;
 
                 if (item.Key.Contains(HumanID.Knight.ToString()))
                     sa.knight = int.TryParse(item.Value, out sa.knight) ? sa.knight : 0;

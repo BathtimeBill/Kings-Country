@@ -14,8 +14,6 @@ public class EffectsManager : Singleton<EffectsManager>
 
     private float startVignetteValue;
 
-    private float defaultTweenTime = 1f;
-
     private void Start()
     {
         globalVolume.profile.TryGet(out vignette);

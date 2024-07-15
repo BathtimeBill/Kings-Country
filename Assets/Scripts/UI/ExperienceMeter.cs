@@ -10,12 +10,15 @@ public class ExperienceMeter : GameBehaviour
     public TMP_Text currentEXPText;
     public TMP_Text nextEXPText;
     public Image progressFill;
+    //public Settings settings;
 
     private ExperienceObject experience;
     private int currentLevel;
     private float currentEXP;
     private int nextEXP;
     private bool leveledUp = false;
+
+    //public Experience _EX(int i) => settings.experience.Find(x => x.level == i);
     private bool atMaxLevel => currentLevel == _SETTINGS.experience.Count;
 
     private string CurrentTitle => _EXP(currentLevel).title;
@@ -28,11 +31,14 @@ public class ExperienceMeter : GameBehaviour
 
     void Start()
     {
-        experience = _SAVE.GetExperience();
-        currentLevel = experience.currentLevel;
-        currentEXP = experience.currentEXP;
-        nextEXP = NextRequirement;
-        SetStartValues();
+        ExecuteNextFrame(() =>
+        {
+            experience = _SAVE.GetExperience();
+            currentLevel = experience.currentLevel;
+            currentEXP = experience.currentEXP;
+            nextEXP = NextRequirement;
+            SetStartValues();
+        });
     }
 
     private void SetStartValues()

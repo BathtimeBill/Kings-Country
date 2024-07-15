@@ -346,13 +346,13 @@ public class UnitSelection : GameBehaviour
         }
         if(containsHuldra)
         {
-            Debug.Log("A Huldra is selected");
+            //Debug.Log("A Huldra is selected");
             _UI.EnableTowerText();
             //_GM.boundry.SetActive(true);
         }
         else
         {
-            Debug.Log("No Huldra is selected");
+            //Debug.Log("No Huldra is selected");
         }
 
     }

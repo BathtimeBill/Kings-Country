@@ -587,7 +587,7 @@ public class Unit : GameBehaviour
         {
             if (unitID != CreatureID.Leshy)
             {
-                TakeDamage(_DATA.GetUnit(HumanID.Bezerker).id.ToString(), _DATA.GetUnit(HumanID.Bezerker).damage);
+                TakeDamage(_DATA.GetUnit(HumanID.Berserkr).id.ToString(), _DATA.GetUnit(HumanID.Berserkr).damage);
             }
             else
             {

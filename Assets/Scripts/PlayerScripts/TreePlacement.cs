@@ -136,7 +136,7 @@ public class TreePlacement : Singleton<TreePlacement>
     {
         if (other.tag == "Tree" || other.tag == "CantPlace" || other.tag == "River" || other.tag == "Wildlife")
         {
-            Debug.Log(other.tag);
+            //Debug.Log(other.tag);
             canPlace = false;
             SetMaterials(cannotPlaceMat);
         }

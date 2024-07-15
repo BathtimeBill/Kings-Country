@@ -67,7 +67,7 @@ public class TutorialManager : GameBehaviour
     private string creaturesTask    = "Summon 3 CREATURES";
     private string movementTask     = "Move your CREATURES";
     private string startDayTask     = "Start the Day";
-    private string winDayTask       = "Defend the GROVE from the HUMANS";
+    //private string winDayTask       = "Defend the GROVE from the HUMANS";
 
     #endregion
 
