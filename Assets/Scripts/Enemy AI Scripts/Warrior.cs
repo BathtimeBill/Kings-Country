@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
-using Unity.VisualScripting;
-using UnityEngine.Analytics;
 
 public class Warrior : Enemy
 {

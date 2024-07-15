@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SnowTree : GameBehaviour
@@ -14,7 +12,7 @@ public class SnowTree : GameBehaviour
     {   /*int meshNo = meshes.Length;*/
         foreach (var mesh in meshes)
         {
-            treeRenderers.AddRange(mesh.GetComponentsInChildren<Renderer>());
+            //treeRenderers.AddRange(mesh.GetComponentsInChildren<Renderer>());
         }
 
         foreach (Renderer renderer in treeRenderers)

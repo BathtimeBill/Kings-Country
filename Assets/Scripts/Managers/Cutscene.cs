@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Video;
-using Unity.VisualScripting;
 
 public class Cutscene : GameBehaviour
 {
