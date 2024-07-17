@@ -209,12 +209,6 @@ public class Hunter : Enemy
     public override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-
-        if (other.tag == "Beacon")
-        {
-            animator.SetTrigger("Cheer" + RandomCheerAnim());
-            hasArrivedAtBeacon = true;
-        }
         if (other.tag == "Hut")
         {
             if (!_HUTM.enemies.Contains(gameObject) && spawnedFromBuilding == false)
@@ -259,7 +253,7 @@ public class Hunter : Enemy
 
     IEnumerator WaitForHorgr()
     {
-        Debug.Log("Hut coroutine");
+        Log("Hut coroutine");
         yield return new WaitForSeconds(0.5f);
         animator.SetBool("hasStoppedHorgr", true);
         hasArrivedAtHorgr = true;

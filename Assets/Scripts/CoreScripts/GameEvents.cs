@@ -307,7 +307,7 @@ public static class GameEvents
     public static event Action<HumanID> OnHumanSpawned = null;
     public static event Action<CreatureID> OnCreatureSpawned = null;
     public static void ReportOnCreatureKilled(string _unitID, string _killedBy, int _daysSurvived) => OnCreatureKilled?.Invoke(_unitID, _killedBy, _daysSurvived);
-    public static void ReportOnEnemyUnitKilled(Enemy _unitID, string _killedBy) => OnHumanKilled?.Invoke(_unitID, _killedBy);
+    public static void ReportOnHumanKilled(Enemy _unitID, string _killedBy) => OnHumanKilled?.Invoke(_unitID, _killedBy);
     public static void ReportOnHumanSpawned(HumanID _ID) => OnHumanSpawned?.Invoke(_ID);
     public static void ReportOnCreatureSpawned(CreatureID _ID) => OnCreatureSpawned?.Invoke(_ID);
     #endregion

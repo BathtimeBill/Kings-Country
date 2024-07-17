@@ -209,11 +209,6 @@ public class Warrior : Enemy
     public override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-        if (other.tag == "Beacon")
-        {
-            animator.SetTrigger("Cheer" + RandomCheerAnim());
-            hasArrivedAtBeacon = true;
-        }
         if(other.tag == "Horgr")
         {
             if(!_HM.enemies.Contains(gameObject) && spawnedFromBuilding == false)

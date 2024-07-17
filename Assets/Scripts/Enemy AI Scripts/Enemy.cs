@@ -43,7 +43,7 @@ public class Enemy : GameBehaviour
         if (_deathID == DeathID.Explosion)
             ExplosionDeath();
 
-        GameEvents.ReportOnEnemyUnitKilled(_unitID, _killedBy);
+        GameEvents.ReportOnHumanKilled(_unitID, _killedBy);
         Destroy(gameObject);
     }
 
@@ -80,10 +80,6 @@ public class Enemy : GameBehaviour
                             animator.SetTrigger("Impact");
                     }
                     break;
-                case ToolID.Acid:
-                    TakeDamage((int)_GM.spitDamage, "Spit");
-                    agent.speed = speed / 2;
-                    break;
             }
         }
 
@@ -112,119 +108,38 @@ public class Enemy : GameBehaviour
                 case CreatureID.Skessa:
                 case CreatureID.Goblin:
                 case CreatureID.Mistcalf:
+                case CreatureID.Tower:
+                case CreatureID.SpitTower:
+                    TakeDamage(uwc.Damage, other.GetComponent<UnitWeaponCollider>().UnitID);
+                    break;
                 case CreatureID.Fidhain:
+                    agent.speed = speed / 2;
                     TakeDamage(uwc.Damage, other.GetComponent<UnitWeaponCollider>().UnitID);
                     break;
                 default:
                     TakeDamage(uwc.Damage, other.GetComponent<UnitWeaponCollider>().UnitID);
                     break;
             }
-            
-        }
-
-        //if (other.tag == "PlayerWeapon") // Satyr
-        //{
-        //    TakeDamage(_DATA.GetUnit(CreatureID.Satyr).damage, CreatureID.Satyr.ToString());
-        //}
-        //if (other.tag == "PlayerWeapon2") //Orcus
-        //{
-        //    TakeDamage(_DATA.GetUnit(CreatureID.Orcus).damage, CreatureID.Satyr.ToString());
-        //}
-        //if (other.tag == "PlayerWeapon3") //Leshy
-        //{
-        //    if (_DATA.GetUnitType(unitID) == EnemyType.Woodcutter)
-        //        Die(this, _DATA.GetUnit(CreatureID.Leshy).id.ToString(), DeathID.Launch);
-
-        //    if (_DATA.GetUnitType(unitID) == EnemyType.Hunter)
-        //    {
-        //        if (unitID != HumanID.Bjornjeger)
-        //            Die(this, _DATA.GetUnit(CreatureID.Leshy).id.ToString(), DeathID.Launch);
-        //        else
-        //            TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage, CreatureID.Leshy.ToString());
-        //    }
-
-        //    if (_DATA.GetUnitType(unitID) == EnemyType.Warrior)
-        //        TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage, CreatureID.Leshy.ToString());
-        //}
-
-        //if (other.tag == "PlayerWeapon4") //Skessa
-        //{
-        //    TakeDamage(_DATA.GetUnit(CreatureID.Skessa).damage, CreatureID.Skessa.ToString());
-        //}
-        //if (other.tag == "PlayerWeapon5") //Goblin
-        //{
-        //    TakeDamage(_DATA.GetUnit(CreatureID.Goblin).damage, CreatureID.Goblin.ToString());
-        //}
-        //if (other.tag == "PlayerWeapon6") //Mistcals
-        //{
-        //    TakeDamage(_DATA.GetUnit(CreatureID.Mistcalf).damage, CreatureID.Mistcalf.ToString());
-        //}
-        //if (other.tag == "Spit") //Fidhein?
-        //{
-        //    TakeDamage((int)_GM.spitDamage, "Spit");
-        //    agent.speed = speed / 2;
-        //}
-        if (other.tag == "SpitExplosion")
-        {
-            TakeDamage((int)_GM.spitExplosionDamage, "SpitExplosion");
-        }
-        //if (other.tag == "Beacon")
-        //{
-        //    animator.SetTrigger("Cheer" + RandomCheerAnim());
-        //    hasArrivedAtBeacon = true;
-        //}
-        //if (other.tag == "Horgr")
-        //{
-        //    if (!_HM.enemies.Contains(gameObject) && spawnedFromBuilding == false)
-        //    {
-        //        _HM.enemies.Add(gameObject);
-        //        StartCoroutine(WaitForHorgr());
-        //    }
-        //}
-        //if (other.tag == "Explosion")
-        //{
-        //    if (_DATA.GetUnitType(unitID) != EnemyType.Warrior)
-        //        Die(this, "Fyre", DeathID.Explosion);
-        //    else
-        //    {
-        //        TakeDamage(50, "Fyre");
-        //        if (animator != null)
-        //            animator.SetTrigger("Impact");
-        //    }
-            
-        //    //hasArrivedAtBeacon = false;
-        //    //state = EnemyState.Attack;
-        //}
-        //if (other.tag == "Explosion2")
-        //{
-        //    if (_DATA.GetUnitType(unitID) != EnemyType.Warrior)
-        //        Die(this, "Fyre", DeathID.Explosion);
-        //    else
-        //    {
-        //        TakeDamage(100, "Fyre");
-        //        if (animator != null)
-        //            animator.SetTrigger("Impact");
-        //    }
-        //    //hasArrivedAtBeacon = false;
-        //    //state = EnemyState.Attack;
-        //}
-        //if (other.tag == "Spit")
-        //{
-        //    navAgent.speed = speed / 2;
-        //}
-        if (other.tag == "Explosion" || other.tag == "Explosion2")
-        {
-            if (_HUTM.enemies.Contains(gameObject))
-                _HUTM.enemies.Remove(gameObject);
-            ExplosionDeath();
         }
     }
 
     public virtual void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Spit")
+        UnitWeaponCollider uwc = other.GetComponent<UnitWeaponCollider>();
+        if (uwc == null)
+            return;
+
+        if (uwc.unitType == UnitType.Human)
+            return;
+
+        if (uwc.unitType == UnitType.Creature)
         {
-            agent.speed = speed;
+            switch (uwc.creatureID)
+            {
+                case CreatureID.Fidhain:
+                    agent.speed = speed;
+                    break;
+            }
         }
     }
 

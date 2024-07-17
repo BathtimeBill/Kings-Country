@@ -58,6 +58,11 @@ public class GameBehaviour : BV.Behaviour
     /// <param name="_plural">Whether it is a plural or not</param>
     /// <param name="_toUpper">Whether it should be uppercase (default)</param>
     public string GetName(ObjectID _id, bool _plural = false, bool _toUpper = true) => _COLOUR.GetName(_id, _plural, _toUpper);
+
+    public void Log(string message)
+    {
+        Debug.Log(message);
+    }
 }
 
 public enum UpgradeID
@@ -86,7 +91,6 @@ public enum ToolID
     Tree,
     Willow,
     Ficus,
-    Acid
 }
 public enum CombatID
 {
@@ -320,7 +324,7 @@ public enum ErrorID
 public enum ObjectID
 {
     Resource    = 0,  Wildlife, Maegen, Populous, Day, Night, Creature, Human, Grove, Perk,
-    Tool        = 20, Tree, Rune, Fyre, Stormer,
+    Tool        = 20, Tree, Rune, Fyre, Stormer, Tower, SpitTower,
     HomeTree    = 30, Satyr, Orcus, Leshy,
     Hut         = 40, Goblin, Skessa, Fidhain,
     Horgr       = 50, Mistcalf, Huldra, Skuggi,

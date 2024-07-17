@@ -51,7 +51,6 @@ public class LevelEvents : GameBehaviour
                 mineExists = true;
                 SpawnMine();
             }
-            print(dice.ToString());
         }
         if (_GM.level == LevelNumber.Two && _GM.currentDay == 3)
         {
@@ -61,7 +60,6 @@ public class LevelEvents : GameBehaviour
                 mineExists = true;  
                 SpawnMine();
             }
-            print(dice.ToString());
         }
         if (_GM.level == LevelNumber.Two && _GM.currentDay == 4)
         {
@@ -71,7 +69,6 @@ public class LevelEvents : GameBehaviour
                 mineExists = true;
                 SpawnMine();
             }
-            print(dice.ToString());
         }
         if (_GM.level == LevelNumber.Two && _GM.currentDay == 5)
         {
@@ -81,7 +78,6 @@ public class LevelEvents : GameBehaviour
                 mineExists = true;
                 SpawnMine();
             }
-            print(dice.ToString());
         }
         if (_GM.level == LevelNumber.Two && _GM.currentDay == 6)
         {
@@ -91,7 +87,6 @@ public class LevelEvents : GameBehaviour
                 mineExists = true;
                 SpawnMine();
             }
-            print(dice.ToString());
         }
         if (_GM.level == LevelNumber.Two && _GM.currentDay == 7)
         {
@@ -140,7 +135,6 @@ public class LevelEvents : GameBehaviour
                     SpawnMine();
                 }
             }
-            print(dice3.ToString());
         }
         if (_GM.level == LevelNumber.Three && _GM.currentDay == 5)
         {
@@ -159,7 +153,6 @@ public class LevelEvents : GameBehaviour
                     SpawnMine();
                 }
             }
-            print(dice3.ToString());
         }
         if (_GM.level == LevelNumber.Three && _GM.currentDay == 6)
         {
@@ -178,7 +171,6 @@ public class LevelEvents : GameBehaviour
                     SpawnMine();
                 }
             }
-            print(dice3.ToString());
         }
         if (_GM.level == LevelNumber.Three && _GM.currentDay == 7)
         {
@@ -197,7 +189,6 @@ public class LevelEvents : GameBehaviour
                     SpawnMine();
                 }
             }
-            print(dice3.ToString());
         }
         if (_GM.level == LevelNumber.Three && _GM.currentDay == 8)
         {

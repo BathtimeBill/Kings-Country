@@ -352,7 +352,7 @@ public class Logger : Enemy
     }
     public void FindHomeTree()
     {
-        print("Finding Home Tree");
+        Log("Finding Home Tree");
         agent.SetDestination(homeTree.transform.position);
     }
     private void OnGameOver()

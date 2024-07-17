@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 public class HorgrManager : Singleton<HorgrManager>
 {
@@ -191,16 +190,23 @@ public class HorgrManager : Singleton<HorgrManager>
         }
     }
 
+    private void OnHumanKilled(Enemy _enemy, string _killer)
+    {
+        if (enemies.Contains(_enemy.gameObject))
+            enemies.Remove(_enemy.gameObject);
+    }
 
     private void OnEnable()
     {
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnUnitButtonPressed += OnUnitButtonPressed;
+        GameEvents.OnHumanKilled += OnHumanKilled;
     }
 
     private void OnDisable()
     {
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnUnitButtonPressed -= OnUnitButtonPressed;
+        GameEvents.OnHumanKilled -= OnHumanKilled;
     }
 }
