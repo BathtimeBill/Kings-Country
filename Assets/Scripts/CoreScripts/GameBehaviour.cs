@@ -86,6 +86,7 @@ public enum ToolID
     Tree,
     Willow,
     Ficus,
+    Acid
 }
 public enum CombatID
 {
@@ -202,7 +203,8 @@ public enum UnitType
 {
     Creature,
     Human,
-    Building
+    Building,
+    Tool
 }
 
 public enum EnemyType

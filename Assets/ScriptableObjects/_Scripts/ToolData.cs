@@ -13,7 +13,8 @@ public class ToolData : ScriptableObject
     public int maegenPrice;
     public int wildlifePrice;
     public int cooldownTime = 5;
-    public int upgradeLevel;
+    public int upgradeLevel = 1;
+    public int damage;
     public bool unlocked;
     public AudioClip[] toolSounds;
 }

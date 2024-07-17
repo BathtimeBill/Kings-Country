@@ -66,50 +66,104 @@ public class Enemy : GameBehaviour
         if (uwc.unitType == UnitType.Human)
             return;
 
-        TakeDamage(uwc.Damage, other.GetComponent<UnitWeaponCollider>().UnitID);
-
-        if (other.tag == "PlayerWeapon") // Satyr
+        if(uwc.unitType == UnitType.Tool)
         {
-            TakeDamage(_DATA.GetUnit(CreatureID.Satyr).damage, CreatureID.Satyr.ToString());
-        }
-        if (other.tag == "PlayerWeapon2") //Orcus
-        {
-            TakeDamage(_DATA.GetUnit(CreatureID.Orcus).damage, CreatureID.Satyr.ToString());
-        }
-        if (other.tag == "PlayerWeapon3") //Leshy
-        {
-            if (_DATA.GetUnitType(unitID) == EnemyType.Woodcutter)
-                Die(this, _DATA.GetUnit(CreatureID.Leshy).id.ToString(), DeathID.Launch);
-
-            if (_DATA.GetUnitType(unitID) == EnemyType.Hunter)
+            switch (uwc.toolID)
             {
-                if (unitID != HumanID.Bjornjeger)
-                    Die(this, _DATA.GetUnit(CreatureID.Leshy).id.ToString(), DeathID.Launch);
-                else
-                    TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage, CreatureID.Leshy.ToString());
+                case ToolID.Fyre:
+                    if (_DATA.GetUnitType(unitID) != EnemyType.Warrior)
+                        Die(this, _DATA.GetTool(ToolID.Fyre).id.ToString(), DeathID.Explosion);
+                    else
+                    {
+                        TakeDamage(uwc.Damage, _DATA.GetTool(ToolID.Fyre).id.ToString());
+                        if (animator != null)
+                            animator.SetTrigger("Impact");
+                    }
+                    break;
+                case ToolID.Acid:
+                    TakeDamage((int)_GM.spitDamage, "Spit");
+                    agent.speed = speed / 2;
+                    break;
             }
-
-            if (_DATA.GetUnitType(unitID) == EnemyType.Warrior)
-                TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage, CreatureID.Leshy.ToString());
         }
 
-        if (other.tag == "PlayerWeapon4") //Skessa
+        if (uwc.unitType == UnitType.Creature)
         {
-            TakeDamage(_DATA.GetUnit(CreatureID.Skessa).damage, CreatureID.Skessa.ToString());
+            switch(uwc.creatureID)
+            {
+                case CreatureID.Leshy:
+                    if (_DATA.GetUnitType(unitID) == EnemyType.Woodcutter)
+                        Die(this, _DATA.GetUnit(CreatureID.Leshy).id.ToString(), DeathID.Launch);
+
+                    if (_DATA.GetUnitType(unitID) == EnemyType.Hunter)
+                    {
+                        if (unitID != HumanID.Bjornjeger)
+                            Die(this, _DATA.GetUnit(CreatureID.Leshy).id.ToString(), DeathID.Launch);
+                        else
+                            TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage, CreatureID.Leshy.ToString());
+                    }
+
+                    if (_DATA.GetUnitType(unitID) == EnemyType.Warrior)
+                        TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage, CreatureID.Leshy.ToString());
+                    break;
+                case CreatureID.Satyr:
+                case CreatureID.Orcus:
+                case CreatureID.Huldra:
+                case CreatureID.Skessa:
+                case CreatureID.Goblin:
+                case CreatureID.Mistcalf:
+                case CreatureID.Fidhain:
+                    TakeDamage(uwc.Damage, other.GetComponent<UnitWeaponCollider>().UnitID);
+                    break;
+                default:
+                    TakeDamage(uwc.Damage, other.GetComponent<UnitWeaponCollider>().UnitID);
+                    break;
+            }
+            
         }
-        if (other.tag == "PlayerWeapon5") //Goblin
-        {
-            TakeDamage(_DATA.GetUnit(CreatureID.Goblin).damage, CreatureID.Goblin.ToString());
-        }
-        if (other.tag == "PlayerWeapon6") //Mistcals
-        {
-            TakeDamage(_DATA.GetUnit(CreatureID.Mistcalf).damage, CreatureID.Mistcalf.ToString());
-        }
-        if (other.tag == "Spit") //Fidhein?
-        {
-            TakeDamage((int)_GM.spitDamage, "Spit");
-            agent.speed = speed / 2;
-        }
+
+        //if (other.tag == "PlayerWeapon") // Satyr
+        //{
+        //    TakeDamage(_DATA.GetUnit(CreatureID.Satyr).damage, CreatureID.Satyr.ToString());
+        //}
+        //if (other.tag == "PlayerWeapon2") //Orcus
+        //{
+        //    TakeDamage(_DATA.GetUnit(CreatureID.Orcus).damage, CreatureID.Satyr.ToString());
+        //}
+        //if (other.tag == "PlayerWeapon3") //Leshy
+        //{
+        //    if (_DATA.GetUnitType(unitID) == EnemyType.Woodcutter)
+        //        Die(this, _DATA.GetUnit(CreatureID.Leshy).id.ToString(), DeathID.Launch);
+
+        //    if (_DATA.GetUnitType(unitID) == EnemyType.Hunter)
+        //    {
+        //        if (unitID != HumanID.Bjornjeger)
+        //            Die(this, _DATA.GetUnit(CreatureID.Leshy).id.ToString(), DeathID.Launch);
+        //        else
+        //            TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage, CreatureID.Leshy.ToString());
+        //    }
+
+        //    if (_DATA.GetUnitType(unitID) == EnemyType.Warrior)
+        //        TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage, CreatureID.Leshy.ToString());
+        //}
+
+        //if (other.tag == "PlayerWeapon4") //Skessa
+        //{
+        //    TakeDamage(_DATA.GetUnit(CreatureID.Skessa).damage, CreatureID.Skessa.ToString());
+        //}
+        //if (other.tag == "PlayerWeapon5") //Goblin
+        //{
+        //    TakeDamage(_DATA.GetUnit(CreatureID.Goblin).damage, CreatureID.Goblin.ToString());
+        //}
+        //if (other.tag == "PlayerWeapon6") //Mistcals
+        //{
+        //    TakeDamage(_DATA.GetUnit(CreatureID.Mistcalf).damage, CreatureID.Mistcalf.ToString());
+        //}
+        //if (other.tag == "Spit") //Fidhein?
+        //{
+        //    TakeDamage((int)_GM.spitDamage, "Spit");
+        //    agent.speed = speed / 2;
+        //}
         if (other.tag == "SpitExplosion")
         {
             TakeDamage((int)_GM.spitExplosionDamage, "SpitExplosion");
@@ -127,33 +181,33 @@ public class Enemy : GameBehaviour
         //        StartCoroutine(WaitForHorgr());
         //    }
         //}
-        if (other.tag == "Explosion")
-        {
-            if (_DATA.GetUnitType(unitID) != EnemyType.Warrior)
-                Die(this, "Fyre", DeathID.Explosion);
-            else
-            {
-                TakeDamage(50, "Fyre");
-                if (animator != null)
-                    animator.SetTrigger("Impact");
-            }
+        //if (other.tag == "Explosion")
+        //{
+        //    if (_DATA.GetUnitType(unitID) != EnemyType.Warrior)
+        //        Die(this, "Fyre", DeathID.Explosion);
+        //    else
+        //    {
+        //        TakeDamage(50, "Fyre");
+        //        if (animator != null)
+        //            animator.SetTrigger("Impact");
+        //    }
             
-            //hasArrivedAtBeacon = false;
-            //state = EnemyState.Attack;
-        }
-        if (other.tag == "Explosion2")
-        {
-            if (_DATA.GetUnitType(unitID) != EnemyType.Warrior)
-                Die(this, "Fyre", DeathID.Explosion);
-            else
-            {
-                TakeDamage(100, "Fyre");
-                if (animator != null)
-                    animator.SetTrigger("Impact");
-            }
-            //hasArrivedAtBeacon = false;
-            //state = EnemyState.Attack;
-        }
+        //    //hasArrivedAtBeacon = false;
+        //    //state = EnemyState.Attack;
+        //}
+        //if (other.tag == "Explosion2")
+        //{
+        //    if (_DATA.GetUnitType(unitID) != EnemyType.Warrior)
+        //        Die(this, "Fyre", DeathID.Explosion);
+        //    else
+        //    {
+        //        TakeDamage(100, "Fyre");
+        //        if (animator != null)
+        //            animator.SetTrigger("Impact");
+        //    }
+        //    //hasArrivedAtBeacon = false;
+        //    //state = EnemyState.Attack;
+        //}
         //if (other.tag == "Spit")
         //{
         //    navAgent.speed = speed / 2;

@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class PerkManager : Singleton<PerkManager>
 {
@@ -13,7 +11,6 @@ public class PerkManager : Singleton<PerkManager>
 
     public void AddBackPerk(PerkID perkID) => availablePerks.Add(perkID);
 
-    public void AddPerk(PerkID perkID) => currentPerks.Add(perkID);
     public PerkData GetPerk(PerkID perkID) => _DATA.GetPerk(perkID);
 
     public PerkID GetRandomPerk() => ListX.GetRandomItemFromList(availablePerks);
@@ -25,5 +22,14 @@ public class PerkManager : Singleton<PerkManager>
         {
             availablePerks.Add(_DATA.perkData[i].id);
         }
+    }
+
+    public void AddPerk(PerkID perkID)
+    {
+        if (perkID == PerkID.Fyre)
+            _DATA.GetTool(ToolID.Fyre).damage += _DATA.GetTool(ToolID.Fyre).damage;
+
+        currentPerks.Add(perkID);
+
     }
 }

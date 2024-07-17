@@ -53,7 +53,6 @@ public class GameManager : Singleton<GameManager>
 
     [Header("Fyre")]
     public ToolData fyreTool;
-    public GameObject[] beacons;
 
     [Header("Stormer")]
     public ToolData stormerTool;
@@ -92,8 +91,6 @@ public class GameManager : Singleton<GameManager>
     public bool atMaxRuins => runesCount == runesMaegenCost.Length;
     public int runesCount => runes.Count;
 
-    public bool skipIntro;
-
     public void SetPlayMode(PlayMode _mode) => playmode = _mode;
     public void SetPreviousState(GameState _gs) => previousState = _gs;
 
@@ -105,7 +102,7 @@ public class GameManager : Singleton<GameManager>
         SetPlayMode(PlayMode.DefaultMode);
         SetGame();
         trees.AddRange(GameObject.FindGameObjectsWithTag("Tree"));
-        if (!skipIntro)
+        if (!_TESTING.skipIntro)
             StartCoroutine(EndOfIntroCamera());
         _UI.CheckTreeUI();
     }

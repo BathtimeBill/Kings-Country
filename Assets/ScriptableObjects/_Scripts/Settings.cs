@@ -414,6 +414,7 @@ public class General
 [Serializable]
 public class Testing
 {
+    public bool skipIntro;
     public bool allGlossaryUnlocked = false;
     [Tooltip("Will override the save data values")]
     public bool overrideTutorial;
