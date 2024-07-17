@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
-    [HideInInspector] public List<GameObject> enemies;
+    public List<GameObject> enemies;
     [HideInInspector] public List<GameObject> spawnPoints;
     [Header("Spawn Cooldown")]
     public BV.Range cooldown;
