@@ -80,6 +80,16 @@ public class Enemy : GameBehaviour
                             animator.SetTrigger("Impact");
                     }
                     break;
+                case ToolID.Stormer:
+                    if (_DATA.GetUnitType(unitID) != EnemyType.Warrior)
+                        Die(this, _DATA.GetTool(ToolID.Stormer).id.ToString(), DeathID.Explosion);
+                    else
+                    {
+                        TakeDamage(uwc.Damage, _DATA.GetTool(ToolID.Stormer).id.ToString());
+                        if (animator != null)
+                            animator.SetTrigger("Impact");
+                    }
+                    break;
             }
         }
 

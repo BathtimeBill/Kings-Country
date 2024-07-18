@@ -41,70 +41,80 @@ public class SpyManager : Singleton<SpyManager>
         }
         if (_GM.currentDay == 1)
         {
-            Instantiate(spy, hit.position, transform.rotation);
+            GameObject go = Instantiate(spy, hit.position, transform.rotation);
+            _EM.enemies.Add(go);
             _UI.SetError(ErrorID.SpyClose);
             Instantiate(notification, hit.position, transform.rotation);
             spawnInterval = Random.Range(450, 550);
         }
         if (_GM.currentDay == 2)
         {
-            Instantiate(spy, hit.position, transform.rotation);
+            GameObject go = Instantiate(spy, hit.position, transform.rotation);
+            _EM.enemies.Add(go);
             _UI.SetError(ErrorID.SpyClose);
             Instantiate(notification, hit.position, transform.rotation);
             spawnInterval = Random.Range(400, 500);
         }
         if (_GM.currentDay == 3)
         {
-            Instantiate(spy, hit.position, transform.rotation);
+            GameObject go = Instantiate(spy, hit.position, transform.rotation);
+            _EM.enemies.Add(go);
             _UI.SetError(ErrorID.SpyClose);
             Instantiate(notification, hit.position, transform.rotation);
             spawnInterval = Random.Range(350, 430);
         }
         if (_GM.currentDay == 4)
         {
-            Instantiate(spy, hit.position, transform.rotation);
+            GameObject go = Instantiate(spy, hit.position, transform.rotation);
+            _EM.enemies.Add(go);
             _UI.SetError(ErrorID.SpyClose);
             Instantiate(notification, hit.position, transform.rotation);
             spawnInterval = Random.Range(300, 400);
         }
         if (_GM.currentDay == 5)
         {
-            Instantiate(spy, hit.position, transform.rotation);
+            GameObject go = Instantiate(spy, hit.position, transform.rotation);
+            _EM.enemies.Add(go);
             _UI.SetError(ErrorID.SpyClose);
             Instantiate(notification, hit.position, transform.rotation);
             spawnInterval = Random.Range(250, 350);
         }
         if (_GM.currentDay == 6)
         {
-            Instantiate(spy, hit.position, transform.rotation);
+            GameObject go = Instantiate(spy, hit.position, transform.rotation);
+            _EM.enemies.Add(go);
             _UI.SetError(ErrorID.SpyClose);
             Instantiate(notification, hit.position, transform.rotation);
             spawnInterval = Random.Range(200, 300);
         }
         if (_GM.currentDay == 7)
         {
-            Instantiate(spy, hit.position, transform.rotation);
+            GameObject go = Instantiate(spy, hit.position, transform.rotation);
+            _EM.enemies.Add(go);
             _UI.SetError(ErrorID.SpyClose);
             Instantiate(notification, hit.position, transform.rotation);
             spawnInterval = Random.Range(150, 250);
         }
         if (_GM.currentDay == 8)
         {
-            Instantiate(spy, hit.position, transform.rotation);
+            GameObject go = Instantiate(spy, hit.position, transform.rotation);
+            _EM.enemies.Add(go);
             _UI.SetError(ErrorID.SpyClose);
             Instantiate(notification, hit.position, transform.rotation);
             spawnInterval = Random.Range(100, 200);
         }
         if (_GM.currentDay == 9)
         {
-            Instantiate(spy, hit.position, transform.rotation);
+            GameObject go = Instantiate(spy, hit.position, transform.rotation);
+            _EM.enemies.Add(go);
             _UI.SetError(ErrorID.SpyClose);
             Instantiate(notification, hit.position, transform.rotation);
             spawnInterval = Random.Range(50, 150);
         }
-        if (_GM.currentDay == 10)
+        if (_GM.currentDay >= 10)
         {
-            Instantiate(spy, hit.position, transform.rotation);
+            GameObject go = Instantiate(spy, hit.position, transform.rotation);
+            _EM.enemies.Add(go);
             _UI.SetError(ErrorID.SpyClose);
             Instantiate(notification, hit.position, transform.rotation);
             spawnInterval = Random.Range(25, 100);
