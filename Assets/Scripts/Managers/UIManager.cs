@@ -175,8 +175,11 @@ public class UIManager : Singleton<UIManager>
     {
         base.Awake();
     }
+
     void Start()
     {
+        FadeX.InstantTransparent(inGameCanvas);
+
         CheckTreeUI();
         CheckWildlifeUI();
         CheckPopulousUI();
@@ -204,6 +207,11 @@ public class UIManager : Singleton<UIManager>
         errorText.DOFade(0, 0);
 
         _SETTINGS.colours.ChangePanelColour(_SAVE.GetPanelColour(), _SAVE);
+    }
+
+    public void StartLevel()
+    {
+
     }
 
     private void TurnOffIcons()

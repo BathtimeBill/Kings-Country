@@ -18,7 +18,7 @@ public class GameManager : Singleton<GameManager>
     public List<GameObject> trees;
     public int startingMaegen;
     public GameObject boundry;
-    public GameObject introCam;
+    public StartCamera startCamera;
 
     [Header("Score")]
     public int score;
@@ -61,19 +61,6 @@ public class GameManager : Singleton<GameManager>
     public float towerHealth;
     public float spitTowerHealth;
 
-    [Header("Unit Damage")]
-    public float spitDamage;
-    public float spitExplosionDamage;
-
-    [Header("Enemy Damage")]
-    //public float axe1Damage; - Logger
-    //public float axe2Damage; - Lumberjack
-    //public float sword2Damage; - Dreng
-    //public float sword3Damage; - Bezerker
-    //public float arrow1Damage; - Wathe
-    //public float arrow2Damage; - Hunter
-    //public float lordDamage; - Lord
-
     [Header("Horgr")]
     public bool horgrClaimedByPlayer;
 
@@ -102,16 +89,13 @@ public class GameManager : Singleton<GameManager>
         SetPlayMode(PlayMode.DefaultMode);
         SetGame();
         trees.AddRange(GameObject.FindGameObjectsWithTag("Tree"));
+
         if (!_TESTING.skipIntro)
-            StartCoroutine(EndOfIntroCamera());
-        _UI.CheckTreeUI();
-    }
-    IEnumerator EndOfIntroCamera()
-    {
-        yield return new WaitForSeconds(10);
-        introCam.SetActive(false);
-        gameState = GameState.Play;
-        GameEvents.ReportOnGameStateChanged(gameState);
+            ChangeGameState(GameState.Intro);
+        else if (_TESTING.overrideTutorial && _TESTING.showTutorial)
+            ChangeGameState(GameState.Tutorial);
+        else
+            ChangeGameState(GameState.Build);
     }
 
     private void Update()
@@ -140,6 +124,8 @@ public class GameManager : Singleton<GameManager>
         {
             case GameState.Intro:
                 Time.timeScale = 1;
+                startCamera.gameObject.SetActive(true);
+                startCamera.StartCamAnimation(thisLevel);
                 break;
             case GameState.Build:
                 Time.timeScale = 1;
