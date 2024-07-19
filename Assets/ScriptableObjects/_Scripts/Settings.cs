@@ -367,8 +367,10 @@ public class Vibration
 public class Icons
 {
     public Sprite emptyIcon;
+    public Sprite treeIcon;
     public Sprite maegenIcon;
     public Sprite wildlifeIcon;
+    public Sprite populousIcon;
     public Sprite damageIcon;
     public Sprite healthIcon;
     public Sprite speedIcon;

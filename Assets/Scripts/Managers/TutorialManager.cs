@@ -169,6 +169,14 @@ public class TutorialManager : GameBehaviour
     {
         switch(_tutorial.tutorialID)
         {
+            case TutorialID.Story:
+                _tutorial.title = "Welcome";
+                _tutorial.description =
+                    "Welcome to your Grove.<br>" +
+                    "It used to be beaceful and prosperous, but those days are ending.<br>" +
+                    "You must protect it from those who seek to do damage.";
+                _tutorial.showContinueButton = true;
+                break;
             case TutorialID.CameraMove:
                 _tutorial.title = "Camera Controls";
                 _tutorial.description = 
@@ -192,7 +200,7 @@ public class TutorialManager : GameBehaviour
             case TutorialID.Maegen:
                 _tutorial.title = "Maegen";
                 _tutorial.description = 
-                    $"This is your {GetName(ObjectID.Maegen)}.<br>" +
+                    $"This is your {GetName(ObjectID.Maegen)} {_ICONS.GetTMPIcon(_ICONS.maegenIcon)}.<br>" +
                     $"{GetName(ObjectID.Maegen)} is the wild energy within all natural things and serves as the lifeblood of our {GetName(ObjectID.Grove)}.<br>" + 
                     $"Spend {GetName(ObjectID.Maegen)} to grow {GetName(ObjectID.Tree, true)} that will, in turn, produce more {GetName(ObjectID.Maegen)} at the end of the {GetName(ObjectID.Day)}.";
                 _tutorial.showContinueButton = true;
@@ -206,7 +214,7 @@ public class TutorialManager : GameBehaviour
             case TutorialID.Trees:
                 _tutorial.title = "Trees";
                 _tutorial.description =
-                    $"The productivity of each {GetName(ObjectID.Tree)} is determined by its proximity to others in the {GetName(ObjectID.Grove)}. <br>" + 
+                    $"The productivity of each {GetName(ObjectID.Tree)} {_ICONS.GetTMPIcon(_ICONS.treeIcon)} is determined by its proximity to others in the {GetName(ObjectID.Grove)}. <br>" + 
                     $"{GetName(ObjectID.Tree, true)} clustered together are less productive but easier to defend, while those spread out yield more {GetName(ObjectID.Maegen)} but are more vulnerable to attack.";
                 _tutorial.showContinueButton = true;
                 _tutorial.showObjects.Add(arrows.treeTopArrow.gameObject);
@@ -232,8 +240,8 @@ public class TutorialManager : GameBehaviour
                 _tutorial.title = "Creatures";
                 _tutorial.description = 
                     $"{GetName(ObjectID.Creature, true)} are your servants. Use them to keep control of the {GetName(ObjectID.Grove)}!<br>" +
-                    $"Each {GetName(ObjectID.Creature)} requires a different {GetName(ObjectID.Maegen)} cost to summon it.<br>" +
-                    $"Open the {GetName(ObjectID.HomeTree)} panel to start summoning {GetName(ObjectID.Maegen, true)}.<br>" +
+                    //$"Each {GetName(ObjectID.Creature)} requires a different {GetName(ObjectID.Maegen)} cost to summon it.<br>" +
+                    $"Open the {GetName(ObjectID.HomeTree)} panel to start summoning {GetName(ObjectID.Creature, true)}.<br>" +
                     $"You can also {_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} on the {GetName(ObjectID.HomeTree)} panel to start summoning {GetName(ObjectID.Creature, true)}.<br>";
                 _tutorial.taskLine = creaturesTask;
                 _tutorial.showObjects.Add(gamePanels.unitPanel.gameObject);
@@ -249,20 +257,10 @@ public class TutorialManager : GameBehaviour
                 _tutorial.taskLine = movementTask;
                 _tutorial.unlockedGlossaryID = GlossaryID.CreatureMovement;
                 break;
-            case TutorialID.HomeTree:
-                _tutorial.title = "Home Tree";
-                _tutorial.description =
-                    $"This is our {GetName(ObjectID.HomeTree)}, the heart of our {GetName(ObjectID.Grove)} and vital to its survival.<br>" +
-                    $"If the {GetName(ObjectID.HomeTree)} is destroyed, the forest will fall.<br>" +
-                    $"When you {_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} on the {GetName(ObjectID.HomeTree)}, you can bring up the {GetName(ObjectID.Creature, true)} that you can summon from it.<br>" +
-                    $"Use {GetName(ObjectID.Creature, true)} to defend the {GetName(ObjectID.Grove)}.<br>";
-                _tutorial.showContinueButton = true;
-                _tutorial.unlockedGlossaryID = GlossaryID.HomeTree;
-                break;
             case TutorialID.Wildlife:
                 _tutorial.title = "Wildlife";
                 _tutorial.description =
-                    $"{GetName(ObjectID.Wildlife)} are an important part of the {GetName(ObjectID.Grove)} and required for you to use your special powers.<br>" +
+                    $"{GetName(ObjectID.Wildlife)} {_ICONS.GetTMPIcon(_ICONS.wildlifeIcon)} are an important part of the {GetName(ObjectID.Grove)} and required for you to use your special powers.<br>" +
                     $"They will spawn in at the end of each day, based on how many trees are in your {GetName(ObjectID.Grove)}.<br>" +
                     $"Hold down the ALT button to highlight your existing {GetName(ObjectID.Wildlife)} and protect them at all costs!";
                 _tutorial.showContinueButton = true;
@@ -276,7 +274,7 @@ public class TutorialManager : GameBehaviour
                 _tutorial.title = "Populous";
                 _tutorial.description =
                     $"There is a maximum population of {GetName(ObjectID.Creature, true)} you can have at one time.<br>" +
-                    $"The max {GetName(ObjectID.Populous)} can be upgrade by +5 with a {GetName(ObjectID.Perk)}.<br>" +
+                    $"The max {GetName(ObjectID.Populous)} {_ICONS.GetTMPIcon(_ICONS.populousIcon)} can be upgrade by +5 with a {GetName(ObjectID.Perk)}.<br>" +
                     $"Press DELETE with a selected {GetName(ObjectID.Creature)} to destroy it, in order to reduce your {GetName(ObjectID.Populous)} level";
                 _tutorial.showContinueButton = true;
                 _tutorial.showObjects.Add(arrows.populousArrow.gameObject);
@@ -309,6 +307,7 @@ public class TutorialManager : GameBehaviour
                 _tutorial.lockCamera = true;
                 _tutorial.blackout = true;
                 break;
+            
         }
         SetupTaskLines();
     }
