@@ -129,10 +129,10 @@ public class Logger : Enemy
                     FindUnit();
                     SmoothFocusOnEnemy();
                 }
-                else
-                {
-                    state = EnemyState.Cheer;
-                }
+                //else
+                //{
+                //    state = EnemyState.Cheer;
+                //}
 
                 break;
             case EnemyState.Beacon:
