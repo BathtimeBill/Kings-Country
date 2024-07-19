@@ -309,7 +309,6 @@ public class GameManager : Singleton<GameManager>
         {
             SetGame();
             GameEvents.ReportOnGameWin(_DATA.currentLevelID, score, maegen);
-            CalculateScore();
             ChangeGameState(GameState.Finish);
         }
         else
@@ -366,35 +365,55 @@ public class GameManager : Singleton<GameManager>
     //Score Stuff
     public void CalculateScore()
     {
-        int maegenBonus = maegen;
-        int wildlifeBonus = wildlife * 2;
-        int treeBonus = 1;
+        int maegenAmount = maegen;
+        int wildlifeAmount = wildlife;
+        int treeAmount = trees.Count;
+        int populousAmount = populous;
 
-        if (trees.Count > 0 && trees.Count < 10)
-        {
+        int maegenBonus;
+        if (MathX.InRange(maegenAmount, 0, 9))
+            maegenBonus = 1;
+        else if (MathX.InRange(maegenAmount, 20, 29))
+            maegenBonus = 2;
+        else if (MathX.InRange(maegenAmount, 30, 39))
+            maegenBonus = 3;
+        else
+            maegenBonus = 4;
+
+        int treeBonus;
+        if (MathX.InRange(treeAmount, 0, 19))
             treeBonus = 1;
-        }
-        if (trees.Count > 9 && trees.Count < 20)
-        {
-            treeBonus = 1;
-        }
-        if (trees.Count > 19 && trees.Count < 30)
-        {
+        else if (MathX.InRange(treeAmount, 20, 29))
             treeBonus = 2;
-        }
-        if (trees.Count > 29 && trees.Count < 40)
-        {
+        else if (MathX.InRange(treeAmount, 30, 39))
             treeBonus = 3;
-        }
-        if (trees.Count == 40)
-        {
+        else
             treeBonus = 4;
-        }
 
-        int finalScore = (maegenBonus + wildlifeBonus) * treeBonus;
-        print("Final Score: " + finalScore);
+        int wildlifeBonus;
+        if (MathX.InRange(wildlifeAmount, 0, 5))
+            wildlifeBonus = 1;
+        else if (MathX.InRange(wildlifeAmount, 6, 10))
+            wildlifeBonus = 2;
+        else if (MathX.InRange(wildlifeAmount, 11, 20))
+            wildlifeBonus = 3;
+        else
+            wildlifeBonus = 4;
+
+        int populousBonus;
+        if (MathX.InRange(populousAmount, 0, 5))
+            populousBonus = 1;
+        else if (MathX.InRange(populousAmount, 6, 7))
+            populousBonus = 2;
+        else if (MathX.InRange(populousAmount, 8, 9))
+            populousBonus = 3;
+        else
+            populousBonus = 4;
+
+        int finalScore = (maegenAmount * maegenBonus) + (treeAmount * treeBonus) + (wildlifeAmount * wildlifeBonus) + (populousAmount * populousBonus);
+        //Log("Final Score: " + finalScore);
         score = finalScore;
-        _UI.UpdateWinUI(maegenBonus, treeBonus, wildlifeBonus, finalScore);
+        StartCoroutine(_UI.UpdateWinUI(maegenAmount, maegenBonus, treeAmount, treeBonus, wildlifeAmount, wildlifeBonus, populousAmount, populousBonus, finalScore));
     }
 
     private void OnGameStateChanged(GameState _gameState)

@@ -107,11 +107,7 @@ public class UIManager : Singleton<UIManager>
     public GameObject winPanel;
     public GameObject finalScorePanel;
     public GameObject gameOverPanel;
-    public TMP_Text winMaegenText;
-    public TMP_Text winTreesText;
-    public TMP_Text winWildlifeText;
-    public TMP_Text winScoreText;
-    public TMP_Text winHighScoreText;
+    public WinTexts winTexts;
 
     [Header("Upgrade")]
     public PerkPanel upgradePanel;
@@ -826,9 +822,9 @@ public class UIManager : Singleton<UIManager>
     //Button Presses from Inspector
     public void ShowResultsPanel()
     {
+        _GM.CalculateScore();
         winPanel.GetComponentInChildren<Button>().interactable = false;
         TweenInPanel(finalScorePanel);
-        
     }
 
     public void MouseCancel()
@@ -928,16 +924,83 @@ public class UIManager : Singleton<UIManager>
 
     private void OnLevelWin(LevelID _levelID, int _score, int _maegen)
     {
+        winTexts.maegen.text = "";
+        winTexts.maegenBonus.text = "";
+        winTexts.maegenTotal.text = "";
+
+        winTexts.trees.text = "";
+        winTexts.treesBonus.text = "";
+        winTexts.treesTotal.text = "";
+
+        winTexts.wildlife.text = "";
+        winTexts.wildlifeBonus.text = "";
+        winTexts.wildlifeTotal.text = "";
+
+        winTexts.populous.text = "";
+        winTexts.populousBonus.text = "";
+        winTexts.populousTotal.text = "";
+
+        winTexts.finalEXP.text = "";
+        winTexts.bestEXP.text = "";
+
+        experienceMeter.gameObject.SetActive(false);
         TweenInPanel(winPanel);
+
     }
-    public void UpdateWinUI(int _maegen, int _trees, int _wildlife, int _score)
+    public IEnumerator UpdateWinUI(int _maegen, int _maegenBonus, int _trees, int _treesBonus, int _wildlife, int _wildlifeBonus, int _populous, int _populousBonus, int _total)
     {
-        winMaegenText.text = "+ " + _maegen.ToString();
-        winTreesText.text = _GM.trees.Count.ToString() + " (x " + _trees.ToString() + " to total score)";
-        winWildlifeText.text = "+ " + _wildlife.ToString() + " x2 = " + _wildlife * 2;
-        winScoreText.text = _score.ToString();
-        winHighScoreText.text = _GAMESAVE.GetLevelHighScore(_DATA.currentLevelID).ToString();
-        ExecuteAfterSeconds(3, () => experienceMeter.IncreaseExperience(_score));
+        yield return new WaitForSeconds(2);
+
+        winTexts.maegen.text = "+ " + _maegen.ToString();
+        _SM.PlaySound(_SM.textGroupSound);
+        yield return new WaitForSecondsRealtime(statsinTweenTime/2);
+        winTexts.maegenBonus.text = "x" + _maegenBonus.ToString();
+        _SM.PlaySound(_SM.textGroupSound);
+        yield return new WaitForSecondsRealtime(statsinTweenTime / 2);
+        winTexts.maegenTotal.text = (_maegen * _maegenBonus).ToString();
+        _SM.PlaySound(_SM.textGroupSound);
+        yield return new WaitForSecondsRealtime(statsinTweenTime);
+
+        winTexts.trees.text = "+ " + _trees.ToString();
+        _SM.PlaySound(_SM.textGroupSound);
+        yield return new WaitForSecondsRealtime(statsinTweenTime / 2);
+        winTexts.treesBonus.text = "x" + _treesBonus.ToString();
+        _SM.PlaySound(_SM.textGroupSound);
+        yield return new WaitForSecondsRealtime(statsinTweenTime / 2);
+        winTexts.treesTotal.text = (_trees * _treesBonus).ToString();
+        _SM.PlaySound(_SM.textGroupSound);
+        yield return new WaitForSecondsRealtime(statsinTweenTime);
+
+        winTexts.wildlife.text = "+ " + _wildlife.ToString();
+        _SM.PlaySound(_SM.textGroupSound);
+        yield return new WaitForSecondsRealtime(statsinTweenTime / 2);
+        winTexts.wildlifeBonus.text = "x" + _wildlifeBonus.ToString();
+        _SM.PlaySound(_SM.textGroupSound);
+        yield return new WaitForSecondsRealtime(statsinTweenTime / 2);
+        winTexts.wildlifeTotal.text = (_wildlife * _wildlifeBonus).ToString();
+        _SM.PlaySound(_SM.textGroupSound);
+        yield return new WaitForSecondsRealtime(statsinTweenTime);
+
+        winTexts.populous.text = "+ " + _populous.ToString();
+        _SM.PlaySound(_SM.textGroupSound);
+        yield return new WaitForSecondsRealtime(statsinTweenTime / 2);
+        winTexts.populousBonus.text = "x" + _populousBonus.ToString();
+        _SM.PlaySound(_SM.textGroupSound);
+        yield return new WaitForSecondsRealtime(statsinTweenTime / 2);
+        winTexts.populousTotal.text = (_populous * _populousBonus).ToString();
+        _SM.PlaySound(_SM.textGroupSound);
+        yield return new WaitForSecondsRealtime(statsinTweenTime * 2);
+
+        experienceMeter.gameObject.SetActive(true);
+        _SM.PlaySound(_SM.textGroupSound);
+        yield return new WaitForSecondsRealtime(statsinTweenTime);
+        winTexts.finalEXP.text = _total.ToString();
+        _SM.PlaySound(_SM.textGroupSound);
+        yield return new WaitForSecondsRealtime(statsinTweenTime);
+        winTexts.bestEXP.text = _GAMESAVE.GetLevelHighScore(_DATA.currentLevelID).ToString();
+        _SM.PlaySound(_SM.textGroupSound);
+        yield return new WaitForSecondsRealtime(2);
+        experienceMeter.IncreaseExperience(_total);
     }
 
     private void OnEnemyUnitKilled(Enemy _unitID, string _killedBy)
@@ -1002,4 +1065,23 @@ public class InGamePanels
     public CanvasGroup tasksPanel;
 
     public void Show(CanvasGroup cvg) => FadeX.FadeIn(cvg);
+}
+
+[System.Serializable]
+public class WinTexts
+{
+    public TMP_Text maegen;
+    public TMP_Text maegenBonus;
+    public TMP_Text maegenTotal;
+    public TMP_Text trees;
+    public TMP_Text treesBonus;
+    public TMP_Text treesTotal;
+    public TMP_Text wildlife;
+    public TMP_Text wildlifeBonus;
+    public TMP_Text wildlifeTotal;
+    public TMP_Text populous;
+    public TMP_Text populousBonus;
+    public TMP_Text populousTotal;
+    public TMP_Text finalEXP;
+    public TMP_Text bestEXP;
 }
