@@ -39,7 +39,7 @@ public class StartCamera : GameBehaviour
     
     public void BeginGame()
     {
-        _GM.ChangeGameState(GameState.Build);
+        _GM.ChangeGameState(_showTutorial ? GameState.Tutorial : GameState.Build);
         gameObject.SetActive(false);
     }
 }

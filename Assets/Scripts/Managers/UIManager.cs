@@ -288,8 +288,9 @@ public class UIManager : Singleton<UIManager>
                 break;
             case GameState.Tutorial:
                 SetInteractable(dayNightButton, false);
-                inGameCanvas.interactable = true;
-                inGameCanvas.alpha = 1;
+                FadeX.FadeIn(inGameCanvas, _TWEENING.blackoutPanelTime);
+                //inGameCanvas.interactable = true;
+                //inGameCanvas.alpha = 1;
                 FadeX.FadeOut(pauseBlackoutPanel, _TWEENING.blackoutPanelTime);
                 break;
         }

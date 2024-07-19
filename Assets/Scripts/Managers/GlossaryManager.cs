@@ -29,6 +29,9 @@ public class GlossaryManager : GameBehaviour
     public GlossaryItem GetGlossaryItem(GlossaryID _id) => glossaryItems.Find(x=>x.glossaryID == _id);
     private bool glossaryAvailable(GlossaryID _id) => unlockedItems.Contains(_id);
 
+    public void SetButtonActive(bool _active) => glossaryButton.gameObject.SetActive(_active);
+    public void SetButtonInteractable(bool _interactable) => glossaryButton.interactable = _interactable;
+
     private void Start()
     {
         glossaryButton.onClick.AddListener(()=> OpenGlossaryPanel());
@@ -212,10 +215,7 @@ public class GlossaryManager : GameBehaviour
         _TUTORIAL.ClosedGlossary();
     }
 
-    public void SetInteractable(bool _interactable)
-    {
-        glossaryButton.interactable = _interactable;
-    }
+    
 
     public void NewGlossaryAvailable(GlossaryID id, string title)
     {
@@ -272,6 +272,11 @@ public class GlossaryManager : GameBehaviour
             NewGlossaryAvailable(GlossaryID.HomeTree, "Home Tree");
     }
 
+    private void OnGameStateChanged(GameState _gameState)
+    {
+        if(_gameState == GameState.Intro || _gameState == GameState.Tutorial)
+            SetButtonActive(false);
+    }
 
     private void OnEnable()
     {
@@ -280,6 +285,7 @@ public class GlossaryManager : GameBehaviour
         GameEvents.OnLordSpawned += OnLordSpawned;
         GameEvents.OnSpySpawned += OnSpySpawned;
         GameEvents.OnHomeTreeSelected += OnHomeTreeSelected;
+        GameEvents.OnGameStateChanged += OnGameStateChanged;
     }
 
     private void OnDisable()
@@ -289,6 +295,7 @@ public class GlossaryManager : GameBehaviour
         GameEvents.OnLordSpawned -= OnLordSpawned;
         GameEvents.OnSpySpawned -= OnSpySpawned;
         GameEvents.OnHomeTreeSelected -= OnHomeTreeSelected;
+        GameEvents.OnGameStateChanged -= OnGameStateChanged;
     }
     #endregion
 

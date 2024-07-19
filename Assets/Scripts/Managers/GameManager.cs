@@ -90,12 +90,22 @@ public class GameManager : Singleton<GameManager>
         SetGame();
         trees.AddRange(GameObject.FindGameObjectsWithTag("Tree"));
 
-        if (!_TESTING.skipIntro)
-            ChangeGameState(GameState.Intro);
-        else if (_TESTING.overrideTutorial && _TESTING.showTutorial)
-            ChangeGameState(GameState.Tutorial);
-        else
+        CheckTutorial();
+    }
+
+    public void CheckTutorial()
+    {
+        if (_TESTING.skipIntro && !_showTutorial)
+        {
             ChangeGameState(GameState.Build);
+            _TUTORIAL.SkipTutorial();
+        }
+        else if (_TESTING.skipIntro && _showTutorial)
+        {
+            ChangeGameState(GameState.Tutorial);
+        }
+        else
+            ChangeGameState(GameState.Intro);
     }
 
     private void Update()
@@ -151,6 +161,7 @@ public class GameManager : Singleton<GameManager>
             case GameState.Tutorial:
                 Time.timeScale = 1;
                 _UI.TogglePanel(_UI.pausePanel, false);
+                _TUTORIAL.StartTutorial();
                 break;
             case GameState.Lose:
                 Time.timeScale = 1;

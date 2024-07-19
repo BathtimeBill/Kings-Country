@@ -21,17 +21,13 @@ public class MiniMapRotation : GameBehaviour
             return;
         }
 
-
         targetRotation = Quaternion.Euler(90, playerCam.transform.localEulerAngles.y, 0);
         transform.rotation = targetRotation;
     }
 
     private void OnGameStateChanged(GameState _gameState)
     {
-        if(_gameState == GameState.Pause || _gameState == GameState.Finish || _gameState == GameState.Win || _gameState == GameState.Glossary)
-            miniMapCamera.enabled = false;
-        else
-            miniMapCamera.enabled = true;
+        miniMapCamera.enabled = _gameState == GameState.Play || _gameState == GameState.Build || _gameState == GameState.Tutorial;
     }
 
     private void OnEnable()

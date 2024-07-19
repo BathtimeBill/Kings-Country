@@ -81,42 +81,23 @@ public class TutorialManager : GameBehaviour
         FadeX.InstantTransparent(glossaryPanel);
         FadeX.InstantTransparent(tutorialPanel);
         FadeX.InstantTransparent(blackoutPanel);
+        FadeX.InstantTransparent(tutorialPanel);
+        FadeX.InstantTransparent(taskPanel);
         SetArrows();
-
-        //if(debugStartOffset > 0)
-        //{
-        //    for(int  i = 0;i <= tutorials.Count;i++)
-        //    {
-        //        tutorials.Remove(tutorials[i]);
-        //    }
-        //    currentTutorialID = tutorials[0].tutorialID;
-        //}
-
-        //Debug Stuff
-        if (_TESTING.overrideTutorial)
-            tutorialComplete = !_TESTING.showTutorial;
-        else
-            tutorialComplete = _SAVE.GetTutorialStatus;
-
-        if (tutorialComplete)
-        {
-            FadeX.InstantTransparent(tutorialPanel);
-            FadeX.InstantTransparent(taskPanel);
-            
-            HideArrows(true);
-            _GLOSSARY.SetInteractable(true);
-            _GM.ChangeGameState(GameState.Build);
-            gameObject.SetActive(false);
-        }
-        else
-        {
-            _GM.ChangeGameState(GameState.Tutorial);
-            ShowTutorial();
-            SetInitalPanels();
-            ExecuteAfterSeconds(overrideStartTime ? 1 : _SETTINGS.general.introCameraDuration, () => FadeX.FadeIn(tutorialPanel));
-        }
-
+        HideArrows(true);
         inGameContinueButton.SetActive(false);
+    }
+
+    public void SkipTutorial() 
+    {
+        _GLOSSARY.SetButtonInteractable(true);
+        gameObject.SetActive(false);
+    }
+
+    public void StartTutorial()
+    {
+        ShowTutorial();
+        SetInitalPanels();
     }
 
     private void SetInitalPanels()
@@ -140,7 +121,7 @@ public class TutorialManager : GameBehaviour
         FadeX.InstantOpaque(taskPanel);
         HideArrows(true);
         _UI.SetBuildingToggleShiny(false);
-        _GLOSSARY.SetInteractable(false);
+        _GLOSSARY.SetButtonInteractable(false);
     }
 
     private void ShowAllPanels()
@@ -281,7 +262,6 @@ public class TutorialManager : GameBehaviour
             case TutorialID.Wildlife:
                 _tutorial.title = "Wildlife";
                 _tutorial.description =
-                    $"This represents your {GetName(ObjectID.Wildlife)}.<br>" +
                     $"{GetName(ObjectID.Wildlife)} are an important part of the {GetName(ObjectID.Grove)} and required for you to use your special powers.<br>" +
                     $"They will spawn in at the end of each day, based on how many trees are in your {GetName(ObjectID.Grove)}.<br>" +
                     $"Hold down the ALT button to highlight your existing {GetName(ObjectID.Wildlife)} and protect them at all costs!";
@@ -392,6 +372,12 @@ public class TutorialManager : GameBehaviour
 
         if (currentTutorialID == TutorialID.Wildlife)
             _FM.TutorialWildlifeInstantiate();
+
+        if (currentTutorialID == TutorialID.Glossary)
+        {
+            _GLOSSARY.SetButtonActive(true);
+            _GLOSSARY.SetButtonInteractable(true);
+        }
     }
 
     public void HideTutorialPanel()
@@ -464,6 +450,9 @@ public class TutorialManager : GameBehaviour
 
     public void CheckCameraTutorial(TutorialID _tutorialID)
     {
+        if (_currentGameState != GameState.Tutorial)
+            return;
+
         if (tutorialComplete)
             return;
 
@@ -516,7 +505,7 @@ public class TutorialManager : GameBehaviour
         if (treeCount == treeCompletionCount)
         {
             _GLOSSARY.NewGlossaryAvailable(GlossaryID.HomeTree, "Home Tree");
-            _GLOSSARY.SetInteractable(true);
+            _GLOSSARY.SetButtonInteractable(true);
             GetNextTutorial();
             ShowTutorial();
             CheckOffTask(TutorialID.PlantTree);

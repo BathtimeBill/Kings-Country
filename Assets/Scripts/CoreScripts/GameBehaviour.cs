@@ -29,6 +29,13 @@ public class GameBehaviour : BV.Behaviour
     protected static GlossaryManager _GLOSSARY { get { return _UI.glossaryManager; } }
     protected static EffectsManager _EFFECTS { get { return EffectsManager.instance; } }
 
+    public Settings _SETTINGS => _DATA.settings;
+    public Tweening _TWEENING => _DATA.settings.tweening;
+    public Colours _COLOUR => _DATA.settings.colours;
+    public Icons _ICONS => _DATA.settings.icons;
+    public PlayerSettings _PLAYER => _SAVE.save.playerSettings;
+    public Testing _TESTING => _DATA.settings.testing;
+
     public bool _hasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build || _GM.gameState == GameState.Tutorial;
     public bool _inGame => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build;
     public bool _inTutorial => _GM.gameState == GameState.Tutorial;
@@ -42,12 +49,8 @@ public class GameBehaviour : BV.Behaviour
     public GameState _currentGameState => _GM.gameState;
     public GameState _previousGameState => _GM.previousState;
 
-    public Settings _SETTINGS => _DATA.settings;
-    public Tweening _TWEENING => _DATA.settings.tweening;
-    public Colours _COLOUR => _DATA.settings.colours;
-    public Icons _ICONS => _DATA.settings.icons;
-    public PlayerSettings _PLAYER => _SAVE.save.playerSettings;
-    public Testing _TESTING => _DATA.settings.testing;
+    public bool _showTutorial => (GameData.instance.settings.testing.overrideTutorial && GameData.instance.settings.testing.showTutorial) || SaveManager.instance.GetTutorialStatus;
+    
 
     public Experience _EXP(int i) => _SETTINGS.experience.Find(x=> x.level == i);
 
