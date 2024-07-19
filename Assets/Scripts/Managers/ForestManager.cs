@@ -31,18 +31,10 @@ public class ForestManager : Singleton<ForestManager>
         spawnLocation = new Vector3(5, 0, 5);
         CheckTreesForWildlife();
         _GM.wildlife = CheckWildlife();
-        //if (spawnRocks)
-        //{
-        //    int amount;
-        //    for (amount = 0; amount < amountOfRocks; amount++)
-        //    {
-        //        SpawnRocks();
-        //    }
-        //}
 
         ExecuteNextFrame(() =>
         {
-            if(!_inTutorial)
+            if(!_inTutorial || _currentGameState != GameState.Intro)
                 WildlifeInstantiate();
         });
     }
