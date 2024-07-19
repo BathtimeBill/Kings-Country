@@ -14,16 +14,17 @@ public class PickupManager : GameBehaviour
 
     IEnumerator SpawnPickups()
     {
-        if(!_buildPhase || !_inTutorial)
-        {
+        if(_currentGameState == GameState.Play)
             SpawnPickup();
-        }
+
         yield return new WaitForSeconds(Random.Range(20, 50));
         StartCoroutine(SpawnPickups());
     }
 
     private void SpawnPickup()
     {
+        _GLOSSARY.NewGlossaryAvailable(GlossaryID.Portal, "Portals");
+
         int rndPickup = Random.Range(0, pickups.Length);
         Vector3 randomLocation = transform.position + Random.insideUnitSphere * placementRadius;
         NavMeshHit hit;

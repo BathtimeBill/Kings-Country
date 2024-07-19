@@ -364,6 +364,7 @@ public enum GlossaryID
     LordsOfTheLand,
     Combat,
     Health,
+    Portal,
 }
 
 public enum TutorialID

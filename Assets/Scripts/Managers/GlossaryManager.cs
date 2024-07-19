@@ -186,6 +186,12 @@ public class GlossaryManager : GameBehaviour
                     $"<b>Defend Mode:</b><br>Selecting <b>Defend Mode</b> orders the {GetName(ObjectID.Creature)} to defend its current position.<br>It's range is reduced and will move small distances to attack {GetName(ObjectID.Human, true)} but will always return to its original defence position.<br><br>" +
                     $"<b>Formations:</b><br>Clicking the <b>Formations</b> button will change how spread out {GetName(ObjectID.Creature, true)} are. You can choose to have them bunch them together to allow a more concentrated force or spread out to cover more ground.";
                 break;
+            case GlossaryID.Portal:
+                _glossaryItem.title = "Portals";
+                _glossaryItem.description =
+                    $"Portals occasionally appear to give you health. " +
+                    $"Move your {GetName(ObjectID.Creature)} over one to gain more life";
+                break;
         }
     }
 
@@ -217,14 +223,17 @@ public class GlossaryManager : GameBehaviour
 
     
 
-    public void NewGlossaryAvailable(GlossaryID id, string title)
+    public void NewGlossaryAvailable(GlossaryID _id, string _title)
     {
-        newEntryTitle.text = title;
+        if (unlockedItems.Contains(_id))
+            return;
+
+        newEntryTitle.text = _title;
         TweenX.TweenFill(newEntryLabel, _TWEENING.UIButtonTweenTime, _TWEENING.UIButtonTweenEase, 1);
         newEntryLabel.GetComponent<Animator>().SetTrigger("TutorialAvailable");
         newEntryLabel.GetComponent<AudioSource>().Play();
-        lastSelectedGlossayID = id;
-        UnlockGlossaryItem(id);
+        lastSelectedGlossayID = _id;
+        UnlockGlossaryItem(_id);
     }
 
 
@@ -245,26 +254,21 @@ public class GlossaryManager : GameBehaviour
     #region Events
     public void OnDayBegin()
     {
-        if (!glossaryAvailable(GlossaryID.HumanClasses))
-            ExecuteAfterSeconds(1, () => NewGlossaryAvailable(GlossaryID.HumanClasses, "Human Classes"));
+        ExecuteAfterSeconds(1, () => NewGlossaryAvailable(GlossaryID.HumanClasses, "Human Classes"));
 
-        if (!glossaryAvailable(GlossaryID.Combat))
-            ExecuteAfterSeconds(10, () => NewGlossaryAvailable(GlossaryID.Combat, "Combat"));
+        ExecuteAfterSeconds(10, () => NewGlossaryAvailable(GlossaryID.Combat, "Combat"));
     }
     void OnMineSpawned()
     {
-        if (!glossaryAvailable(GlossaryID.Mines))
-            NewGlossaryAvailable(GlossaryID.Mines, "Mines");
+        NewGlossaryAvailable(GlossaryID.Mines, "Mines");
     }
     void OnLordSpawned()
     {
-        if (!glossaryAvailable(GlossaryID.LordsOfTheLand))
-            NewGlossaryAvailable(GlossaryID.LordsOfTheLand, "Lords of the Land");
+        NewGlossaryAvailable(GlossaryID.LordsOfTheLand, "Lords of the Land");
     }
     void OnSpySpawned()
     {
-        if (!glossaryAvailable(GlossaryID.Spies))
-            NewGlossaryAvailable(GlossaryID.Spies, "Spies");
+        NewGlossaryAvailable(GlossaryID.Spies, "Spies");
     }
     void OnHomeTreeSelected()
     {
