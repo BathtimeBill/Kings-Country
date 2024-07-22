@@ -176,6 +176,7 @@ public class TutorialManager : GameBehaviour
                     "It used to be beaceful and prosperous, but those days are ending.<br>" +
                     "You must protect it from those who seek to do damage.";
                 _tutorial.showContinueButton = true;
+                _tutorial.lockCamera = true;
                 break;
             case TutorialID.CameraMove:
                 _tutorial.title = "Camera Controls";
@@ -374,8 +375,9 @@ public class TutorialManager : GameBehaviour
 
         if (currentTutorialID == TutorialID.Glossary)
         {
-            _GLOSSARY.SetButtonActive(true);
+            _GLOSSARY.NewGlossaryAvailable(GlossaryID.HomeTree, "Home Tree", false);
             _GLOSSARY.SetButtonInteractable(true);
+            _GLOSSARY.SetButtonActive(true);
         }
     }
 
@@ -503,8 +505,6 @@ public class TutorialManager : GameBehaviour
         tl.PulseTask();
         if (treeCount == treeCompletionCount)
         {
-            _GLOSSARY.NewGlossaryAvailable(GlossaryID.HomeTree, "Home Tree");
-            _GLOSSARY.SetButtonInteractable(true);
             GetNextTutorial();
             ShowTutorial();
             CheckOffTask(TutorialID.PlantTree);

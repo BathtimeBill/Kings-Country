@@ -221,11 +221,9 @@ public class GlossaryManager : GameBehaviour
         _TUTORIAL.ClosedGlossary();
     }
 
-    
-
-    public void NewGlossaryAvailable(GlossaryID _id, string _title)
+    public void NewGlossaryAvailable(GlossaryID _id, string _title, bool _skip = true)
     {
-        if (unlockedItems.Contains(_id))
+        if (unlockedItems.Contains(_id) && _skip)
             return;
 
         newEntryTitle.text = _title;
@@ -235,7 +233,6 @@ public class GlossaryManager : GameBehaviour
         lastSelectedGlossayID = _id;
         UnlockGlossaryItem(_id);
     }
-
 
     public void UnlockGlossaryItem(GlossaryID _id)
     {

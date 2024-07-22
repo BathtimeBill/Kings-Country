@@ -32,9 +32,9 @@ public class ForestManager : Singleton<ForestManager>
         CheckTreesForWildlife();
         _GM.wildlife = CheckWildlife();
 
-        ExecuteNextFrame(() =>
+        ExecuteAfterFrames(1, () =>
         {
-            if(!_inTutorial || _currentGameState != GameState.Intro)
+            if (!_inTutorial)
                 WildlifeInstantiate();
         });
     }

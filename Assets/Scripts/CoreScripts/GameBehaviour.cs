@@ -49,9 +49,6 @@ public class GameBehaviour : BV.Behaviour
     public GameState _currentGameState => _GM.gameState;
     public GameState _previousGameState => _GM.previousState;
 
-    public bool _showTutorial => (GameData.instance.settings.testing.overrideTutorial && GameData.instance.settings.testing.showTutorial) || SaveManager.instance.GetTutorialStatus;
-    
-
     public Experience _EXP(int i) => _SETTINGS.experience.Find(x=> x.level == i);
 
     /// <summary>

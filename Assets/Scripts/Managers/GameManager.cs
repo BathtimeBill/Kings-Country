@@ -90,22 +90,23 @@ public class GameManager : Singleton<GameManager>
         SetGame();
         trees.AddRange(GameObject.FindGameObjectsWithTag("Tree"));
 
-        CheckTutorial();
+        if (!_TESTING.skipIntro)
+            ChangeGameState(GameState.Intro);
+        else
+            CheckTutorial();
     }
 
     public void CheckTutorial()
     {
-        if (_TESTING.skipIntro && !_showTutorial)
+        if (thisLevel == LevelID.Ironwood)
         {
-            ChangeGameState(GameState.Build);
-            _TUTORIAL.SkipTutorial();
-        }
-        else if (_TESTING.skipIntro && _showTutorial)
-        {
-            ChangeGameState(GameState.Tutorial);
+            if (_TESTING.overrideTutorial && !_TESTING.showTutorial)
+                ChangeGameState(GameState.Build);
+            else
+                ChangeGameState(GameState.Tutorial);
         }
         else
-            ChangeGameState(GameState.Intro);
+            ChangeGameState(GameState.Build);
     }
 
     private void Update()
