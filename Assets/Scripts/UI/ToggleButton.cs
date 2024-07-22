@@ -41,7 +41,7 @@ public class ToggleButton : GameBehaviour
             GameEvents.ReportOnHutSelected();
             GameEvents.ReportOnHorgrDeselected();
         }
-        if (baseID == BuildingID.Hogyr)
+        if (baseID == BuildingID.Horgr)
         {
             GameEvents.ReportOnHomeTreeDeselected();
             GameEvents.ReportOnHutDeselected();

@@ -24,19 +24,21 @@ public class UpgradeManager : Singleton<UpgradeManager>
     private GameObject previousUpgradeBase;
 
     private Animator anim;
+    private AudioSource audioSource;
 
     private new void Awake()
     {
         base.Awake();
         anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
     {
-        ChangeCategory(UpgradeCategoryID.HomeTree);
+        ChangeCategory(UpgradeCategoryID.HomeTree, false);
     }
 
-    public void ChangeCategory(UpgradeCategoryID _category)
+    public void ChangeCategory(UpgradeCategoryID _category, bool _sound = true)
     {
         TurnOffCameras();
         TurnOffCategories();
@@ -48,6 +50,8 @@ public class UpgradeManager : Singleton<UpgradeManager>
             return;
 
         ChangeUpgrade(ugs.upgradeSlots[0].GetComponent<UpgradeObject>());
+        if(_sound)
+            audioSource.Play();
     }
 
     public void ChangeUpgrade(UpgradeObject _upgradeObject)

@@ -130,7 +130,7 @@ public class OverWorldManager : GameBehaviour
     {
         buildingLevelIcons.homeTreeIcon.DOColor(_DATA.LevelContains(_levelData.id, BuildingID.HomeTree) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         buildingLevelIcons.hutIcon.DOColor(_DATA.LevelContains(_levelData.id, BuildingID.Hut) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        buildingLevelIcons.hogyrIcon.DOColor(_DATA.LevelContains(_levelData.id, BuildingID.Hogyr) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        buildingLevelIcons.hogyrIcon.DOColor(_DATA.LevelContains(_levelData.id, BuildingID.Horgr) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         buildingLevelIcons.unknownIcon.DOColor(_DATA.LevelContains(_levelData.id, BuildingID.Unknown) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         buildingLevelIcons.unknown2Icon.DOColor(_DATA.LevelContains(_levelData.id, BuildingID.Unknown2) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
 

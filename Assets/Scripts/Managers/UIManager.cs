@@ -43,6 +43,7 @@ public class UIManager : Singleton<UIManager>
 
     [Header("Pause")]
     public CanvasGroup inGameCanvas;
+    public CanvasGroup glossaryButtonCanvas;
     public CanvasGroup pauseBlackoutPanel;
     public GameObject pausePanel;
     public GameObject settingsPanel;
@@ -175,6 +176,7 @@ public class UIManager : Singleton<UIManager>
     void Start()
     {
         FadeX.InstantTransparent(inGameCanvas);
+        FadeX.InstantTransparent(glossaryButtonCanvas);
 
         CheckTreeUI();
         CheckWildlifeUI();
@@ -257,34 +259,40 @@ public class UIManager : Singleton<UIManager>
         {
             case GameState.Pause:
                 FadeX.FadeOut(inGameCanvas, _TWEENING.blackoutPanelTime);
+                FadeX.FadeOut(glossaryButtonCanvas, _TWEENING.blackoutPanelTime);
                 FadeX.FadeTo(pauseBlackoutPanel, _TWEENING.blackoutPanelFade, _TWEENING.blackoutPanelTime);
                 SetBuildingToggleShiny(false);
                 break;
             case GameState.Play:
                 SetInteractable(dayNightButton, false);
                 FadeX.FadeIn(inGameCanvas, _TWEENING.blackoutPanelTime);
+                FadeX.FadeIn(glossaryButtonCanvas, _TWEENING.blackoutPanelTime);
                 FadeX.FadeOut(pauseBlackoutPanel, _TWEENING.blackoutPanelTime);
                 SetBuildingToggleShiny(true);
                 break;
             case GameState.Build:
                 SetInteractable(dayNightButton, true);
                 FadeX.FadeIn(inGameCanvas, _TWEENING.blackoutPanelTime);
+                FadeX.FadeIn(glossaryButtonCanvas, _TWEENING.blackoutPanelTime);
                 FadeX.FadeOut(pauseBlackoutPanel, _TWEENING.blackoutPanelTime);
                 SetBuildingToggleShiny(true);
                 break;
             case GameState.Finish:
                 FadeX.FadeOut(inGameCanvas, _TWEENING.blackoutPanelTime);
+                FadeX.FadeOut(glossaryButtonCanvas, _TWEENING.blackoutPanelTime);
                 FadeX.FadeTo(pauseBlackoutPanel, _TWEENING.blackoutPanelFade, _TWEENING.blackoutPanelTime);
                 SetBuildingToggleShiny(false);
                 break;
             case GameState.Glossary:
                 FadeX.FadeOut(inGameCanvas, _TWEENING.blackoutPanelTime);
+                FadeX.FadeOut(glossaryButtonCanvas, _TWEENING.blackoutPanelTime);
                 FadeX.FadeTo(pauseBlackoutPanel, _TWEENING.blackoutPanelFade, _TWEENING.blackoutPanelTime);
                 SetBuildingToggleShiny(false);
                 break;
             case GameState.Tutorial:
                 SetInteractable(dayNightButton, false);
                 FadeX.FadeIn(inGameCanvas, _TWEENING.blackoutPanelTime);
+                FadeX.FadeIn(glossaryButtonCanvas, _TWEENING.blackoutPanelTime);
                 //inGameCanvas.interactable = true;
                 //inGameCanvas.alpha = 1;
                 FadeX.FadeOut(pauseBlackoutPanel, _TWEENING.blackoutPanelTime);
@@ -1023,7 +1031,7 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnJustStragglers += OnJustStragglers;
 
-        GameEvents.OnUpgradeSelected += OnPerkSelected;
+        GameEvents.OnPerkSelected += OnPerkSelected;
 
         GameEvents.OnWildlifeValueChange += OnWildlifeValueChange;
         GameEvents.OnFormationSelected += OnFormationSelected;
@@ -1042,7 +1050,7 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnJustStragglers -= OnJustStragglers;
 
-        GameEvents.OnUpgradeSelected -= OnPerkSelected;
+        GameEvents.OnPerkSelected -= OnPerkSelected;
 
         GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange;
         GameEvents.OnFormationSelected -= OnFormationSelected;

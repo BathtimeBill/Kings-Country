@@ -43,7 +43,7 @@ public class EditorButtons : MonoBehaviour
             }
             if (GUILayout.Button("Show Hogyr Units"))
             {
-                editorButtons.unitPanel.ShowPanel(BuildingID.Hogyr);
+                editorButtons.unitPanel.ShowPanel(BuildingID.Horgr);
                 EditorUtility.SetDirty(editorButtons);
             }
             GUILayout.EndHorizontal();

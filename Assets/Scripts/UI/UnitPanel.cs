@@ -29,7 +29,7 @@ public class UnitPanel : GameBehaviour
     {
         homeTreeButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(BuildingID.HomeTree));
         hutButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(BuildingID.Hut));
-        horgrButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(BuildingID.Hogyr));
+        horgrButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(BuildingID.Horgr));
         homeTreeButton.GetComponent<UnityEngine.UI.Toggle>().isOn = true;
         //TODO hacky workaround. Revisit 
         ExecuteAfterFrames(1, ()=>
@@ -114,7 +114,7 @@ public class UnitPanel : GameBehaviour
                 unitButtons[1].SetupButton(_DATA.GetUnit(CreatureID.Skessa));
                 unitButtons[2].SetupButton(_DATA.GetUnit(CreatureID.Fidhain));
                 break;
-            case BuildingID.Hogyr:
+            case BuildingID.Horgr:
                 unitButtons[0].SetupButton(_DATA.GetUnit(CreatureID.Huldra));
                 unitButtons[1].SetupButton(_DATA.GetUnit(CreatureID.Mistcalf));
                 unitButtons[2].SetupButton(_DATA.GetUnit(CreatureID.Unknown));
@@ -149,7 +149,7 @@ public class UnitPanel : GameBehaviour
     }
     private void OnHorgrSelected()
     {
-        ShowPanel(BuildingID.Hogyr);
+        ShowPanel(BuildingID.Horgr);
     }
     private void OnGroundClicked()
     {

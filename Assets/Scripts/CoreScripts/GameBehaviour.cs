@@ -46,6 +46,7 @@ public class GameBehaviour : BV.Behaviour
     public bool _buildPhase => _GM.gameState == GameState.Build;
     public bool _tutorialComplete => _TUTORIAL.tutorialComplete;
     public int _currentDay => _GM.currentDay - 1;
+    public LevelData _currentLevel => _DATA.GetLevel(_GM.thisLevel);
     public GameState _currentGameState => _GM.gameState;
     public GameState _previousGameState => _GM.previousState;
 
@@ -118,7 +119,7 @@ public enum BuildingID
 {
     HomeTree,
     Hut,
-    Hogyr,
+    Horgr,
     Unknown,
     Unknown2
 }

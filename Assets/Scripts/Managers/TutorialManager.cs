@@ -173,7 +173,7 @@ public class TutorialManager : GameBehaviour
                 _tutorial.title = "Welcome";
                 _tutorial.description =
                     "Welcome to your Grove.<br>" +
-                    "It used to be beaceful and prosperous, but those days are ending.<br>" +
+                    "It used to be peaceful and prosperous, but those days are ending.<br>" +
                     "You must protect it from those who seek to do damage.";
                 _tutorial.showContinueButton = true;
                 _tutorial.lockCamera = true;
@@ -243,7 +243,7 @@ public class TutorialManager : GameBehaviour
                     $"{GetName(ObjectID.Creature, true)} are your servants. Use them to keep control of the {GetName(ObjectID.Grove)}!<br>" +
                     //$"Each {GetName(ObjectID.Creature)} requires a different {GetName(ObjectID.Maegen)} cost to summon it.<br>" +
                     $"Open the {GetName(ObjectID.HomeTree)} panel to start summoning {GetName(ObjectID.Creature, true)}.<br>" +
-                    $"You can also {_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} on the {GetName(ObjectID.HomeTree)} panel to start summoning {GetName(ObjectID.Creature, true)}.<br>";
+                    $"You can also {_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} on the {GetName(ObjectID.HomeTree)} to start summoning {GetName(ObjectID.Creature, true)}.<br>";
                 _tutorial.taskLine = creaturesTask;
                 _tutorial.showObjects.Add(gamePanels.unitPanel.gameObject);
                 _tutorial.showObjects.Add(arrows.unitArrow.gameObject);

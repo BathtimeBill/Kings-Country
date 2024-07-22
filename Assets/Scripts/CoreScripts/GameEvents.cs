@@ -48,7 +48,7 @@ public static class GameEvents
     public static event Action OnWinfallUpgrade = null;
     public static event Action OnHomeTreeUpgrade = null;
 
-    public static event Action<PerkID> OnUpgradeSelected = null;
+    public static event Action<PerkID> OnPerkSelected = null;
 
     public static event Action OnAttackSelected = null;
     public static event Action OnDefendSelected = null;
@@ -172,7 +172,7 @@ public static class GameEvents
     
     public static void ReportOnUpgradeSelected(PerkID _id)
     {
-        OnUpgradeSelected?.Invoke(_id);
+        OnPerkSelected?.Invoke(_id);
         switch(_id)
         {
             case PerkID.BarkSkin:    OnBorkrskinnUpgrade?.Invoke(); break;

@@ -31,7 +31,7 @@ public class StatsManager : GameBehaviour
         mainButton.onClick.AddListener(() => FillMainPage());
         homeTreeButton.onClick.AddListener(() => FillDetailedStatPanel(BuildingID.HomeTree));
         hutButton.onClick.AddListener(() => FillDetailedStatPanel(BuildingID.Hut));
-        hogyrButton.onClick.AddListener(() => FillDetailedStatPanel(BuildingID.Hogyr));
+        hogyrButton.onClick.AddListener(() => FillDetailedStatPanel(BuildingID.Horgr));
 
         //FillDetailedStatPanel(BuildingID.HomeTree);
         FillMainPage();
@@ -88,7 +88,7 @@ public class StatsManager : GameBehaviour
                 GetUnitStats(unit2, CreatureID.Skessa);
                 GetUnitStats(unit3, CreatureID.Fidhain);
                 break;
-            case BuildingID.Hogyr:
+            case BuildingID.Horgr:
                 GetUnitStats(unit1, CreatureID.Huldra);
                 GetUnitStats(unit2, CreatureID.Mistcalf);
                 GetUnitStats(unit3, CreatureID.Unknown);

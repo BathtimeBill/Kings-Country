@@ -19,7 +19,7 @@ public class GlossaryManager : GameBehaviour
     public CanvasGroup glossaryPanel;
     public UnityEngine.UI.Button glossaryButton;
     public Scrollbar scrollbar;
-    private GlossaryID lastSelectedGlossayID;
+    private GlossaryID lastSelectedGlossaryID;
     public List<GlossaryButton> glossaryButtons;
     [Header("New Glossary Item")]
     public UnityEngine.UI.Image newEntryLabel;
@@ -35,7 +35,7 @@ public class GlossaryManager : GameBehaviour
     private void Start()
     {
         glossaryButton.onClick.AddListener(()=> OpenGlossaryPanel());
-        lastSelectedGlossayID = GlossaryID.CameraControls;
+        lastSelectedGlossaryID = GlossaryID.CameraControls;
         for(int i=0; i<glossaryItems.Count; i++)
         {
             SetupGlossaryItems(GetGlossaryItem(glossaryItems[i].glossaryID));
@@ -49,6 +49,9 @@ public class GlossaryManager : GameBehaviour
             for (int i = 0; i < glossaryButtons.Count; i++)
                 glossaryButtons[i].Setup();
         });
+
+        if(_currentLevel.id == LevelID.WormturnRoad)
+            ExecuteAfterSeconds(1, () => NewGlossaryAvailable(GlossaryID.WitchsHut, "Witch's Hut"));
     }
 
     private void SetupGlossaryItems(GlossaryItem _glossaryItem)
@@ -202,12 +205,12 @@ public class GlossaryManager : GameBehaviour
         glossaryImage.sprite = gi.image;
         glossaryTitleText.text = gi.title;
         glossaryDescriptionText.text = gi.description;
-        lastSelectedGlossayID = _glossaryID;
+        lastSelectedGlossaryID = _glossaryID;
     }
 
     public void OpenGlossaryPanel()
     {
-        ShowGlossaryItem(lastSelectedGlossayID);
+        ShowGlossaryItem(lastSelectedGlossaryID);
         FadeX.FadeIn(glossaryPanel);
         if(!_inTutorial)
             _GM.SetPreviousState(_currentGameState);
@@ -230,7 +233,7 @@ public class GlossaryManager : GameBehaviour
         TweenX.TweenFill(newEntryLabel, _TWEENING.UIButtonTweenTime, _TWEENING.UIButtonTweenEase, 1);
         newEntryLabel.GetComponent<Animator>().SetTrigger("TutorialAvailable");
         newEntryLabel.GetComponent<AudioSource>().Play();
-        lastSelectedGlossayID = _id;
+        lastSelectedGlossaryID = _id;
         UnlockGlossaryItem(_id);
     }
 
@@ -267,11 +270,6 @@ public class GlossaryManager : GameBehaviour
     {
         NewGlossaryAvailable(GlossaryID.Spies, "Spies");
     }
-    void OnHomeTreeSelected()
-    {
-       if (!glossaryAvailable(GlossaryID.HomeTree) && _TUTORIAL.tutorialComplete == false)
-            NewGlossaryAvailable(GlossaryID.HomeTree, "Home Tree");
-    }
 
     private void OnGameStateChanged(GameState _gameState)
     {
@@ -285,7 +283,6 @@ public class GlossaryManager : GameBehaviour
         GameEvents.OnMineSpawned += OnMineSpawned;
         GameEvents.OnLordSpawned += OnLordSpawned;
         GameEvents.OnSpySpawned += OnSpySpawned;
-        GameEvents.OnHomeTreeSelected += OnHomeTreeSelected;
         GameEvents.OnGameStateChanged += OnGameStateChanged;
     }
 
@@ -295,7 +292,6 @@ public class GlossaryManager : GameBehaviour
         GameEvents.OnMineSpawned -= OnMineSpawned;
         GameEvents.OnLordSpawned -= OnLordSpawned;
         GameEvents.OnSpySpawned -= OnSpySpawned;
-        GameEvents.OnHomeTreeSelected -= OnHomeTreeSelected;
         GameEvents.OnGameStateChanged -= OnGameStateChanged;
     }
     #endregion
