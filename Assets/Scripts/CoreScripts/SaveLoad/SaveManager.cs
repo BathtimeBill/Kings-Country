@@ -28,6 +28,7 @@ public class LevelSaveObject
     public int highScore = 0;
     public int playCount = 0;
     public bool completed;
+    public bool unlocked;
 }
 [Serializable]
 public class PerkSaveObject
@@ -158,6 +159,7 @@ Debug.unityLogger.filterLogType = LogType.Exception;
 #endif
 
     public Settings settings;
+    public GameData gameData;
     //[HideInInspector]
     public SaveDataObject save = new SaveDataObject();
 
@@ -192,28 +194,31 @@ Debug.unityLogger.filterLogType = LogType.Exception;
 
         // Initialize Game Data
         save.levels = new Dictionary<LevelID, LevelSaveObject>();
-        for (int l = 0; l < _DATA.levelData.Count; l++)
+        for (int l = 0; l < gameData.levelData.Count; l++)
         {
-            LevelData ld = _DATA.levelData[l];
+            LevelData ld = gameData.levelData[l];
             LevelID levelID = ld.id;
-            save.levels[levelID] = new LevelSaveObject
+            LevelSaveObject lso = new LevelSaveObject
             {
                 levelID = ld.id,
                 highScore = 0,
                 playCount = 0,
-                completed = false
+                completed = false,
+                unlocked = false
             };
+            save.levels.Add(levelID, lso);
         }
 
         save.perks = new Dictionary<PerkID, PerkSaveObject>();
-        for (int p = 0; p < _DATA.perkData.Count; p++)
+        for (int p = 0; p < gameData.perkData.Count; p++)
         {
-            PerkData pd = _DATA.perkData[p];
-            save.perks[pd.id] = new PerkSaveObject
+            PerkData pd = gameData.perkData[p];
+            PerkSaveObject pso = new PerkSaveObject
             {
                 perkID = pd.id,
                 unlocked = false,
             };
+            save.perks.Add(pso.perkID, pso);
         }
 
         save.unitStats = new List<UnitStats>();
@@ -378,9 +383,12 @@ Debug.unityLogger.filterLogType = LogType.Exception;
             {
                 level.playCount++;
                 level.completed = _completed;
+                LevelSaveObject next = save.GetLevelSaveData(EnumX.Next(_levelID));
+                next.unlocked = true;
             }
-            Debug.Log("GameData:: COMPLETED level [" + _levelID + "] highScore [" + level.highScore + "] playCount [" + level.playCount + "]");
+            //Log("GameData:: COMPLETED level [" + _levelID + "] highScore [" + level.highScore + "] playCount [" + level.playCount + "]");
         }
+        SaveData();
     }
 
     //
@@ -416,6 +424,8 @@ Debug.unityLogger.filterLogType = LogType.Exception;
         }
         return count;
     }
+
+    public bool GetLevelCompleted(LevelID _id) => save.GetLevelSaveData(_id).completed;
     #endregion
 
     #region Perks

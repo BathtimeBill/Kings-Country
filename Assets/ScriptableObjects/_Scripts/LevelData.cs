@@ -18,6 +18,7 @@ public class LevelData : ScriptableObject
     public int spawnPoints;
     public Sprite icon;
     public bool unlocked;
+    public bool canBePlayed;
     [BV.EnumList(typeof(SeasonID))]
     public List<SeasonID> unlockedSeasons;
     [Space]

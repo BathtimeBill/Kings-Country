@@ -17,7 +17,9 @@ public class OverworldLevelButton : GameBehaviour
 
     private void Start()
     {
-        if (_DATA.levelUnlocked(thisLevel))
+        bool isAvailable = _DATA.levelAvailable(thisLevel);
+
+        if (isAvailable)
             myRenderer.material.color = _COLOUR.mapUnlockedColor;
         else
             myRenderer.material.color = _COLOUR.mapLockedColor;
@@ -26,13 +28,14 @@ public class OverworldLevelButton : GameBehaviour
     private void OnMouseEnter()
     {
         if (!selected)
-            TweenColor(_DATA.levelUnlocked(thisLevel) ? _COLOUR.mapUnlockedHighlightColor : _COLOUR.mapLockedHighlightColor);
+            TweenColor(_DATA.levelAvailable(thisLevel) ? _COLOUR.mapUnlockedHighlightColor : _COLOUR.mapLockedHighlightColor);
+        _SM.PlaySound(_SM.buttonClickSound);
     }
 
     private void OnMouseExit()
     {
         if(!selected)
-            TweenColor(_DATA.levelUnlocked(thisLevel) ? _COLOUR.mapUnlockedColor : _COLOUR.mapLockedColor);
+            TweenColor(_DATA.levelAvailable(thisLevel) ? _COLOUR.mapUnlockedColor : _COLOUR.mapLockedColor);
     }
 
     private void OnMouseDown()

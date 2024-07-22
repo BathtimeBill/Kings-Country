@@ -675,6 +675,7 @@ public class UIManager : Singleton<UIManager>
         upgradeButton2.SetInteractable(false);
         _icon.GetComponentInChildren<Image>().color = _SETTINGS.colours.highlightedColor;
         _icon.transform.localScale = Vector3.one * 3;
+        _icon.transform.SetAsLastSibling();
         _icon.SetActive(true);
         _icon.transform.DOScale(Vector3.one, 1).SetLoops(3).SetUpdate(true).OnComplete(() =>
         _icon.GetComponentInChildren<Image>().DOColor(_SETTINGS.colours.upgradeIconsColor, 0.5f).SetUpdate(true));

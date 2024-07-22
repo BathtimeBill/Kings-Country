@@ -58,7 +58,7 @@ public class OverWorldManager : GameBehaviour
         levelData = _DATA.GetLevel(_levelID);
 
         //UI Stuff
-        if (_DATA.levelUnlocked(_levelID))
+        if (_DATA.levelAvailable(_levelID))
         {
             levelTitle.text = levelData.name;
             levelDescription.text = levelData.description;
@@ -66,6 +66,7 @@ public class OverWorldManager : GameBehaviour
             levelDays.text = levelData.days.ToString();
             spawnPoints.text = levelData.spawnPoints.ToString();
             selectedLevel = _levelID;
+            _SM.PlaySound(_SM.levelSelectedSound);
         }
         else //Leaving in in case we want to hide the values
         {
@@ -75,9 +76,10 @@ public class OverWorldManager : GameBehaviour
             levelDays.text = levelData.days.ToString();
             spawnPoints.text = levelData.spawnPoints.ToString();
             selectedLevel = _levelID;
+            _SM.PlaySound(_SM.warningSound);
         }
 
-        startLevelButton.SetInteractable(_DATA.levelUnlocked(_levelID));
+        startLevelButton.SetInteractable(_DATA.levelAvailable(_levelID));
         ShowIcons(levelData);
         SetSeasons(levelData);
 
@@ -87,7 +89,7 @@ public class OverWorldManager : GameBehaviour
             if(levelButtons[i].thisLevel == _levelID)
             {
                 levelButtons[i].SetSelected(true);
-                if (_DATA.levelUnlocked(levelButtons[i].thisLevel))
+                if (_DATA.levelAvailable(levelButtons[i].thisLevel))
                 {
                     levelButtons[i].TweenScale(true);
                     levelButtons[i].TweenColor(_COLOUR.mapUnlockedSelectedColor);
@@ -101,12 +103,14 @@ public class OverWorldManager : GameBehaviour
             {
                 levelButtons[i].SetSelected(false);
                 levelButtons[i].TweenScale(false);
-                if (_DATA.levelUnlocked(levelButtons[i].thisLevel))
+                if (_DATA.levelAvailable(levelButtons[i].thisLevel))
                     levelButtons[i].TweenColor(_COLOUR.mapUnlockedColor);
                 else
                     levelButtons[i].TweenColor(_COLOUR.mapLockedColor);
             }
         }
+
+        
     }
 
     private void ShowNoLevel()

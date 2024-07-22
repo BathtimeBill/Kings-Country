@@ -58,6 +58,23 @@ public static class EnumX
         return (T)values.GetValue(UnityEngine.Random.Range(0, values.Length));
     }
 
+    /// <summary>
+    /// Gets the next enum in its list
+    /// https://stackoverflow.com/questions/642542/how-to-get-next-or-previous-enum-value-in-c-sharp
+    /// </summary>
+    public static T Next<T>(this T v) where T : struct
+    {
+        return Enum.GetValues(v.GetType()).Cast<T>().Concat(new[] { default(T) }).SkipWhile(e => !v.Equals(e)).Skip(1).First();
+    }
+
+    /// <summary>
+    /// Get the previous enum in its list
+    /// </summary>
+    public static T Previous<T>(this T v) where T : struct
+    {
+        return Enum.GetValues(v.GetType()).Cast<T>().Concat(new[] { default(T) }).Reverse().SkipWhile(e => !v.Equals(e)).Skip(1).First();
+    }
+
     //static public T GetEnumByString<T>(string _value)
     //{
     //          bool success = Enum.TryParse<T>(_value, out T result);

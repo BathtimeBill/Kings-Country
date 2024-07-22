@@ -30,7 +30,7 @@ public class UnitPanel : GameBehaviour
         homeTreeButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(BuildingID.HomeTree));
         hutButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(BuildingID.Hut));
         horgrButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(BuildingID.Horgr));
-        homeTreeButton.GetComponent<UnityEngine.UI.Toggle>().isOn = true;
+        //homeTreeButton.GetComponent<UnityEngine.UI.Toggle>().isOn = true;
         //TODO hacky workaround. Revisit 
         ExecuteAfterFrames(1, ()=>
         {
@@ -167,7 +167,7 @@ public class UnitPanel : GameBehaviour
 
     private void OnDisable()
     {
-        GameEvents.OnHomeTreeSelected += OnHomeTreeSelected;
+        GameEvents.OnHomeTreeSelected -= OnHomeTreeSelected;
         GameEvents.OnHutSelected -= OnHutSelected;
         GameEvents.OnHorgrSelected -= OnHorgrSelected;
         GameEvents.OnGroundClicked -= OnGroundClicked;

@@ -198,7 +198,6 @@ public class GlossaryManager : GameBehaviour
         }
     }
 
-
     public void ShowGlossaryItem(GlossaryID _glossaryID)
     {
         GlossaryItem gi = GetGlossaryItem(_glossaryID);
@@ -216,6 +215,7 @@ public class GlossaryManager : GameBehaviour
             _GM.SetPreviousState(_currentGameState);
         _GM.ChangeGameState(GameState.Glossary);
     }
+
     public void CloseGlossaryPanel()
     {
         FadeX.FadeOut(glossaryPanel);
