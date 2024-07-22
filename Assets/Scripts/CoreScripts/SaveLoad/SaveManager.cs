@@ -136,10 +136,7 @@ public class SaveDataObject : BGG.GameDataBase
     public ExperienceObject experience = new ExperienceObject();
 
     // Data getters
-    public LevelSaveObject GetLevelSaveData(LevelID _levelID)
-    {
-        return levels.Find(x => x.levelID == _levelID);
-    }
+    
     public PerkSaveObject GetPerkSaveData(PerkID _perkID)
     {
         if (perks.ContainsKey(_perkID))
@@ -275,7 +272,7 @@ Debug.unityLogger.filterLogType = LogType.Exception;
     public void DecrementMaegen(int _amount)
     {
         save.playerStats.currentMaegen -= _amount;
-        SaveData();
+        //SaveData();
     }
 
     public int GetCurrentMaegen => save.playerStats.currentMaegen;
@@ -289,13 +286,13 @@ Debug.unityLogger.filterLogType = LogType.Exception;
     public void SetMusicVolume(float _volume)
     {
         save.playerSettings.musicVolume = _volume;
-        SaveData();
+        //SaveData();
     }
     public float GetMusicVolume => save.playerSettings.musicVolume;
     public void SetSFXVolume(float _volume)
     {
         save.playerSettings.sfxVolume = _volume;
-        SaveData();
+        //SaveData();
     }
     public float GetSFXVolume => save.playerSettings.sfxVolume;
 
@@ -303,13 +300,13 @@ Debug.unityLogger.filterLogType = LogType.Exception;
     public void SetUnitOutline(bool _outline)
     {
         save.playerSettings.unitOutlines = _outline;
-        SaveData();
+        //SaveData();
     }
     public bool GetUnitOutline => save.playerSettings.unitOutlines;
     public void SetUnitHealthBars(bool _show)
     {
         save.playerSettings.unitHealthBars = _show;
-        SaveData();
+        //SaveData();
     }
     public bool GetUnitHealthBars => save.playerSettings.unitHealthBars;
 
@@ -317,19 +314,19 @@ Debug.unityLogger.filterLogType = LogType.Exception;
     public void SetMiniMapShow(bool _show)
     {
         save.playerSettings.miniMapShowing = _show;
-        SaveData() ;
+        //SaveData() ;
     }
     public bool GetMiniMapShow => save.playerSettings.miniMapShowing;
     public void SetMiniMapIcons(bool _show)
     {
         save.playerSettings.miniMapIcons = _show;
-        SaveData();
+        //SaveData();
     }
     public bool GetMiniMapIcons => save.playerSettings.miniMapIcons;
     public void SetMiniMapRotation(bool _rotation)
     {
         save.playerSettings.miniMapRotation = _rotation;
-        SaveData();
+        //SaveData();
     }
     public bool GetMiniMapRotation => save.playerSettings.miniMapRotation;
 
@@ -337,7 +334,7 @@ Debug.unityLogger.filterLogType = LogType.Exception;
     public void SetPanelColour(PanelColourID _panelColour)
     {
         save.playerSettings.panelColour = _panelColour;
-        SaveData();
+        //SaveData();
     }
     public PanelColourID GetPanelColour()
     {
@@ -358,53 +355,36 @@ Debug.unityLogger.filterLogType = LogType.Exception;
             return;
 
         save.glossary.glossaryIDs.Add(_id);
-        SaveData();
+        //SaveData();
     }
     public bool GetGlossaryItemUnlocked(GlossaryID _id) => save.glossary.glossaryIDs.Contains(_id); 
     public void SetGlossaryItemsUnlocked(List<GlossaryID> _items)
     {
         save.glossary.glossaryIDs = _items;
-        SaveData();
+        //SaveData();
     }
-    public List<GlossaryID> GetGlossaryItemsUnlocked => save.glossary.glossaryIDs; 
+    public List<GlossaryID> GetGlossaryItemsUnlocked => save.glossary.glossaryIDs;
 
     #endregion
 
     #region Level Specific
-    public void SetLevelScore(LevelID _levelID, int _score, bool _completed)
+    public LevelSaveObject GetLevelSaveData(LevelID _levelID)
     {
-        save.levelsPlayed++;
-        LevelSaveObject level = save.GetLevelSaveData(_levelID);
-        if (level != null)
-        {
-            if (_score > level.highScore)
-                level.highScore = _score;
-            if (_completed)
-            {
-                level.playCount++;
-                level.completed = _completed;
-                LevelSaveObject next = save.GetLevelSaveData(EnumX.Next(_levelID));
-                next.unlocked = true;
-            }
-            //Log("GameData:: COMPLETED level [" + _levelID + "] highScore [" + level.highScore + "] playCount [" + level.playCount + "]");
-        }
-        SaveData();
+        return save.levels.Find(x => x.levelID == _levelID);
     }
-
-    //
+    
     // Scores
     public int GetLevelHighScore(LevelID _levelID)
     {
-        LevelSaveObject track = save.GetLevelSaveData(_levelID);
+        LevelSaveObject track = GetLevelSaveData(_levelID);
         if (track == null) return 0;
         return track.highScore;
     }
 
-    //
     // Play Count
     public int GetLevelPlayCount(LevelID _levelID)
     {
-        LevelSaveObject track = save.GetLevelSaveData(_levelID);
+        LevelSaveObject track = GetLevelSaveData(_levelID);
         if (track == null) return 0;
         return track.playCount;
     }
@@ -414,7 +394,7 @@ Debug.unityLogger.filterLogType = LogType.Exception;
         int count = 0;
         foreach (LevelID levelID in Enum.GetValues(typeof(LevelID)))
         {
-            LevelSaveObject lso = save.GetLevelSaveData(levelID);
+            LevelSaveObject lso = GetLevelSaveData(levelID);
             if(lso == null)
             {
                 lso = new LevelSaveObject();
@@ -425,7 +405,27 @@ Debug.unityLogger.filterLogType = LogType.Exception;
         return count;
     }
 
-    public bool GetLevelCompleted(LevelID _id) => save.GetLevelSaveData(_id).completed;
+    public bool GetLevelCompleted(LevelID _id) => GetLevelSaveData(_id).completed;
+
+    public void SetLevelScore(LevelID _levelID, int _score, bool _completed)
+    {
+        save.levelsPlayed++;
+        LevelSaveObject level = GetLevelSaveData(_levelID);
+        if (level != null)
+        {
+            if (_score > level.highScore)
+                level.highScore = _score;
+            if (_completed)
+            {
+                level.playCount++;
+                level.completed = _completed;
+                level.unlocked = true;
+                LevelSaveObject next = GetLevelSaveData(EnumX.Next(_levelID));
+                next.unlocked = true;
+            }
+            Log("GameData:: COMPLETED level [" + _levelID + "] highScore [" + level.highScore + "] playCount [" + level.playCount + "]");
+        }
+    }
     #endregion
 
     #region Perks
@@ -435,7 +435,7 @@ Debug.unityLogger.filterLogType = LogType.Exception;
         if (perk != null)
         {
             perk.unlocked = _unlocked;
-            SaveData();
+            //SaveData();
         }
     }
     public bool GetPerkStatus(PerkID _perkID)
@@ -504,7 +504,7 @@ Debug.unityLogger.filterLogType = LogType.Exception;
             stat.mostDaysSurvived = _daysSurvived;
         stat.totalDaysSurvived += 1;
         //print(stat.unitID + " has been killed by " + ks.killedID + " " + ks.amount + " times");
-        SaveData();
+        //SaveData();
     }
 
     public void OnHumanKilled(Enemy _enemy, string _creature)
@@ -530,7 +530,7 @@ Debug.unityLogger.filterLogType = LogType.Exception;
         }
         ks.amount += 1;
         //print(stat.unitID + " has killed " + ks.killedID + " " + ks.amount + " times");
-        SaveData();
+        //SaveData();
     }
 
     private void OnCreatureSpawned(CreatureID _id)
@@ -627,7 +627,7 @@ Debug.unityLogger.filterLogType = LogType.Exception;
     private void OnDayOver()
     {
         save.playerStats.daysPlayed += 1;
-        SaveData();
+        //SaveData();
     }
 
     private void OnHumanSpawned(HumanID _id)

@@ -451,6 +451,9 @@ public class TutorialManager : GameBehaviour
 
     public void CheckCameraTutorial(TutorialID _tutorialID)
     {
+        if (_DATA.currentLevelID != LevelID.Ironwood)
+            return;
+
         if (_currentGameState != GameState.Tutorial)
             return;
 

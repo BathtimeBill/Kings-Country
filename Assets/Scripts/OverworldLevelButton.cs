@@ -17,12 +17,13 @@ public class OverworldLevelButton : GameBehaviour
 
     private void Start()
     {
-        bool isAvailable = _DATA.levelAvailable(thisLevel);
-
-        if (isAvailable)
-            myRenderer.material.color = _COLOUR.mapUnlockedColor;
-        else
-            myRenderer.material.color = _COLOUR.mapLockedColor;
+        ExecuteNextFrame(() =>
+        {
+            if (_DATA.levelAvailable(thisLevel))
+                myRenderer.material.color = _COLOUR.mapUnlockedColor;
+            else
+                myRenderer.material.color = _COLOUR.mapLockedColor;
+        });
     }
 
     private void OnMouseEnter()

@@ -63,7 +63,7 @@ public class GameData : Singleton<GameData>
     public LevelID currentLevelID => currentLevel.id;
     public bool LevelContains(LevelID _levelID, HumanID _humanID) => GetLevel(_levelID).availableHumans.Contains(_humanID);
     public bool LevelContains(LevelID _levelID, BuildingID _buildingID) => GetLevel(_levelID).availableBuildings.Contains(_buildingID);
-    public bool levelAvailable(LevelID _id) => GetLevel(_id).unlocked && GetLevel(_id).canBePlayed;
+    public bool levelAvailable(LevelID _id) => _SAVE.GetLevelSaveData(_id).unlocked && GetLevel(_id).canBePlayed;
 
     public int levelMaxDays => currentLevel.days;
 

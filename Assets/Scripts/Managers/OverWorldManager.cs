@@ -178,7 +178,7 @@ public class OverWorldManager : GameBehaviour
         for (int i = 0; i < seasonToggles.Length; i++)
             seasonToggles[i].SetInteractable(false);
 
-        if (_levelData.unlocked)
+        if (_DATA.levelAvailable(_levelData.id))
         {
             int seasonCount = _levelData.unlockedSeasons.Count-1;
             for (int i = 0; i < seasonToggles.Length; i++)
@@ -204,7 +204,7 @@ public class OverWorldManager : GameBehaviour
         if (!_show)
             return;
 
-        if (levelData.unlockedSeasons.Contains(_seasonID) && levelData.unlocked)
+        if (levelData.unlockedSeasons.Contains(_seasonID) && _DATA.levelAvailable(levelData.id))
         {
             seasonUnlockCondition.text = "Select " + _seasonID.ToString() + "?";
         }
