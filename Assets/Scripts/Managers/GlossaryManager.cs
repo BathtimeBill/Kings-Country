@@ -190,10 +190,10 @@ public class GlossaryManager : GameBehaviour
                     $"<b>Formations:</b><br>Clicking the <b>Formations</b> button will change how spread out {GetName(ObjectID.Creature, true)} are. You can choose to have them bunch them together to allow a more concentrated force or spread out to cover more ground.";
                 break;
             case GlossaryID.Portal:
-                _glossaryItem.title = "Portals";
+                _glossaryItem.title = "Health Pickups";
                 _glossaryItem.description =
-                    $"Portals occasionally appear to give you health. " +
-                    $"Move your {GetName(ObjectID.Creature)} over one to gain more life";
+                    $"These purple orbs of energy will heal any {GetName(ObjectID.Creature)} that runs into it." +
+                    $"They will sporadically appear across the map throughout the game";
                 break;
         }
     }
