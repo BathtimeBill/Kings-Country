@@ -25,6 +25,7 @@ public enum PrefGraphicsQuality
 public class LevelSaveObject
 {
     public LevelID levelID;
+    public string levelName;
     public int highScore = 0;
     public int playCount = 0;
     public bool completed;
@@ -118,7 +119,8 @@ public class SaveDataObject : BGG.GameDataBase
     //Player Stats
     public PlayerStats playerStats = new PlayerStats();
     // Level data
-    public Dictionary<LevelID, LevelSaveObject> levels = new Dictionary<LevelID, LevelSaveObject>();
+    //public Dictionary<LevelID, LevelSaveObject> levels = new Dictionary<LevelID, LevelSaveObject>();
+    public List<LevelSaveObject> levels = new List<LevelSaveObject>();
     public int levelsPlayed = 0;
     //Perks
     public Dictionary<PerkID, PerkSaveObject> perks = new Dictionary<PerkID, PerkSaveObject>();
@@ -136,9 +138,7 @@ public class SaveDataObject : BGG.GameDataBase
     // Data getters
     public LevelSaveObject GetLevelSaveData(LevelID _levelID)
     {
-        if (levels.ContainsKey(_levelID))
-            return levels[_levelID];
-        return null;
+        return levels.Find(x => x.levelID == _levelID);
     }
     public PerkSaveObject GetPerkSaveData(PerkID _perkID)
     {
@@ -193,20 +193,20 @@ Debug.unityLogger.filterLogType = LogType.Exception;
         save = new SaveDataObject();
 
         // Initialize Game Data
-        save.levels = new Dictionary<LevelID, LevelSaveObject>();
+        save.levels = new List<LevelSaveObject>();
         for (int l = 0; l < gameData.levelData.Count; l++)
         {
             LevelData ld = gameData.levelData[l];
-            LevelID levelID = ld.id;
             LevelSaveObject lso = new LevelSaveObject
             {
                 levelID = ld.id,
+                levelName = EnumX.EnumNameFormatted(ld.id.ToString()),
                 highScore = 0,
                 playCount = 0,
                 completed = false,
-                unlocked = false
+                unlocked = l == 0 ? true : false
             };
-            save.levels.Add(levelID, lso);
+            save.levels.Add(lso);
         }
 
         save.perks = new Dictionary<PerkID, PerkSaveObject>();
