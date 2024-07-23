@@ -499,7 +499,7 @@ public class TutorialManager : GameBehaviour
     //Trees
     private void OnTreePlaced(ToolID _toolID)
     {
-        if (tutorialComplete)
+        if (tutorialComplete || _currentGameState != GameState.Tutorial)
             return;
 
         treeCount++;

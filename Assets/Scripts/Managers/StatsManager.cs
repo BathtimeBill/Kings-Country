@@ -5,11 +5,30 @@ using UnityEngine;
 //using UnityEngine.UIElements;
 public class StatsManager : GameBehaviour
 {
+    [Header("General")]
+    public TMP_Text totalMaegen;
+    public TMP_Text daysWon;
+    public TMP_Text levelsComplete;
+    public TMP_Text upgradesObtained;
+    public TMP_Text achievementsObtained;
+    public TMP_Text timePlayed;
+
     [Header("Trees")]
     public TreeStats treeStats;
 
-    [Header("Death Stats")]
-    public HumanDeathStats humanDeathStats;
+    [Header("Tools")]
+    public ToolStats toolStats;
+
+    [Header("Wildlife")]
+    public WildlifeStats wildlifeStats;
+
+    [Header("Unit Stats")]
+    //[BV.EnumList(typeof(CreatureID))]
+    public List<CreatureStats> creatureStats;
+    public StatsTotal creatureStatsTotal;
+    [BV.EnumList(typeof(HumanID))]
+    public List<HumanStats> humanStats;
+    public StatsTotal humanStatsTotal;
 
     [Header("Detailed Kill Stats")]
     public UnitKillStats unit1;
@@ -42,17 +61,33 @@ public class StatsManager : GameBehaviour
         mainPanel.SetActive(true);
         detailedPanel.SetActive(false);
 
-        PlayerStats stats = _SAVE.GetPlayerStats;
-        if (stats == null)
-            return;
+        SetGeneralStats();
+        SetTreeStats();
+        SetToolStats();
+        SetWildlifeStats();
+        SetHumanStats();
+        SetCreatureStats();
+    }
 
-        //Trees
-        int treesPlanted = stats.treesPlanted;
-        int treesDestroyed = stats.treesLost;
-        int willowPlanted = stats.willowsPlanted;
-        int willowDestroyed = stats.willowsLost;
-        int ficusPlanted = stats.ficusPlanted;
-        int ficusDestroyed = stats.ficusLost;
+    #region General Stats
+    private void SetGeneralStats()
+    {
+        totalMaegen.text = _SAVE.GetTotalMaegen.ToString();
+        daysWon.text = _SAVE.GetDaysWon.ToString() + " of " + _SAVE.GetDaysPlayed.ToString();
+        levelsComplete.text = _SAVE.GetLevelCompleteCount().ToString() + " of 21";
+        upgradesObtained.text = "0 of 46";
+        upgradesObtained.text = "0 of 32";
+        timePlayed.text = _SAVE.GetElapsedTimeFormatted();
+    }
+
+    private void SetTreeStats()
+    {
+        int treesPlanted = _SAVE.GetTreePlantedStats(ToolID.Tree);
+        int treesDestroyed = _SAVE.GetTreeLostStats(ToolID.Tree);
+        int willowPlanted = _SAVE.GetTreePlantedStats(ToolID.Willow);
+        int willowDestroyed = _SAVE.GetTreeLostStats(ToolID.Willow);
+        int ficusPlanted = _SAVE.GetTreePlantedStats(ToolID.Ficus);
+        int ficusDestroyed = _SAVE.GetTreeLostStats(ToolID.Ficus);
         treeStats.treePlanted.text = treesPlanted.ToString();
         treeStats.treeDestroyed.text = treesDestroyed.ToString();
         treeStats.treeRatio.text = MathX.CalculateWinLossRatio(treesPlanted, treesDestroyed).ToString("F2") + "%";
@@ -66,12 +101,87 @@ public class StatsManager : GameBehaviour
         treeStats.totalPlanted.text = (treesPlanted + willowPlanted + ficusPlanted).ToString();
         treeStats.totalDestroyed.text = (treesDestroyed + willowDestroyed + ficusDestroyed).ToString();
         treeStats.totalRatio.text = MathX.CalculateWinLossRatio((treesPlanted + willowPlanted + ficusPlanted), (treesDestroyed + willowDestroyed + ficusDestroyed)).ToString("F2") + "%";
-
-        //Humans
-        SetHumanDeathCount();
     }
 
-    public void FillDetailedStatPanel(BuildingID _buildingID)
+    private void SetToolStats()
+    {
+        toolStats.fyreUsed.text = _SAVE.GetFyreUsed.ToString();
+        toolStats.fyreKills.text = _SAVE.GetToolKillCount(ToolID.Fyre).ToString();
+        toolStats.stormerUsed.text = _SAVE.GetStormerUsed.ToString();
+        toolStats.stormerKills.text = _SAVE.GetToolKillCount(ToolID.Stormer).ToString();
+    }
+
+    private void SetWildlifeStats()
+    {
+        wildlifeStats.rabbitsSpawned.text = _SAVE.GetWildlifeSpawnCount(WildlifeID.Rabbit).ToString();
+        wildlifeStats.rabbitsKilled.text = _SAVE.GetWildlifeKilledCount(WildlifeID.Rabbit).ToString();
+        wildlifeStats.deerSpawned.text = _SAVE.GetWildlifeSpawnCount(WildlifeID.Deer).ToString();
+        wildlifeStats.deerKilled.text = _SAVE.GetWildlifeKilledCount(WildlifeID.Deer).ToString();
+        wildlifeStats.boarsSpawned.text = _SAVE.GetWildlifeSpawnCount(WildlifeID.Boar).ToString();
+        wildlifeStats.boarsKilled.text = _SAVE.GetWildlifeKilledCount(WildlifeID.Boar).ToString();
+        wildlifeStats.bearsSpawned.text = _SAVE.GetWildlifeSpawnCount(WildlifeID.Bear).ToString();
+        wildlifeStats.bearsKilled.text = _SAVE.GetWildlifeKilledCount(WildlifeID.Bear).ToString();
+    }
+
+    private void SetHumanStats()
+    {
+        int totalSummons = 0;
+        int totalKills = 0;
+        int totalDeaths = 0;
+        for (int i = 0; i < humanStats.Count; i++)
+        {
+            UnitStats us = _SAVE.GetUnitStats(humanStats[i].humanID.ToString());
+            if (us != null)
+            {
+                int summons = us.summonCount;
+                totalSummons += summons;
+                humanStats[i].spawnCount.text = summons.ToString();
+
+                int kill = _SAVE.GetCreatureKillCount(humanStats[i].humanID.ToString());
+                totalKills += kill;
+                humanStats[i].killCount.text = kill.ToString();
+
+                int deaths = _SAVE.GetCreatureDeathCount(humanStats[i].humanID.ToString());
+                totalDeaths += deaths;
+                humanStats[i].deathCount.text = deaths.ToString();
+            }
+        }
+        humanStatsTotal.summonCount.text = totalSummons.ToString();
+        humanStatsTotal.killCount.text = totalKills.ToString();
+        humanStatsTotal.deathCount.text = totalDeaths.ToString();
+    }
+
+    private void SetCreatureStats()
+    {
+        int totalSummons = 0;
+        int totalKills = 0;
+        int totalDeaths = 0;
+        for (int i = 0; i < creatureStats.Count; i++)
+        {
+            UnitStats us = _SAVE.GetUnitStats(creatureStats[i].creatureID.ToString());
+            if (us != null)
+            {
+                int summons = us.summonCount;
+                totalSummons += summons;
+                creatureStats[i].summonCount.text = summons.ToString();
+
+                int kill = _SAVE.GetCreatureKillCount(creatureStats[i].creatureID.ToString());
+                totalKills += kill;
+                creatureStats[i].killCount.text = kill.ToString();
+
+                int deaths = _SAVE.GetCreatureDeathCount(creatureStats[i].creatureID.ToString());
+                totalDeaths += deaths;
+                creatureStats[i].deathCount.text = deaths.ToString();
+            }
+        }
+        creatureStatsTotal.summonCount.text = totalSummons.ToString();
+        creatureStatsTotal.killCount.text = totalKills.ToString();
+        creatureStatsTotal.deathCount.text = totalDeaths.ToString();
+    }
+    #endregion
+
+    #region Detailed Stats
+    private void FillDetailedStatPanel(BuildingID _buildingID)
     {
         mainPanel.SetActive(false);
         detailedPanel.SetActive(true);
@@ -97,7 +207,7 @@ public class StatsManager : GameBehaviour
         
     }
 
-    public void GetUnitStats(UnitKillStats _stats, CreatureID _creatureID)
+    private void GetUnitStats(UnitKillStats _stats, CreatureID _creatureID)
     {
         _stats.unitNameText.text = _creatureID.ToString();
         _stats.unitIcon.sprite = _DATA.GetUnit(_creatureID).icon;
@@ -182,22 +292,8 @@ public class StatsManager : GameBehaviour
         _stats.totalDeathsText.text = "0";
         _stats.totalRatioText.text = "0.0%";
     }
+    #endregion
 
-    public void SetHumanDeathCount()
-    {
-        humanDeathStats.logger.text     = _SAVE.GetDeathCount(HumanID.Logger.ToString()).ToString();
-        humanDeathStats.lumberjack.text = _SAVE.GetDeathCount(HumanID.Lumberjack.ToString()).ToString();
-        humanDeathStats.logCutter.text  = _SAVE.GetDeathCount(HumanID.LogCutter.ToString()).ToString();
-        humanDeathStats.wathe.text      = _SAVE.GetDeathCount(HumanID.Wathe.ToString()).ToString();
-        humanDeathStats.poacher.text    = _SAVE.GetDeathCount(HumanID.Poacher.ToString()).ToString();
-        humanDeathStats.bjornjeger.text = _SAVE.GetDeathCount(HumanID.Bjornjeger.ToString()).ToString();
-        humanDeathStats.dreng.text      = _SAVE.GetDeathCount(HumanID.Dreng.ToString()).ToString();
-        humanDeathStats.berserkr.text   = _SAVE.GetDeathCount(HumanID.Berserkr.ToString()).ToString();
-        humanDeathStats.knight.text     = _SAVE.GetDeathCount(HumanID.Knight.ToString()).ToString();
-        humanDeathStats.spy.text        = _SAVE.GetDeathCount(HumanID.Spy.ToString()).ToString();
-        humanDeathStats.dog.text        = _SAVE.GetDeathCount(HumanID.Dog.ToString()).ToString();
-        humanDeathStats.lord.text       = _SAVE.GetDeathCount(HumanID.Lord.ToString()).ToString();
-    }
 }
 
 [System.Serializable]
@@ -232,18 +328,50 @@ public class TreeStats
 }
 
 [System.Serializable]
-public class HumanDeathStats
+public class HumanStats
 {
-    public TMP_Text logger;
-    public TMP_Text lumberjack;
-    public TMP_Text logCutter;
-    public TMP_Text wathe;
-    public TMP_Text poacher;
-    public TMP_Text bjornjeger;
-    public TMP_Text dreng;
-    public TMP_Text berserkr;
-    public TMP_Text knight;
-    public TMP_Text spy;
-    public TMP_Text dog;
-    public TMP_Text lord;
+    public HumanID humanID;
+    public TMP_Text spawnCount;
+    public TMP_Text killCount;
+    public TMP_Text deathCount;
+}
+
+[System.Serializable]
+public class CreatureStats
+{
+    public CreatureID creatureID;
+    public TMP_Text summonCount;
+    public TMP_Text killCount;
+    public TMP_Text deathCount;
+}
+[System.Serializable]
+public class StatsTotal
+{
+    public TMP_Text summonCount;
+    public TMP_Text killCount;
+    public TMP_Text deathCount;
+}
+[System.Serializable]
+public class ToolStats
+{
+    public TMP_Text fyreUsed;
+    public TMP_Text fyreKills;
+    public TMP_Text stormerUsed;
+    public TMP_Text stormerKills;
+    public TMP_Text runesUsed;
+
+}
+
+[System.Serializable]
+public class WildlifeStats
+{
+    public TMP_Text rabbitsSpawned;
+    public TMP_Text rabbitsKilled;
+    public TMP_Text deerSpawned;
+    public TMP_Text deerKilled;
+    public TMP_Text boarsSpawned;
+    public TMP_Text boarsKilled;
+    public TMP_Text bearsSpawned;
+    public TMP_Text bearsKilled;
+
 }

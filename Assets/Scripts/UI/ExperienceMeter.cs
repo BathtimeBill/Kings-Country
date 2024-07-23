@@ -95,7 +95,7 @@ public class ExperienceMeter : GameBehaviour
         
         experience.currentLevel = currentLevel;
         experience.currentEXP = (int)currentEXP;
-        //_SAVE.SetExperience(experience);
+        _SAVE.SetExperience(experience);
         leveledUp = false;
     }
 }

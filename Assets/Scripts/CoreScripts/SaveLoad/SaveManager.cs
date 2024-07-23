@@ -77,15 +77,45 @@ public class PlayerStats
     public int currentMaegen;
     public int totalMaegen;
     public int daysPlayed;
+    public int daysWon;
 
+    //public int treesPlanted;
+    //public int treesLost;
+    //public int willowsPlanted;
+    //public int willowsLost;
+    //public int ficusPlanted;
+    //public int ficusLost;
+}
+
+[Serializable]
+public class TreeStatsObject
+{
     public int treesPlanted;
     public int treesLost;
     public int willowsPlanted;
     public int willowsLost;
     public int ficusPlanted;
     public int ficusLost;
+}
 
-    public Dictionary<string, int> deaths = new Dictionary<string, int>();
+[Serializable]
+public class ToolStatsObject
+{
+    public int fyreUsed;
+    public int stormerUsed;
+}
+
+[Serializable]
+public class WildlifeStatsObject
+{
+    public int rabbitsSpawned;
+    public int rabbitsKilled;
+    public int deerSpawned;
+    public int deerKilled;
+    public int boarsSpawned;
+    public int boarsKilled;
+    public int bearsSpawned;
+    public int bearsKilled;
 }
 
 [Serializable]
@@ -118,18 +148,23 @@ public class SaveDataObject : BGG.GameDataBase
     public PlayerSettings playerSettings = new PlayerSettings();
     //Player Stats
     public PlayerStats playerStats = new PlayerStats();
+    // Times
+    public PlayTimeObject playTime = new PlayTimeObject();
+    //Tree Stats
+    public TreeStatsObject treeStats = new TreeStatsObject();
+    //Unit Stats
+    public List<UnitStats> unitStats = new List<UnitStats>();
+    //Tool Stats
+    public ToolStatsObject toolStats = new ToolStatsObject();
+    //Wildlife Stats
+    public WildlifeStatsObject wildlifeStats = new WildlifeStatsObject();
     // Level data
-    //public Dictionary<LevelID, LevelSaveObject> levels = new Dictionary<LevelID, LevelSaveObject>();
     public List<LevelSaveObject> levels = new List<LevelSaveObject>();
     public int levelsPlayed = 0;
     //Perks
     public Dictionary<PerkID, PerkSaveObject> perks = new Dictionary<PerkID, PerkSaveObject>();
     //Achievements TODO
     public List<string> achievements = new List<string>();
-    // Times
-    public PlayTimeObject playTime = new PlayTimeObject();
-    //Unit Stats
-    public List<UnitStats> unitStats = new List<UnitStats>();
     //Tutorial
     public GlossaryObject glossary = new GlossaryObject();
     //Experience
@@ -231,7 +266,12 @@ Debug.unityLogger.filterLogType = LogType.Exception;
         save.playerSettings.panelColour = PanelColourID.Black;
 
         save.playerStats = new PlayerStats();
-        save.playerStats.deaths = new Dictionary<string, int>();
+
+        save.treeStats = new TreeStatsObject();
+
+        save.toolStats = new ToolStatsObject();
+
+        save.wildlifeStats = new WildlifeStatsObject();
 
         save.playTime = new PlayTimeObject();
 
@@ -247,6 +287,7 @@ Debug.unityLogger.filterLogType = LogType.Exception;
 
     public override void SaveData()
     {
+        SaveTimePlayed();
         SaveDataObject(save);
     }
 
@@ -279,7 +320,8 @@ Debug.unityLogger.filterLogType = LogType.Exception;
     public int GetTotalMaegen => save.playerStats.totalMaegen;
 
     //Days
-    public int GetTotalDays => save.playerStats.daysPlayed;
+    public int GetDaysPlayed => save.playerStats.daysPlayed;
+    public int GetDaysWon => save.playerStats.daysWon;
 
     
     //Audio
@@ -458,39 +500,74 @@ Debug.unityLogger.filterLogType = LogType.Exception;
         int killAmount = stat.iHaveKilled.Find(x=>x.killedID == _killedID).amount;
         return killAmount;
     }
-    public int GetDeathCount(string _unitID)
+    public int GetCreatureKillCount(string _unitID)
     {
-        if (save.playerStats.deaths.ContainsKey(_unitID))
-            return save.playerStats.deaths[_unitID];
-        else
+        UnitStats stat = GetUnitStats(_unitID);
+
+        if (stat == null) return 0;
+        if(stat.iHaveKilled == null || stat.iHaveKilled.Count == 0) return 0;
+
+        int killAmount = 0;
+        for(int i=0; i< stat.iHaveKilled.Count; i++)
         {
-            save.playerStats.deaths.Add(_unitID.ToString(), 0);
-            return 0;
+            killAmount += stat.iHaveKilled[i].amount;
         }
+        return killAmount;
     }
-    public void IncrementDeathCount(string _unitID)
+    public int GetCreatureDeathCount(string _unitID)
     {
-        int currentDeathCount = GetDeathCount(_unitID.ToString());
-        currentDeathCount += 1;
-        //Debug.Log(_unitID + " has been killed a total of " + currentDeathCount);
-        save.playerStats.deaths[_unitID] = currentDeathCount;
+        UnitStats stat = GetUnitStats(_unitID);
+
+        if (stat == null) return 0;
+        if (stat.killedBy == null || stat.killedBy.Count == 0) return 0;
+
+        int deathAmount = 0;
+        for (int i = 0; i < stat.killedBy.Count; i++)
+        {
+            deathAmount += stat.killedBy[i].amount;
+        }
+        return deathAmount;
+    }
+
+    public int GetToolKillCount(ToolID _toolID)
+    {
+        int killCount = 0;
+        for (int i = 0; i < save.unitStats.Count; i++)
+        {
+            if (save.unitStats[i].killedBy.Find(x => x.killedID == _toolID.ToString()) != null)
+            {
+                int count = save.unitStats[i].killedBy.Find(x => x.killedID == _toolID.ToString()).amount;
+                killCount += count;
+            }
+        }
+        return killCount;
     }
 
     public void OnCreatureKilled(string _creature, string _killer, int _daysSurvived)
     {
-        IncrementDeathCount(_creature);
+        FillDeathStat(_creature, _killer, _daysSurvived);
+        FillKillStat(_killer, _creature, _daysSurvived);
+    }
 
+    public void OnHumanKilled(Enemy _enemy, string _creature)
+    {
+        FillDeathStat(_enemy.unitID.ToString(), _creature, 0);
+        FillKillStat(_creature, _enemy.unitID.ToString(), 0);
+    }
+
+    private void FillDeathStat(string _unit, string _killer, int _daysSurvived)
+    {
         //print(_creature + " was killed by " + _killer);
-        UnitStats stat = GetUnitStats(_creature);
+        UnitStats stat = GetUnitStats(_unit);
         if (stat == null)
         {
             stat = new UnitStats();
-            stat.unitID = _creature;
+            stat.unitID = _unit;
             stat.killedBy = new List<KillStat>();
             AddUnitStats(stat);
         }
         List<KillStat> killStats = stat.killedBy;
-        KillStat ks = killStats.Find(x=> x.killedID==_killer);
+        KillStat ks = killStats.Find(x => x.killedID == _killer);
         if (ks == null)
         {
             ks = new KillStat();
@@ -500,31 +577,29 @@ Debug.unityLogger.filterLogType = LogType.Exception;
         }
         ks.amount += 1;
 
-        if(_daysSurvived > stat.mostDaysSurvived)
+        if (_daysSurvived > stat.mostDaysSurvived)
             stat.mostDaysSurvived = _daysSurvived;
         stat.totalDaysSurvived += 1;
         //print(stat.unitID + " has been killed by " + ks.killedID + " " + ks.amount + " times");
         //SaveData();
     }
 
-    public void OnHumanKilled(Enemy _enemy, string _creature)
+    public void FillKillStat(string _unit, string _killer, int _daysSurvived)
     {
-        IncrementDeathCount(_enemy.unitID.ToString());
-
-        UnitStats stat = GetUnitStats(_creature);
+        UnitStats stat = GetUnitStats(_unit);
         if (stat == null)
         {
             stat = new UnitStats();
-            stat.unitID = _creature;
+            stat.unitID = _unit;
             stat.iHaveKilled = new List<KillStat>();
             AddUnitStats(stat);
         }
         List<KillStat> killStats = stat.iHaveKilled == null ? new List<KillStat>() : stat.iHaveKilled;
-        KillStat ks = killStats.Find(x => x.killedID == _enemy.unitID.ToString());
+        KillStat ks = killStats.Find(x => x.killedID == _killer.ToString());
         if (ks == null)
         {
             ks = new KillStat();
-            ks.killedID = _enemy.unitID.ToString();
+            ks.killedID = _killer.ToString();
             ks.amount = 0;
             killStats.Add(ks);
         }
@@ -534,6 +609,19 @@ Debug.unityLogger.filterLogType = LogType.Exception;
     }
 
     private void OnCreatureSpawned(CreatureID _id)
+    {
+        UnitStats stat = GetUnitStats(_id.ToString());
+        if (stat == null)
+        {
+            stat = new UnitStats();
+            stat.unitID = _id.ToString();
+            stat.killedBy = new List<KillStat>();
+            AddUnitStats(stat);
+        }
+        stat.summonCount += 1;
+    }
+
+    private void OnHumanSpawned(HumanID _id)
     {
         UnitStats stat = GetUnitStats(_id.ToString());
         if (stat == null)
@@ -563,6 +651,10 @@ Debug.unityLogger.filterLogType = LogType.Exception;
     public void SaveTimePlayed()
     {
         GetElapsedTime();
+    }
+    public string GetElapsedTimeFormatted()
+    {
+        return $"{GetHours()}:{GetMinutes()}:{GetSeconds()}";
     }
     int GetSeconds()
     {
@@ -615,49 +707,144 @@ Debug.unityLogger.filterLogType = LogType.Exception;
     }*/
     #endregion
 
+    #region Trees
+    public void OnTreePlaced(ToolID _id)
+    {
+        CheckIfNull(save.treeStats);
+        if (_id == ToolID.Tree)
+            save.treeStats.treesPlanted += 1;
+        if (_id == ToolID.Willow)
+            save.treeStats.willowsPlanted += 1;
+        if (_id == ToolID.Ficus)
+            save.treeStats.ficusPlanted += 1;
+    }
+    private void OnTreeDestroyed(ToolID _id)
+    {
+        CheckIfNull(save.treeStats);
+        if (_id == ToolID.Tree)
+            save.treeStats.treesLost += 1;
+        if (_id == ToolID.Willow)
+            save.treeStats.willowsLost += 1;
+        if (_id == ToolID.Ficus)
+            save.treeStats.ficusLost += 1;
+    }
+    public int GetTreePlantedStats(ToolID _id)
+    {
+        CheckIfNull(save.toolStats);
+        if (_id == ToolID.Tree)
+            return save.treeStats.treesPlanted;
+        else if (_id == ToolID.Willow)
+            return save.treeStats.willowsPlanted;
+        else if (_id == ToolID.Ficus)
+            return save.treeStats.ficusPlanted;
+        else
+            return 0;
+    }
+    public int GetTreeLostStats(ToolID _id)
+    {
+        CheckIfNull(save.toolStats);
+        if (_id == ToolID.Tree)
+            return save.treeStats.treesLost;
+        else if (_id == ToolID.Willow)
+            return save.treeStats.willowsLost;
+        else if (_id == ToolID.Ficus)
+            return save.treeStats.ficusLost;
+        else
+            return 0;
+    }
+    private void CheckIfNull(TreeStatsObject tso)
+    {
+        if (tso == null) tso = new TreeStatsObject();
+    }
+    #endregion
+
+    #region Wildlife
+    private void OnWildlifeKilled()
+    {
+        CheckIfNull(save.wildlifeStats);
+        save.wildlifeStats.rabbitsKilled += 1;
+    }
+
+    public int GetWildlifeSpawnCount(WildlifeID _id)
+    {
+        CheckIfNull(save.wildlifeStats);
+        if (_id == WildlifeID.Rabbit)
+            return save.wildlifeStats.rabbitsSpawned;
+        else if (_id == WildlifeID.Deer)
+            return save.wildlifeStats.deerSpawned;
+        else if (_id == WildlifeID.Boar)
+            return save.wildlifeStats.boarsSpawned;
+        else if (_id == WildlifeID.Bear)
+            return save.wildlifeStats.bearsSpawned;
+        else
+            return 0;
+    }
+    public int GetWildlifeKilledCount(WildlifeID _id)
+    {
+        CheckIfNull(save.wildlifeStats);
+        if (_id == WildlifeID.Rabbit)
+            return save.wildlifeStats.rabbitsKilled;
+        else if (_id == WildlifeID.Deer)
+            return save.wildlifeStats.deerKilled;
+        else if (_id == WildlifeID.Boar)
+            return save.wildlifeStats.boarsKilled;
+        else if (_id == WildlifeID.Bear)
+            return save.wildlifeStats.bearsKilled;
+        else
+            return 0;
+    }
+    private void CheckIfNull(WildlifeStatsObject wso)
+    {
+        if (wso == null) wso = new WildlifeStatsObject();
+    }
+    #endregion
+
+    #region Tools
+    private void OnFyrePlaced()
+    {
+        CheckIfNull(save.toolStats);
+        save.toolStats.fyreUsed += 1;
+    }
+
+    public int GetFyreUsed => save.toolStats.fyreUsed;
+    private void OnStormerPlaced()
+    {
+        CheckIfNull(save.toolStats);
+        save.toolStats.stormerUsed += 1;
+    }
+    public int GetStormerUsed => save.toolStats.stormerUsed;
+
+
+    private void CheckIfNull(ToolStatsObject tso)
+    {
+        if (tso == null) tso = new ToolStatsObject();
+    }
+    #endregion
+
+
     #region Events
     private void OnLevelWin(LevelID _levelID, int _score, int _maegen)
     {
         IncrementMaegen(_maegen);
         SetLevelScore(_levelID, _score, true);
-        SaveTimePlayed();
         SaveData();
+    }
+
+    private void OnDayBegin()
+    {
+        save.playerStats.daysPlayed += 1;
     }
 
     private void OnDayOver()
     {
-        save.playerStats.daysPlayed += 1;
-        //SaveData();
-    }
-
-    private void OnHumanSpawned(HumanID _id)
-    {
-        
-    }
-
-    public void OnTreePlaced(ToolID _id)
-    {
-        if(_id == ToolID.Tree)
-            save.playerStats.treesPlanted += 1;
-        if(_id == ToolID.Willow)
-            save.playerStats.willowsPlanted += 1;
-        if (_id == ToolID.Ficus)
-            save.playerStats.ficusPlanted += 1;
-    }
-    private void OnTreeDestroyed(ToolID _id)
-    {
-        if (_id == ToolID.Tree)
-            save.playerStats.treesLost += 1;
-        if (_id == ToolID.Willow)
-            save.playerStats.willowsLost += 1;
-        if (_id == ToolID.Ficus)
-            save.playerStats.ficusLost += 1;
+        save.playerStats.daysWon += 1;
     }
 
 
     private void OnEnable()
     {
         GameEvents.OnLevelWin += OnLevelWin;
+        GameEvents.OnDayBegin += OnDayBegin;
         GameEvents.OnDayOver += OnDayOver;
         GameEvents.OnUnitOutlines += SetUnitOutline;
         GameEvents.OnUnitHealthBars += SetUnitHealthBars;
@@ -672,6 +859,9 @@ Debug.unityLogger.filterLogType = LogType.Exception;
 
         GameEvents.OnTreePlaced += OnTreePlaced;
         GameEvents.OnTreeDestroyed += OnTreeDestroyed;
+        GameEvents.OnFyrePlaced += OnFyrePlaced;
+        GameEvents.OnStormerPlaced += OnStormerPlaced;
+        GameEvents.OnWildlifeKilled += OnWildlifeKilled;
     }
 
     
@@ -679,6 +869,7 @@ Debug.unityLogger.filterLogType = LogType.Exception;
     private void OnDisable()
     {
         GameEvents.OnLevelWin -= OnLevelWin;
+        GameEvents.OnDayBegin -= OnDayBegin;
         GameEvents.OnDayOver -= OnDayOver;
         GameEvents.OnUnitOutlines -= SetUnitOutline;
         GameEvents.OnUnitHealthBars -= SetUnitHealthBars;
@@ -693,6 +884,9 @@ Debug.unityLogger.filterLogType = LogType.Exception;
 
         GameEvents.OnTreePlaced -= OnTreePlaced;
         GameEvents.OnTreeDestroyed -= OnTreeDestroyed;
+        GameEvents.OnFyrePlaced -= OnFyrePlaced;
+        GameEvents.OnStormerPlaced -= OnStormerPlaced;
+        GameEvents.OnWildlifeKilled -= OnWildlifeKilled;
     }
 
     #endregion
