@@ -388,7 +388,7 @@ public class PlayerControls : Singleton<PlayerControls>
                 {
                     if (_GM.fyreAvailable && _UI.fyreAvailable)
                     {
-                        if (_PERK.HasPerk(PerkID.Fyre))
+                        if (_DATA.HasPerk(PerkID.Fyre))
                         {
                             Instantiate(explosion2, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
                             _CAMERA.CameraShake(_SETTINGS.cameraShake.fyreShakeIntensity * 2);

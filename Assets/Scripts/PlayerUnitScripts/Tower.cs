@@ -70,7 +70,7 @@ public class Tower : GameBehaviour
 
         if (distanceToClosestEnemy < 50)
         {
-            if(_PERK.HasPerk(PerkID.Tower))
+            if(_DATA.HasPerk(PerkID.Tower))
             {
 
                 if(unitType == CreatureID.SpitTower)
@@ -200,7 +200,7 @@ public class Tower : GameBehaviour
         if(unitType == CreatureID.Tower)
         {
             fireRate = 2;
-            if (_PERK.HasPerk(PerkID.Tower))
+            if (_DATA.HasPerk(PerkID.Tower))
             {
                 maxHealth = _GM.GetPercentageIncrease(_GM.towerHealth, 0.5f);
             }
@@ -212,7 +212,7 @@ public class Tower : GameBehaviour
         if(unitType == CreatureID.SpitTower)
         {
             fireRate = 4;
-            if (_PERK.HasPerk(PerkID.Tower))
+            if (_DATA.HasPerk(PerkID.Tower))
             {
                 maxHealth = _GM.GetPercentageIncrease(_GM.spitTowerHealth, 0.5f);
             }
@@ -254,7 +254,7 @@ public class Tower : GameBehaviour
     {
         audioSource.clip = _SM.GetSpitSounds();
         audioSource.Play();
-        if (_PERK.HasPerk(PerkID.Tower))
+        if (_DATA.HasPerk(PerkID.Tower))
         {
             GameObject go = Instantiate(projectile2, firingPoint.transform.position, firingPoint.transform.rotation);
             go.GetComponent<Rigidbody>().AddForce(firingPoint.transform.forward * projectileSpeed);

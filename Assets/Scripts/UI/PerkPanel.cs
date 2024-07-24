@@ -16,9 +16,9 @@ public class PerkPanel : GameBehaviour
         for(int i=0;i< perkOptions.Count;i++)
         {
             if (perkOptions[i] == upgradeID)
-                _PERK.AddPerk(perkOptions[i]);
+                _DATA.AddPerk(perkOptions[i]);
             else
-                _PERK.AddBackPerk(perkOptions[i]);
+                _DATA.AddBackPerk(perkOptions[i]);
         }
         perkOptions.Clear();
     }

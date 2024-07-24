@@ -187,19 +187,19 @@ public class WildlifeAI : GameBehaviour
         {
             case WildlifeID.Rabbit:
                 navAgent.speed = 1.5f;
-                maxHealth = _PERK.HasPerk(PerkID.Fertile) ? 50 : 25;
+                maxHealth = _DATA.HasPerk(PerkID.Fertile) ? 50 : 25;
                 health = maxHealth;
                 break;
 
             case WildlifeID.Deer:
                 navAgent.speed = 2;
-                maxHealth = _PERK.HasPerk(PerkID.Fertile) ? 160 : 80;
+                maxHealth = _DATA.HasPerk(PerkID.Fertile) ? 160 : 80;
                 health = maxHealth;
                 break;
 
             case WildlifeID.Boar:
                 navAgent.speed = 2;
-                maxHealth = _PERK.HasPerk(PerkID.Fertile) ? 200 : 100;
+                maxHealth = _DATA.HasPerk(PerkID.Fertile) ? 200 : 100;
                 health = maxHealth;
                 break;
 

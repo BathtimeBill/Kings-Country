@@ -647,12 +647,12 @@ public class UIManager : Singleton<UIManager>
 
     void ShowUpgradeButtons()
     {
-        if (_PERK.CanObtainPerk)
+        if (_DATA.CanObtainPerk)
         {
-            PerkID perk1 = _PERK.GetRandomPerk();
-            _PERK.RemovePerk(perk1);
-            PerkID perk2 = _PERK.GetRandomPerk();
-            _PERK.RemovePerk(perk2);
+            PerkID perk1 = _DATA.GetRandomPerk();
+            _DATA.RemovePerk(perk1);
+            PerkID perk2 = _DATA.GetRandomPerk();
+            _DATA.RemovePerk(perk2);
 
             //print(upgradeButton1.name);
             //print(upgradeButton2.name);

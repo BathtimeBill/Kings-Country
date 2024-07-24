@@ -12,7 +12,7 @@ public class PerkButton : InteractableButton
 
     public void SetUpgrade(PerkID _id)
     {
-        perkData = _PERK.GetPerk(_id);
+        perkData = _DATA.GetPerk(_id);
         perkPanel.perkOptions.Add(_id);
         icon.sprite = perkData.icon;
     }

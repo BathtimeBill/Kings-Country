@@ -206,7 +206,7 @@ public class Tree : GameBehaviour
         }
         if(runeBuff == true)
         {
-            if(_PERK.HasPerk(PerkID.Rune))
+            if(_DATA.HasPerk(PerkID.Rune))
             {
                 _GM.maegen += 8;
                 Instantiate(maegen8, transform.position, Quaternion.Euler(-90f, 0, 0));

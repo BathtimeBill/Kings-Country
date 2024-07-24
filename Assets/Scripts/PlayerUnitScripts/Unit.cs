@@ -92,13 +92,13 @@ public class Unit : GameBehaviour
     {
         //Health
         maxHealth = unitData.health;
-        if (_PERK.HasPerk(PerkID.BarkSkin))
+        if (_DATA.HasPerk(PerkID.BarkSkin))
             maxHealth = MathX.GetPercentageIncrease(maxHealth, _DATA.GetPerk(PerkID.BarkSkin).increaseValue);
         health = maxHealth;
 
         //Speed
         unitSpeed = unitData.speed;
-        if (_PERK.HasPerk(PerkID.FlyFoot))
+        if (_DATA.HasPerk(PerkID.FlyFoot))
             unitSpeed = MathX.GetPercentageIncrease(unitSpeed, _DATA.GetPerk(PerkID.FlyFoot).increaseValue);
         navAgent.speed = unitSpeed;
 
@@ -719,7 +719,7 @@ public class Unit : GameBehaviour
         {
             if(unitID != CreatureID.Mistcalf)
             {
-                if (_PERK.HasPerk(PerkID.Rune))
+                if (_DATA.HasPerk(PerkID.Rune))
                 {
                     health += _GM.runeHealRate * 2 * Time.deltaTime;
                 }
