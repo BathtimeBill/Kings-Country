@@ -28,6 +28,11 @@ public class InteractableButton : GameBehaviour, IPointerEnterHandler, IPointerE
 
         if (GetComponent<Coffee.UIExtensions.ShinyEffectForUGUI>() != null)
             GetComponent<Coffee.UIExtensions.ShinyEffectForUGUI>().enabled = interactable;
+
+        if(icon != null)
+        {
+            icon.color = interactable ? _COLOUR.toggleIconInactiveColor : _COLOUR.toggleIconDisabledColor;
+        }
     }
 
     public virtual void ClickedButton() {}
