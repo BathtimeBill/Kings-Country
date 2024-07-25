@@ -3,7 +3,7 @@ using UnityEngine;
 public class MapIconRotator : GameBehaviour
 {
     public UnitType unitType;
-    [BV.DrawIf("unitType", UnitType.Creature)]
+    [BV.DrawIf("unitType", UnitType.Guardian)]
     public CreatureID creatureID;
     [BV.DrawIf("unitType", UnitType.Human)]
     public HumanID humanID;
@@ -44,7 +44,7 @@ public class MapIconRotator : GameBehaviour
     {
         switch(unitType)
         {
-            case UnitType.Creature:
+            case UnitType.Guardian:
                 sprite.sprite = _DATA.GetUnit(creatureID).mapIcon;
                 sprite.color = _COLOUR.GetColour(_DATA.GetUnit(creatureID).id);
                 sprite.transform.localScale = Vector3.one * _SETTINGS.miniMap.creatureIconSize;

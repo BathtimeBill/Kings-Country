@@ -24,6 +24,9 @@ public class Bow : GameBehaviour
     //This function spawns an arrow object from the left hand of the hunter enemy. It's triggered from the attack animation.
     public void SpawnArrow()
     {
+        if (!_inGame)
+            return;
+
         //checks if there are any animals in the scene then calculates the distance from the hunter enemy to that animal.
         if(gameObject.GetComponentInParent<Hunter>().wildlife.Length != 0)
         {

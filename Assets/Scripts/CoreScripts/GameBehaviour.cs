@@ -206,7 +206,7 @@ public enum HumanID
 
 public enum UnitType
 {
-    Creature,
+    Guardian,
     Human,
     Building,
     Tool
@@ -324,7 +324,7 @@ public enum ErrorID
 
 public enum ObjectID
 {
-    Resource    = 0,  Wildlife, Maegen, Populous, Day, Night, Creature, Human, Grove, Perk,
+    Resource    = 0,  Wildlife, Maegen, Populous, Day, Night, Guardian, Human, Grove, Perk,
     Tool        = 20, Tree, Rune, Fyre, Stormer, Tower, SpitTower,
     HomeTree    = 30, Satyr, Orcus, Leshy,
     Hut         = 40, Goblin, Skessa, Fidhain,
@@ -345,7 +345,7 @@ public enum DayID
 public enum GlossaryID
 {
     CameraControls,
-    CreatureMovement,
+    GuardianMovement,
     Maegen,
     Trees,
     Wildlife,
@@ -375,8 +375,8 @@ public enum TutorialID
     PlantTree,
     Glossary,
     Wildlife,
-    Creatures,
-    CreatureMovement,
+    Guardians,
+    GuardianMovement,
     Populous,
     DayNightCycle,
     Story,

@@ -1,7 +1,7 @@
 public class UnitWeaponCollider : GameBehaviour
 {
     public UnitType unitType;
-    [BV.DrawIf("unitType", UnitType.Creature)]
+    [BV.DrawIf("unitType", UnitType.Guardian)]
     public CreatureID creatureID;
     [BV.DrawIf("unitType", UnitType.Human)]
     public HumanID humanID;
@@ -24,7 +24,7 @@ public class UnitWeaponCollider : GameBehaviour
     {
         switch (unitType)
         {
-            case UnitType.Creature:
+            case UnitType.Guardian:
                 damage = _DATA.GetUnit(creatureID).damage;
                 unitID = _DATA.GetUnit(creatureID).id.ToString();
                 break;

@@ -93,7 +93,7 @@ public class Enemy : GameBehaviour
             }
         }
 
-        if (uwc.unitType == UnitType.Creature)
+        if (uwc.unitType == UnitType.Guardian)
         {
             switch(uwc.creatureID)
             {
@@ -142,7 +142,7 @@ public class Enemy : GameBehaviour
         if (uwc.unitType == UnitType.Human)
             return;
 
-        if (uwc.unitType == UnitType.Creature)
+        if (uwc.unitType == UnitType.Guardian)
         {
             switch (uwc.creatureID)
             {

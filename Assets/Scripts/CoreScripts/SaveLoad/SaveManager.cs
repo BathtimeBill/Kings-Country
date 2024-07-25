@@ -185,11 +185,6 @@ public class SaveDataObject : BGG.GameDataBase
 //
 public class SaveManager : BGG.GameData
 {
-
-#if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
-Debug.unityLogger.filterLogType = LogType.Exception;
-#endif
-
     public Settings settings;
     public GameData gameData;
     //[HideInInspector]

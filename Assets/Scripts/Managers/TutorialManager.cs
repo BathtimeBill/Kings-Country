@@ -60,12 +60,12 @@ public class TutorialManager : GameBehaviour
     private Tutorial CurrentTutorial => GetTutorial(currentTutorialID);
 
     #region Text Variables
-    private string moveCameraTask   = "Move the camera around the GROVE";
+    private string moveCameraTask   = "Move the camera around the Grove";
     private string rotateCameraTask = "Rotate the camera";
     private string zoomCameraTask   = "Zoom the camera";
     private string treesTask        = "Grow 4 Trees";
-    private string creaturesTask    = "Summon 3 CREATURES";
-    private string movementTask     = "Move your CREATURES";
+    private string creaturesTask    = "Summon 3 Guardians";
+    private string movementTask     = "Move your Guardians";
     private string startDayTask     = "Start the Day";
     //private string winDayTask       = "Defend the GROVE from the HUMANS";
 
@@ -237,26 +237,26 @@ public class TutorialManager : GameBehaviour
                 _tutorial.unlockedGlossaryID = GlossaryID.Trees;
 
                 break;
-            case TutorialID.Creatures:
-                _tutorial.title = "Creatures";
+            case TutorialID.Guardians:
+                _tutorial.title = "Guardians";
                 _tutorial.description = 
-                    $"{GetName(ObjectID.Creature, true)} are your servants. Use them to keep control of the {GetName(ObjectID.Grove)}!<br>" +
+                    $"{GetName(ObjectID.Guardian, true)} are your servants. Use them to keep control of the {GetName(ObjectID.Grove)}!<br>" +
                     //$"Each {GetName(ObjectID.Creature)} requires a different {GetName(ObjectID.Maegen)} cost to summon it.<br>" +
-                    $"Open the {GetName(ObjectID.HomeTree)} panel to start summoning {GetName(ObjectID.Creature, true)}.<br>" +
-                    $"You can also {_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} on the {GetName(ObjectID.HomeTree)} to start summoning {GetName(ObjectID.Creature, true)}.<br>";
+                    $"Open the {GetName(ObjectID.HomeTree)} panel to start summoning {GetName(ObjectID.Guardian, true)}.<br>" +
+                    $"You can also {_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} on the {GetName(ObjectID.HomeTree)} to start summoning {GetName(ObjectID.Guardian, true)}.<br>";
                 _tutorial.taskLine = creaturesTask;
                 _tutorial.showObjects.Add(gamePanels.unitPanel.gameObject);
                 _tutorial.showObjects.Add(arrows.unitArrow.gameObject);
-                _tutorial.unlockedGlossaryID = GlossaryID.CreatureMovement;
+                _tutorial.unlockedGlossaryID = GlossaryID.GuardianMovement;
                 break;
-            case TutorialID.CreatureMovement:
-                _tutorial.title = "Creature Movement";
+            case TutorialID.GuardianMovement:
+                _tutorial.title = "Guardian Movement";
                 _tutorial.description =
-                    $"{_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} on a {GetName(ObjectID.Creature)} to select it or {_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} and drag over multiple {GetName(ObjectID.Creature, true)} to select more than one.<br>" +
-                    $"With selected {GetName(ObjectID.Creature)}(S), {_ICONS.GetTMPIcon(_ICONS.mouseRightClick)} on a location to send them there.<br>" +
-                    $"Our {GetName(ObjectID.Creature, true)} will defend that location if {GetName(ObjectID.Human, true)} come within their range.<br>";
+                    $"{_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} on a {GetName(ObjectID.Guardian)} to select it or {_ICONS.GetTMPIcon(_ICONS.mouseLeftClick)} and drag over multiple {GetName(ObjectID.Guardian, true)} to select more than one.<br>" +
+                    $"With selected {GetName(ObjectID.Guardian)}(S), {_ICONS.GetTMPIcon(_ICONS.mouseRightClick)} on a location to send them there.<br>" +
+                    $"Our {GetName(ObjectID.Guardian, true)} will defend that location if {GetName(ObjectID.Human, true)} come within their range.<br>";
                 _tutorial.taskLine = movementTask;
-                _tutorial.unlockedGlossaryID = GlossaryID.CreatureMovement;
+                _tutorial.unlockedGlossaryID = GlossaryID.GuardianMovement;
                 break;
             case TutorialID.Wildlife:
                 _tutorial.title = "Wildlife";
@@ -274,9 +274,9 @@ public class TutorialManager : GameBehaviour
             case TutorialID.Populous:
                 _tutorial.title = "Populous";
                 _tutorial.description =
-                    $"There is a maximum population of {GetName(ObjectID.Creature, true)} you can have at one time.<br>" +
+                    $"There is a maximum population of {GetName(ObjectID.Guardian, true)} you can have at one time.<br>" +
                     $"The max {GetName(ObjectID.Populous)} {_ICONS.GetTMPIcon(_ICONS.populousIcon)} can be upgrade by +5 with a {GetName(ObjectID.Perk)}.<br>" +
-                    $"Press DELETE with a selected {GetName(ObjectID.Creature)} to destroy it, in order to reduce your {GetName(ObjectID.Populous)} level";
+                    $"Press DELETE with a selected {GetName(ObjectID.Guardian)} to destroy it, in order to reduce your {GetName(ObjectID.Populous)} level";
                 _tutorial.showContinueButton = true;
                 _tutorial.showObjects.Add(arrows.populousArrow.gameObject);
                 _tutorial.unlockedGlossaryID = GlossaryID.Populous;
@@ -520,33 +520,33 @@ public class TutorialManager : GameBehaviour
     //Summon Creatures
     private void OnUnitButtonPressed(UnitData _unitData)
     {
-        if (tutorialComplete || currentTutorialID != TutorialID.Creatures)
+        if (tutorialComplete || currentTutorialID != TutorialID.Guardians)
             return;
 
         HideTutorialPanel();
 
         creatureCount++;
-        TaskLine tl = taskLines.Find(x => x.taskID == TutorialID.Creatures);
+        TaskLine tl = taskLines.Find(x => x.taskID == TutorialID.Guardians);
         tl.text.text = creaturesTask + " (" + creatureCount + "/" + creatureCompletionCount + ")";
         tl.PulseTask();
         if (creatureCount == creatureCompletionCount)
         {
             GetNextTutorial();
             ShowTutorial();
-            CheckOffTask(TutorialID.Creatures);
+            CheckOffTask(TutorialID.Guardians);
             FadeX.FadeTo(gamePanels.unitPanel, fadeStrength);
         }
     }
 
     private void OnUnitMove()
     {
-        if (tutorialComplete || currentTutorialID != TutorialID.CreatureMovement)
+        if (tutorialComplete || currentTutorialID != TutorialID.GuardianMovement)
             return;
 
         HideTutorialPanel();
 
         moveCreatureCount++;
-        TaskLine tl = taskLines.Find(x => x.taskID == TutorialID.CreatureMovement);
+        TaskLine tl = taskLines.Find(x => x.taskID == TutorialID.GuardianMovement);
         tl.text.text = movementTask + " (" + moveCreatureCount + "/" + moveCreatureCompletionCount + ")";
         tl.PulseTask();
 
@@ -556,7 +556,7 @@ public class TutorialManager : GameBehaviour
             {
                 GetNextTutorial();
                 ShowTutorial();
-                CheckOffTask(TutorialID.CreatureMovement);
+                CheckOffTask(TutorialID.GuardianMovement);
             });
         }
     }

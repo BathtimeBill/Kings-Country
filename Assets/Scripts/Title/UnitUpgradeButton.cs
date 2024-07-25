@@ -22,6 +22,12 @@ public class UnitUpgradeButton : HoldButton
         upgradePanel.ShowStatsUpgrade();
     }
 
+    public override void OnPointerDown(PointerEventData eventData)
+    {
+        if(enoughMaegen)
+            base.OnPointerDown(eventData);
+    }
+
     public override void OnPointerExit(PointerEventData eventData)
     {
         base.OnPointerExit(eventData);

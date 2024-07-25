@@ -33,10 +33,10 @@ public class LevelEvents : GameBehaviour
         if (_GM.level == LevelNumber.One && _GM.currentDay == 4)
         {
             GameEvents.ReportOnMineSpawned();
-            StartCoroutine(SetGameState(10));
+            StartCoroutine(SetGameState(8));
             cam.SetActive(true);
             audioComponent.SetActive(true);
-            _GM.gameState = GameState.Pause;
+            _GM.ChangeGameState(GameState.Transitioning);
             Instantiate(particle, spawnPointSpawnPoint.transform.position, Quaternion.Euler(-90, 0, 0));
             Instantiate(enemySpawn, spawnPointSpawnPoint.transform.position, spawnPointSpawnPoint.transform.rotation);
             Destroy(obstruction, 6);
@@ -201,12 +201,11 @@ public class LevelEvents : GameBehaviour
     }
     private void SpawnMine()
     {
-
         int i = Random.Range(0, spawnPointSpawnPoints.Length);
         StartCoroutine(SetGameState(14));
         Instantiate(mine, spawnPointSpawnPoints[i].transform.position, Quaternion.Euler(0, 0, 0));
         Instantiate(particle, spawnPointSpawnPoints[i].transform.position, Quaternion.Euler(-90, 0, 0));
-        _GM.gameState = GameState.Pause;
+        _GM.ChangeGameState(GameState.Transitioning);
     }
     private void SpawnLord()
     {
@@ -214,12 +213,12 @@ public class LevelEvents : GameBehaviour
         int i = Random.Range(0, _EM.spawnPoints.Count);
         StartCoroutine(SetGameState(6));
         Instantiate(lordOswyn, _EM.spawnPoints[i].transform.position, transform.rotation);
-        _GM.gameState = GameState.Pause;
+        _GM.ChangeGameState(GameState.Transitioning);
     }
     IEnumerator SetGameState(float time)
     {
         yield return new WaitForSeconds(time);
-        _GM.gameState = GameState.Play;
+        _GM.ChangeGameState(GameState.Play);
     }
     private void OnEnable()
     {

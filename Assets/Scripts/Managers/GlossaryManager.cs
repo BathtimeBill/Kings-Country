@@ -66,19 +66,19 @@ public class GlossaryManager : GameBehaviour
                     $"{_ICONS.GetTMPIcon(_ICONS.mouseRotate)} to ROTATE the camera.<br><br>" +
                     $"{_ICONS.GetTMPIcon(_ICONS.mouseZoom)} to ZOOM the camera.";
                 break;
-            case GlossaryID.CreatureMovement:
-                _glossaryItem.title = "Creature Movement";
+            case GlossaryID.GuardianMovement:
+                _glossaryItem.title = "Guardian Movement";
                 _glossaryItem.description =
-                    $"To select a {GetName(ObjectID.Creature)}, click on it with the <b>Left Mouse Button</b> or click and drag over multiple {GetName(ObjectID.Creature, true)} to select more than one.<br>" + 
-                    $"With a selected {GetName(ObjectID.Creature)}, <b>Right Cick</b> on a location to send them there.<br>" +
-                    $"Our {GetName(ObjectID.Creature, true)} will defend that location if {GetName(ObjectID.Human, true)} come within their range.";
+                    $"To select a {GetName(ObjectID.Guardian)}, click on it with the <b>Left Mouse Button</b> or click and drag over multiple {GetName(ObjectID.Guardian, true)} to select more than one.<br>" + 
+                    $"With a selected {GetName(ObjectID.Guardian)}, <b>Right Cick</b> on a location to send them there.<br>" +
+                    $"Our {GetName(ObjectID.Guardian, true)} will defend that location if {GetName(ObjectID.Human, true)} come within their range.";
                 break;
             case GlossaryID.Maegen:
                 _glossaryItem.title = "Maegen";
                 _glossaryItem.description =
                     $"{GetName(ObjectID.Maegen)} is the raw, wild energy of the {GetName(ObjectID.Grove)}.<br>" + 
                     $"It functions as the main currency of the game.<br><br>" +
-                    $"{GetName(ObjectID.Maegen)} is created by {GetName(ObjectID.Tree, true)} at the end of each {GetName(ObjectID.Day)} and is used to grow more {GetName(ObjectID.Tree, true)} and spawn {GetName(ObjectID.Creature, true)}.<br><br>" +
+                    $"{GetName(ObjectID.Maegen)} is created by {GetName(ObjectID.Tree, true)} at the end of each {GetName(ObjectID.Day)} and is used to grow more {GetName(ObjectID.Tree, true)} and spawn {GetName(ObjectID.Guardian, true)}.<br><br>" +
                     $"Sometimes when a {GetName(ObjectID.Human)} is killed, the {GetName(ObjectID.Grove)} can harvest {GetName(ObjectID.Maegen)} from their soul.";
                 break;
             case GlossaryID.Trees:
@@ -100,15 +100,15 @@ public class GlossaryManager : GameBehaviour
             case GlossaryID.Populous:
                 _glossaryItem.title = "Populous";
                 _glossaryItem.description =
-                    $"{GetName(ObjectID.Populous)} is the maximum number of {GetName(ObjectID.Creature, true)} you can command in one {GetName(ObjectID.Grove)}.<br><br>" +
-                    $"Each {GetName(ObjectID.Creature)} takes up 1 {GetName(ObjectID.Populous)} point.<br><br>" +
+                    $"{GetName(ObjectID.Populous)} is the maximum number of {GetName(ObjectID.Guardian, true)} you can command in one {GetName(ObjectID.Grove)}.<br><br>" +
+                    $"Each {GetName(ObjectID.Guardian)} takes up 1 {GetName(ObjectID.Populous)} point.<br><br>" +
                     $"{GetName(ObjectID.Populous)} can be upgraded by +5 with a {GetName(ObjectID.Perk)}.";
                 break;
             case GlossaryID.HomeTree:
                 _glossaryItem.title = "Home Tree";
                 _glossaryItem.description =
                     $"This is our {GetName(ObjectID.HomeTree)}, the heart of our {GetName(ObjectID.Grove)} and vital to its survival.<br><br>" +
-                    $"From here, you can summon {GetName(ObjectID.Creature, true)} to fight for us.<br><br>"+
+                    $"From here, you can summon {GetName(ObjectID.Guardian, true)} to fight for us.<br><br>"+
                     $"If the {GetName(ObjectID.HomeTree)} is ever destroyed, the game is over.<br><br>"+
                     $"To open the {GetName(ObjectID.HomeTree)} menu, either click on it in the game world or press <b>Tab</b>";
                 break;
@@ -116,23 +116,23 @@ public class GlossaryManager : GameBehaviour
                 _glossaryItem.title = "Witch's Hut";
                 _glossaryItem.description =
                     $"A lone witch in the woods allows the {GetName(ObjectID.Grove)}’s {GetName(ObjectID.HomeTree, true)} to gather here.<br><br>"+
-                    $"{GetName(ObjectID.Human, true)} will attempt to claim this site for themselves, which they do by being in its vicinity without opposition from any {GetName(ObjectID.Creature, true)}, at which point they will begin to spawn their top tier {GetName(ObjectID.Human)} units into the game.<br><br>"+
+                    $"{GetName(ObjectID.Human, true)} will attempt to claim this site for themselves, which they do by being in its vicinity without opposition from any {GetName(ObjectID.Guardian, true)}, at which point they will begin to spawn their top tier {GetName(ObjectID.Human)} units into the game.<br><br>"+
                     $"You'll need to either defend it or attack it before the {GetName(ObjectID.Day)} is over.<br><br>" +
-                    $"If the {GetName(ObjectID.Creature, true)} outnumber the {GetName(ObjectID.Human, true)} in the vicinity of the site, it will begin to be claimed back. The more units, the more quickly it will be claimed.<br><br>" +
-                    $"{GetName(ObjectID.Creature, true)} from this site cannot be purchased unless you have control of the {GetName(ObjectID.Hut)}.";
+                    $"If the {GetName(ObjectID.Guardian, true)} outnumber the {GetName(ObjectID.Human, true)} in the vicinity of the site, it will begin to be claimed back. The more units, the more quickly it will be claimed.<br><br>" +
+                    $"{GetName(ObjectID.Guardian, true)} from this site cannot be purchased unless you have control of the {GetName(ObjectID.Hut)}.";
                 break;
             case GlossaryID.Horgr:
                 _glossaryItem.title = "Horgr";
                 _glossaryItem.description =
                     $"This is a magical shrine that is valuable to both the {GetName(ObjectID.Human, true)} and the {GetName(ObjectID.Grove)}.<br><br>" +
                     $"Enemies will attempt to claim this site for themselves, at which point they will begin to spawn their own {GetName(ObjectID.Knight, true)} into the game, so you'll need to either defend it or attack it before the wave is over.<br><br>" +
-                    $"If the {GetName(ObjectID.Creature, true)} outnumber the {GetName(ObjectID.Human, true)} in the vicinity of the site, it will begin to be claimed back. The more units, the more quickly it will be claimed.<br><br>" +
-                    $"{GetName(ObjectID.Creature, true)} cannot be purchased unless you have control of the {GetName(ObjectID.Horgr, true)}.";
+                    $"If the {GetName(ObjectID.Guardian, true)} outnumber the {GetName(ObjectID.Human, true)} in the vicinity of the site, it will begin to be claimed back. The more units, the more quickly it will be claimed.<br><br>" +
+                    $"{GetName(ObjectID.Guardian, true)} cannot be purchased unless you have control of the {GetName(ObjectID.Horgr, true)}.";
                 break;
             case GlossaryID.Powers:
                 _glossaryItem.title = "Powers";
                 _glossaryItem.description =
-                    $"{GetName(ObjectID.Rune, true)} are ancient, magical zones of wild energy that heal our {GetName(ObjectID.Creature, true)} over time.<br><br>" +
+                    $"{GetName(ObjectID.Rune, true)} are ancient, magical zones of wild energy that heal our {GetName(ObjectID.Guardian, true)} over time.<br><br>" +
                     $"{GetName(ObjectID.Fyre)} creates an explosion dealing damage to all {GetName(ObjectID.Human, true)} in its radius.<br><br>" +
                     $"{GetName(ObjectID.Stormer)} allows you to create an intense storm that will randomly strike down {GetName(ObjectID.Human, true)} with lightning for a period of 1 minute.";
                 break;
@@ -147,9 +147,9 @@ public class GlossaryManager : GameBehaviour
                 _glossaryItem.title = "Human Classes";
                 _glossaryItem.description =
                     $"There are 4 {GetName(ObjectID.Human)} classes that you will encounter.<br><br>" +
-                    $"{GetName(ObjectID.Woodcutter, true)} primary target are your {GetName(ObjectID.Tree, true)} and will prioritize cutting them down unless they are confronted by your {GetName(ObjectID.Creature, true)}.<br><br>" +
-                    $"{GetName(ObjectID.Hunter, true)} main focus are your {GetName(ObjectID.Wildlife)} and will attempt to hunt your {GetName(ObjectID.Grove)} into extinction unless a {GetName(ObjectID.Hut)} or one of your {GetName(ObjectID.Creature, true)} is closer.<br><br>" +
-                    $"{GetName(ObjectID.Warrior, true)} main goal are to kill all of your {GetName(ObjectID.Creature, true)} and they will attempt to claim your {GetName(ObjectID.Horgr, true)} if they are closer to it than they are to your {GetName(ObjectID.Creature, true)}.";
+                    $"{GetName(ObjectID.Woodcutter, true)} primary target are your {GetName(ObjectID.Tree, true)} and will prioritize cutting them down unless they are confronted by your {GetName(ObjectID.Guardian, true)}.<br><br>" +
+                    $"{GetName(ObjectID.Hunter, true)} main focus are your {GetName(ObjectID.Wildlife)} and will attempt to hunt your {GetName(ObjectID.Grove)} into extinction unless a {GetName(ObjectID.Hut)} or one of your {GetName(ObjectID.Guardian, true)} is closer.<br><br>" +
+                    $"{GetName(ObjectID.Warrior, true)} main goal are to kill all of your {GetName(ObjectID.Guardian, true)} and they will attempt to claim your {GetName(ObjectID.Horgr, true)} if they are closer to it than they are to your {GetName(ObjectID.Guardian, true)}.";
                 break;
             case GlossaryID.Dogs:
                 _glossaryItem.title = "Dogs";
@@ -178,21 +178,21 @@ public class GlossaryManager : GameBehaviour
                 _glossaryItem.description =
                     $"These are high ranking members of the King’s Court, tasked with weakening the defences of the {GetName(ObjectID.Grove)}.<br><br>" +
                     $"They are incredibly deadly fighters that will appear sporadically to cause as much chaos as possible.<br><br>" +
-                    $"If you’re not prepared, they can easily cut through your {GetName(ObjectID.Creature, true)} and destroy your {GetName(ObjectID.HomeTree, true)}.";
+                    $"If you’re not prepared, they can easily cut through your {GetName(ObjectID.Guardian, true)} and destroy your {GetName(ObjectID.HomeTree, true)}.";
                 break;
             case GlossaryID.Combat:
                 _glossaryItem.title = "Combat";
                 _glossaryItem.description =
                     $"When a {GetName(ObjectID.Human)} first arrives, they are invincible for 5 seconds.<br><br>" +
-                    $"<b>Right Clicking</b> on an {GetName(ObjectID.Human)} will order a selected {GetName(ObjectID.Creature)} to target it. They will track down the {GetName(ObjectID.Human)} until they catch up to them.<br>The {GetName(ObjectID.Creature)} will behave differently, depending on which Combat Mode you have selected. This is represented by an icon above the {GetName(ObjectID.Creature)}.<br><br>" +
-                    $"Attack Mode:<br>Selecting <b>Attack Mode</b> allows the {GetName(ObjectID.Creature)} to move freely about the {GetName(ObjectID.Grove)}, attacking any {GetName(ObjectID.Human, true)} that come within its range.<br>This is the default Combat Mode.<br><br>" +
-                    $"<b>Defend Mode:</b><br>Selecting <b>Defend Mode</b> orders the {GetName(ObjectID.Creature)} to defend its current position.<br>It's range is reduced and will move small distances to attack {GetName(ObjectID.Human, true)} but will always return to its original defence position.<br><br>" +
-                    $"<b>Formations:</b><br>Clicking the <b>Formations</b> button will change how spread out {GetName(ObjectID.Creature, true)} are. You can choose to have them bunch them together to allow a more concentrated force or spread out to cover more ground.";
+                    $"<b>Right Clicking</b> on an {GetName(ObjectID.Human)} will order a selected {GetName(ObjectID.Guardian)} to target it. They will track down the {GetName(ObjectID.Human)} until they catch up to them.<br>The {GetName(ObjectID.Guardian)} will behave differently, depending on which Combat Mode you have selected. This is represented by an icon above the {GetName(ObjectID.Guardian)}.<br><br>" +
+                    $"Attack Mode:<br>Selecting <b>Attack Mode</b> allows the {GetName(ObjectID.Guardian)} to move freely about the {GetName(ObjectID.Grove)}, attacking any {GetName(ObjectID.Human, true)} that come within its range.<br>This is the default Combat Mode.<br><br>" +
+                    $"<b>Defend Mode:</b><br>Selecting <b>Defend Mode</b> orders the {GetName(ObjectID.Guardian)} to defend its current position.<br>It's range is reduced and will move small distances to attack {GetName(ObjectID.Human, true)} but will always return to its original defence position.<br><br>" +
+                    $"<b>Formations:</b><br>Clicking the <b>Formations</b> button will change how spread out {GetName(ObjectID.Guardian, true)} are. You can choose to have them bunch them together to allow a more concentrated force or spread out to cover more ground.";
                 break;
             case GlossaryID.Portal:
                 _glossaryItem.title = "Health Pickups";
                 _glossaryItem.description =
-                    $"These purple orbs of energy will heal any {GetName(ObjectID.Creature)} that runs into it." +
+                    $"These purple orbs of energy will heal any {GetName(ObjectID.Guardian)} that runs into it." +
                     $"They will sporadically appear across the map throughout the game";
                 break;
         }
