@@ -24,11 +24,5 @@ public class DebugManager : GameBehaviour
             if (FindObjectOfType<ExperienceMeter>())
                 FindObjectOfType<ExperienceMeter>().IncreaseExperience(100);
         }
-
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            if(FindObjectOfType<UpgradePanel>())
-                FindObjectOfType<UpgradePanel>().ToggleCanvasPosition();
-        }
     }
 }

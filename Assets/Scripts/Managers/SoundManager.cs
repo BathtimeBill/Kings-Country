@@ -63,6 +63,7 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip controlGroup;
     public AudioClip controlGroupSelect;
     public AudioClip levelSelectedSound;
+    public AudioClip holdButtonFill;
     [Header("Wildlife Distress Sounds")]
     public AudioClip[] deerDistressSounds;
     public AudioClip[] boarDistressSounds;

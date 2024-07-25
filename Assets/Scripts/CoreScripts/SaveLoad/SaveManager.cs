@@ -677,6 +677,7 @@ Debug.unityLogger.filterLogType = LogType.Exception;
     public void SetExperience(ExperienceObject _experience)
     {
         save.experience = _experience;
+        SaveData();
     }
     #endregion
 

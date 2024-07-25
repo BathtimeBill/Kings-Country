@@ -78,8 +78,19 @@ public class InteractableButton : GameBehaviour, IPointerEnterHandler, IPointerE
 public class HoldButton : InteractableButton
 {
     public Image fillImage;
-    public float fillSpeed = 0.5f;
-    bool filling = false;
+    public float fillSpeed = 3f;
+    private bool filling = false;
+
+    private float oscillationSpeed = 2f;
+    private float intensityIncreaseRate = 1f;
+    private Vector3 originalPosition;
+    private float timer = 0f;
+
+    public override void Start()
+    {
+        base.Start();
+        originalPosition = transform.localPosition;
+    }
 
     void Update()
     {
@@ -88,26 +99,25 @@ public class HoldButton : InteractableButton
         
         if (filling)
         {
-            fillImage.fillAmount += fillSpeed * Time.deltaTime;
+            fillImage.fillAmount += Time.deltaTime / fillSpeed;
             if (fillImage.fillAmount >= 1)
             {
                 OnButtonFilled();
             }
-            //TODO
-            //Improve upgrade button shake
-            //currentTime -= Time.deltaTime / 3;
-            //currentTime = Mathf.Clamp(currentTime, 0.01f, 1);
-            //Vector3 nextPos = transform.position;
-            //nextPos.y = pivot.y + height + height * Mathf.Sin(((Mathf.PI * 2) / currentTime) * timeSinceStart);
-            //timeSinceStart += Time.deltaTime;
-            //transform.position = nextPos;
+            // Calculate the vertical oscillation
+            float yOffset = Mathf.Cos(timer * oscillationSpeed) * intensityIncreaseRate;
+            Vector3 newPosition = originalPosition + new Vector3(0f, yOffset, 0f);
+            transform.localPosition = newPosition;
+            timer += Time.deltaTime;
         }
         else
         {
-            fillImage.fillAmount -= (fillSpeed * 3) * Time.deltaTime;
-            //transform.position = startPosition;
-            //currentTime = timePeriod * 3;
+            fillImage.fillAmount -= Time.deltaTime * fillSpeed;
+            transform.localPosition = originalPosition;
+            timer = 0;
         }
+        oscillationSpeed = fillImage.fillAmount * 40;
+        intensityIncreaseRate = fillImage.fillAmount * fillSpeed;
     }
 
     public virtual void OnButtonFilled()
@@ -119,10 +129,13 @@ public class HoldButton : InteractableButton
     public override void OnPointerDown(PointerEventData eventData)
     {
         filling = true;
+        fillImage.fillAmount = 0.15f;
+        if (GetComponent<AudioSource>() != null)
+            GetComponent<AudioSource>().Play();
     }
     public override void OnPointerUp(PointerEventData eventData)
     {
-        filling = false;
+        StopFill();
     }
 
     public override void OnPointerEnter(PointerEventData eventData)
@@ -132,6 +145,13 @@ public class HoldButton : InteractableButton
 
     public override void OnPointerExit(PointerEventData eventData)
     {
+        StopFill();
+    }
+
+    private void StopFill()
+    {
         filling = false;
+        if (GetComponent<AudioSource>() != null)
+            GetComponent<AudioSource>().Stop();
     }
 }

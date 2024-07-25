@@ -17,7 +17,7 @@ public class ProgressManager : GameBehaviour
     {
         currentMaegenText.text = _SAVE.GetCurrentMaegen.ToString();
         totalDaysText.text = _SAVE.GetDaysPlayed.ToString();
-        totalLevelsComplete.text = _SAVE.GetLevelCompleteCount().ToString() + "/21";
+        totalLevelsComplete.text = _SAVE.GetLevelCompleteCount().ToString() + " of 21";
         ResetMaegenChange();
     }
 
