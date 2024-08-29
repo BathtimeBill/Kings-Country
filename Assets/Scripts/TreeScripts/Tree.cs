@@ -173,12 +173,12 @@ public class Tree : GameBehaviour
         if (type == TreeType.Pine)
         {
             fallTree = Instantiate(fallenTreePine, treeMesh.transform.position, transform.rotation);
-            fallTree.transform.localScale = transform.localScale;
+            fallTree.transform.localScale = transform.localScale * 1.3f;
         }
         if(type == TreeType.Deciduous)
         {
             fallTree = Instantiate(fallenTreeDesiduous, treeMesh.transform.position, transform.rotation);
-            fallTree.transform.localScale = transform.localScale;
+            fallTree.transform.localScale = transform.localScale * 1.3f;
         }
 
         GameEvents.ReportOnTreeDestroy(_treeID);

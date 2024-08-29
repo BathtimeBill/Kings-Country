@@ -40,7 +40,6 @@ public class HutManager : Singleton<HutManager>
     void Start()
     {
         StartCoroutine(WaitToAssignSpawnPoints());
-        //GameObject go = Instantiate(hut, spawnLocations[RandomSpawnLocation()].transform.position, Quaternion.Euler(0, 183.4f, 0));
         StartCoroutine(SpawnEnemyUnits());
     }
     IEnumerator WaitToAssignSpawnPoints()
@@ -54,33 +53,13 @@ public class HutManager : Singleton<HutManager>
         return rndSpn;
     }
 
-    //IEnumerator AddMaegen()
-    //{
-    //    if (playerOwns)
-    //    {
-    //        _GM.maegen += 25;
-    //        Instantiate(maegen5, hutLocation, Quaternion.Euler(-90f, 0, 0));
-    //    }
-    //    if (enemyOwns)
-    //    {
-    //        _GM.maegen -= 25;
-    //        Instantiate(maegenLoss, hutLocation, Quaternion.Euler(-90f, 0, 0));
-    //    }
-
-    //    yield return new WaitForSeconds(Random.Range(20, 30));
-
-    //    StartCoroutine(AddMaegen());
-    //}
 
     IEnumerator SpawnEnemyUnits()
     {
         yield return new WaitForSeconds(Random.Range(minSpawnRate, maxSpawnRate));
         if (enemyOwns)
         {
-            GameObject go = Instantiate(bjornjegger, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
-            go.GetComponent<Hunter>().spawnedFromBuilding = true;
-            Instantiate(enemySpawnParticle, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
-            //_EM.enemies.Add(go);
+            _EM.SpawnHutEnemy(spawnLocation.transform.position);
         }
         StartCoroutine(SpawnEnemyUnits());
     }
