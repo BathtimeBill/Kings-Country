@@ -89,14 +89,17 @@ public class SettingsManager : GameBehaviour
     #region Audio
     public void SetVolume(float sliderValue)
     {
-        float newVolume = sliderValue * 0.1f;
+       
+        float newVolume = 7 * sliderValue - 60;
+        print(newVolume);
         musicAudioMixer.SetFloat("MusicVolume", newVolume);
         _SAVE.SetMusicVolume(newVolume);
     }
 
     public void SetVolumeSFX(float sliderValue)
     {
-        float newVolume = sliderValue * 0.1f;
+        
+        float newVolume = 7 * sliderValue - 60;
         SFXAudioMixer.SetFloat("SFXVolume", newVolume);
         _SAVE.SetSFXVolume(newVolume);
     }

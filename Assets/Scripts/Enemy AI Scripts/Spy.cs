@@ -32,7 +32,6 @@ public class Spy : Enemy
     // Update is called once per frame
     void Update()
     {
-
         if (agent.velocity != Vector3.zero)
         {
             animator.SetBool("hasStopped", false);

@@ -179,7 +179,7 @@ public class Enemy : GameBehaviour
 
     public virtual void LaunchDeath()
     {
-        //print("Launching");
+
         bool isColliding = false;
         if (_HUTM.enemies.Contains(gameObject))
             _HUTM.enemies.Remove(gameObject);
@@ -188,13 +188,18 @@ public class Enemy : GameBehaviour
         float thrust = 20000f;
         if (!isColliding)
         {
+            print("Launching");
             isColliding = true;
             GameObject go;
             go = Instantiate(_DATA.GetUnit(unitID).ragdollModel, transform.position, transform.rotation);
+            if (go.GetComponent<RagdollSound>() != null)
+            {
+
+                go.GetComponent<RagdollSound>().hasBeenLaunched = true;
+            }
             go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * thrust);
             go.GetComponentInChildren<Rigidbody>().AddForce(transform.forward * -thrust);
-            if(GetComponent<RagdollSound>() != null)
-                go.GetComponent<RagdollSound>().hasBeenLaunched = true;
+            
             Destroy(go, 25);
         }
     }

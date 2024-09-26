@@ -45,14 +45,10 @@ public class HutManager : Singleton<HutManager>
     IEnumerator WaitToAssignSpawnPoints()
     {
         yield return new WaitForEndOfFrame();
-        GameObject go = Instantiate(hut, spawnLocations[RandomSpawnLocation()].transform.position, Quaternion.Euler(0, 183.4f, 0));
-    }
-    private int RandomSpawnLocation()
-    {
         int rndSpn = Random.Range(0, spawnLocations.Count);
-        return rndSpn;
+        yield return new WaitForSeconds(0.05f);
+        GameObject go = Instantiate(hut, spawnLocations[rndSpn].transform.position, Quaternion.Euler(0, 183.4f, 0));
     }
-
 
     IEnumerator SpawnEnemyUnits()
     {

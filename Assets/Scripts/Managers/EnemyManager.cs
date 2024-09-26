@@ -65,6 +65,14 @@ public class EnemyManager : Singleton<EnemyManager>
         //Add to the enemies list
         enemies.Add(go);
     }
+    public void SpawnSpyEnemy(Vector3 spawnLocation)
+    {
+        int rndHuman = Random.Range(0, enemyIDList.Count);
+        //Get the human model from the human data
+        GameObject go = Instantiate(_DATA.GetUnit(enemyIDList[11]).playModel, spawnLocation, transform.rotation);
+        //Add to the enemies list
+        enemies.Add(go);
+    }
 
     private void SpawnLoop()
     {

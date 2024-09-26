@@ -4,21 +4,20 @@ using UnityEngine;
 
 public class RagdollSound : GameBehaviour
 {
-    private AudioSource audioSource;
+    public AudioSource audioSource;
     public bool hasBeenLaunched;
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        if(hasBeenLaunched)
+        StartCoroutine(WaitForScreamSound());
+    }
+    IEnumerator WaitForScreamSound()
+    {
+        yield return new WaitForEndOfFrame();
+        if (hasBeenLaunched)
         {
             audioSource.clip = _SM.GetScreamSound();
             audioSource.Play();
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
