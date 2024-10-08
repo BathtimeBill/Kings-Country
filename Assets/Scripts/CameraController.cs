@@ -7,11 +7,10 @@ public class CameraController : Singleton<CameraController>
 {
     public Transform cameraTransform;
 
-    public float movementSpeed;
+    public float movementModifier = 1;  //Maybe remove. Need to get consistent speeds
     public float movementTime;
     public float normalSpeed;
     public float fastSpeed;
-    public float rotationAmount;
     public float edgeScrollThreshold = 20f;
     public bool isMouseOnEdge = false;
     private Vector3 scrollDirection;
@@ -56,10 +55,87 @@ public class CameraController : Singleton<CameraController>
         if (lockCamera || !_hasInput)
             return;
 
-        HandleMovementInput();
-        HandleMouseInput();
+        //HandleMovementInput();
+        //HandleMouseInput();
+        HandleLerps();
+        HandleMouseInputNew();
     }
 
+    void HandleLerps()
+    {
+        //Panning
+        transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime);
+        //Rotating
+        transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * movementTime);
+        //Zooming
+        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
+    }
+
+    private void OnCameraZoom(float _zoom)
+    {
+        newZoom.z = Mathf.Clamp(newZoom.z, minZ, maxZ);
+        newZoom.y = Mathf.Clamp(newZoom.y, minY, maxY);
+
+        if (_zoom != 0)
+        {
+            if (newZoom.y != minY || newZoom.y != maxY)
+                newZoom += (_zoom * _PLAYER.zoomSpeed) * zoomAmount;
+            _TUTORIAL.CheckCameraTutorial(TutorialID.CameraZoom);
+        }
+    }
+
+    private void OnCameraRotate(Vector2 _rotate)
+    {
+        newRotation *= Quaternion.Euler(Vector3.up * _rotate.x * _PLAYER.rotationSpeed);
+    }
+
+    private void OnCameraMove(Vector2 _cursorPosition)
+    {
+        newPosition.x = Mathf.Clamp(newPosition.x, minMovementX, maxMovementX);
+        newPosition.z = Mathf.Clamp(newPosition.z, minMovementZ, maxMovementZ);
+        float mouseX = _cursorPosition.x;
+        float mouseY = _cursorPosition.y;
+
+        //if (Input.GetKey(KeyCode.LeftShift))
+        //{
+        //    movementSpeed = fastSpeed;
+        //}
+        //else
+        //{
+        //    movementSpeed = normalSpeed;
+        //}
+
+        if (mouseY > 0)
+            newPosition += transform.forward * _PLAYER.movementSpeed * movementModifier;
+        if (mouseY < 0)
+            newPosition -= transform.forward * _PLAYER.movementSpeed * movementModifier;
+        if (mouseX > 0)
+            newPosition += transform.right * _PLAYER.movementSpeed * movementModifier;
+        if (mouseX < 0)
+            newPosition -= transform.right * _PLAYER.movementSpeed * movementModifier;
+
+        _TUTORIAL.CheckCameraTutorial(TutorialID.CameraMove);
+    }
+
+    void HandleMouseInputNew()
+    {
+        if (Input.GetMouseButtonUp(2))
+            _TUTORIAL.CheckCameraTutorial(TutorialID.CameraRotate);
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (_PC.mouseOverMap == true)
+            {
+                Ray ray = _PC.mapCam.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hitPoint;
+                if (Physics.Raycast(ray, out hitPoint))
+                    newPosition = hitPoint.point;
+            }
+        }
+    }
+
+    #region old
     void HandleMouseInput()
     {
         newZoom.z = Mathf.Clamp(newZoom.z, minZ, maxZ);
@@ -67,8 +143,8 @@ public class CameraController : Singleton<CameraController>
 
         if (Input.mouseScrollDelta.y != 0)
         {
-            if(newZoom.y != minY || newZoom.y != maxY)
-            newZoom += Input.mouseScrollDelta.y * zoomAmount;
+            if (newZoom.y != minY || newZoom.y != maxY)
+                newZoom += Input.mouseScrollDelta.y * zoomAmount;
             _TUTORIAL.CheckCameraTutorial(TutorialID.CameraZoom);
         }
 
@@ -113,30 +189,30 @@ public class CameraController : Singleton<CameraController>
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            movementSpeed = fastSpeed;
+            movementModifier = fastSpeed;
         }
         else
         {
-            movementSpeed = normalSpeed;
+            movementModifier = normalSpeed;
         }
         if (Input.GetKey(KeyCode.W) || mouseY > Screen.height - edgeScrollThreshold)
         {
-            newPosition += (transform.forward * movementSpeed * Time.deltaTime);
+            newPosition += (transform.forward * movementModifier * Time.deltaTime);
             _TUTORIAL.CheckCameraTutorial(TutorialID.CameraMove);
         }
         if (Input.GetKey(KeyCode.S) || mouseY < edgeScrollThreshold)
         {
-            newPosition += (transform.forward * -movementSpeed * Time.deltaTime);
+            newPosition += (transform.forward * -movementModifier * Time.deltaTime);
             _TUTORIAL.CheckCameraTutorial(TutorialID.CameraMove);
         }
         if (Input.GetKey(KeyCode.D) || mouseX > Screen.width - edgeScrollThreshold)
         {
-            newPosition += (transform.right * movementSpeed * Time.deltaTime);
+            newPosition += (transform.right * movementModifier * Time.deltaTime);
             _TUTORIAL.CheckCameraTutorial(TutorialID.CameraMove);
         }
         if (Input.GetKey(KeyCode.A) || mouseX < edgeScrollThreshold)
         {
-            newPosition += (transform.right * -movementSpeed * Time.deltaTime);
+            newPosition += (transform.right * -movementModifier * Time.deltaTime);
             _TUTORIAL.CheckCameraTutorial(TutorialID.CameraMove);
         }
 
@@ -185,6 +261,7 @@ public class CameraController : Singleton<CameraController>
             transform.Translate(scrollDirection * normalSpeed * Time.deltaTime, Space.World);
         }
     }
+    #endregion
 
     public void CameraShake(float _shakeIntensity)
     {
@@ -208,4 +285,18 @@ public class CameraController : Singleton<CameraController>
     }
 
     public void LockCamera(bool _lock) => lockCamera = _lock;
+
+    private void OnEnable()
+    {
+        InputManager.OnCameraMove += OnCameraMove;
+        InputManager.OnCameraZoom += OnCameraZoom;
+        InputManager.OnCameraRotate += OnCameraRotate;
+    }
+
+    private void OnDisable()
+    {
+        InputManager.OnCameraMove -= OnCameraMove;
+        InputManager.OnCameraZoom -= OnCameraZoom;
+        InputManager.OnCameraRotate -= OnCameraRotate;
+    }
 }

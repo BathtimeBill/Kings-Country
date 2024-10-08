@@ -69,6 +69,9 @@ public class PlayerSettings
     [Header("Audio")]
     public float musicVolume = 1.0f;
     public float sfxVolume = 1.0f;
+    public float movementSpeed = 1.0f;
+    public float zoomSpeed = 1.0f;
+    public float rotationSpeed = 1.0f;
 }
 
 [Serializable]
