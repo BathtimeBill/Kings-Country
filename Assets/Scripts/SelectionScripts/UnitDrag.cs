@@ -20,37 +20,6 @@ public class UnitDrag : GameBehaviour
         DrawVisual();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(_hasInput)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                startPosition = Input.mousePosition;
-                selectionBox = new Rect();
-            }
-            if (Input.GetMouseButton(0))
-            {
-                endPosition = Input.mousePosition;
-                DrawVisual();
-                DrawSelection();
-            }
-            if (Input.GetMouseButtonUp(0))
-            {
-                SelectUnits();
-                startPosition = Vector2.zero;
-                endPosition = Vector2.zero;
-                DrawVisual();
-            }
-        }
-        else
-        {
-            return;
-        }
-        
-    }
-
     void DrawVisual()
     {
         Vector2 boxStart = startPosition;
@@ -103,4 +72,47 @@ public class UnitDrag : GameBehaviour
             }
         }
     }
+
+    private void OnSelectButtonPressed()
+    {
+        if (!_hasInput)
+            return;
+
+        startPosition = Input.mousePosition;
+        selectionBox = new Rect();
+    }
+    private void OnSelectButtonHolding()
+    {
+        if (!_hasInput)
+            return;
+
+        endPosition = Input.mousePosition;
+        DrawVisual();
+        DrawSelection();
+    }
+    private void OnSelectButtonReleased()
+    {
+        if (!_hasInput)
+            return;
+
+        SelectUnits();
+        startPosition = Vector2.zero;
+        endPosition = Vector2.zero;
+        DrawVisual();
+    }
+
+    private void OnEnable()
+    {
+        InputManager.OnSelectButtonPressed += OnSelectButtonPressed;
+        InputManager.OnSelectButtonHolding += OnSelectButtonHolding;
+        InputManager.OnSelectButtonReleased += OnSelectButtonReleased;
+    }
+
+    private void OnDisable()
+    {
+        InputManager.OnSelectButtonPressed -= OnSelectButtonPressed;
+        InputManager.OnSelectButtonHolding -= OnSelectButtonHolding;
+        InputManager.OnSelectButtonReleased -= OnSelectButtonReleased;
+    }
+
 }

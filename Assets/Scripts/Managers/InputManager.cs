@@ -21,11 +21,6 @@ public class InputManager : InputX
     #endregion
 
     #region Variables
-    public float axisThreshold = 0.1f;
-    public float holdThreshold = 0.1f;
-    public float holdTime = 0;
-    public bool holding = false;
-    bool holdCheck = false;
     [Space]
     public InputScheme playerInput;
     public InputMap inputMap;
@@ -60,10 +55,11 @@ public class InputManager : InputX
     public static event Action OnMenuInputLeft = null;
     public static event Action OnMenuInputRight = null;
 
-    public static event Action OnSelectButtonDown = null;
-    public static event Action OnSelectButtonUp = null;
-    public static event Action OnCancelButtonDown = null;
-    public static event Action OnCancelButtonUp = null;
+    public static event Action OnSelectButtonPressed = null;
+    public static event Action OnSelectButtonHolding = null;
+    public static event Action OnSelectButtonReleased = null;
+    public static event Action OnDeselectButtonPressed = null;
+    public static event Action OnEscapeButtonPressed = null;
 
     public static event Action OnLeftShoulderDown = null;
     public static event Action OnLeftShoulderUp = null;
@@ -77,14 +73,15 @@ public class InputManager : InputX
     private void Awake()
     {
         cursorAction = actions.FindActionMap("Gameplay").FindAction("Cursor");
-        //cursorAction.performed += OnMoveCursor;
-
 
         cameraMovementAction = actions.FindActionMap("Gameplay").FindAction("CameraMovement");
         cameraRotationAction = actions.FindActionMap("Gameplay").FindAction("CameraRotation");
         cameraZoomAction = actions.FindActionMap("Gameplay").FindAction("CameraZoom");
 
-        actions.FindActionMap("Gameplay").FindAction("Select").performed += OnSouthButton;
+        //actions.FindActionMap("Gameplay").FindAction("Select").performed += OnWestButton;
+        actions.FindActionMap("Gameplay").FindAction("Select").performed += SouthButton;
+        actions.FindActionMap("Gameplay").FindAction("Deselect").performed += EastButton;
+        actions.FindActionMap("Gameplay").FindAction("Escape").performed += StartButton;
 
         //Menus
         //menuMoveAction = actions.FindActionMap("Menus").FindAction("MenuMove");
@@ -109,27 +106,19 @@ public class InputManager : InputX
             Vector2 cameraRotation = cameraRotationAction.ReadValue<Vector2>();
             OnCameraRotate?.Invoke(cameraRotation);
 
-            if (holdCheck)
-            {
-                holdTime += Time.deltaTime;
-                if (holdTime > holdThreshold)
-                {
-                    if (!holding)
-                    holding = true;
-                }
-            }
-            else
-            {
-                holdTime = 0;
-                holding = false;
-            }
+            //Button Functionality
+            if (GetButtonPressed(ButtonMap.South))
+                OnSelectButtonPressed?.Invoke();
+            if (GetButtonHolding(ButtonMap.South))
+                OnSelectButtonHolding?.Invoke();
+            if (GetButtonReleased(ButtonMap.South))
+                OnSelectButtonReleased?.Invoke();
 
             if (GetButtonPressed(ButtonMap.East))
-                ButtonCancel();
-            if (GetButtonPressed(ButtonMap.South))
-            {
-                ButtonSelect();
-            }
+                OnDeselectButtonPressed?.Invoke();
+
+            if (GetButtonPressed(ButtonMap.Start))
+                OnEscapeButtonPressed?.Invoke();
 
 
             if (GetButtonPressed(ButtonMap.LShoulder))
@@ -172,15 +161,6 @@ public class InputManager : InputX
     #endregion
 
     #region Public Methods
-    public float GetHorizontalAxis()
-    {
-        return cameraVector.x;
-    }
-    public float GetVerticalAxis()
-    {
-        return cameraVector.y;
-    }
-
 
     void OnMenuSelect(CallbackContext context)
     {
@@ -190,18 +170,6 @@ public class InputManager : InputX
     void OnMenuCancel (CallbackContext context)
     {
         //GameEvents.ReportMenuInputCancel();
-    }
-
-    private void ButtonSelect()
-    {
-        print("Select");
-        OnSelectButtonDown?.Invoke();
-    }
-
-    private void ButtonCancel()
-    {
-        print("Cancel");
-        OnCancelButtonDown?.Invoke();
     }
 
 

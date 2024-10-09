@@ -120,6 +120,7 @@ public class CameraController : Singleton<CameraController>
     void HandleMouseInputNew()
     {
         if (Input.GetMouseButtonUp(2))
+        {
             _TUTORIAL.CheckCameraTutorial(TutorialID.CameraRotate);
         }
 

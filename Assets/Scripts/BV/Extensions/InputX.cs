@@ -25,28 +25,9 @@ public class InputX : MonoBehaviour
     public ButtonState leftShoulderButtonState { get; private set; }
     public ButtonState rightShoulderButtonState { get; private set; }
     public ButtonState homeButtonState { get; private set; }
-
     #endregion
 
     #region Unity Methods
-    private void Awake()
-    {
-        // find the "move" action, and keep the reference to it, for use in Update
-        //leftStickAction = actions.FindActionMap("Gameplay").FindAction("Cursor");
-
-        //actions.FindActionMap("Creator").FindAction("StartButton").performed += OnStartButton;
-        //actions.FindActionMap("Creator").FindAction("SelectButton").performed += OnSelectButton;
-        //actions.FindActionMap("Creator").FindAction("HomeButton").performed += OnHomeButton;
-
-        //actions.FindActionMap("Creator").FindAction("NorthButton").performed += OnNorthButton;
-        //actions.FindActionMap("Creator").FindAction("EastButton").performed += OnEastButton;
-        //actions.FindActionMap("Creator").FindAction("SouthButton").performed += OnSouthButton; 
-        //actions.FindActionMap("Creator").FindAction("WestButton").performed += OnWestButton;
-
-        //actions.FindActionMap("Creator").FindAction("LeftShoulderButton").performed += OnLeftShoulderButton;
-        //actions.FindActionMap("Creator").FindAction("RightShoulderButton").performed += OnRightShoulderButton;
-        
-    }
     #endregion
 
     #region Public Methods
@@ -62,19 +43,10 @@ public class InputX : MonoBehaviour
     {
         return _action.ReadValue<Vector2>();
     }
-    public void OnStartButton(CallbackContext context) => ButtonAction(context, startButtonState);
-    public void OnSelectButton(CallbackContext context) => ButtonAction(context, selectButtonState);
-    public void OnHomeButton(CallbackContext context) => ButtonAction(context, homeButtonState);
-    public void OnNorthButton(CallbackContext context) => ButtonAction(context, northButtonState);
-    public void OnEastButton(CallbackContext context) => ButtonAction(context, eastButtonState);
-    public void OnSouthButton(CallbackContext context) => ButtonAction(context, southButtonState);
-    public void OnWestButton(CallbackContext context) => ButtonAction(context, westButtonState);
-    public void OnLeftShoulderButton(CallbackContext context) => ButtonAction(context, leftShoulderButtonState);
-    public void OnRightShoulderButton(CallbackContext context) => ButtonAction(context, rightShoulderButtonState);
 
     public bool GetButtonPressed(ButtonMap _button)
     {
-        switch(_button)
+        switch (_button)
         {
             case ButtonMap.Start:
                 return startButtonState == ButtonState.Pressed;
@@ -120,7 +92,6 @@ public class InputX : MonoBehaviour
                 return leftShoulderButtonState == ButtonState.Holding;
             case ButtonMap.RShoulder:
                 return rightShoulderButtonState == ButtonState.Holding;
-                
             default:
                 return false;
         }
@@ -171,20 +142,128 @@ public class InputX : MonoBehaviour
     #endregion
 
     #region Private Methods
-    private void ButtonAction(CallbackContext _context, ButtonState _buttonState)
+    public void StartButton(CallbackContext context)
     {
-        if (_context.action.WasPressedThisFrame())
+        if (context.action.WasPressedThisFrame())
         {
-            _buttonState = ButtonState.Pressed;
-            ExecuteNextFrame(() => _buttonState = ButtonState.Holding);
+            startButtonState = ButtonState.Pressed;
+            ExecuteNextFrame(() => startButtonState = ButtonState.Holding);
         }
-
-        if (_context.action.WasReleasedThisFrame())
+        if (context.action.WasReleasedThisFrame())
         {
-            _buttonState = ButtonState.Released;
-            ExecuteNextFrame(() => _buttonState = ButtonState.None);
+            startButtonState = ButtonState.Released;
+            ExecuteNextFrame(() => startButtonState = ButtonState.None);
         }
     }
+    public void SelectButton(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame())
+        {
+            selectButtonState = ButtonState.Pressed;
+            ExecuteNextFrame(() => selectButtonState = ButtonState.Holding);
+        }
+        if (context.action.WasReleasedThisFrame())
+        {
+            selectButtonState = ButtonState.Released;
+            ExecuteNextFrame(() => selectButtonState = ButtonState.None);
+        }
+    }
+    public void HomeButton(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame())
+        {
+            homeButtonState = ButtonState.Pressed;
+            ExecuteNextFrame(() => homeButtonState = ButtonState.Holding);
+        }
+
+        if (context.action.WasReleasedThisFrame())
+        {
+            homeButtonState = ButtonState.Released;
+            ExecuteNextFrame(() => homeButtonState = ButtonState.None);
+        }
+    }
+    public void NorthButton(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame())
+        {
+            northButtonState = ButtonState.Pressed;
+            ExecuteNextFrame(() => northButtonState = ButtonState.Holding);
+        }
+        if (context.action.WasReleasedThisFrame())
+        {
+            northButtonState = ButtonState.Released;
+            ExecuteNextFrame(() => northButtonState = ButtonState.None);
+        }
+    }
+    public void EastButton(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame())
+        {
+            eastButtonState = ButtonState.Pressed;
+            ExecuteNextFrame(() => eastButtonState = ButtonState.Holding);
+        }
+        if (context.action.WasReleasedThisFrame())
+        {
+            eastButtonState = ButtonState.Released;
+            ExecuteNextFrame(() => eastButtonState = ButtonState.None);
+        }
+    }
+    public void SouthButton(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame())
+        {
+            southButtonState = ButtonState.Pressed;
+            ExecuteNextFrame(() => southButtonState = ButtonState.Holding);
+        }
+        if (context.action.WasReleasedThisFrame())
+        {
+            southButtonState = ButtonState.Released;
+            ExecuteNextFrame(() => southButtonState = ButtonState.None);
+        }
+    }
+
+    public void WestButton(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame())
+        {
+            westButtonState = ButtonState.Pressed;
+            ExecuteNextFrame(() => westButtonState = ButtonState.Holding);
+        }
+        if (context.action.WasReleasedThisFrame())
+        {
+            westButtonState = ButtonState.Released;
+            ExecuteNextFrame(() => westButtonState = ButtonState.None);
+        }
+    }
+    public void LeftShoulderButton(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame())
+        {
+            leftShoulderButtonState = ButtonState.Pressed;
+            ExecuteNextFrame(() => leftShoulderButtonState = ButtonState.Holding);
+        }
+        if (context.action.WasReleasedThisFrame())
+        {
+            leftShoulderButtonState = ButtonState.Released;
+            ExecuteNextFrame(() => leftShoulderButtonState = ButtonState.None);
+        }
+    }
+    public void RightShoulderButton(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame())
+        {
+            rightShoulderButtonState = ButtonState.Pressed;
+            ExecuteNextFrame(() => rightShoulderButtonState = ButtonState.Holding);
+        }
+
+        if (context.action.WasReleasedThisFrame())
+        {
+            rightShoulderButtonState = ButtonState.Released;
+            ExecuteNextFrame(() => rightShoulderButtonState = ButtonState.None);
+        }
+    }
+
+    
 
     /// <summary>
     /// Executes the Action block as a Coroutine on the next frame.

@@ -57,6 +57,16 @@ public static class ListX
     }
 
     /// <summary>
+    /// Removes all game objects from a list that have a specific script on them
+    /// </summary>
+    /// <param name="_objectsList">The list of objects</param>
+    /// <param name="_scriptType">The script to check</param>
+    static public void RemoveGameObjectsWithScript(List<GameObject> _objectsList, System.Type _scriptType)
+    {
+        _objectsList.RemoveAll(obj => obj != null && obj.GetComponent(_scriptType) != null);
+    }
+
+    /// <summary>
     /// Shuffles a list using Unity's Random
     /// </summary>
     /// <typeparam name="T">The data type</typeparam>
