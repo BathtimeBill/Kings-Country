@@ -68,7 +68,7 @@ public class Warrior : Enemy
         }
         closestUnit = GetClosestUnit();
 
-        if (UnitSelection.Instance.unitList.Count != 0)
+        if (_UM.unitList.Count != 0)
         {
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
         }
@@ -86,7 +86,7 @@ public class Warrior : Enemy
             case EnemyState.Attack:
                 animator.SetBool("hasStoppedHorgr", false);
                 horgrSwitch = false;
-                if (UnitSelection.Instance.unitList.Count == 0)
+                if (_UM.unitList.Count == 0)
                 {
                     agent.stoppingDistance = 10;
                     FindHomeTree();
@@ -172,7 +172,7 @@ public class Warrior : Enemy
         switch (state)
         {
             case EnemyState.Attack:
-                if (UnitSelection.Instance.unitList.Count == 0)
+                if (_UM.unitList.Count == 0)
                 {
                     SmoothFocusOnEnemy();
                 }
@@ -190,7 +190,7 @@ public class Warrior : Enemy
     {
         if(closestUnit != null)
         {
-            if (UnitSelection.Instance.unitList.Count == 0)
+            if (_UM.unitList.Count == 0)
             {
                 var targetRotation = Quaternion.LookRotation(homeTree.transform.position - transform.position);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
@@ -296,7 +296,7 @@ public class Warrior : Enemy
     }
     public void FindUnit()
     {
-        if (UnitSelection.Instance.unitList.Count == 0)
+        if (_UM.unitList.Count == 0)
         {
             state = EnemyState.Work;
         }
@@ -306,30 +306,6 @@ public class Warrior : Enemy
     public void FindHomeTree()
     {
         agent.SetDestination(homeTree.transform.position);
-    }
-
-    public Transform GetClosestUnit()
-    {
-        float closestDistance = Mathf.Infinity;
-        Transform trans = null;
-
-        foreach (GameObject go in UnitSelection.Instance.unitList)
-        {
-            float currentDistance;
-            currentDistance = Vector3.Distance(transform.position, go.transform.position);
-            if (currentDistance < closestDistance)
-            {
-                closestDistance = currentDistance;
-                trans = go.transform;
-            }
-        }
-
-        if (UnitSelection.Instance.unitList == null)
-        {
-            return null;
-        }
-        else
-            return trans;
     }
 
     private void OnArrivedAtHorgr()

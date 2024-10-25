@@ -26,15 +26,15 @@ public class Tower : GameBehaviour
 
     public bool towerUpgrade;
 
-    public GameObject parent;
+    public Unit parent;
     private AudioSource audioSource;
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        parent = gameObject.transform.parent.gameObject;
+        parent = gameObject.transform.parent.gameObject.GetComponent<Unit>();
         StartCoroutine(ShootProjectile());
-        UnitSelection.Instance.unitList.Add(parent);
+        _UM.unitList.Add(parent);
         slider.value = CalculateHealth();
         Setup();
         Instantiate(spawnParticleEffect, transform.position, transform.rotation);
@@ -184,13 +184,14 @@ public class Tower : GameBehaviour
             _UI.CheckPopulousUI();
             if(unitType == CreatureID.Tower)
             {
-                UnitSelection.Instance.unitList.Remove(gameObject);
+                //TODO FIX BELOW
+                //UnitSelection.Instance.unitList.Remove(gameObject);
                 Destroy(gameObject);
             }
 
             if (unitType == CreatureID.SpitTower)
             {
-                UnitSelection.Instance.unitList.Remove(parent);
+                _UM.unitList.Remove(parent);
                 Destroy(parent);
             }
         }

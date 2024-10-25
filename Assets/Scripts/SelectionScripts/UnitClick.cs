@@ -3,7 +3,6 @@ using UnityEngine;
 public class UnitClick : GameBehaviour
 {
     private Camera myCam;
-
     public LayerMask clickable;
     public LayerMask ground;
 
@@ -12,12 +11,10 @@ public class UnitClick : GameBehaviour
         myCam = Camera.main;
     }
 
-
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-
             RaycastHit hit;
             Ray ray = myCam.ScreenPointToRay(Input.mousePosition);
 
@@ -25,40 +22,36 @@ public class UnitClick : GameBehaviour
             {
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
-                    UnitSelection.Instance.ShiftClickSelect(hit.collider.gameObject);
-                    
+                    _UM.ShiftClickSelect(hit.collider.gameObject.GetComponent<Unit>());
                 }
                 else
                 {
-                    if(UnitSelection.Instance.canDoubleClick)
+                    if(_UM.canDoubleClick)
                     {
                         CreatureID thisUnitType = hit.collider.gameObject.GetComponent<Unit>().unitID;
-                        foreach(GameObject go in UnitSelection.Instance.unitList)
+                        foreach(Unit unit in _UM.unitList)
                         {
-                            if(go.gameObject.GetComponent<Unit>().unitID == thisUnitType)
+                            if(unit.unitID == thisUnitType)
                             {
-                                UnitSelection.Instance.DoubleClickSelect(go);
+                                _UM.DoubleClickSelect(unit);
                             }
                         }
                     }
                     else
                     {
-                        UnitSelection.Instance.ClickSelect(hit.collider.gameObject);
+                        _UM.ClickSelect(hit.collider.gameObject.GetComponent<Unit>());
                     }
                 }
-                UnitSelection.Instance.StartCoroutine(UnitSelection.Instance.DoubleClick());
+                _UM.StartCoroutine(_UM.DoubleClick());
             }
             else
             {
                 if (!Input.GetKey(KeyCode.LeftShift))
                 {
                     if(_PC.mouseOverMap == false)
-                    UnitSelection.Instance.DeselectAll();
+                    _UM.DeselectAll();
                 }
             }
-
-
-
         }
     }
 }

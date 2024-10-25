@@ -44,7 +44,7 @@ public class Lord : Enemy
     IEnumerator Tick()
     {
         yield return new WaitForSeconds(0.2f);
-        if(UnitSelection.Instance.unitList.Count > 0)
+        if(_UM.unitList.Count > 0)
         {
             closestUnit = GetClosestUnit();
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
@@ -147,29 +147,6 @@ public class Lord : Enemy
 
     #endregion
 
-    public Transform GetClosestUnit()
-    {
-        float closestDistance = Mathf.Infinity;
-        Transform trans = null;
-
-        foreach (GameObject go in UnitSelection.Instance.unitList)
-        {
-            float currentDistance;
-            currentDistance = Vector3.Distance(transform.position, go.transform.position);
-            if (currentDistance < closestDistance)
-            {
-                closestDistance = currentDistance;
-                trans = go.transform;
-            }
-        }
-
-        if (UnitSelection.Instance.unitList == null)
-        {
-            return null;
-        }
-        else
-            return trans;
-    }
     float CalculateHealth()
     {
         return health / maxHealth;

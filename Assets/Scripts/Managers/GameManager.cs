@@ -235,7 +235,7 @@ public class GameManager : Singleton<GameManager>
     //Checks the scene for how many player units are present.
     public int CheckPopulous()
     {
-        populous = UnitSelection.Instance.unitList.Count;
+        populous = _UM.unitList.Count;
         return populous;
     }
     //Updates the the count for how many trees exist and updates the UI.
@@ -338,7 +338,7 @@ public class GameManager : Singleton<GameManager>
         if (!_DATA.IsCreatureUnit(_unitID))
             return;
 
-        if(UnitSelection.Instance.unitList.Count == 0)
+        if(_UM.unitList.Count == 0)
         {
             if(maegen == 0)
             {

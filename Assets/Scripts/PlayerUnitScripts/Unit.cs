@@ -85,7 +85,7 @@ public class Unit : GameBehaviour
         soundPool = SFXPool.GetComponents<AudioSource>();
         pointer = GameObject.FindGameObjectWithTag("Pointer");
         Setup();
-        UnitSelection.Instance.unitList.Add(gameObject);
+        _UM.unitList.Add(this);
         GameEvents.ReportOnCreatureSpawned(unitID);
         SpawnInMove();
         startingDay = _currentDay;
@@ -303,16 +303,16 @@ public class Unit : GameBehaviour
                 if(isSelected)
                 {
                     print("Suicide");
-                    if (_HM.units.Contains(gameObject))
+                    if (_HM.units.Contains(this))
                     {
-                        _HM.units.Remove(gameObject);
+                        _HM.units.Remove(this);
                     }
-                    if (_HUTM.units.Contains(gameObject))
+                    if (_HUTM.units.Contains(this))
                     {
-                        _HUTM.units.Remove(gameObject);
+                        _HUTM.units.Remove(this);
                     }
-                    UnitSelection.Instance.Deselect(gameObject);
-                    UnitSelection.Instance.unitList.Remove(gameObject);
+                    _UM.Deselect(this);
+                    _UM.unitList.Remove(this);
                     GameObject go;
                     go = Instantiate(deadSatyr, transform.position, transform.rotation);
                     Destroy(go, 15);
@@ -341,8 +341,8 @@ public class Unit : GameBehaviour
                 if (isTooCloseToTower == false && isOutOfBounds == false)
                 {
                     Instantiate(towerPrefab, transform.position + offset, Quaternion.Euler(-90, 0, 0));
-                    UnitSelection.Instance.Deselect(gameObject);
-                    UnitSelection.Instance.unitList.Remove(gameObject);
+                    _UM.Deselect(this);
+                    _UM.unitList.Remove(this);
                     Destroy(gameObject);
                 }
                 if (isTooCloseToTower == true)
@@ -564,7 +564,7 @@ public class Unit : GameBehaviour
 
     #region UI
     private void AdjustHealthBar() => healthBarFill.DOScaleX(CalculateHealth(), 0.2f);
-    private void ChangeGroupNumber(string _groupNumber) => groupNumber.text = _groupNumber;
+    public void ChangeGroupNumber(string _groupNumber) => groupNumber.text = _groupNumber;
     private void ChangeCombatModeIcon(Sprite _icon) => combatModeIcon.sprite = _icon;
     private void ToggleSelectionCircle(bool _on) => selectionCircle.SetActive(_on);
     #endregion
@@ -669,14 +669,14 @@ public class Unit : GameBehaviour
         }
         if (other.tag == "Horgr")
         {
-            if (!_HM.units.Contains(gameObject))
-                _HM.units.Add(gameObject);
+            if (!_HM.units.Contains(this))
+                _HM.units.Add(this);
             GameEvents.ReportOnUnitArrivedAtHorgr();
         }
         if (other.tag == "Hut")
         {
-            if (!_HUTM.units.Contains(gameObject))
-                _HUTM.units.Add(gameObject);
+            if (!_HUTM.units.Contains(this))
+                _HUTM.units.Add(this);
             GameEvents.ReportOnUnitArrivedAtHut();
         }
         if(other.tag == "Tower")
@@ -711,11 +711,11 @@ public class Unit : GameBehaviour
     {
         if (other.tag == "Horgr")
         {
-            _HM.units.Remove(gameObject);
+            _HM.units.Remove(this);
         }
         if(other.tag == "Hut")
         {
-            _HUTM.units.Remove(gameObject);
+            _HUTM.units.Remove(this);
         }
         if (other.tag == "Tower")
         {
@@ -770,16 +770,16 @@ public class Unit : GameBehaviour
         bool isColliding = false;
         if (health <= 0)
         {
-            if (_HM.units.Contains(gameObject))
+            if (_HM.units.Contains(this))
             {
-                _HM.units.Remove(gameObject);
+                _HM.units.Remove(this);
             }
-            if(_HUTM.units.Contains(gameObject))
+            if(_HUTM.units.Contains(this))
             {
-                _HUTM.units.Remove(gameObject);
+                _HUTM.units.Remove(this);
             }
-            UnitSelection.Instance.Deselect(gameObject);
-            UnitSelection.Instance.unitList.Remove(gameObject);
+            _UM.Deselect(this);
+            _UM.unitList.Remove(this);
 
             if(!isColliding)
             {
@@ -797,45 +797,45 @@ public class Unit : GameBehaviour
     }
     void CheckIfUnitIsInGroup()
     {
-        if (UnitSelection.Instance.controlGroup1.Contains(gameObject))
+        if (_UM.controlGroup01.Contains(this))
         {
-            UnitSelection.Instance.controlGroup1.Remove(gameObject);
+            _UM.controlGroup01.Remove(this);
         }
-        if (UnitSelection.Instance.controlGroup2.Contains(gameObject))
+        if (_UM.controlGroup02.Contains(this))
         {
-            UnitSelection.Instance.controlGroup2.Remove(gameObject);
+            _UM.controlGroup02.Remove(this);
         }
-        if (UnitSelection.Instance.controlGroup3.Contains(gameObject))
+        if (_UM.controlGroup03.Contains(this))
         {
-            UnitSelection.Instance.controlGroup3.Remove(gameObject);
+            _UM.controlGroup03.Remove(this);
         }
-        if (UnitSelection.Instance.controlGroup4.Contains(gameObject))
+        if (_UM.controlGroup04.Contains(this))
         {
-            UnitSelection.Instance.controlGroup4.Remove(gameObject);
+            _UM.controlGroup04.Remove(this);
         }
-        if (UnitSelection.Instance.controlGroup5.Contains(gameObject))
+        if (_UM.controlGroup05.Contains(this))
         {
-            UnitSelection.Instance.controlGroup5.Remove(gameObject);
+            _UM.controlGroup05.Remove(this);
         }
-        if (UnitSelection.Instance.controlGroup6.Contains(gameObject))
+        if (_UM.controlGroup06.Contains(this))
         {
-            UnitSelection.Instance.controlGroup6.Remove(gameObject);
+            _UM.controlGroup06.Remove(this);
         }
-        if (UnitSelection.Instance.controlGroup7.Contains(gameObject))
+        if (_UM.controlGroup07.Contains(this))
         {
-            UnitSelection.Instance.controlGroup7.Remove(gameObject);
+            _UM.controlGroup07.Remove(this);
         }
-        if (UnitSelection.Instance.controlGroup8.Contains(gameObject))
+        if (_UM.controlGroup08.Contains(this))
         {
-            UnitSelection.Instance.controlGroup8.Remove(gameObject);
+            _UM.controlGroup08.Remove(this);
         }
-        if (UnitSelection.Instance.controlGroup9.Contains(gameObject))
+        if (_UM.controlGroup09.Contains(this))
         {
-            UnitSelection.Instance.controlGroup9.Remove(gameObject);
+            _UM.controlGroup09.Remove(this);
         }
-        if (UnitSelection.Instance.controlGroup10.Contains(gameObject))
+        if (_UM.controlGroup10.Contains(this))
         {
-            UnitSelection.Instance.controlGroup10.Remove(gameObject);
+            _UM.controlGroup10.Remove(this);
         }
     }
     IEnumerator Attack()

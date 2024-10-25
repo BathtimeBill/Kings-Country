@@ -5,7 +5,7 @@ using UnityEngine;
 public class HorgrManager : Singleton<HorgrManager>
 {
     public List<GameObject> enemies;
-    public List<GameObject> units;
+    public List<Unit> units;
 
     public List<GameObject> spawnLocations;
     public GameObject horgr;

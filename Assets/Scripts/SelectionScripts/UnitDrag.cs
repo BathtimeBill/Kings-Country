@@ -60,13 +60,13 @@ public class UnitDrag : GameBehaviour
 
     void SelectUnits()
     {
-        foreach (var unit in UnitSelection.Instance.unitList)
+        foreach (var unit in _UM.unitList)
         {
             if (selectionBox.Contains(myCam.WorldToScreenPoint(unit.transform.position)))
             {
                 if (unit.gameObject.tag != "Tower")
                 {
-                    UnitSelection.Instance.DragSelect(unit);
+                    _UM.DragSelect(unit);
                 }
                 
             }

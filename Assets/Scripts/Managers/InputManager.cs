@@ -47,6 +47,19 @@ public class InputManager : InputX
     public static event Action<Vector2> OnCameraRotate = null;
     public static event Action<Vector2> OnCursorMove = null;
     public static event Action<bool> OnCameraHaste = null;
+    public static event Action<bool> OnControlHold = null;
+
+    public static event Action OnGroup01Selected = null;
+    public static event Action OnGroup02Selected = null;
+    public static event Action OnGroup03Selected = null;
+    public static event Action OnGroup04Selected = null;
+    public static event Action OnGroup05Selected = null;
+    public static event Action OnGroup06Selected = null;
+    public static event Action OnGroup07Selected = null;
+    public static event Action OnGroup08Selected = null;
+    public static event Action OnGroup09Selected = null;
+    public static event Action OnGroup10Selected = null;
+    public static event Action<int> OnGroupSelected = null;
 
     // Menu Stuff
     public static event Action OnMenuInputSelect = null;
@@ -84,6 +97,18 @@ public class InputManager : InputX
         actions.FindActionMap("Gameplay").FindAction("Deselect").performed += EastButton;
         actions.FindActionMap("Gameplay").FindAction("Escape").performed += StartButton;
         actions.FindActionMap("Gameplay").FindAction("CameraHaste").performed += HasteButton;
+        actions.FindActionMap("Gameplay").FindAction("ControlGroupHold").performed += NorthButton;
+
+        actions.FindActionMap("Gameplay").FindAction("ControlGroup01").performed += Group01;
+        actions.FindActionMap("Gameplay").FindAction("ControlGroup02").performed += Group02;
+        actions.FindActionMap("Gameplay").FindAction("ControlGroup03").performed += Group03;
+        actions.FindActionMap("Gameplay").FindAction("ControlGroup04").performed += Group04;
+        actions.FindActionMap("Gameplay").FindAction("ControlGroup05").performed += Group05;
+        actions.FindActionMap("Gameplay").FindAction("ControlGroup06").performed += Group06;
+        actions.FindActionMap("Gameplay").FindAction("ControlGroup07").performed += Group07;
+        actions.FindActionMap("Gameplay").FindAction("ControlGroup08").performed += Group08;
+        actions.FindActionMap("Gameplay").FindAction("ControlGroup09").performed += Group09;
+        actions.FindActionMap("Gameplay").FindAction("ControlGroup10").performed += Group10;
 
         //Menus
         //menuMoveAction = actions.FindActionMap("Menus").FindAction("MenuMove");
@@ -92,6 +117,8 @@ public class InputManager : InputX
 
         ChangeInputMap(inputMap);
     }
+
+
 
     void Update()
     {
@@ -136,6 +163,11 @@ public class InputManager : InputX
                 OnCameraHaste?.Invoke(true);
             if (GetButtonReleased(ButtonMap.LStick))
                 OnCameraHaste?.Invoke(false);
+
+            if (GetButtonHolding(ButtonMap.North))
+                OnControlHold?.Invoke(true);
+            if (GetButtonReleased(ButtonMap.North))
+                OnControlHold?.Invoke(false);
         }
 
        
@@ -164,6 +196,49 @@ public class InputManager : InputX
             // Move the cursor
             Mouse.current.WarpCursorPosition(warpPosition);
         }
+    }
+    #endregion
+
+    #region Control Groups
+    public void Group01(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame()) OnGroupSelected?.Invoke(1);
+    }
+    public void Group02(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame()) OnGroupSelected?.Invoke(2);
+    }
+    public void Group03(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame()) OnGroupSelected?.Invoke(3);
+    }
+    public void Group04(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame()) OnGroupSelected?.Invoke(4);
+    }
+    public void Group05(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame()) OnGroupSelected?.Invoke(5);
+    }
+    public void Group06(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame()) OnGroupSelected?.Invoke(6);
+    }
+    public void Group07(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame()) OnGroupSelected?.Invoke(7);
+    }
+    public void Group08(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame()) OnGroupSelected?.Invoke(8);
+    }
+    public void Group09(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame()) OnGroupSelected?.Invoke(9);
+    }
+    public void Group10(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame()) OnGroupSelected?.Invoke(10);
     }
     #endregion
 

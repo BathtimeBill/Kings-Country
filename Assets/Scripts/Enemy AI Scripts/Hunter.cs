@@ -81,7 +81,7 @@ public class Hunter : Enemy
         distanceFromClosestHorgr = Vector3.Distance(horgr.transform.position, transform.position);
 
 
-        if (UnitSelection.Instance.unitList.Count != 0)
+        if (_UM.unitList.Count != 0)
         {
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
         }
@@ -104,7 +104,7 @@ public class Hunter : Enemy
 
         //    animator.SetBool("allWildlifeDead", false);
         //}
-        if (distanceFromClosestUnit < range && UnitSelection.Instance.unitList.Count != 0)
+        if (distanceFromClosestUnit < range && _UM.unitList.Count != 0)
         {
             state = EnemyState.Attack;
         }
@@ -118,7 +118,7 @@ public class Hunter : Enemy
 
             case EnemyState.Attack:
                 hutSwitch = false;
-                if (UnitSelection.Instance.unitList.Count == 0 || distanceFromClosestUnit > range)
+                if (_UM.unitList.Count == 0 || distanceFromClosestUnit > range)
                 {
                     state = EnemyState.Work;
                 }
@@ -291,7 +291,7 @@ public class Hunter : Enemy
         if(wildlife.Length == 0)
         {
             agent.SetDestination(closestUnit.transform.position);
-            if (UnitSelection.Instance.unitList.Count == 0)
+            if (_UM.unitList.Count == 0)
             {
                 agent.SetDestination(transform.position);
             }
@@ -313,29 +313,7 @@ public class Hunter : Enemy
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * damping);
         agent.SetDestination(closestUnit.transform.position);
     }
-    public Transform GetClosestUnit()
-    {
-        float closestDistance = Mathf.Infinity;
-        Transform trans = null;
 
-        foreach (GameObject go in UnitSelection.Instance.unitList)
-        {
-            float currentDistance;
-            currentDistance = Vector3.Distance(transform.position, go.transform.position);
-            if (currentDistance < closestDistance)
-            {
-                closestDistance = currentDistance;
-                trans = go.transform;
-            }
-        }
-
-        if (UnitSelection.Instance.unitList == null)
-        {
-            return null;
-        }
-        else
-            return trans;
-    }
     public Transform GetClosestWildlife()
     {
         float closestDistance = Mathf.Infinity;

@@ -11,6 +11,7 @@ public class GameBehaviour : BV.Behaviour
     protected static HutManager _HUTM { get { return HutManager.instance; } }
     protected static MusicManager _MM { get { return MusicManager.instance; } }
     protected static EnemyManager _EM { get { return EnemyManager.instance; } }
+    protected static UnitManager _UM { get { return UnitManager.instance; } }
     protected static UIManager _UI { get { return UIManager.instance; } }
     protected static PlayerControls _PC { get { return PlayerControls.instance; } }
     protected static CameraController _CAMERA { get { return CameraController.instance; } }

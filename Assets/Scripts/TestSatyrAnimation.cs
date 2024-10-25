@@ -198,7 +198,7 @@ public class TestSatyrAnimation : GameBehaviour
             }
         }
 
-        if (UnitSelection.Instance.unitList == null)
+        if (_UM.unitList == null)
         {
             return null;
         }

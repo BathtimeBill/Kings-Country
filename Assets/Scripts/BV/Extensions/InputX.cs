@@ -278,6 +278,20 @@ public class InputX : MonoBehaviour
         }
     }
 
+    public void ControlButton(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame())
+        {
+            northButtonState = ButtonState.Pressed;
+            ExecuteNextFrame(() => northButtonState = ButtonState.Holding);
+        }
+        if (context.action.WasReleasedThisFrame())
+        {
+            northButtonState = ButtonState.Released;
+            ExecuteNextFrame(() => northButtonState = ButtonState.None);
+        }
+    }
+
     public void LeftShoulderButton(CallbackContext context)
     {
         if (context.action.WasPressedThisFrame())

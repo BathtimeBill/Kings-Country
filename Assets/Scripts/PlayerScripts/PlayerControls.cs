@@ -128,157 +128,6 @@ public class PlayerControls : Singleton<PlayerControls>
     {
         if (_hasInput)
         {
-            #region group control
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                if (canGroup)
-                {
-                    UnitSelection.Instance.Group1();
-                    _SM.PlaySound(_SM.controlGroup);
-                }
-                else
-                {
-                    UnitSelection.Instance.GroupSelect1();
-                    _SM.PlaySound(_SM.controlGroupSelect);
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-
-                if (canGroup)
-                {
-                    UnitSelection.Instance.Group2();
-                    _SM.PlaySound(_SM.controlGroup);
-                }
-                else
-                {
-                    UnitSelection.Instance.GroupSelect2();
-                    _SM.PlaySound(_SM.controlGroupSelect);
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-
-                if (canGroup)
-                {
-                    UnitSelection.Instance.Group3();
-                    _SM.PlaySound(_SM.controlGroup);
-                }
-                else
-                {
-                    UnitSelection.Instance.GroupSelect3();
-                    _SM.PlaySound(_SM.controlGroupSelect);
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-
-                if (canGroup)
-                {
-                    UnitSelection.Instance.Group4();
-                    _SM.PlaySound(_SM.controlGroup);
-                }
-                else
-                {
-                    UnitSelection.Instance.GroupSelect4();
-                    _SM.PlaySound(_SM.controlGroupSelect);
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha5))
-            {
-
-                if (canGroup)
-                {
-                    UnitSelection.Instance.Group5();
-                    _SM.PlaySound(_SM.controlGroup);
-                }
-                else
-                {
-                    UnitSelection.Instance.GroupSelect5();
-                    _SM.PlaySound(_SM.controlGroupSelect);
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha6))
-            {
-
-                if (canGroup)
-                {
-                    UnitSelection.Instance.Group6();
-                    _SM.PlaySound(_SM.controlGroup);
-                }
-                else
-                {
-                    UnitSelection.Instance.GroupSelect6();
-                    _SM.PlaySound(_SM.controlGroupSelect);
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha7))
-            {
-
-                if (canGroup)
-                {
-                    UnitSelection.Instance.Group7();
-                    _SM.PlaySound(_SM.controlGroup);
-                }
-                else
-                {
-                    UnitSelection.Instance.GroupSelect7();
-                    _SM.PlaySound(_SM.controlGroupSelect);
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha8))
-            {
-
-                if (canGroup)
-                {
-                    UnitSelection.Instance.Group8();
-                    _SM.PlaySound(_SM.controlGroup);
-                }
-                else
-                {
-                    UnitSelection.Instance.GroupSelect8();
-                    _SM.PlaySound(_SM.controlGroupSelect);
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha9))
-            {
-
-                if (canGroup)
-                {
-                    UnitSelection.Instance.Group9();
-                    _SM.PlaySound(_SM.controlGroup);
-                }
-                else
-                {
-                    UnitSelection.Instance.GroupSelect9();
-                    _SM.PlaySound(_SM.controlGroupSelect);
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha0))
-            {
-
-                if (canGroup)
-                {
-                    UnitSelection.Instance.Group10();
-                    _SM.PlaySound(_SM.controlGroup);
-                }
-                else
-                {
-                    UnitSelection.Instance.GroupSelect10();
-                    _SM.PlaySound(_SM.controlGroupSelect);
-                }
-            }
-            #endregion
-
-            if (Input.GetKeyDown(KeyCode.LeftControl))
-            {
-                canGroup = true;
-            }
-            if (Input.GetKeyUp(KeyCode.LeftControl))
-            {
-                canGroup = false;
-            }
-
             if (Input.GetKeyDown(KeyCode.F4))
             {
                 if (_hasInput)
@@ -538,7 +387,26 @@ public class PlayerControls : Singleton<PlayerControls>
                 _UI.TurnOffWarningPanel();
         }
     }
-    
+
+    private void OnControlHold(bool _holding)
+    {
+        canGroup = _holding;
+    }
+
+    private void OnGroupSelected(int _group)
+    {
+        if (canGroup)
+        {
+            _UM.GroupUnits(_group);
+            _SM.PlaySound(_SM.controlGroup);
+        }
+        else
+        {
+            _UM.SelectGroup(_group);
+            _SM.PlaySound(_SM.controlGroupSelect);
+        }
+    }
+
     public void OnUnitMove()
     {
         //Debug.Log("Target Moving");
@@ -575,17 +443,19 @@ public class PlayerControls : Singleton<PlayerControls>
         InputManager.OnSelectButtonPressed += OnSelectButtonPressed;
         InputManager.OnDeselectButtonPressed += OnDeselectButtonPressed;
         InputManager.OnEscapeButtonPressed += OnEscapeButtonPressed;
+        InputManager.OnControlHold += OnControlHold;
+        InputManager.OnGroupSelected += OnGroupSelected;
         GameEvents.OnUnitMove += OnUnitMove;
         GameEvents.OnToolButtonPressed += OnToolButtonPressed;
     }
-
-    
 
     private void OnDisable()
     {
         InputManager.OnSelectButtonPressed -= OnSelectButtonPressed;
         InputManager.OnDeselectButtonPressed -= OnDeselectButtonPressed;
         InputManager.OnEscapeButtonPressed -= OnEscapeButtonPressed;
+        InputManager.OnControlHold -= OnControlHold;
+        InputManager.OnGroupSelected -= OnGroupSelected;
         GameEvents.OnUnitMove -= OnUnitMove;
         GameEvents.OnToolButtonPressed -= OnToolButtonPressed;
     }

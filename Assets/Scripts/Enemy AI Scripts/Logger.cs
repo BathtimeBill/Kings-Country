@@ -71,7 +71,7 @@ public class Logger : Enemy
             StopAllCoroutines();
         }
 
-        if (UnitSelection.Instance.unitList.Count != 0)
+        if (_UM.unitList.Count != 0)
         {
             closestUnit = GetClosestUnit();
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
@@ -120,7 +120,7 @@ public class Logger : Enemy
                 break;
 
             case EnemyState.Attack:
-                if(UnitSelection.Instance.unitList.Count > 0)
+                if(_UM.unitList.Count > 0)
                 {
                     if (distanceFromClosestUnit >= 30)
                     {
@@ -306,37 +306,6 @@ public class Logger : Enemy
         }
         return trans;
     }
-    public Transform GetClosestUnit()
-    {
-        float closestDistance = Mathf.Infinity;
-        Transform trans = null;
-
-        foreach (GameObject go in UnitSelection.Instance.unitList)
-        {
-            float currentDistance;
-            currentDistance = Vector3.Distance(transform.position, go.transform.position);
-            if (currentDistance < closestDistance)
-            {
-                closestDistance = currentDistance;
-                trans = go.transform;
-            }
-        }
-        
-        if(UnitSelection.Instance.unitList == null)
-        {
-            return null;
-        }
-        else
-        return trans;
-    }
-    //public void EnableCollider()
-    //{
-    //    axeObject.GetComponent<Collider>().enabled = true;
-    //}
-    //public void DisableCollider()
-    //{
-    //    axeObject.GetComponent<Collider>().enabled = false;
-    //}
 
     public void FindTree()
     {
@@ -344,7 +313,7 @@ public class Logger : Enemy
     }
     public void FindUnit()
     {
-        if(UnitSelection.Instance.unitList.Count == 0 && _GM.trees.Count > 0)
+        if(_UM.unitList.Count == 0 && _GM.trees.Count > 0)
         {
             state = EnemyState.Work;
         }

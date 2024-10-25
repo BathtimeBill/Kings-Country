@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class HutManager : Singleton<HutManager>
 {
-
     public List<GameObject> enemies;
-    public List<GameObject> units;
+    public List<Unit> units;
 
     public List<GameObject> spawnLocations;
     public GameObject hut;

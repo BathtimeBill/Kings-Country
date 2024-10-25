@@ -212,4 +212,28 @@ public class Enemy : GameBehaviour
             Instantiate(_SETTINGS.general.maegenPickup, transform.position, transform.rotation);
         }
     }
+
+    public Transform GetClosestUnit()
+    {
+        float closestDistance = Mathf.Infinity;
+        Transform trans = null;
+
+        foreach (Unit unit in _UM.unitList)
+        {
+            float currentDistance;
+            currentDistance = Vector3.Distance(transform.position, unit.transform.position);
+            if (currentDistance < closestDistance)
+            {
+                closestDistance = currentDistance;
+                trans = unit.transform;
+            }
+        }
+
+        if (_UM.unitList == null)
+        {
+            return null;
+        }
+        else
+            return trans;
+    }
 }
