@@ -701,7 +701,7 @@ public class UIManager : Singleton<UIManager>
         treeTool.SetInteractable(true);
         TweenX.KillTweener(continueTweener); 
         continueButton.transform.localScale = Vector3.one;
-        waveText.text = nightMessage;
+        waveText.text = nightMessage + ": " + (_GM.currentDay + 1) + "/" + _DATA.levelMaxDays;
     }
 
     void ResetPanel(GameObject _panel)
