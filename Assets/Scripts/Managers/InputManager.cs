@@ -46,6 +46,7 @@ public class InputManager : InputX
     public static event Action<Vector2> OnCameraMove = null;
     public static event Action<Vector2> OnCameraRotate = null;
     public static event Action<Vector2> OnCursorMove = null;
+    public static event Action<bool> OnCameraHaste = null;
 
     // Menu Stuff
     public static event Action OnMenuInputSelect = null;
@@ -82,6 +83,7 @@ public class InputManager : InputX
         actions.FindActionMap("Gameplay").FindAction("Select").performed += SouthButton;
         actions.FindActionMap("Gameplay").FindAction("Deselect").performed += EastButton;
         actions.FindActionMap("Gameplay").FindAction("Escape").performed += StartButton;
+        actions.FindActionMap("Gameplay").FindAction("CameraHaste").performed += HasteButton;
 
         //Menus
         //menuMoveAction = actions.FindActionMap("Menus").FindAction("MenuMove");
@@ -93,7 +95,7 @@ public class InputManager : InputX
 
     void Update()
     {
-        CursorMovement();
+        //CursorMovement();
 
         if (inputMap == InputMap.Gameplay)
         {
@@ -129,6 +131,11 @@ public class InputManager : InputX
                 OnRightShoulderDown?.Invoke();
             if (GetButtonReleased(ButtonMap.RShoulder))
                 OnRightShoulderUp?.Invoke();
+
+            if (GetButtonHolding(ButtonMap.LStick))
+                OnCameraHaste?.Invoke(true);
+            if (GetButtonReleased(ButtonMap.LStick))
+                OnCameraHaste?.Invoke(false);
         }
 
        

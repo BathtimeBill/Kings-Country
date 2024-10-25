@@ -12,7 +12,7 @@ public class InputX : MonoBehaviour
 {
     #region Enums
     public enum ButtonState { None, Pressed, Holding, Released}
-    public enum ButtonMap { Start, Select, North, East, South, West, LShoulder, RShoulder, Home}
+    public enum ButtonMap { Start, Select, North, East, South, West, LShoulder, RShoulder, LTrigger, RTrigger, LStick, RStick, Home}
     #endregion
 
     #region Variables
@@ -22,8 +22,12 @@ public class InputX : MonoBehaviour
     public ButtonState eastButtonState { get; private set; }
     public ButtonState southButtonState { get; private set; }
     public ButtonState westButtonState { get; private set; }
+    public ButtonState leftStickButtonState { get; private set; }
+    public ButtonState rightStickButtonState { get; private set; }
     public ButtonState leftShoulderButtonState { get; private set; }
     public ButtonState rightShoulderButtonState { get; private set; }
+    public ButtonState leftTriggerButtonState { get; private set; }
+    public ButtonState rightTriggerButtonState { get; private set; }
     public ButtonState homeButtonState { get; private set; }
     #endregion
 
@@ -66,6 +70,14 @@ public class InputX : MonoBehaviour
                 return leftShoulderButtonState == ButtonState.Pressed;
             case ButtonMap.RShoulder:
                 return rightShoulderButtonState == ButtonState.Pressed;
+            case ButtonMap.LTrigger:
+                return leftTriggerButtonState == ButtonState.Pressed;
+            case ButtonMap.RTrigger:
+                return rightTriggerButtonState == ButtonState.Pressed;
+            case ButtonMap.LStick:
+                return leftStickButtonState == ButtonState.Pressed;
+            case ButtonMap.RStick:
+                return rightStickButtonState == ButtonState.Pressed;
             default: 
                 return false;
         }
@@ -92,6 +104,14 @@ public class InputX : MonoBehaviour
                 return leftShoulderButtonState == ButtonState.Holding;
             case ButtonMap.RShoulder:
                 return rightShoulderButtonState == ButtonState.Holding;
+            case ButtonMap.LTrigger:
+                return leftTriggerButtonState == ButtonState.Holding;
+            case ButtonMap.RTrigger:
+                return rightTriggerButtonState == ButtonState.Holding;
+            case ButtonMap.LStick:
+                return leftStickButtonState == ButtonState.Holding;
+            case ButtonMap.RStick:
+                return rightStickButtonState == ButtonState.Holding;
             default:
                 return false;
         }
@@ -118,6 +138,14 @@ public class InputX : MonoBehaviour
                 return leftShoulderButtonState == ButtonState.Released;
             case ButtonMap.RShoulder:
                 return rightShoulderButtonState == ButtonState.Released;
+            case ButtonMap.LTrigger:
+                return leftTriggerButtonState == ButtonState.Released;
+            case ButtonMap.RTrigger:
+                return rightTriggerButtonState == ButtonState.Released;
+            case ButtonMap.LStick:
+                return leftStickButtonState == ButtonState.Released;
+            case ButtonMap.RStick:
+                return rightStickButtonState == ButtonState.Released;
             default:
                 return false;
         }
@@ -235,6 +263,21 @@ public class InputX : MonoBehaviour
             ExecuteNextFrame(() => westButtonState = ButtonState.None);
         }
     }
+
+    public void HasteButton(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame())
+        {
+            leftStickButtonState = ButtonState.Pressed;
+            ExecuteNextFrame(() => leftStickButtonState = ButtonState.Holding);
+        }
+        if (context.action.WasReleasedThisFrame())
+        {
+            leftStickButtonState = ButtonState.Released;
+            ExecuteNextFrame(() => leftStickButtonState = ButtonState.None);
+        }
+    }
+
     public void LeftShoulderButton(CallbackContext context)
     {
         if (context.action.WasPressedThisFrame())

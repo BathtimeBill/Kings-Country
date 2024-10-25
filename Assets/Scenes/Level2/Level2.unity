@@ -73305,10 +73305,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 7361388584997120870}
+  normalSpeed: 4
+  fastSpeed: 12
   movementModifier: 4
   movementTime: 5
-  normalSpeed: 150
-  fastSpeed: 300
   edgeScrollThreshold: 20
   isMouseOnEdge: 0
   zoomAmount: {x: 0, y: -3, z: 3}
@@ -73321,14 +73321,17 @@ MonoBehaviour:
   rotateCurrentPosition: {x: 0, y: 0, z: 0}
   minZ: -121.5
   maxZ: -25.5
-  minY: 4.2
-  maxY: 100.2
+  minY: 10
+  maxY: 200
   minMovementX: -250
   maxMovementX: 250
   minMovementZ: -250
   maxMovementZ: 250
   hasReachMaxZ: 0
   hasReachMaxY: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!1 &7361388585211468907
 GameObject:
   m_ObjectHideFlags: 0

@@ -33,6 +33,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "CameraHaste",
+                    "type": "Button",
+                    "id": "a205f905-67cd-4771-9e87-a348a975eb24",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Select",
                     "type": "Button",
                     "id": "dff3b8f5-d2eb-418a-a760-e3dfa611c0cd",
@@ -193,10 +202,10 @@
                 },
                 {
                     "name": "",
-                    "id": "99437941-2a14-49d2-a52c-a6b88610594c",
-                    "path": "<Gamepad>/dpad",
+                    "id": "7ed5352d-71df-4da5-b328-b1d6d3af90a0",
+                    "path": "<Gamepad>/leftStick",
                     "interactions": "",
-                    "processors": "ScaleVector2(x=2,y=2)",
+                    "processors": "",
                     "groups": "Controller",
                     "action": "CameraMovement",
                     "isComposite": false,
@@ -221,17 +230,6 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Select",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "55f8d08e-3e2b-4790-801c-a5a1afed136b",
-                    "path": "<Gamepad>/leftStick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Controller",
-                    "action": "Cursor",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -287,6 +285,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f73f1ba5-24d7-42c5-95cd-a32ce42838ce",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "CameraHaste",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8d609f8a-3de7-4038-a234-3da442dc7bf5",
+                    "path": "<Gamepad>/leftStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "CameraHaste",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
