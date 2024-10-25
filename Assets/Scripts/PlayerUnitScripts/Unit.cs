@@ -11,16 +11,20 @@ public class Unit : GameBehaviour
     public CreatureID unitID;
     [Header("CombatMode")]
     public CombatMode combatMode;
-    public Image combatModeImage;
     public Vector3 defendPosition;
     public float tickRate;
+
+    [Header("UI")]
+    public Transform healthBarFill;
+    public SpriteRenderer combatModeIcon;
+    public TMPro.TMP_Text groupNumber;
+    public GameObject selectionCircle;
 
     [Header("Stats")] 
     public float health;
     public float maxHealth;
     public float unitSpeed;
     public float projectileSpeed = 1000;
-    public Slider slider;
     public float focusSpeed;
     public float stoppingDistance;
     [Header("Components")]
@@ -41,7 +45,6 @@ public class Unit : GameBehaviour
     public GameObject bloodParticle1;
     [Header("Relevant Game Objects")]
     public GameObject targetDest;
-    public GameObject selectionCircle;
     public GameObject weaponCollider;
     public GameObject deadPrefab;
     public GameObject explosionPrefab;
@@ -94,7 +97,7 @@ public class Unit : GameBehaviour
         maxHealth = unitData.health;
         if (_DATA.HasPerk(PerkID.BarkSkin))
             maxHealth = MathX.GetPercentageIncrease(maxHealth, _DATA.GetPerk(PerkID.BarkSkin).increaseValue);
-        health = maxHealth;
+        SetHealth(maxHealth);
 
         //Speed
         unitSpeed = unitData.speed;
@@ -108,8 +111,8 @@ public class Unit : GameBehaviour
         //Other
         attackSprite = _ICONS.damageIcon;
         defendSprite = _ICONS.healthIcon;
-        combatModeImage.sprite = attackSprite;
-        slider.value = CalculateHealth();
+        combatModeIcon.sprite = attackSprite;
+        ChangeGroupNumber("");
     }
 
     IEnumerator WaitForIsMovingCheck()
@@ -323,14 +326,9 @@ public class Unit : GameBehaviour
         }
         else
         {
-            selectionCircle.SetActive(false);
+            ToggleSelectionCircle(false);
         }
 
-
-        if (health > maxHealth)
-        {
-            health = maxHealth;
-        }
         if (Input.GetKeyDown(KeyCode.T))
         {
             Vector3 offset = new Vector3(0, -1.5f, 0);
@@ -537,11 +535,40 @@ public class Unit : GameBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, focusSpeed * Time.deltaTime);
     }
 
-    float CalculateHealth()
+
+    #region Health
+    private void IncreaseHealth(float _health)
     {
-        return health / maxHealth;
+        health += _health;
+        if(health > maxHealth) health = maxHealth;
+        AdjustHealthBar();
     }
-    
+
+    private void DecreaseHealth(float _health)
+    {
+        health -= _health;
+        AdjustHealthBar();
+    }
+
+    private void SetHealth(float _health)
+    {
+        health = _health;
+        AdjustHealthBar();
+    }
+
+    private float CalculateHealth()
+    {
+        return MathX.MapTo01(health, 0, maxHealth);
+    }
+    #endregion
+
+    #region UI
+    private void AdjustHealthBar() => healthBarFill.DOScaleX(CalculateHealth(), 0.2f);
+    private void ChangeGroupNumber(string _groupNumber) => groupNumber.text = _groupNumber;
+    private void ChangeCombatModeIcon(Sprite _icon) => combatModeIcon.sprite = _icon;
+    private void ToggleSelectionCircle(bool _on) => selectionCircle.SetActive(_on);
+    #endregion
+
     IEnumerator HitByArrowDelay()
     {
         yield return new WaitForSeconds(1);
@@ -633,8 +660,7 @@ public class Unit : GameBehaviour
         {
             if(unitID != CreatureID.Mistcalf)
             {
-                health += 100;
-                slider.value = slider.value = CalculateHealth();
+                IncreaseHealth(100);
             }
         }
         if (other.tag == "Maegen")
@@ -708,8 +734,7 @@ public class Unit : GameBehaviour
     {
         if(other.tag == "Axe3")
         {
-            health -= 0.5f * Time.deltaTime;
-            slider.value = slider.value = CalculateHealth();
+            DecreaseHealth(0.5f * Time.deltaTime);
             if(health < 0)
             {
                 Die("Unknown");
@@ -721,13 +746,12 @@ public class Unit : GameBehaviour
             {
                 if (_DATA.HasPerk(PerkID.Rune))
                 {
-                    health += _GM.runeHealRate * 2 * Time.deltaTime;
+                    IncreaseHealth(_GM.runeHealRate * 2 * Time.deltaTime);
                 }
                 else
                 {
-                    health += _GM.runeHealRate * Time.deltaTime;
+                    IncreaseHealth(_GM.runeHealRate * Time.deltaTime);
                 }
-                slider.value = slider.value = CalculateHealth();
             }
         }
     }
@@ -737,9 +761,8 @@ public class Unit : GameBehaviour
         state = UnitState.Attack;
         GameObject go = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
         //go.transform.rotation = Quaternion.Inverse(transform.rotation);
-        health -= damage;
+        DecreaseHealth(damage);
         Die(attacker);
-        slider.value = slider.value = CalculateHealth();
     }
 
     private void Die(string _attacker)
@@ -911,7 +934,7 @@ public class Unit : GameBehaviour
             rangedInstance.GetComponent<Rigidbody>().AddForce(transform.forward * projectileSpeed);
             Destroy(rangedInstance, 3);
             navAgent.SetDestination(rangedAttackLocations[rndDirection].transform.position);
-            health -= 5;
+            DecreaseHealth(5);
         }
     }
 
@@ -951,7 +974,6 @@ public class Unit : GameBehaviour
         //        health = maxHealth;
         //        break;
         //}
-        slider.value = slider.value = CalculateHealth();
     }
     public void OnFlugafotrUpgrade()
     {
@@ -992,15 +1014,14 @@ public class Unit : GameBehaviour
     {
         if(unitID != CreatureID.Mistcalf)
         {
-            health = maxHealth;
-            slider.value = slider.value = CalculateHealth();
+            SetHealth(maxHealth);
         }
     }
     public void OnAttackSelected()
     {
         if(isSelected)
         {
-            combatModeImage.sprite = attackSprite;
+            ChangeCombatModeIcon(attackSprite);
             if(combatMode != CombatMode.Move || combatMode != CombatMode.AttackMove)
             {
                 detectionRadius = detectionRadius * 2;
@@ -1023,7 +1044,7 @@ public class Unit : GameBehaviour
                 {
                     detectionRadius = detectionRadius / 2;
                 }
-                combatModeImage.sprite = defendSprite;
+                ChangeCombatModeIcon(defendSprite);
             }
             defendPosition = transform.position;
             combatMode = CombatMode.Defend;
