@@ -175,6 +175,24 @@
                     "processors": "",
                     "interactions": "Press(behavior=2)",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CycleToolRight",
+                    "type": "Button",
+                    "id": "305e0bc1-2cf3-46b5-8b4b-8245c82482ce",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CycleToolLeft",
+                    "type": "Button",
+                    "id": "8ff1a5bd-2f88-450e-8222-f49ade1df107",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -593,6 +611,50 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "ControlGroup10",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "eafbf47f-6dff-476d-858c-369353771cf0",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CycleToolRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "43c8f6b5-1715-4a4e-bba7-60928a1a5066",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CycleToolRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f37708f2-54d5-42d5-ae9b-84bb4dcb4ff2",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CycleToolLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "80d2aeae-c053-4fa7-bde4-9bbc5ab0749e",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CycleToolLeft",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

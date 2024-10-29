@@ -8,6 +8,7 @@ public class InteractableButton : GameBehaviour, IPointerEnterHandler, IPointerE
     [HideInInspector]
     public Button button;
     public Image icon;
+    public Image highlight;
     [HideInInspector]
     public bool interactable = true;
 
@@ -33,6 +34,14 @@ public class InteractableButton : GameBehaviour, IPointerEnterHandler, IPointerE
         {
             icon.color = interactable ? _COLOUR.toggleIconInactiveColor : _COLOUR.toggleIconDisabledColor;
         }
+    }
+
+    public virtual void SetActivated(bool _activated)
+    {
+        if (highlight == null)
+            return;
+
+        highlight.color = _activated ? _COLOUR.highlightedColor : _COLOUR.transparentColor;
     }
 
     public virtual void ClickedButton() {}

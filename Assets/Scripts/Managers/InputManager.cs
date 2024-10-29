@@ -61,6 +61,8 @@ public class InputManager : InputX
     public static event Action OnGroup10Selected = null;
     public static event Action<int> OnGroupSelected = null;
 
+    public static event Action<int> OnCycleTool = null;
+
     // Menu Stuff
     public static event Action OnMenuInputSelect = null;
     public static event Action OnMenuInputCancel = null;
@@ -110,6 +112,8 @@ public class InputManager : InputX
         actions.FindActionMap("Gameplay").FindAction("ControlGroup09").performed += Group09;
         actions.FindActionMap("Gameplay").FindAction("ControlGroup10").performed += Group10;
 
+        actions.FindActionMap("Gameplay").FindAction("CycleToolRight").performed += CycleToolRight;
+        actions.FindActionMap("Gameplay").FindAction("CycleToolLeft").performed += CycleToolLeft;
         //Menus
         //menuMoveAction = actions.FindActionMap("Menus").FindAction("MenuMove");
         //actions.FindActionMap("Menus").FindAction("MenuSelect").performed += OnMenuSelect;
@@ -197,6 +201,18 @@ public class InputManager : InputX
             Mouse.current.WarpCursorPosition(warpPosition);
         }
     }
+
+    public void CycleToolRight(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame()) OnCycleTool?.Invoke(1);
+    }
+    public void CycleToolLeft(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame()) OnCycleTool?.Invoke(-1);
+    }
+
+
+
     #endregion
 
     #region Control Groups
@@ -204,6 +220,7 @@ public class InputManager : InputX
     {
         if (context.action.WasPressedThisFrame()) OnGroupSelected?.Invoke(1);
     }
+
     public void Group02(CallbackContext context)
     {
         if (context.action.WasPressedThisFrame()) OnGroupSelected?.Invoke(2);

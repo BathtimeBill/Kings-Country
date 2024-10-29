@@ -16,6 +16,10 @@ public class UIManager : Singleton<UIManager>
     public InGamePanels inGamePanels;
     public ToggleButton[] buildingToggles;
 
+    [Header("Interactable Buttons")]
+    public InteractableButtons interactableButtons;
+    private int currentButton = 0;
+
     [Header("Resources Top")]
     public TMP_Text maegenText;
     public TMP_Text treesText;
@@ -1020,6 +1024,26 @@ public class UIManager : Singleton<UIManager>
         });
     }
 
+    private void OnCycleTool(int _direction)
+    {
+        List<InteractableButton> interactable = interactableButtons.buttons.FindAll(x => x.interactable == true);
+
+        if(_direction == 1)
+            currentButton = ListX.IncrementCounter(currentButton, interactable);
+        else
+            currentButton = ListX.DecrementCounter(currentButton, interactable);
+
+        for (int i=0;i< interactable.Count;i++) 
+        {
+            interactable[i].SetActivated(false);
+            interactable[currentButton].SetActivated(true);
+        }
+        //for (int i = 0; i < interactableButtons.buttons.Count; i++)
+        //{
+        //    interactableButtons.buttons[currentButton].SetInteractable(true);
+        //}
+    }
+
     private void OnEnable()
     {
         GameEvents.OnGameStateChanged += OnGameStateChanged;
@@ -1037,7 +1061,11 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnWildlifeValueChange += OnWildlifeValueChange;
         GameEvents.OnFormationSelected += OnFormationSelected;
         GameEvents.OnHumanKilled += OnEnemyUnitKilled;
+
+        InputManager.OnCycleTool += OnCycleTool;
     }
+
+    
 
     private void OnDisable()
     {
@@ -1056,6 +1084,8 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange;
         GameEvents.OnFormationSelected -= OnFormationSelected;
         GameEvents.OnHumanKilled -= OnEnemyUnitKilled;
+
+        InputManager.OnCycleTool -= OnCycleTool;
     }
 }
 
@@ -1093,4 +1123,10 @@ public class WinTexts
     public TMP_Text populousTotal;
     public TMP_Text finalEXP;
     public TMP_Text bestEXP;
+}
+
+[System.Serializable]
+public class InteractableButtons
+{
+    public List<InteractableButton> buttons;
 }
