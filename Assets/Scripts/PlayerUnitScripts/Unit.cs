@@ -62,6 +62,7 @@ public class Unit : GameBehaviour
     public bool isOutOfBounds;
     public bool idleSetDest;
     public bool hitByArrow;
+    public bool isFirstPerson;
     //public float isMovingCheckTime;
     private Vector3 attackDestination;
     [Header("Audio")]
@@ -80,15 +81,20 @@ public class Unit : GameBehaviour
 
     private int startingDay;
 
+
+
     void Start()
     {
-        soundPool = SFXPool.GetComponents<AudioSource>();
-        pointer = GameObject.FindGameObjectWithTag("Pointer");
-        Setup();
+        if(!isFirstPerson)
+        {
+            soundPool = SFXPool.GetComponents<AudioSource>();
+            pointer = GameObject.FindGameObjectWithTag("Pointer");
+            Setup();
+            GameEvents.ReportOnCreatureSpawned(unitID);
+            SpawnInMove();
+            startingDay = _currentDay;
+        }
         _UM.unitList.Add(this);
-        GameEvents.ReportOnCreatureSpawned(unitID);
-        SpawnInMove();
-        startingDay = _currentDay;
     }
 
     private void Setup()
@@ -127,6 +133,9 @@ public class Unit : GameBehaviour
 
     void Update()
     {
+        if (isFirstPerson)
+            return;
+
         if (!_EM.allEnemiesDead)
         {
             closestEnemy = GetClosestEnemy();
