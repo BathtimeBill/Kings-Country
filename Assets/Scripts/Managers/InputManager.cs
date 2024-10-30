@@ -48,6 +48,7 @@ public class InputManager : InputX
     public static event Action<Vector2> OnCursorMove = null;
     public static event Action<bool> OnCameraHaste = null;
     public static event Action<bool> OnControlHold = null;
+    public static event Action OnUnitFocus = null;
 
     public static event Action OnGroup01Selected = null;
     public static event Action OnGroup02Selected = null;
@@ -114,6 +115,7 @@ public class InputManager : InputX
 
         actions.FindActionMap("Gameplay").FindAction("CycleToolRight").performed += CycleToolRight;
         actions.FindActionMap("Gameplay").FindAction("CycleToolLeft").performed += CycleToolLeft;
+        actions.FindActionMap("Gameplay").FindAction("Focus").performed += UnitFocus;
         //Menus
         //menuMoveAction = actions.FindActionMap("Menus").FindAction("MenuMove");
         //actions.FindActionMap("Menus").FindAction("MenuSelect").performed += OnMenuSelect;
@@ -209,6 +211,12 @@ public class InputManager : InputX
     public void CycleToolLeft(CallbackContext context)
     {
         if (context.action.WasPressedThisFrame()) OnCycleTool?.Invoke(-1);
+    }
+    
+    public void UnitFocus(CallbackContext context)
+    {
+        print("F");
+        if (context.action.WasPressedThisFrame()) OnUnitFocus?.Invoke();
     }
 
 
