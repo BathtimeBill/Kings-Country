@@ -1,9 +1,7 @@
 using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;
 
 public class Unit : GameBehaviour
 {
@@ -42,7 +40,6 @@ public class Unit : GameBehaviour
 
     [Header("Death Objects")]
     public GameObject deadSatyr;
-    public GameObject bloodParticle1;
     [Header("Relevant Game Objects")]
     public GameObject targetDest;
     public GameObject weaponCollider;
@@ -80,6 +77,7 @@ public class Unit : GameBehaviour
     private UnitData unitData => _DATA.GetUnit(unitID);
 
     private int startingDay;
+    private GameObject bloodParticle => _DATA.GetUnit(unitID).bloodParticles;
 
 
 
@@ -151,9 +149,7 @@ public class Unit : GameBehaviour
             {
                 navAgent.stoppingDistance = stoppingDistance;
             }
-
         }
-
 
         switch (state)
         {
@@ -307,63 +303,10 @@ public class Unit : GameBehaviour
                     StartCoroutine(WaitForSetDestination());
                 }
             }
-            if (Input.GetKeyDown(KeyCode.Delete))
-            {
-                if(isSelected)
-                {
-                    print("Suicide");
-                    if (_HM.units.Contains(this))
-                    {
-                        _HM.units.Remove(this);
-                    }
-                    if (_HUTM.units.Contains(this))
-                    {
-                        _HUTM.units.Remove(this);
-                    }
-                    _UM.Deselect(this);
-                    _UM.unitList.Remove(this);
-                    GameObject go;
-                    go = Instantiate(deadSatyr, transform.position, transform.rotation);
-                    Destroy(go, 15);
-                    _UI.CheckPopulousUI();
-                    int daysSurvived = _currentDay - startingDay;
-                    GameEvents.ReportOnCreatureKilled(unitID.ToString(), "Unknown", daysSurvived);
-                    CheckIfUnitIsInGroup();
-                    Destroy(gameObject);
-                }
-            }
         }
         else
         {
             ToggleSelectionCircle(false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            Vector3 offset = new Vector3(0, -1.5f, 0);
-            if (unitID == CreatureID.Huldra && isSelected || unitID == CreatureID.Fidhain && isSelected)
-            {
-                if (_TUTORIAL.isTutorial && _TUTORIAL.tutorialStage == 13)
-                {
-                    GameEvents.ReportOnNextTutorial();
-                }
-                if (isTooCloseToTower == false && isOutOfBounds == false)
-                {
-                    Instantiate(towerPrefab, transform.position + offset, Quaternion.Euler(-90, 0, 0));
-                    _UM.Deselect(this);
-                    _UM.unitList.Remove(this);
-                    Destroy(gameObject);
-                }
-                if (isTooCloseToTower == true)
-                {
-                    _UI.SetError(ErrorID.TooCloseToTower);
-                }
-                if (isOutOfBounds == true && isTooCloseToTower == false)
-                {
-                    _UI.SetError(ErrorID.OutOfBounds);
-                }
-            }
-
         }
     }
     IEnumerator Tick()
@@ -768,7 +711,7 @@ public class Unit : GameBehaviour
     public void TakeDamage(string attacker, float damage)
     {
         state = UnitState.Attack;
-        GameObject go = Instantiate(bloodParticle1, transform.position + new Vector3(0, 5, 0), transform.rotation);
+        GameObject go = Instantiate(bloodParticle, transform.position + new Vector3(0, 5, 0), transform.rotation);
         //go.transform.rotation = Quaternion.Inverse(transform.rotation);
         DecreaseHealth(damage);
         Die(attacker);
@@ -947,73 +890,6 @@ public class Unit : GameBehaviour
         }
     }
 
-    public void OnBorkrskinnUpgrade()
-    {
-        Setup();
-        //StartCoroutine(SetupOld());
-        //switch (unitType)
-        //{
-        //    case UnitType.SatyrUnit:
-        //        maxHealth = _GM.GetPercentageIncrease(_GM.satyrHealth, 0.3f);
-        //        health = maxHealth;
-        //        break;
-
-        //    case UnitType.LeshyUnit:
-        //        maxHealth = _GM.GetPercentageIncrease(_GM.leshyHealth, 0.3f);
-        //        health = maxHealth;
-        //        break;
-        //    case UnitType.OrcusUnit:
-        //        maxHealth = _GM.GetPercentageIncrease(_GM.orcusHealth, 0.3f);
-        //        health = maxHealth;
-        //        break;
-        //    case UnitType.VolvaUnit:
-        //        maxHealth = _GM.GetPercentageIncrease(_GM.skessaHealth, 0.3f);
-        //        health = maxHealth;
-        //        break;
-        //    case UnitType.GoblinUnit:
-        //        maxHealth = _GM.GetPercentageIncrease(_GM.goblinHealth, 0.3f);
-        //        health = maxHealth;
-        //        break;
-        //    case UnitType.GolemUnit:
-        //        maxHealth = _GM.GetPercentageIncrease(_GM.golemHealth, 0.3f);
-        //        health = maxHealth;
-        //        break;
-        //    case UnitType.DryadUnit:
-        //        maxHealth = _GM.GetPercentageIncrease(_GM.dryadHealth, 0.3f);
-        //        health = maxHealth;
-        //        break;
-        //}
-    }
-    public void OnFlugafotrUpgrade()
-    {
-        Setup();
-        //StartCoroutine(SetupOld());
-        //switch (unitType)
-        //{
-        //    case UnitType.SatyrUnit:
-        //        navAgent.speed = _GM.GetPercentageIncrease(_GM.satyrSpeed, 0.3f);
-        //        break;
-
-        //    case UnitType.LeshyUnit:
-        //        navAgent.speed = _GM.GetPercentageIncrease(_GM.leshySpeed, 0.3f);
-        //        break;
-        //    case UnitType.OrcusUnit:
-        //        navAgent.speed = _GM.GetPercentageIncrease(_GM.orcusSpeed, 0.3f);
-        //        break;
-        //    case UnitType.VolvaUnit:
-        //        navAgent.speed = _GM.GetPercentageIncrease(_GM.skessaSpeed, 0.3f);
-        //        break;
-        //    case UnitType.HuldraUnit:
-        //        navAgent.speed = _GM.GetPercentageIncrease(_GM.huldraSpeed, 0.3f);
-        //        break;
-        //    case UnitType.GoblinUnit:
-        //        navAgent.speed = _GM.GetPercentageIncrease(_GM.goblinSpeed, 0.3f);
-        //        break;
-        //    case UnitType.GolemUnit:
-        //        navAgent.speed = _GM.GetPercentageIncrease(_GM.golemSpeed, 0.3f);
-        //        break;
-        //}
-    }
     IEnumerator WaitForSetDestination()
     {
         yield return new WaitForEndOfFrame();
@@ -1059,147 +935,78 @@ public class Unit : GameBehaviour
             combatMode = CombatMode.Defend;
         }
     }
+    
+    private void OnTowerButton()
+    {
+        Vector3 offset = new Vector3(0, -1.5f, 0);
+        if (unitID == CreatureID.Huldra && isSelected || unitID == CreatureID.Fidhain && isSelected)
+        {
+            if (_TUTORIAL.isTutorial && _TUTORIAL.tutorialStage == 13)
+            {
+                GameEvents.ReportOnNextTutorial();
+            }
+            if (isTooCloseToTower == false && isOutOfBounds == false)
+            {
+                Instantiate(towerPrefab, transform.position + offset, Quaternion.Euler(-90, 0, 0));
+                _UM.Deselect(this);
+                _UM.unitList.Remove(this);
+                Destroy(gameObject);
+            }
+            if (isTooCloseToTower == true)
+            {
+                _UI.SetError(ErrorID.TooCloseToTower);
+            }
+            if (isOutOfBounds == true && isTooCloseToTower == false)
+            {
+                _UI.SetError(ErrorID.OutOfBounds);
+            }
+        }
+    }
+    
+    private void OnSuicideButton()
+    {
+        if(isSelected)
+        {
+            if (_HM.units.Contains(this))
+            {
+                _HM.units.Remove(this);
+            }
+            if (_HUTM.units.Contains(this))
+            {
+                _HUTM.units.Remove(this);
+            }
+            _UM.Deselect(this);
+            _UM.unitList.Remove(this);
+            GameObject go;
+            go = Instantiate(deadSatyr, transform.position, transform.rotation);
+            Destroy(go, 15);
+            _UI.CheckPopulousUI();
+            int daysSurvived = _currentDay - startingDay;
+            GameEvents.ReportOnCreatureKilled(unitID.ToString(), "Unknown", daysSurvived);
+            CheckIfUnitIsInGroup();
+            GameEvents.ReportOnObjectSelected(null);
+            Destroy(gameObject);
+        }
+    }
+    
     private void OnEnable()
     {
         GameEvents.OnAttackSelected += OnAttackSelected;
         GameEvents.OnDefendSelected += OnDefendSelected;
-        GameEvents.OnBorkrskinnUpgrade += OnBorkrskinnUpgrade;
-        GameEvents.OnFlugafotrUpgrade += OnFlugafotrUpgrade;
         GameEvents.OnContinueButton += OnContinueButton;
+        InputManager.OnTowerButton += OnTowerButton; 
+        InputManager.OnSuicideButton += OnSuicideButton;
     }
+
+    
+
 
     private void OnDisable()
     {
         GameEvents.OnAttackSelected -= OnAttackSelected;
         GameEvents.OnDefendSelected -= OnDefendSelected;
-        GameEvents.OnBorkrskinnUpgrade -= OnBorkrskinnUpgrade;
-        GameEvents.OnFlugafotrUpgrade -= OnFlugafotrUpgrade;
         GameEvents.OnContinueButton -= OnContinueButton;
+        InputManager.OnTowerButton -= OnTowerButton; 
+        InputManager.OnSuicideButton -= OnSuicideButton;
     }
-
-
-    #region Old and Remove
-    /*IEnumerator SetupOld()
-    {
-        yield return new WaitForEndOfFrame();
-        switch (unitID)
-        {
-            case CreatureID.Satyr:
-                if (_PERK.HasPerk(PerkID.BarkSkin))
-                {
-                    maxHealth = _GM.GetPercentageIncrease(_GM.satyrHealth, 0.3f);
-                }
-
-                if (_PERK.HasPerk(PerkID.FlyFoot))
-                {
-                    navAgent.speed = _GM.GetPercentageIncrease(_GM.satyrSpeed, 0.3f);
-                }
-
-                detectionRadius = 50;
-
-                break;
-
-            case CreatureID.Leshy:
-                if (_PERK.HasPerk(PerkID.BarkSkin))
-                {
-                    maxHealth = _GM.GetPercentageIncrease(_GM.leshyHealth, 0.3f);
-                }
-
-                if (_PERK.HasPerk(PerkID.FlyFoot))
-                {
-                    navAgent.speed = _GM.GetPercentageIncrease(_GM.leshySpeed, 0.3f);
-                }
-                detectionRadius = 50;
-                break;
-            case CreatureID.Orcus:
-                if (_PERK.HasPerk(PerkID.BarkSkin))
-                {
-                    maxHealth = _GM.GetPercentageIncrease(_GM.orcusHealth, 0.3f);
-                }
-
-                if (_PERK.HasPerk(PerkID.FlyFoot))
-                {
-                    navAgent.speed = _GM.GetPercentageIncrease(_GM.orcusSpeed, 0.3f);
-                }
-                detectionRadius = 50;
-
-                break;
-            case CreatureID.Skessa:
-                if (_PERK.HasPerk(PerkID.BarkSkin))
-                {
-                    maxHealth = _GM.GetPercentageIncrease(_GM.skessaHealth, 0.3f);
-                }
-
-                if (_PERK.HasPerk(PerkID.FlyFoot))
-                {
-                    navAgent.speed = _GM.GetPercentageIncrease(_GM.skessaSpeed, 0.3f);
-                }
-                detectionRadius = 50;
-                break;
-            case CreatureID.Huldra:
-                if (_PERK.HasPerk(PerkID.BarkSkin))
-                {
-                    maxHealth = _GM.GetPercentageIncrease(_GM.huldraHealth, 0.3f);
-                }
-
-                if (_PERK.HasPerk(PerkID.FlyFoot))
-                {
-                    navAgent.speed = _GM.GetPercentageIncrease(_GM.huldraSpeed, 0.3f);
-                }
-                detectionRadius = 50;
-                break;
-            case CreatureID.Goblin:
-                if (_PERK.HasPerk(PerkID.BarkSkin))
-                {
-                    maxHealth = _GM.GetPercentageIncrease(_GM.goblinHealth, 0.3f);
-                }
-
-                if (_PERK.HasPerk(PerkID.FlyFoot))
-                {
-                    navAgent.speed = _GM.GetPercentageIncrease(_GM.goblinSpeed, 0.3f);
-                }
-                detectionRadius = 50;
-                break;
-            case CreatureID.Tower:
-                if (_PERK.HasPerk(PerkID.BarkSkin))
-                {
-                    health = 130;
-                    maxHealth = 130;
-                }
-
-                break;
-            case CreatureID.Mistcalf:
-                if (_PERK.HasPerk(PerkID.BarkSkin))
-                {
-                    maxHealth = _GM.GetPercentageIncrease(_GM.golemHealth, 0.3f);
-                }
-
-                if (_PERK.HasPerk(PerkID.FlyFoot))
-                {
-                    navAgent.speed = _GM.GetPercentageIncrease(_GM.golemSpeed, 0.3f);
-                }
-                detectionRadius = 75;
-
-                break;
-            case CreatureID.Fidhain:
-                if (_PERK.HasPerk(PerkID.BarkSkin))
-                {
-                    maxHealth = _GM.GetPercentageIncrease(_GM.dryadHealth, 0.3f);
-                }
-
-                if (_PERK.HasPerk(PerkID.FlyFoot))
-                {
-                    navAgent.speed = _GM.GetPercentageIncrease(_GM.dryadSpeed, 0.3f);
-                }
-                detectionRadius = 50;
-                break;
-
-        }
-        health = maxHealth;
-        slider.value = CalculateHealth();
-    }
-    */
-
-    #endregion
-
 }

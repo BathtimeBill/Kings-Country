@@ -21,4 +21,8 @@ public class UnitData : ScriptableObject
     public Sprite icon;
     public Sprite mapIcon;
     public AudioClip[] voiceSounds;
+    [Header("Models")]
+    public GameObject playModel;
+    public GameObject ragdollModel;
+    public GameObject bloodParticles;
 }

@@ -151,6 +151,14 @@ public class CameraController : Singleton<CameraController>
         //ExecuteAfterSeconds(resetTime + 0.1f, () => lockCamera = false);
     }
 
+    public void TweenCameraPosition(Transform _transform, float _speed)
+    {
+        newPosition = _transform.position;
+        newZoom = startZoom;
+        transform.DOLocalMove(_transform.position, _speed).SetEase(Ease.OutSine);
+        cameraTransform.DOLocalMove(startZoom, _speed).SetEase(Ease.OutSine);
+    }
+
     public void LockCamera(bool _lock) => lockCamera = _lock;
 
     private void OnEnable()

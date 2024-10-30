@@ -73,6 +73,8 @@ public static class GameEvents
     public static event Action<UnitData> OnUnitButtonPressed = null;
     public static event Action OnGroundClicked = null;
     public static event Action<int> OnMaegenChange = null;
+    
+    public static event Action<GameObject> OnObjectSelected = null; 
 
     //Title Events
     public static event Action OnLevelStart = null;
@@ -251,50 +253,24 @@ public static class GameEvents
     {
         OnGameOver?.Invoke();
     }
-    public static void ReportOnBorkrskinnUpgrade()
-    {
-        OnBorkrskinnUpgrade?.Invoke();
-    }
-    public static void ReportOnJarnnefiUpgrade()
-    {
-        OnJarnnefiUpgrade?.Invoke();
-    }
-    public static void ReportOnFlugafotrUpgrade()
-    {
-        OnFlugafotrUpgrade?.Invoke();
-    }
     public static void ReportOnUnitMove()
     {
         OnUnitMove?.Invoke();
     }
 
-    public static void ReportOnWildlifeValueChanged(int _value)
-    {
-        OnWildlifeValueChange?.Invoke(_value);
-    }
-    public static void ReportOnWildlifeKilled()
-    {
-        OnWildlifeKilled?.Invoke();
-    }
-    public static void ReportOnTreePlaced(ToolID _treeID)
-    {
-        OnTreePlaced?.Invoke(_treeID);
-    }
-    public static void ReportOnTreeDestroy(ToolID _id)
-    {
-        OnTreeDestroyed?.Invoke(_id);
-    }
+    public static void ReportOnWildlifeValueChanged(int _value) => OnWildlifeValueChange?.Invoke(_value);
+    public static void ReportOnWildlifeKilled() => OnWildlifeKilled?.Invoke();
+    public static void ReportOnTreePlaced(ToolID _treeID)=> OnTreePlaced?.Invoke(_treeID);
+    public static void ReportOnTreeDestroy(ToolID _id) => OnTreeDestroyed?.Invoke(_id);
+    public static void ReportOnObjectSelected(GameObject _gameobject) => OnObjectSelected?.Invoke(_gameobject);
+    public static void ReportOnMaegenChange(int _amount) => OnMaegenChange?.Invoke(_amount);
 
     public static void ReportOnGroundClicked()
     {
         OnGroundClicked?.Invoke();
+        OnObjectSelected?.Invoke(null);
     }
-
-    public static void ReportOnMaegenChange(int _amount)
-    {
-        OnMaegenChange?.Invoke(_amount);
-    }
-
+    
     //Title
     public static void ReportOnLevelStart()
     {

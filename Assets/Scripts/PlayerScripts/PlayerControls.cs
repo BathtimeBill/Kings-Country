@@ -216,6 +216,7 @@ public class PlayerControls : Singleton<PlayerControls>
                     GameEvents.ReportOnHomeTreeSelected();
                     GameEvents.ReportOnHutDeselected();
                     GameEvents.ReportOnHorgrDeselected();
+                    GameEvents.ReportOnObjectSelected(hitPoint.collider.gameObject);
                 }
             }
             if (hitPoint.collider.tag == "Horgr")
@@ -224,6 +225,7 @@ public class PlayerControls : Singleton<PlayerControls>
                 GameEvents.ReportOnHorgrSelected();
                 GameEvents.ReportOnHomeTreeDeselected();
                 GameEvents.ReportOnHutDeselected();
+                GameEvents.ReportOnObjectSelected(hitPoint.collider.gameObject);
             }
             if (hitPoint.collider.tag == "Hut")
             {
@@ -231,6 +233,7 @@ public class PlayerControls : Singleton<PlayerControls>
                 GameEvents.ReportOnHutSelected();
                 GameEvents.ReportOnHomeTreeDeselected();
                 GameEvents.ReportOnHorgrDeselected();
+                GameEvents.ReportOnObjectSelected(hitPoint.collider.gameObject);
             }
             if (hitPoint.collider.gameObject.layer == LayerMask.NameToLayer("Environment"))
             {
@@ -255,110 +258,91 @@ public class PlayerControls : Singleton<PlayerControls>
 
     private void OnSelectButtonPressed()
     {
-        // Perform a raycast to check if the cursor is over a UI element
-        //PointerEventData pointerData = new PointerEventData(EventSystem.current)
-        //{
-        //    position = Mouse.current.position.ReadValue()
-        //};
-
-        //List<RaycastResult> results = new List<RaycastResult>();
-        //EventSystem.current.RaycastAll(pointerData, results);
-
-        //foreach (var result in results)
-        //{
-        //    if (result.gameObject.CompareTag("UIButton"))
-        //    {
-        //        Debug.Log("Gamepad button pressed while over UI button: " + result.gameObject.name);
-        //        // Add your button interaction logic here
-        //    }
-        //}
-
         if (_UI.mouseOverUI)
             return;
 
-        if (_GM.playmode == PlayMode.TreeMode)
+        switch (_GM.playmode)
         {
-            if (_GM.trees.Count < _GM.maxTrees)
-            {
-                if (_TPlace.canPlace == true)
+            //Trees
+            case PlayMode.TreeMode:
+                if (_GM.trees.Count < _GM.maxTrees)
                 {
-                    GameObject treeInstance;
-                    GameObject cantDestroy;
-                    Vector3 randomSize = new Vector3(1, Random.Range(minScale, maxScale), 1);
-                    treeInstance = Instantiate(treePrefab, treePlacement.transform.position, treePlacement.transform.rotation);
-                    treeInstance.transform.localScale = randomSize;
-                    treeInstance.GetComponent<Tree>().energyMultiplier = _TPlace.maegenPerWave;
-                    cantDestroy = Instantiate(cantPlace, treePlacement.transform.position, treePlacement.transform.rotation);
-                    Destroy(cantDestroy, 15);
-                    GameEvents.ReportOnTreePlaced(ToolID.Tree);
-                    worldAudioSource = treeInstance.GetComponent<AudioSource>();
-                    worldAudioSource.clip = _SM.GetTreeGrowSound();
-                    worldAudioSource.Play();
-                    _GM.DecreaseMaegen(_TPlace.maegenCost);
-                }
-                if (_TPlace.tooFarAway == true)
-                {
-                    _UI.SetError(ErrorID.TooFar);
-                }
-                if (_TPlace.insufficientMaegen == true)
-                {
-                    _UI.SetError(ErrorID.InsufficientMaegen);
-                }
-            }
-            else
-            {
-                _UI.SetError(ErrorID.TooManyTrees);
-            }
-        }
-        //Runes
-        if (_GM.playmode == PlayMode.RuneMode)
-        {
-            if (_GM.runesAvailable)
-            {
-                GameObject runeInstance;
-                runeInstance = Instantiate(runePrefab, runePlacement.transform.position, runePlacement.transform.rotation);
-                _GM.DecreaseMaegen(_GM.runesMaegenCost[_GM.runesCount]);
-                _GM.AddRune(runeInstance);
-                DeslectAllModes();
-                GameEvents.ReportOnRunePlaced();
-            }
-        }
-        //Fyre
-        if (_GM.playmode == PlayMode.FyreMode)
-        {
-            if (_GM.fyreAvailable && _UI.fyreAvailable)
-            {
-                if (_DATA.HasPerk(PerkID.Fyre))
-                {
-                    Instantiate(explosion2, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
-                    _CAMERA.CameraShake(_SETTINGS.cameraShake.fyreShakeIntensity * 2);
+                    if (_TPlace.canPlace == true)
+                    {
+                        GameObject treeInstance;
+                        GameObject cantDestroy;
+                        Vector3 randomSize = new Vector3(1, Random.Range(minScale, maxScale), 1);
+                        treeInstance = Instantiate(treePrefab, treePlacement.transform.position, treePlacement.transform.rotation);
+                        treeInstance.transform.localScale = randomSize;
+                        treeInstance.GetComponent<Tree>().energyMultiplier = _TPlace.maegenPerWave;
+                        cantDestroy = Instantiate(cantPlace, treePlacement.transform.position, treePlacement.transform.rotation);
+                        Destroy(cantDestroy, 15);
+                        GameEvents.ReportOnTreePlaced(ToolID.Tree);
+                        worldAudioSource = treeInstance.GetComponent<AudioSource>();
+                        worldAudioSource.clip = _SM.GetTreeGrowSound();
+                        worldAudioSource.Play();
+                        _GM.DecreaseMaegen(_TPlace.maegenCost);
+                    }
+                    if (_TPlace.tooFarAway == true)
+                    {
+                        _UI.SetError(ErrorID.TooFar);
+                    }
+                    if (_TPlace.insufficientMaegen == true)
+                    {
+                        _UI.SetError(ErrorID.InsufficientMaegen);
+                    }
                 }
                 else
                 {
-                    Instantiate(explosion, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
-                    _CAMERA.CameraShake(_SETTINGS.cameraShake.fyreShakeIntensity);
+                    _UI.SetError(ErrorID.TooManyTrees);
                 }
+                break;
+            //Runes
+            case PlayMode.RuneMode:
+                if (_GM.runesAvailable)
+                {
+                    GameObject runeInstance = Instantiate(runePrefab, runePlacement.transform.position, runePlacement.transform.rotation);
+                    _GM.DecreaseMaegen(_GM.runesMaegenCost[_GM.runesCount]);
+                    _GM.AddRune(runeInstance);
+                    DeslectAllModes();
+                    GameEvents.ReportOnRunePlaced();
+                }
+                break;
+            //Fyre
+            case PlayMode.FyreMode:
+                if (_GM.fyreAvailable && _UI.fyreAvailable)
+                {
+                    if (_DATA.HasPerk(PerkID.Fyre))
+                    {
+                        Instantiate(explosion2, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
+                        _CAMERA.CameraShake(_SETTINGS.cameraShake.fyreShakeIntensity * 2);
+                    }
+                    else
+                    {
+                        Instantiate(explosion, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
+                        _CAMERA.CameraShake(_SETTINGS.cameraShake.fyreShakeIntensity);
+                    }
 
-                beaconPlacement.SetActive(false);
-                DeslectAllModes();
-                GameEvents.ReportOnFyrePlaced();
-            }
-        }
-        //Stormer
-        if (_GM.playmode == PlayMode.StormerMode)
-        {
-            if (_GM.stormerAvailable && _UI.stormerAvailable)
-            {
-                stormerPlacement.SetActive(false);
-                DeslectAllModes();
-                GameEvents.ReportOnStormerPlaced();
-                _CAMERA.CameraShake(_SETTINGS.cameraShake.stormerShakeIntensity);
-            }
-        }
-        //Default
-        if (_GM.playmode == PlayMode.DefaultMode)
-        {
-            RaycastClick();
+                    beaconPlacement.SetActive(false);
+                    DeslectAllModes();
+                    GameEvents.ReportOnFyrePlaced();
+                }
+                break;
+            //Stormer
+            case PlayMode.StormerMode:
+                if (_GM.stormerAvailable && _UI.stormerAvailable)
+                {
+                    stormerPlacement.SetActive(false);
+                    DeslectAllModes();
+                    GameEvents.ReportOnStormerPlaced();
+                    _CAMERA.CameraShake(_SETTINGS.cameraShake.stormerShakeIntensity);
+                }
+                break;
+            //Default
+            case PlayMode.DefaultMode:
+                RaycastClick();
+                break;
+            default: break;
         }
     }
 
@@ -407,7 +391,7 @@ public class PlayerControls : Singleton<PlayerControls>
         }
     }
 
-    public void OnUnitMove()
+    private void OnUnitMove()
     {
         //Debug.Log("Target Moving");
         targetPointerGraphics.GetComponent<Animator>().SetTrigger("Move");

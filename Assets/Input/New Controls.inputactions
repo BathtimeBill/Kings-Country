@@ -63,9 +63,18 @@
                     "name": "Deselect",
                     "type": "Button",
                     "id": "ac74dea2-1522-4acf-bca8-0f9023e15c34",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press(behavior=2)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Move",
+                    "type": "Button",
+                    "id": "047232f1-d32f-454b-bace-68946d04d7c5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
@@ -199,6 +208,24 @@
                     "type": "Button",
                     "id": "33b656ad-057a-40b3-bc60-72c64c0238f7",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Tower",
+                    "type": "Button",
+                    "id": "b649fb81-4d9f-41d3-9912-596c31388056",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Suicide",
+                    "type": "Button",
+                    "id": "83a211a1-7217-486d-b4df-deaab2eed6b9",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -389,6 +416,28 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Deselect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1f7c7122-073d-4b38-8386-22db066d6444",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "01d46bc8-a6d1-4694-b828-92e21dcbaac9",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -675,6 +724,28 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Focus",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0edd8130-acbd-4ab6-a83b-7ed0f946ec56",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "Tower",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "663f90cf-c134-4908-af8e-8a7111c39b03",
+                    "path": "<Keyboard>/delete",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "Suicide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
