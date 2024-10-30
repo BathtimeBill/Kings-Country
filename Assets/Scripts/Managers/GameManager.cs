@@ -191,6 +191,8 @@ public class GameManager : Singleton<GameManager>
 
     public void IncreaseMaegen(int _value)
     {
+        if (maegen >= maxMaegen)
+            return;
         _UI.UpdateMaegenText(maegen, maegen + _value);
         maegen += _value;
         GameEvents.ReportOnMaegenChange(maegen);

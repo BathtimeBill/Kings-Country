@@ -6,15 +6,10 @@ public class UnitManager : Singleton<UnitManager>
 {
     public List<Unit> unitList = new List<Unit>();
     public List<Unit> unitSelected = new List<Unit>();
-
-    public GameObject huldraToFind;
-    public bool containsHuldra;
     public bool canDoubleClick = false;
     public float doubleClickTime = 0.3f;
     public GameObject[] destinations;
-
     public AudioSource audioSource;
-
     public List<Unit> controlGroup01;
     public List<Unit> controlGroup02;
     public List<Unit> controlGroup03;
@@ -129,15 +124,13 @@ public class UnitManager : Singleton<UnitManager>
         }
     }
 
-    IEnumerator WaitToCheckHuldra()
+    IEnumerator WaitToCheckIsTower()
     {
         yield return new WaitForEndOfFrame();
         foreach (Unit unit in unitSelected)
         {
-            if (unit.gameObject.GetComponent<IAmAHuldra>())
-            {
+            if (_DATA.IsTowerUnit(unit.unitID))
                 _UI.EnableTowerText();
-            }
         }
     }
 
@@ -147,7 +140,7 @@ public class UnitManager : Singleton<UnitManager>
         unitSelected.Add(unitToAdd);
         unitToAdd.isSelected = true;
         unitToAdd.selectionCircle.SetActive(true);
-        StartCoroutine(WaitToCheckHuldra());
+        StartCoroutine(WaitToCheckIsTower());
     }
 
     public void ShiftClickSelect(Unit unitToAdd)
@@ -157,14 +150,14 @@ public class UnitManager : Singleton<UnitManager>
             unitSelected.Add(unitToAdd);
             unitToAdd.isSelected = true;
             unitToAdd.selectionCircle.SetActive(true);
-            StartCoroutine(WaitToCheckHuldra());
+            StartCoroutine(WaitToCheckIsTower());
         }
         else
         {
             unitToAdd.isSelected = false;
             unitSelected.Remove(unitToAdd);
             unitToAdd.selectionCircle.SetActive(true);
-            StartCoroutine(WaitToCheckHuldra());
+            StartCoroutine(WaitToCheckIsTower());
         }
     }
 
@@ -173,7 +166,7 @@ public class UnitManager : Singleton<UnitManager>
         unitSelected.Add(unitToAdd);
         unitToAdd.isSelected = true;
         unitToAdd.selectionCircle.SetActive(true);
-        StartCoroutine(WaitToCheckHuldra());
+        StartCoroutine(WaitToCheckIsTower());
     }
 
     public void DragSelect(Unit unitToAdd)
@@ -183,7 +176,7 @@ public class UnitManager : Singleton<UnitManager>
             unitSelected.Add(unitToAdd);
             unitToAdd.isSelected = true;
             unitToAdd.selectionCircle.SetActive(true);
-            StartCoroutine(WaitToCheckHuldra());
+            StartCoroutine(WaitToCheckIsTower());
         }
     }
 

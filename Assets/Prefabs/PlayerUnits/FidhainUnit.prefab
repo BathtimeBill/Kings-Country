@@ -408,7 +408,6 @@ GameObject:
   - component: {fileID: 1071894615449563644}
   - component: {fileID: 1071894615449563646}
   - component: {fileID: 966169468}
-  - component: {fileID: 1535513121471014108}
   - component: {fileID: 4000738797075006814}
   m_Layer: 6
   m_Name: FidhainUnit
@@ -518,6 +517,7 @@ MonoBehaviour:
   isOutOfBounds: 0
   idleSetDest: 0
   hitByArrow: 0
+  isFirstPerson: 0
   SFXPool: {fileID: 2081501896}
   soundPoolCurrent: 0
   soundPool:
@@ -574,18 +574,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 1
---- !u!114 &1535513121471014108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1071894615449563641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 685b9296a12a7f746af599b081062486, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4000738797075006814
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -124,7 +124,7 @@ public class Unit : GameBehaviour
     IEnumerator WaitForIsMovingCheck()
     {
         yield return new WaitForSeconds(0.5f);
-        if(GetComponentInChildren<TestSatyrAnimation>().currentSpeed == 0)
+        if(GetComponentInChildren<UnitAnimation>().currentSpeed == 0)
         {
             state = UnitState.Idle;
         }    

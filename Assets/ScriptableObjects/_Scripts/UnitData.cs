@@ -10,6 +10,7 @@ public class UnitData : ScriptableObject
     public new string name;
     [TextArea(3, 5)]
     public string description;
+    public bool towerUnit = false;
     [Header("Stats")]
     public int health;
     public int damage;

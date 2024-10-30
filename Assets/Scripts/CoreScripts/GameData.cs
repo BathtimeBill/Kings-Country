@@ -21,6 +21,7 @@ public class GameData : Singleton<GameData>
     [BV.EnumList(typeof(CreatureID))]
     public List<UnitData> unitData;
     public UnitData GetUnit(CreatureID _id) => unitData.Find(x => x.id == _id);
+    public bool IsTowerUnit(CreatureID _id) => unitData.Find(x => x.id == _id && x.towerUnit);
     public bool IsCreatureUnit(string _id) => unitData.Find(x => x.id.ToString() == _id);
     #endregion;
 
