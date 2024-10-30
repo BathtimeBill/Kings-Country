@@ -1,5 +1,40 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6190556152243979529
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e7e3c818412f16468e3b18c500430be, type: 3}
+  m_Name: TiltShift
+  m_EditorClassIdentifier: 
+  active: 1
+  amount:
+    m_OverrideState: 1
+    m_Value: 0.666
+  mode:
+    m_OverrideState: 1
+    m_Value: 1
+  quality:
+    m_OverrideState: 1
+    m_Value: 0
+  areaSize:
+    m_OverrideState: 1
+    m_Value: 0.5
+  areaFalloff:
+    m_OverrideState: 0
+    m_Value: 1
+  offset:
+    m_OverrideState: 0
+    m_Value: 0
+  angle:
+    m_OverrideState: 0
+    m_Value: 0
+  shader: {fileID: 4800000, guid: 9bbfde40866706e46aaaad4d6d616f44, type: 3}
 --- !u!114 &-4949647422385835012
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -28,6 +63,30 @@ MonoBehaviour:
   rounded:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &-4349826437439014202
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d27eba2155c886489c1bbdba4b01666, type: 3}
+  m_Name: Colorize
+  m_EditorClassIdentifier: 
+  active: 0
+  mode:
+    m_OverrideState: 1
+    m_Value: 2
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.397
+  colorRamp:
+    m_OverrideState: 0
+    m_Value: {fileID: 0}
+    dimension: 1
+  shader: {fileID: 4800000, guid: 050cb486d6ed1c54bbc94f0ef4ea8c25, type: 3}
 --- !u!114 &-3819852198689514594
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -195,6 +254,67 @@ MonoBehaviour:
   - {fileID: -3819852198689514594}
   - {fileID: -2561376856865368824}
   - {fileID: 6854818879127683986}
+  - {fileID: 5702835358668803238}
+  - {fileID: 918756376862732937}
+  - {fileID: -6190556152243979529}
+  - {fileID: 7088954256928147559}
+  - {fileID: -4349826437439014202}
+  - {fileID: 2423279840974850246}
+  - {fileID: 5482978880119807751}
+  - {fileID: 769829753980843882}
+  - {fileID: 7873241039832017109}
+--- !u!114 &769829753980843882
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dfc0ecd934e74246bcf9791abe617b0, type: 3}
+  m_Name: Pixelize
+  m_EditorClassIdentifier: 
+  active: 0
+  amount:
+    m_OverrideState: 1
+    m_Value: 1
+  resolution:
+    m_OverrideState: 1
+    m_Value: 240
+  resolutionPreset:
+    m_OverrideState: 0
+    m_Value: 1
+  preserveAspectRatio:
+    m_OverrideState: 1
+    m_Value: 0
+  centerPixel:
+    m_OverrideState: 0
+    m_Value: 1
+  shader: {fileID: 4800000, guid: 418afc1867615f1408a4c6de9d799560, type: 3}
+--- !u!114 &918756376862732937
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9088dd6886f40464899c14cceff9fb5d, type: 3}
+  m_Name: BlackBars
+  m_EditorClassIdentifier: 
+  active: 0
+  mode:
+    m_OverrideState: 0
+    m_Value: 0
+  size:
+    m_OverrideState: 0
+    m_Value: 0
+  maxSize:
+    m_OverrideState: 0
+    m_Value: 0.33
+  shader: {fileID: 4800000, guid: cbc7ec1937f2e014c900a7f31facfed9, type: 3}
 --- !u!114 &1881579288749618558
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -235,6 +355,132 @@ MonoBehaviour:
   maxNits:
     m_OverrideState: 0
     m_Value: 1000
+--- !u!114 &2423279840974850246
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77cf0493be372ef4d91d2ba45ed0ba64, type: 3}
+  m_Name: LensFlares
+  m_EditorClassIdentifier: 
+  active: 1
+  debug:
+    m_OverrideState: 0
+    m_Value: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.666
+  luminanceThreshold:
+    m_OverrideState: 0
+    m_Value: 1
+  iterations:
+    m_OverrideState: 0
+    m_Value: 2
+  distance:
+    m_OverrideState: 0
+    m_Value: 1.5
+  falloff:
+    m_OverrideState: 0
+    m_Value: 10
+  haloSize:
+    m_OverrideState: 0
+    m_Value: 0.2
+  haloWidth:
+    m_OverrideState: 0
+    m_Value: 70
+  maskTex:
+    m_OverrideState: 1
+    m_Value: {fileID: 2800000, guid: b0860ff85f5d4e040b7596fafe2d7c8f, type: 3}
+    dimension: 1
+  chromaticAbberation:
+    m_OverrideState: 0
+    m_Value: 10
+  colorTex:
+    m_OverrideState: 1
+    m_Value: {fileID: 2800000, guid: af4273a5206164b4fa126b91bc0f5e78, type: 3}
+    dimension: 1
+  blur:
+    m_OverrideState: 0
+    m_Value: 2
+  passes:
+    m_OverrideState: 0
+    m_Value: 3
+  shader: {fileID: 4800000, guid: 60908e5e8adf9934ba778e203b651c26, type: 3}
+--- !u!114 &5482978880119807751
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aca6b5f0da8ca64cb69109b860c1891, type: 3}
+  m_Name: LightStreaks
+  m_EditorClassIdentifier: 
+  active: 0
+  quality:
+    m_OverrideState: 0
+    m_Value: 1
+  debug:
+    m_OverrideState: 0
+    m_Value: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.779
+  luminanceThreshold:
+    m_OverrideState: 0
+    m_Value: 1
+  direction:
+    m_OverrideState: 0
+    m_Value: -1
+  blur:
+    m_OverrideState: 0
+    m_Value: 1
+  iterations:
+    m_OverrideState: 0
+    m_Value: 2
+  downscaling:
+    m_OverrideState: 0
+    m_Value: 2
+  shader: {fileID: 4800000, guid: d444b7563e196ad43a619f5bb395ffdb, type: 3}
+--- !u!114 &5702835358668803238
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3797b844bf119c94c83b110e6cf4997a, type: 3}
+  m_Name: Sketch
+  m_EditorClassIdentifier: 
+  active: 0
+  strokeTex:
+    m_OverrideState: 1
+    m_Value: {fileID: 2800000, guid: 8bd158bf28fbf3d4cb9151f3c3ae5516, type: 3}
+    dimension: 1
+  projectionMode:
+    m_OverrideState: 0
+    m_Value: 0
+  blendMode:
+    m_OverrideState: 0
+    m_Value: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.135
+  brightness:
+    m_OverrideState: 0
+    m_Value: {x: 0, y: 1}
+  tiling:
+    m_OverrideState: 0
+    m_Value: 8
+  shader: {fileID: 4800000, guid: 5223e72bff90cca4ea18dd3ed23f3062, type: 3}
 --- !u!114 &6854818879127683986
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -251,6 +497,76 @@ MonoBehaviour:
   intensity:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &7088954256928147559
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1e1b3a3f18dad1429c9ecc7e1db2274, type: 3}
+  m_Name: Sunshafts
+  m_EditorClassIdentifier: 
+  active: 0
+  useCasterColor:
+    m_OverrideState: 0
+    m_Value: 1
+  useCasterIntensity:
+    m_OverrideState: 0
+    m_Value: 0
+  blendMode:
+    m_OverrideState: 0
+    m_Value: 0
+  resolution:
+    m_OverrideState: 0
+    m_Value: 2
+  highQuality:
+    m_OverrideState: 0
+    m_Value: 0
+  sunThreshold:
+    m_OverrideState: 0
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
+  sunColor:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+  sunShaftIntensity:
+    m_OverrideState: 1
+    m_Value: 26.27
+  falloff:
+    m_OverrideState: 0
+    m_Value: 0.5
+  length:
+    m_OverrideState: 0
+    m_Value: 5
+  noiseStrength:
+    m_OverrideState: 0
+    m_Value: 0
+  shader: {fileID: 4800000, guid: d21c9f9666e2f7e4eb9e6fc9dc414999, type: 3}
+--- !u!114 &7873241039832017109
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fae979ba049e535429dde8ab92b28488, type: 3}
+  m_Name: Scanlines
+  m_EditorClassIdentifier: 
+  active: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.4
+  amount:
+    m_OverrideState: 1
+    m_Value: 1080
+  speed:
+    m_OverrideState: 1
+    m_Value: 0
+  shader: {fileID: 4800000, guid: 9a37ab67e535e704b8e007d86c2be9ff, type: 3}
 --- !u!114 &8661574408526557018
 MonoBehaviour:
   m_ObjectHideFlags: 3
