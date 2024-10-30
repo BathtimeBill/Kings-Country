@@ -1,68 +1,48 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
-using System;
 using Random = UnityEngine.Random;
-using UnityEngine.Analytics;
+using UnityEngine.Serialization;
 
 public class Tree : GameBehaviour
 {
     public AudioSource audioSource;
-    public bool startingTree;
-
-    [Header("General")]
-    public TreeType type;
+    [FormerlySerializedAs("_treeID")] [Header("General")]
+    public ToolID treeID = ToolID.Tree;
     public float health;
     public GameObject maegenWisp;
     public GameObject maegen1;
     public GameObject maegen5;
     public GameObject maegen8;
     public GameObject fallenTreePine;
-    public GameObject fallenTreeDesiduous;
     public GameObject treeMesh;
     public int energyMultiplier;
     public bool runeBuff = false;
     public Animator animator;
     public GameObject chopParticle;
-    public GameObject godRays;
 
     [Header("Forest Decor")]
     public int amountOfDecor;
     public GameObject[] forestDecor;
     public float spawnRadius;
-    public GameObject[] meshes;
-    public Renderer[] treeRenderers;
-    public Material summerFoilage;
-    public Material winterFoilage;
-
-    public ToolID _treeID = ToolID.Tree;
-
- 
+   
     void Start()
     {
         _GM.trees.Add(gameObject);
-        DecideType();
         health = 100;
         StartCoroutine(WaitForDecorSpawn());
-        transform.rotation = Quaternion.Euler(0, RandomYAxisRotation(), 0);
+        transform.rotation = Quaternion.Euler(0, MathX.RandomInt(0, 359), 0);
         _UI.CheckTreeUI();
     }
     IEnumerator WaitForDecorSpawn()
     {
-        int amount;
         yield return new WaitForSeconds(5);
-        for (amount = 0; amount < amountOfDecor; amount++)
+        for (int amount = 0; amount < amountOfDecor; amount++)
         {
             ForestDecorSpawn();
         }
     }
-    private int RandomYAxisRotation()
-    {
-        int rndRotation;
-        rndRotation = Random.Range(0, 359);
-        return rndRotation;
-    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Axe1")
@@ -120,39 +100,7 @@ public class Tree : GameBehaviour
             }
         }
     }
-
-    private void DecideType()
-    {
-        int rnd = Random.Range(0, meshes.Length);
-
-        if(_GM.level == LevelNumber.Four)
-        {
-            meshes[1].SetActive(true);
-            StartCoroutine(WaitToAssignWinterMaterial());
-        }
-        else
-        {
-            if (rnd == 0)
-            {
-                type = TreeType.Pine;
-            }
-            if (rnd == 1)
-            {
-                type = TreeType.Deciduous;
-            }
-            meshes[rnd].SetActive(true);
-        }
-    }
-    IEnumerator WaitToAssignWinterMaterial()
-    {
-        yield return new WaitForSeconds(1);
-        treeRenderers[0].materials[0] = winterFoilage;
-        treeRenderers[1].materials[0] = winterFoilage;
-        treeRenderers[0].materials[1] = winterFoilage;
-        treeRenderers[1].materials[1] = winterFoilage;
-        treeRenderers[2].material = winterFoilage;
-        treeRenderers[3].material = winterFoilage;
-    }
+    
     private void ChopSound()
     {
         audioSource.clip = _SM.GetChopSounds();
@@ -169,19 +117,9 @@ public class Tree : GameBehaviour
     private void Die()
     {
         _GM.trees.Remove(gameObject);
-        GameObject fallTree;
-        if (type == TreeType.Pine)
-        {
-            fallTree = Instantiate(fallenTreePine, treeMesh.transform.position, transform.rotation);
-            fallTree.transform.localScale = transform.localScale * 1.3f;
-        }
-        if(type == TreeType.Deciduous)
-        {
-            fallTree = Instantiate(fallenTreeDesiduous, treeMesh.transform.position, transform.rotation);
-            fallTree.transform.localScale = transform.localScale * 1.3f;
-        }
-
-        GameEvents.ReportOnTreeDestroy(_treeID);
+        GameObject fallTree = Instantiate(fallenTreePine, treeMesh.transform.position, transform.rotation);
+        fallTree.transform.localScale = transform.localScale * 1.3f;
+        GameEvents.ReportOnTreeDestroy(treeID);
         Destroy(gameObject);
     }
 
@@ -265,22 +203,15 @@ public class Tree : GameBehaviour
         energyMultiplier = energyMultiplier * 2;
     }
 
-    public void OnWaveBegin()
-    {
-        //godRays.SetActive(false);
-    }
-
     private void OnEnable()
     {
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnTreeUpgrade += OnTreeUpgrade;
-        GameEvents.OnDayBegin += OnWaveBegin;
     }
 
     private void OnDisable()
     {
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnTreeUpgrade -= OnTreeUpgrade;
-        GameEvents.OnDayBegin -= OnWaveBegin;
     }
 }
