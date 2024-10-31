@@ -165,7 +165,7 @@ public class UnitManager : Singleton<UnitManager>
     {
         for (int i = 0; i < unitSelected.Count; i++)
         {
-            unitSelected[i].targetDest = destinations[i];
+            unitSelected[i].SetDestination(destinations[i].transform);
         }
     }
 

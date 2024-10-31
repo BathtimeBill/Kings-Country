@@ -71,9 +71,6 @@ public class Unit : GameBehaviour
     private Transform[] rangedAttackLocations;
     [Header("Perks")]
     public bool isUpgraded;
-
-    private Sprite attackSprite;
-    private Sprite defendSprite;
     private UnitData unitData => _DATA.GetUnit(unitID);
 
     private int startingDay;
@@ -113,9 +110,7 @@ public class Unit : GameBehaviour
         detectionRadius = unitData.detectionRadius;
 
         //Other
-        attackSprite = _ICONS.damageIcon;
-        defendSprite = _ICONS.healthIcon;
-        combatModeIcon.sprite = attackSprite;
+        ChangeCombatModeIcon(_ICONS.attackIcon);
         ChangeGroupNumber("");
     }
 
@@ -299,8 +294,6 @@ public class Unit : GameBehaviour
                 else
                 {
                     state = UnitState.Moving;
-
-                    StartCoroutine(WaitForSetDestination());
                 }
             }
         }
@@ -889,50 +882,14 @@ public class Unit : GameBehaviour
             DecreaseHealth(5);
         }
     }
-
-    IEnumerator WaitForSetDestination()
-    {
-        yield return new WaitForEndOfFrame();
-        navAgent.SetDestination(targetDest.transform.position);
-    }
+    
+    public void SetDestination(Transform _destination) => navAgent.SetDestination(_destination.position);
+    
     private void OnContinueButton()
     {
         if(unitID != CreatureID.Mistcalf)
         {
             SetHealth(maxHealth);
-        }
-    }
-    public void OnAttackSelected()
-    {
-        if(isSelected)
-        {
-            ChangeCombatModeIcon(attackSprite);
-            if(combatMode != CombatMode.Move || combatMode != CombatMode.AttackMove)
-            {
-                detectionRadius = detectionRadius * 2;
-                if (unitID == CreatureID.Goblin)
-                {
-                    navAgent.speed = unitData.speed;
-                }
-            }
-
-            combatMode = CombatMode.Move;
-        }
-    }
-    public void OnDefendSelected()
-    {
-        if (isSelected)
-        {
-            if (combatMode != CombatMode.Defend)
-            {
-                if (unitID != CreatureID.Goblin)
-                {
-                    detectionRadius = detectionRadius / 2;
-                }
-                ChangeCombatModeIcon(defendSprite);
-            }
-            defendPosition = transform.position;
-            combatMode = CombatMode.Defend;
         }
     }
     
@@ -989,22 +946,75 @@ public class Unit : GameBehaviour
         }
     }
     
+    #region Combat Buttons
+    private void AttackSelected()
+    {
+        ChangeCombatModeIcon(_ICONS.attackIcon);
+        if(combatMode != CombatMode.Move || combatMode != CombatMode.AttackMove)
+        {
+            detectionRadius = detectionRadius * 2;
+            if (unitID == CreatureID.Goblin)
+            {
+                navAgent.speed = unitData.speed;
+            }
+        }
+        combatMode = CombatMode.Move;
+    }
+    
+    private void DefendSelected()
+    {
+        if (combatMode != CombatMode.Defend)
+        {
+            if (unitID != CreatureID.Goblin)
+            {
+                detectionRadius = detectionRadius / 2;
+            }
+            ChangeCombatModeIcon(_ICONS.defendIcon);
+        }
+        defendPosition = transform.position;
+        combatMode = CombatMode.Defend;
+    }
+
+    private void StopSelected()
+    {
+        ChangeCombatModeIcon(_ICONS.stopIcon);
+        SetDestination(transform);
+    }
+    
+    #endregion
+    
+    private void OnCombatSelected(CombatID _combatID)
+    {
+        if (!isSelected)
+            return;
+        
+        switch (_combatID)
+        {
+            case CombatID.Attack: 
+                AttackSelected();
+                break;
+            case CombatID.Defend:
+                DefendSelected();
+                break;
+            case CombatID.Formation:
+                break;
+            case CombatID.Stop:
+                StopSelected();
+                break;
+        }
+    }
+    
     private void OnEnable()
     {
-        GameEvents.OnAttackSelected += OnAttackSelected;
-        GameEvents.OnDefendSelected += OnDefendSelected;
+        GameEvents.OnCombatSelected += OnCombatSelected;
         GameEvents.OnContinueButton += OnContinueButton;
         InputManager.OnTowerButton += OnTowerButton; 
         InputManager.OnSuicideButton += OnSuicideButton;
     }
 
-    
-
-
     private void OnDisable()
     {
-        GameEvents.OnAttackSelected -= OnAttackSelected;
-        GameEvents.OnDefendSelected -= OnDefendSelected;
+        GameEvents.OnCombatSelected -= OnCombatSelected;
         GameEvents.OnContinueButton -= OnContinueButton;
         InputManager.OnTowerButton -= OnTowerButton; 
         InputManager.OnSuicideButton -= OnSuicideButton;

@@ -376,6 +376,13 @@ public class Icons
     public Sprite speedIcon;
     public Sprite cooldownIcon;
 
+    [Header("Combat")] 
+    public Sprite attackIcon;
+    public Sprite defendIcon;
+    public Sprite stopIcon;
+    public Sprite formationSmallIcon;
+    public Sprite formationBigIcon;
+
     [Header("Input")]
     public Sprite mouseZoom;
     public Sprite mouseRotate;

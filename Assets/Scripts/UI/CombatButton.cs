@@ -13,21 +13,7 @@ public class CombatButton : InteractableButton
 
     public override void ClickedButton()
     {
-        if(combatID == CombatID.Attack)
-        {
-            _SM.PlaySound(_SM.attackSound);
-            GameEvents.ReportOnAttackSelected();
-        }
-        if(combatID == CombatID.Defend)
-        {
-            _SM.PlaySound(_SM.defendSound);
-            GameEvents.ReportOnDefendSelected();
-        }
-        if (combatID == CombatID.Formation)
-        {
-            _SM.PlaySound(_SM.formationSound);
-            GameEvents.ReportOnFormationSelected();
-        }
+        GameEvents.ReportCombatButton(combatID);
     }
 
     public override void OnPointerEnter(PointerEventData eventData)

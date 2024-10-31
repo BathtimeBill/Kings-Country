@@ -36,13 +36,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9140295034157426838}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9140295034157426830
 MonoBehaviour:
@@ -232,6 +232,7 @@ MonoBehaviour:
   attackSound: {fileID: 8300000, guid: 815a26e6508ebaf4eb66c0b508a9905c, type: 3}
   defendSound: {fileID: 8300000, guid: 428d21493b780944b8cd9a0dc74f85a1, type: 3}
   formationSound: {fileID: 8300000, guid: 2ba04f3e3b197664fbabf0986c4af005, type: 3}
+  stopSound: {fileID: 8300000, guid: 9e1f6f7ad2a38364d93ee675dad8eac4, type: 3}
   controlGroup: {fileID: 8300000, guid: f71211bf263aa614a9160fa7605df59a, type: 3}
   controlGroupSelect: {fileID: 8300000, guid: a691c3ae236d6d94eb1169484875701f, type: 3}
   levelSelectedSound: {fileID: 8300000, guid: 1e982d140a32691429eacc4f8271cd0d, type: 3}
@@ -290,6 +291,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 34dd63d8b36ef9a41b085aba3af28c8f,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 5488fa61e51688649a29f2c9533f0419, type: 3}
+  m_Resource: {fileID: 8300000, guid: 5488fa61e51688649a29f2c9533f0419, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.8
   m_Pitch: 1
@@ -387,6 +389,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 34dd63d8b36ef9a41b085aba3af28c8f,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 887b7c6bdfb698f4da298102a0c03cd0, type: 3}
+  m_Resource: {fileID: 8300000, guid: 887b7c6bdfb698f4da298102a0c03cd0, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.8
   m_Pitch: 1
@@ -484,6 +487,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 34dd63d8b36ef9a41b085aba3af28c8f,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: d17ce49ce8665b946a612431ab403fe2, type: 3}
+  m_Resource: {fileID: 8300000, guid: d17ce49ce8665b946a612431ab403fe2, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -624,6 +628,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 34dd63d8b36ef9a41b085aba3af28c8f,
     type: 2}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -721,6 +726,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 34dd63d8b36ef9a41b085aba3af28c8f,
     type: 2}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -818,6 +824,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 34dd63d8b36ef9a41b085aba3af28c8f,
     type: 2}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -915,6 +922,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 34dd63d8b36ef9a41b085aba3af28c8f,
     type: 2}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1012,6 +1020,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 34dd63d8b36ef9a41b085aba3af28c8f,
     type: 2}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1109,6 +1118,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 34dd63d8b36ef9a41b085aba3af28c8f,
     type: 2}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1206,6 +1216,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 34dd63d8b36ef9a41b085aba3af28c8f,
     type: 2}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1303,6 +1314,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 3f3573fdbe7769a428abd737e43cf217,
     type: 2}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

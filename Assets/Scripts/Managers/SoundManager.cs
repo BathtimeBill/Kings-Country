@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class SoundManager : Singleton<SoundManager>
 {
@@ -60,6 +62,7 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip attackSound;
     public AudioClip defendSound;
     public AudioClip formationSound;
+    public AudioClip stopSound;
     public AudioClip controlGroup;
     public AudioClip controlGroupSelect;
     public AudioClip levelSelectedSound;
@@ -231,4 +234,32 @@ public class SoundManager : Singleton<SoundManager>
         return boarDistressSounds[Random.Range(0, boarDistressSounds.Length)];
     }
 
+    private void OnCombatSelected(CombatID _combatID)
+    {
+        switch (_combatID)
+        {
+            case CombatID.Attack:
+                PlaySound(attackSound);
+                break;
+            case CombatID.Defend:
+                PlaySound(defendSound);
+                break;
+            case CombatID.Formation:
+                PlaySound(formationSound);
+                break;
+            case CombatID.Stop:
+                PlaySound(stopSound); 
+                break;
+        }
+    }
+    
+    private void OnEnable()
+    {
+        GameEvents.OnCombatSelected += OnCombatSelected;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnCombatSelected -= OnCombatSelected;
+    }
 }

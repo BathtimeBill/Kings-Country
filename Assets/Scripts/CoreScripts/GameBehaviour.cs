@@ -98,7 +98,8 @@ public enum CombatID
 {
     Attack,
     Defend,
-    Formation
+    Formation,
+    Stop
 }
 public enum PerkID
 {

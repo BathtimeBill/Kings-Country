@@ -304,8 +304,11 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    public void OnFormationSelected()
+    private void OnCombatSelected(CombatID _combatID)
     {
+        if (_combatID != CombatID.Formation)
+            return;
+        
         if(!largeFormationSelected)
         {
             formationObject.transform.localScale = Vector3.one * 16;
@@ -1059,7 +1062,7 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnPerkSelected += OnPerkSelected;
 
         GameEvents.OnWildlifeValueChange += OnWildlifeValueChange;
-        GameEvents.OnFormationSelected += OnFormationSelected;
+        GameEvents.OnCombatSelected += OnCombatSelected;
         GameEvents.OnHumanKilled += OnEnemyUnitKilled;
 
         InputManager.OnCycleTool += OnCycleTool;
@@ -1082,7 +1085,7 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnPerkSelected -= OnPerkSelected;
 
         GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange;
-        GameEvents.OnFormationSelected -= OnFormationSelected;
+        GameEvents.OnCombatSelected -= OnCombatSelected;
         GameEvents.OnHumanKilled -= OnEnemyUnitKilled;
 
         InputManager.OnCycleTool -= OnCycleTool;

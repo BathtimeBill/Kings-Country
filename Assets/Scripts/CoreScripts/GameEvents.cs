@@ -50,8 +50,7 @@ public static class GameEvents
 
     public static event Action<PerkID> OnPerkSelected = null;
 
-    public static event Action OnAttackSelected = null;
-    public static event Action OnDefendSelected = null;
+    public static event Action<CombatID> OnCombatSelected = null;
     public static event Action OnFormationSelected = null;
 
     public static event Action OnHomeTreeSelected = null;
@@ -141,19 +140,8 @@ public static class GameEvents
     {
         OnWispDestroy?.Invoke();
     }
-    public static void ReportOnAttackSelected()
-    {
-        OnAttackSelected?.Invoke();
-    }
-    public static void ReportOnDefendSelected()
-    {
-        OnDefendSelected?.Invoke();
-    }
-    public static void ReportOnFormationSelected()
-    {
-        OnFormationSelected?.Invoke();
-    }
-    
+
+    public static void ReportCombatButton(CombatID _combatID) => OnCombatSelected?.Invoke(_combatID);
     
     public static void ReportOnNextTutorial()
     {
