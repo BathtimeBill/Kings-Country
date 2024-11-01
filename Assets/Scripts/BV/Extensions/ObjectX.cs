@@ -158,4 +158,28 @@ public static class ObjectX
             parent.GetChild(i).SetLayerRecursively(layer);
         }
     }
+
+    /// <summary>
+    /// Gets the closest object from a list of objects
+    /// </summary>
+    /// <param name="_this">The object to measure from</param>
+    /// <param name="_objectList">The list of objects to check</param>
+    /// <returns>The closest object in the object list</returns>
+    static public GameObject GetClosest(GameObject _this, List<GameObject> _objectList)
+    {
+        float closestDistance = Mathf.Infinity;
+        GameObject closest = null;
+
+        foreach (GameObject go in _objectList)
+        {
+            float currentDistance;
+            currentDistance = Vector3.Distance(_this.transform.position, go.transform.position);
+            if (currentDistance < closestDistance)
+            {
+                closestDistance = currentDistance;
+                closest = go;
+            }
+        }
+        return closest;
+    }
 }

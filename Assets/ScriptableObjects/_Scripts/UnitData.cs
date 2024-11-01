@@ -17,6 +17,7 @@ public class UnitData : ScriptableObject
     public int speed;
     public int cost;
     public float detectionRadius = 50f;
+    public float stoppingDistance = 4f;
     [Header("Non Stats")]
     public Sprite icon;
     public Sprite mapIcon;

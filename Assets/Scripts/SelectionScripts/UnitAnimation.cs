@@ -60,14 +60,8 @@ public class UnitAnimation : GameBehaviour
         currentSpeed = Vector3.Distance(oldPosition, transform.position) * 100 * Time.deltaTime;
         oldPosition = transform.position;
         if(currentSpeed == 0)
-        {
-            unit.isMoving = false;
             unit.isMovingCheck = false;
-        }
-        else
-        {
-            unit.isMoving = true;
-        }
+
         if (!_EM.allEnemiesDead)
         {
             closestUnit = GetClosestEnemy();

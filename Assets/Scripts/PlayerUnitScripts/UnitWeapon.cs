@@ -1,6 +1,3 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UnitWeapon : GameBehaviour
@@ -18,20 +15,17 @@ public class UnitWeapon : GameBehaviour
     public GameObject spit;
     public ParticleSystem spitParticle;
     public Collider spitCollider;
-
-    private void Update()
-    {
-        if(gameObject.GetComponentInParent<Unit>().unitID == CreatureID.Goblin)
-        {
-            firingPoint.transform.LookAt(gameObject.GetComponentInParent<Unit>().closestEnemy);
-        }    
-    }
+    
     public void Arrow()
     {
-        if(!_EM.allEnemiesDead && GetComponentInParent<Unit>().distanceToClosestEnemy < 80)
+        if (_EM.allEnemiesDead)
+            return;
+        
+        if(GetComponentInParent<Unit>().DistanceToClosestEnemy < 80)
         {
+            firingPoint.transform.LookAt(gameObject.GetComponentInParent<Unit>().ClosestEnemy);
             GameObject go = Instantiate(arrow, firingPoint.transform.position, transform.rotation);
-            go.GetComponent<EnemyProjectile>().target = GetComponentInParent<Unit>().closestEnemy.gameObject;
+            go.GetComponent<EnemyProjectile>().target = GetComponentInParent<Unit>().ClosestEnemy.gameObject;
             Destroy(go, 1);
         }
     }

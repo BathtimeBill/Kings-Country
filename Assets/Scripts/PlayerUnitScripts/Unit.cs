@@ -7,45 +7,27 @@ public class Unit : GameBehaviour
 {
     [Header("Unit Type")]
     public CreatureID unitID;
-    [Header("CombatMode")]
-    public CombatMode combatMode;
-    public Vector3 defendPosition;
-    public float tickRate;
-
+    
     [Header("UI")]
     public Transform healthBarFill;
     public SpriteRenderer combatModeIcon;
     public TMPro.TMP_Text groupNumber;
     public GameObject selectionCircle;
-
-    [Header("Stats")] 
-    public float health;
-    public float maxHealth;
-    public float unitSpeed;
-    public float projectileSpeed = 1000;
-    public float focusSpeed;
-    public float stoppingDistance;
+    
     [Header("Components")]
     public NavMeshAgent navAgent;
     public Animator animator;
     [Header("AI")]
+    public float tickRate;
     public UnitState state;
-    public float detectionRadius;
-    public Transform closestEnemy;
-    public float distanceToClosestEnemy;
     public GameObject pointer;
-    public bool hasStopped = false;
     public GameObject trackTarget;
     public float spawnInMoveDistance;
 
     [Header("Death Objects")]
     public GameObject deadSatyr;
     [Header("Relevant Game Objects")]
-    public GameObject targetDest;
     public GameObject weaponCollider;
-    public GameObject deadPrefab;
-    public GameObject explosionPrefab;
-    public GameObject entWalkPrefab;
     public GameObject rangedPrefab;
     public GameObject towerPrefab;
     public GameObject rangedSpawnLocation;
@@ -53,12 +35,10 @@ public class Unit : GameBehaviour
     [Header("Bools")]
     public bool isSelected;
     public bool inCombat;
-    public bool isMoving;
     public bool isMovingCheck;
     public bool isTooCloseToTower;
     public bool isOutOfBounds;
-    public bool idleSetDest;
-    public bool hitByArrow;
+    private bool hitByArrow;
     public bool isFirstPerson;
     //public float isMovingCheckTime;
     private Vector3 attackDestination;
@@ -66,11 +46,30 @@ public class Unit : GameBehaviour
     public GameObject SFXPool;
     public int soundPoolCurrent;
     public AudioSource[] soundPool;
-    public AudioSource vocalSource;
     public AudioSource spellSource;
     private Transform[] rangedAttackLocations;
     [Header("Perks")]
     public bool isUpgraded;
+    
+    //Stats
+    private float health;
+    private float maxHealth;
+    private float unitSpeed;
+    private float stoppingDistance;
+    private float projectileSpeed = 1000;
+    private float focusSpeed = 5f;
+    
+    //Combat Mode
+    private CombatMode combatMode;
+    private Vector3 defendPosition;
+    
+    //AI
+    private float detectionRadius;
+    private Transform closestEnemy;
+    private float distanceToClosestEnemy;
+    public float DistanceToClosestEnemy => distanceToClosestEnemy;
+    public Transform ClosestEnemy => closestEnemy;
+    
     private UnitData unitData => _DATA.GetUnit(unitID);
 
     private int startingDay;
@@ -108,6 +107,7 @@ public class Unit : GameBehaviour
 
         //Detecion
         detectionRadius = unitData.detectionRadius;
+        stoppingDistance = unitData.stoppingDistance;
 
         //Other
         ChangeCombatModeIcon(_ICONS.attackIcon);
@@ -131,7 +131,7 @@ public class Unit : GameBehaviour
 
         if (!_EM.allEnemiesDead)
         {
-            closestEnemy = GetClosestEnemy();
+            closestEnemy = ObjectX.GetClosest(gameObject, _EM.enemies).transform;
             distanceToClosestEnemy = Vector3.Distance(closestEnemy.transform.position, transform.position);
             if (closestEnemy.gameObject.tag == "Lord")
             {
@@ -278,167 +278,8 @@ public class Unit : GameBehaviour
                 break;
         }
 
-        if (isSelected)
-        {
-            if (Input.GetMouseButtonDown(1))
-            {
-                StopAllCoroutines();
-                GameEvents.ReportOnUnitMove();
-                if (_PC.mouseOverEnemyBool)
-                {
-                    trackTarget = _PC.mouseOverEnemy;
-                    state = UnitState.Track;
-                    _PC.mouseOverEnemy.GetComponent<OutlineFlash>().BeginFlash();
-                    _SM.PlaySound(_SM.targetEnemySound);
-                }
-                else
-                {
-                    state = UnitState.Moving;
-                }
-            }
-        }
-        else
-        {
-            ToggleSelectionCircle(false);
-        }
     }
-    IEnumerator Tick()
-    {
-        print("Tick");
-        switch (state)
-        {
-            case UnitState.Idle:
-                if (!_EM.allEnemiesDead)
-                {
-                    if (combatMode != CombatMode.Defend)
-                    {
-                        if (distanceToClosestEnemy < detectionRadius)
-                        {
-                            state = UnitState.Attack;
-                        }
-                    }
-                    else
-                    {
-                        navAgent.SetDestination(defendPosition);
-                        if (distanceToClosestEnemy < detectionRadius)
-                        {
-                            state = UnitState.Attack;
-                        }
-                    }
-                    if (unitID == CreatureID.Goblin || unitID == CreatureID.Fidhain)
-                    {
-                        navAgent.stoppingDistance = 4;
-                    }
-
-                }
-
-                //animator.SetBool("inCombat", false);
-                break;
-
-            case UnitState.Attack:
-                //navAgent.angularSpeed = 500;
-                if (_EM.allEnemiesDead)
-                {
-                    state = UnitState.Idle;
-                }
-                if (distanceToClosestEnemy >= detectionRadius)
-                {
-                    if (hitByArrow == false)
-                        state = UnitState.Moving;
-                }
-                if (unitID == CreatureID.Goblin)
-                {
-                    navAgent.stoppingDistance = 50;
-                }
-                //else
-                //{
-                //    navAgent.stoppingDistance = stoppingDistance;
-                //}
-                if (unitID == CreatureID.Fidhain)
-                {
-                    navAgent.stoppingDistance = 20;
-                }
-                if (!_EM.allEnemiesDead)
-                {
-                    if (distanceToClosestEnemy < detectionRadius)
-                    {
-                        navAgent.SetDestination(closestEnemy.transform.position);
-                        SmoothFocusOnEnemy();
-                    }
-                    else
-                    {
-                        if (hitByArrow == true)
-                        {
-                            navAgent.SetDestination(closestEnemy.transform.position);
-                            SmoothFocusOnEnemy();
-                        }
-                    }
-                }
-                //animator.SetBool("inCombat", true);
-
-                break;
-            case UnitState.Moving:
-                if (isMovingCheck == false)
-                {
-                    isMovingCheck = true;
-                    StartCoroutine(WaitForIsMovingCheck());
-                }
-                if (unitID == CreatureID.Leshy)
-                {
-                    if (Vector3.Distance(pointer.transform.position, transform.position) <= 11)
-                    {
-                        state = UnitState.Idle;
-                    }
-                }
-                else
-                {
-                    if (Vector3.Distance(pointer.transform.position, transform.position) <= 5)
-                    {
-                        state = UnitState.Idle;
-                    }
-                }
-                if (unitID == CreatureID.Goblin || unitID == CreatureID.Fidhain)
-                {
-                    navAgent.stoppingDistance = 4;
-                }
-                if (combatMode == CombatMode.AttackMove)
-                {
-                    if (distanceToClosestEnemy < detectionRadius)
-                    {
-                        state = UnitState.Attack;
-                    }
-                }
-                break;
-            case UnitState.Track:
-                //navAgent.angularSpeed = 500;
-                if (trackTarget != null)
-                {
-                    navAgent.SetDestination(trackTarget.transform.position);
-                    if (unitID == CreatureID.Goblin)
-                    {
-                        if (Vector3.Distance(transform.position, trackTarget.transform.position) <= 30)
-                        {
-                            state = UnitState.Attack;
-                        }
-                    }
-                    else
-                    {
-                        if (Vector3.Distance(transform.position, trackTarget.transform.position) <= 10)
-                        {
-                            state = UnitState.Attack;
-                        }
-                    }
-
-                }
-                else
-                {
-                    state = UnitState.Idle;
-                }
-                break;
-        }
-        yield return new WaitForSeconds(tickRate);
-        StartCoroutine(Tick());
-    }
+   
     public void PlayFootstepSound()
     {
         PlaySound(_SM.GetForestFootstepSound());
@@ -806,47 +647,6 @@ public class Unit : GameBehaviour
 
     }
 
-    IEnumerator RangedAttack()
-    {
-
-        while (Vector3.Distance(transform.position, attackDestination) > 50f)
-        {
-            navAgent.SetDestination(attackDestination);
-            //animator.SetBool("isAttacking", false);
-            yield return null;
-        }
-        while (Vector3.Distance(transform.position, attackDestination) < 50f)
-        {
-            transform.LookAt(attackDestination);
-            //animator.SetBool("isAttacking", true);
-
-            yield return null;
-        }
-        yield return null;
-
-        //animator.SetBool("isAttacking", false);
-        StartCoroutine(RangedAttack());
-
-    }
-  
-    public Transform GetClosestEnemy()
-    {
-        float closestDistance = Mathf.Infinity;
-        Transform trans = null;
-
-        foreach (GameObject go in _EM.enemies)
-        {
-            float currentDistance;
-            currentDistance = Vector3.Distance(transform.position, go.transform.position);
-            if (currentDistance < closestDistance)
-            {
-                closestDistance = currentDistance;
-                trans = go.transform;
-            }
-        }
-            return trans;
-    }
-
     public void EnableCollider()
     {
         weaponCollider.SetActive(true);
@@ -855,14 +655,6 @@ public class Unit : GameBehaviour
     {
         weaponCollider.SetActive(false);
     }
-    //public void MouseOverEnemy()
-    //{
-    //    mouseOverEnemy = true;
-    //}
-    //public void MouseOffEnemy()
-    //{
-    //    mouseOverEnemy = false;
-    //}
 
     public void SpawnRangedAttack()
     {
@@ -893,6 +685,67 @@ public class Unit : GameBehaviour
         }
     }
     
+    
+    
+    #region Combat Buttons
+    private void OnCombatSelected(CombatID _combatID)
+    {
+        if (!isSelected)
+            return;
+        
+        switch (_combatID)
+        {
+            case CombatID.Attack: 
+                AttackSelected();
+                break;
+            case CombatID.Defend:
+                DefendSelected();
+                break;
+            case CombatID.Formation:
+                break;
+            case CombatID.Stop:
+                StopSelected();
+                break;
+        }
+    }
+    
+    private void AttackSelected()
+    {
+        ChangeCombatModeIcon(_ICONS.attackIcon);
+        if(combatMode != CombatMode.Move || combatMode != CombatMode.AttackMove)
+        {
+            detectionRadius = detectionRadius * 2;
+            if (unitID == CreatureID.Goblin)
+            {
+                navAgent.speed = unitData.speed;
+            }
+        }
+        combatMode = CombatMode.Move;
+    }
+    
+    private void DefendSelected()
+    {
+        if (combatMode != CombatMode.Defend)
+        {
+            if (unitID != CreatureID.Goblin)
+            {
+                detectionRadius = detectionRadius / 2;
+            }
+            ChangeCombatModeIcon(_ICONS.defendIcon);
+        }
+        defendPosition = transform.position;
+        combatMode = CombatMode.Defend;
+    }
+
+    private void StopSelected()
+    {
+        ChangeCombatModeIcon(_ICONS.stopIcon);
+        SetDestination(transform);
+    }
+    
+    #endregion
+    
+    #region Input
     private void OnTowerButton()
     {
         Vector3 offset = new Vector3(0, -1.5f, 0);
@@ -946,63 +799,34 @@ public class Unit : GameBehaviour
         }
     }
     
-    #region Combat Buttons
-    private void AttackSelected()
+    private void OnDeselectButtonPressed()
     {
-        ChangeCombatModeIcon(_ICONS.attackIcon);
-        if(combatMode != CombatMode.Move || combatMode != CombatMode.AttackMove)
+        if (isSelected)
         {
-            detectionRadius = detectionRadius * 2;
-            if (unitID == CreatureID.Goblin)
+            //if (Input.GetMouseButtonDown(1))
             {
-                navAgent.speed = unitData.speed;
+                StopAllCoroutines();
+                GameEvents.ReportOnUnitMove();
+                if (_PC.mouseOverEnemyBool)
+                {
+                    trackTarget = _PC.mouseOverEnemy;
+                    state = UnitState.Track;
+                    _PC.mouseOverEnemy.GetComponent<OutlineFlash>().BeginFlash();
+                    _SM.PlaySound(_SM.targetEnemySound);
+                }
+                else
+                {
+                    state = UnitState.Moving;
+                }
             }
         }
-        combatMode = CombatMode.Move;
-    }
-    
-    private void DefendSelected()
-    {
-        if (combatMode != CombatMode.Defend)
+        else
         {
-            if (unitID != CreatureID.Goblin)
-            {
-                detectionRadius = detectionRadius / 2;
-            }
-            ChangeCombatModeIcon(_ICONS.defendIcon);
+            ToggleSelectionCircle(false);
         }
-        defendPosition = transform.position;
-        combatMode = CombatMode.Defend;
-    }
-
-    private void StopSelected()
-    {
-        ChangeCombatModeIcon(_ICONS.stopIcon);
-        SetDestination(transform);
     }
     
     #endregion
-    
-    private void OnCombatSelected(CombatID _combatID)
-    {
-        if (!isSelected)
-            return;
-        
-        switch (_combatID)
-        {
-            case CombatID.Attack: 
-                AttackSelected();
-                break;
-            case CombatID.Defend:
-                DefendSelected();
-                break;
-            case CombatID.Formation:
-                break;
-            case CombatID.Stop:
-                StopSelected();
-                break;
-        }
-    }
     
     private void OnEnable()
     {
@@ -1010,6 +834,7 @@ public class Unit : GameBehaviour
         GameEvents.OnContinueButton += OnContinueButton;
         InputManager.OnTowerButton += OnTowerButton; 
         InputManager.OnSuicideButton += OnSuicideButton;
+        InputManager.OnDeselectButtonPressed += OnDeselectButtonPressed;
     }
 
     private void OnDisable()
@@ -1018,5 +843,6 @@ public class Unit : GameBehaviour
         GameEvents.OnContinueButton -= OnContinueButton;
         InputManager.OnTowerButton -= OnTowerButton; 
         InputManager.OnSuicideButton -= OnSuicideButton;
+        InputManager.OnDeselectButtonPressed -= OnDeselectButtonPressed;
     }
 }
