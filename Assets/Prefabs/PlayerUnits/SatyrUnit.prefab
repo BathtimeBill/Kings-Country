@@ -27,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2081501896}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.237, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1071894615449563645}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2081501899
 MeshRenderer:
@@ -52,6 +52,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -89,6 +92,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 34dd63d8b36ef9a41b085aba3af28c8f,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: fe9fb08af3536d541aabaf364d0ffc28, type: 3}
+  m_Resource: {fileID: 8300000, guid: fe9fb08af3536d541aabaf364d0ffc28, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -195,6 +199,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 34dd63d8b36ef9a41b085aba3af28c8f,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: fe9fb08af3536d541aabaf364d0ffc28, type: 3}
+  m_Resource: {fileID: 8300000, guid: fe9fb08af3536d541aabaf364d0ffc28, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -301,6 +306,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 34dd63d8b36ef9a41b085aba3af28c8f,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: fe9fb08af3536d541aabaf364d0ffc28, type: 3}
+  m_Resource: {fileID: 8300000, guid: fe9fb08af3536d541aabaf364d0ffc28, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -423,6 +429,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1071894615449563641}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -435,7 +442,6 @@ Transform:
   - {fileID: 2175325111866664002}
   - {fileID: 7233654686213790251}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-5722542897335192700
 MonoBehaviour:
@@ -530,6 +536,7 @@ MonoBehaviour:
   isOutOfBounds: 0
   idleSetDest: 0
   hitByArrow: 0
+  isFirstPerson: 0
   SFXPool: {fileID: 2081501896}
   soundPoolCurrent: 0
   soundPool: []
@@ -608,6 +615,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3094541827257325369}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -615,7 +623,6 @@ Transform:
   m_Children:
   - {fileID: 6934747495480461023}
   m_Father: {fileID: 1071894615449563645}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &859965336
 PrefabInstance:
@@ -697,7 +704,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: c8ce7f5d2e269a44aace050920a8a64e,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 094c1379e72e5ee4e909235790d43631, type: 2}
     - target: {fileID: 919132149155446097, guid: c8ce7f5d2e269a44aace050920a8a64e,
@@ -1049,7 +1056,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6123731347151673987, guid: ecbfd40bfff17f14ba0a11ffcfb1b28a,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 80835073df0f63047b11b087116ea5ac, type: 2}
     - target: {fileID: 919132149155446097, guid: ecbfd40bfff17f14ba0a11ffcfb1b28a,
@@ -1174,6 +1181,7 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 131107466043440698}
+  serializedVersion: 1
   m_ConnectedBody: {fileID: 2760189332896672154}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
@@ -1228,6 +1236,7 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2899400660460154505}
+  serializedVersion: 1
   m_ConnectedBody: {fileID: 2485682742481238692}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
@@ -1276,6 +1285,7 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3919438682847512725}
+  serializedVersion: 1
   m_ConnectedBody: {fileID: 6308201755462292487}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
@@ -1324,6 +1334,7 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6213212936658741031}
+  serializedVersion: 1
   m_ConnectedBody: {fileID: 966169468}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
@@ -1372,6 +1383,7 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6778429904697258397}
+  serializedVersion: 1
   m_ConnectedBody: {fileID: 3342714322822494385}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
@@ -1420,6 +1432,7 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6858492770892259137}
+  serializedVersion: 1
   m_ConnectedBody: {fileID: 504542938394292394}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
@@ -1468,6 +1481,7 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7137078214240273660}
+  serializedVersion: 1
   m_ConnectedBody: {fileID: 4277230226480785263}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
@@ -1516,6 +1530,7 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8069143098475990587}
+  serializedVersion: 1
   m_ConnectedBody: {fileID: 8183276099775107101}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
@@ -1564,6 +1579,7 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8455222459359745252}
+  serializedVersion: 1
   m_ConnectedBody: {fileID: 5399129264411367887}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
@@ -1848,6 +1864,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1071894615449563645}
     m_Modifications:
+    - target: {fileID: 3516790005777002382, guid: b65b67dfb853cc04088afde2677a6742,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 4542062082883144605, guid: b65b67dfb853cc04088afde2677a6742,
         type: 3}
       propertyPath: m_RootOrder
@@ -2118,7 +2139,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1578444296140453417, guid: da502e8ab3eef394ab15a39777d2a7d4,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 1409c2fab3973ed40bcaa239fd4a6e54, type: 2}
     - target: {fileID: 919132149155446097, guid: da502e8ab3eef394ab15a39777d2a7d4,
@@ -2242,6 +2263,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentSpeed: 0
+  smoothedSpeed: 0
+  smoothSpeedFactor: 10
   oldPosition: {x: 0, y: 0, z: 0}
   tickInterval: 0.1
   attackSpeed: 2

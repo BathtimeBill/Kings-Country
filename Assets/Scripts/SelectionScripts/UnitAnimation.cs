@@ -9,6 +9,8 @@ public class UnitAnimation : GameBehaviour
     Animator animator;
     NavMeshAgent navAgent;
     public float currentSpeed;
+    public float smoothedSpeed;
+    public float smoothSpeedFactor;
     public Vector3 oldPosition;
     public float tickInterval;
     public float attackSpeed;
@@ -24,12 +26,14 @@ public class UnitAnimation : GameBehaviour
         navAgent = GetComponentInParent<NavMeshAgent>();
         unit = GetComponentInParent<Unit>();
         StartCoroutine(Tick());
+        //StartCoroutine(AttackLoop());
     }
 
     private void Update()
     {
-        animator.SetFloat("z", Mathf.Clamp(currentSpeed, 0, 3) );
-        if(unit.unitID == CreatureID.Goblin)
+        smoothedSpeed = Mathf.Lerp(animator.GetFloat("z"), currentSpeed, Time.deltaTime * smoothSpeedFactor);
+        animator.SetFloat("z", Mathf.Clamp(smoothedSpeed, 0, 3));
+        if (unit.unitID == CreatureID.Goblin)
         {
             if (distanceFromClosestUnit < 80 && !_EM.allEnemiesDead)
             {
@@ -40,11 +44,17 @@ public class UnitAnimation : GameBehaviour
             }
         }
     }
+
+
     private void SmoothFocusOnEnemy()
     {
         var targetRotation = Quaternion.LookRotation(closestUnit.transform.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2 * Time.deltaTime);
     }
+    //private void FixedUpdate()
+    //{
+    //    currentSpeed = Vector3.Distance(oldPosition, transform.position) * 100 * Time.deltaTime;
+    //}
     private IEnumerator Tick()
     {
         currentSpeed = Vector3.Distance(oldPosition, transform.position) * 100 * Time.deltaTime;
@@ -81,6 +91,7 @@ public class UnitAnimation : GameBehaviour
                     if (isCloseToEnemy == true)
                     {
                         isCloseToEnemy = false;
+                        CheckAttack();
                         //StartCoroutine(FadeOutArms());
                     }
                 }
@@ -110,10 +121,10 @@ public class UnitAnimation : GameBehaviour
             }
 
         }
-        //else
-        //{
-        //    animator.SetLayerWeight(1, 0);
-        //}
+        else
+        {
+            CheckAttack();
+        }
 
         yield return new WaitForSeconds(tickInterval);
 
@@ -133,12 +144,9 @@ public class UnitAnimation : GameBehaviour
     }
     private IEnumerator AttackLoop()
     {
-        RandomAnimation();
         yield return new WaitForSeconds(attackSpeed);
-        if(distanceFromClosestUnit <= 15)
-        {
-            StartCoroutine(AttackLoop());
-        }
+        CheckAttack();
+        StartCoroutine(AttackLoop());
     }
     private void RandomAnimation()
     {
@@ -147,6 +155,7 @@ public class UnitAnimation : GameBehaviour
     }
     private void CheckAttack()
     {
+        
         if (!_EM.allEnemiesDead && distanceFromClosestUnit <= 15)
         {
             animator.SetTrigger("Attack" + GetRandomAnimation());
