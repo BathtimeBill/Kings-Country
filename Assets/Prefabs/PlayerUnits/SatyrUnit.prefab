@@ -431,7 +431,7 @@ Transform:
   m_GameObject: {fileID: 1071894615449563641}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.73, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -493,54 +493,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitID: 0
-  combatMode: 0
-  defendPosition: {x: 0, y: 0, z: 0}
-  tickRate: 0.1
   healthBarFill: {fileID: 2215320611368783308}
   combatModeIcon: {fileID: 7600874672582969251}
   groupNumber: {fileID: 8181379467035177916}
   selectionCircle: {fileID: 7233654686213790250}
-  health: 0
-  maxHealth: 0
-  unitSpeed: 0
-  projectileSpeed: 1000
-  focusSpeed: 5
-  stoppingDistance: 4
   navAgent: {fileID: 1071894615449563646}
   animator: {fileID: 0}
+  tickRate: 0.1
   state: 0
-  detectionRadius: 0
-  closestEnemy: {fileID: 0}
-  distanceToClosestEnemy: 0
   pointer: {fileID: 0}
-  hasStopped: 0
   trackTarget: {fileID: 0}
   spawnInMoveDistance: 10
   deadSatyr: {fileID: 1071894615449563641, guid: cc54e8a6240ce5c46984c5ff1d6ea89a,
     type: 3}
-  bloodParticle1: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}
-  targetDest: {fileID: 0}
   weaponCollider: {fileID: 0}
-  deadPrefab: {fileID: 0}
-  explosionPrefab: {fileID: 0}
-  entWalkPrefab: {fileID: 0}
   rangedPrefab: {fileID: 0}
   towerPrefab: {fileID: 0}
   rangedSpawnLocation: {fileID: 0}
   healingParticle: {fileID: 3439230486249044298}
   isSelected: 0
   inCombat: 0
-  isMoving: 0
   isMovingCheck: 0
   isTooCloseToTower: 0
   isOutOfBounds: 0
-  idleSetDest: 0
-  hitByArrow: 0
   isFirstPerson: 0
   SFXPool: {fileID: 2081501896}
   soundPoolCurrent: 0
   soundPool: []
-  vocalSource: {fileID: 0}
   spellSource: {fileID: 0}
   isUpgraded: 0
 --- !u!195 &1071894615449563646
