@@ -208,40 +208,40 @@ public class PlayerControls : Singleton<PlayerControls>
         if (Physics.Raycast(ray, out hitPoint))
         {
 
-            if(hitPoint.collider.tag == "Home Tree")
+            if(hitPoint.collider.CompareTag("Home Tree"))
             {
                 if (_GM.playmode == PlayMode.DefaultMode && _inGame)
                 {
                     _SM.PlaySound(_SM.openMenuSound);
-                    GameEvents.ReportOnHomeTreeSelected();
-                    GameEvents.ReportOnHutDeselected();
-                    GameEvents.ReportOnHorgrDeselected();
+                    GameEvents.ReportOnSiteSelected(SiteID.HomeTree, true);
+                    GameEvents.ReportOnSiteSelected(SiteID.Hut, false);
+                    GameEvents.ReportOnSiteSelected(SiteID.Horgr, false);
                     GameEvents.ReportOnObjectSelected(hitPoint.collider.gameObject);
                 }
             }
-            if (hitPoint.collider.tag == "Horgr")
+            if (hitPoint.collider.CompareTag("Horgr"))
             {
                 _SM.PlaySound(_SM.openMenuSound);
-                GameEvents.ReportOnHorgrSelected();
-                GameEvents.ReportOnHomeTreeDeselected();
-                GameEvents.ReportOnHutDeselected();
+                GameEvents.ReportOnSiteSelected(SiteID.HomeTree, false);
+                GameEvents.ReportOnSiteSelected(SiteID.Hut, false);
+                GameEvents.ReportOnSiteSelected(SiteID.Horgr, true);
                 GameEvents.ReportOnObjectSelected(hitPoint.collider.gameObject);
             }
-            if (hitPoint.collider.tag == "Hut")
+            if (hitPoint.collider.CompareTag("Hut"))
             {
                 _SM.PlaySound(_SM.openMenuSound);
-                GameEvents.ReportOnHutSelected();
-                GameEvents.ReportOnHomeTreeDeselected();
-                GameEvents.ReportOnHorgrDeselected();
+                GameEvents.ReportOnSiteSelected(SiteID.HomeTree, false);
+                GameEvents.ReportOnSiteSelected(SiteID.Hut, true);
+                GameEvents.ReportOnSiteSelected(SiteID.Horgr, false);
                 GameEvents.ReportOnObjectSelected(hitPoint.collider.gameObject);
             }
             if (hitPoint.collider.gameObject.layer == LayerMask.NameToLayer("Environment"))
             {
                 if (_UI.mouseOverUI)
                     return;
-                GameEvents.ReportOnHorgrDeselected();
-                GameEvents.ReportOnHomeTreeDeselected();
-                GameEvents.ReportOnHutDeselected();
+                GameEvents.ReportOnSiteSelected(SiteID.HomeTree, false);
+                GameEvents.ReportOnSiteSelected(SiteID.Hut, false);
+                GameEvents.ReportOnSiteSelected(SiteID.Horgr, false);
                 GameEvents.ReportOnGroundClicked();
             }
         }

@@ -48,11 +48,11 @@ public class StatsManager : GameBehaviour
     public void Start()
     {
         mainButton.onClick.AddListener(() => FillMainPage());
-        homeTreeButton.onClick.AddListener(() => FillDetailedStatPanel(BuildingID.HomeTree));
-        hutButton.onClick.AddListener(() => FillDetailedStatPanel(BuildingID.Hut));
-        hogyrButton.onClick.AddListener(() => FillDetailedStatPanel(BuildingID.Horgr));
+        homeTreeButton.onClick.AddListener(() => FillDetailedStatPanel(SiteID.HomeTree));
+        hutButton.onClick.AddListener(() => FillDetailedStatPanel(SiteID.Hut));
+        hogyrButton.onClick.AddListener(() => FillDetailedStatPanel(SiteID.Horgr));
 
-        //FillDetailedStatPanel(BuildingID.HomeTree);
+        //FillDetailedStatPanel(SiteID.HomeTree);
         FillMainPage();
     }
 
@@ -181,24 +181,24 @@ public class StatsManager : GameBehaviour
     #endregion
 
     #region Detailed Stats
-    private void FillDetailedStatPanel(BuildingID _buildingID)
+    private void FillDetailedStatPanel(SiteID siteID)
     {
         mainPanel.SetActive(false);
         detailedPanel.SetActive(true);
 
-        switch (_buildingID)
+        switch (siteID)
         {
-            case BuildingID.HomeTree:
+            case SiteID.HomeTree:
                 GetUnitStats(unit1, CreatureID.Satyr);
                 GetUnitStats(unit2, CreatureID.Orcus);
                 GetUnitStats(unit3, CreatureID.Leshy);
                 break;
-            case BuildingID.Hut:
+            case SiteID.Hut:
                 GetUnitStats(unit1, CreatureID.Goblin);
                 GetUnitStats(unit2, CreatureID.Skessa);
                 GetUnitStats(unit3, CreatureID.Fidhain);
                 break;
-            case BuildingID.Horgr:
+            case SiteID.Horgr:
                 GetUnitStats(unit1, CreatureID.Huldra);
                 GetUnitStats(unit2, CreatureID.Mistcalf);
                 GetUnitStats(unit3, CreatureID.Unknown);

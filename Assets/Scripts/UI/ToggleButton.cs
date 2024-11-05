@@ -4,7 +4,7 @@ using Coffee.UIExtensions;
 
 public class ToggleButton : GameBehaviour
 {
-    public BuildingID baseID;
+    public SiteID baseID;
     public Image image;
     public string title;
     public string description;
@@ -29,23 +29,23 @@ public class ToggleButton : GameBehaviour
         image.color = _SETTINGS.colours.titleColor;
         togglePanel.ShowPanel(this.baseID);
 
-        if (baseID == BuildingID.HomeTree)
+        if (baseID == SiteID.HomeTree)
         {
-            GameEvents.ReportOnHomeTreeSelected();
-            GameEvents.ReportOnHutDeselected();
-            GameEvents.ReportOnHorgrDeselected();
+            GameEvents.ReportOnSiteSelected(SiteID.HomeTree, true);
+            GameEvents.ReportOnSiteSelected(SiteID.Hut, false);
+            GameEvents.ReportOnSiteSelected(SiteID.Horgr, false);
         }
-        if (baseID == BuildingID.Hut)
+        if (baseID == SiteID.Hut)
         {
-            GameEvents.ReportOnHomeTreeDeselected();
-            GameEvents.ReportOnHutSelected();
-            GameEvents.ReportOnHorgrDeselected();
+            GameEvents.ReportOnSiteSelected(SiteID.HomeTree, false);
+            GameEvents.ReportOnSiteSelected(SiteID.Hut, true);
+            GameEvents.ReportOnSiteSelected(SiteID.Horgr, false);
         }
-        if (baseID == BuildingID.Horgr)
+        if (baseID == SiteID.Horgr)
         {
-            GameEvents.ReportOnHomeTreeDeselected();
-            GameEvents.ReportOnHutDeselected();
-            GameEvents.ReportOnHorgrSelected();
+            GameEvents.ReportOnSiteSelected(SiteID.HomeTree, false);
+            GameEvents.ReportOnSiteSelected(SiteID.Hut, false);
+            GameEvents.ReportOnSiteSelected(SiteID.Horgr, true);
         }
     }
 

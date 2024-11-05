@@ -27,9 +27,9 @@ public class UnitPanel : GameBehaviour
 
     private void Start()
     {
-        homeTreeButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(BuildingID.HomeTree));
-        hutButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(BuildingID.Hut));
-        horgrButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(BuildingID.Horgr));
+        homeTreeButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(SiteID.HomeTree));
+        hutButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(SiteID.Hut));
+        horgrButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(SiteID.Horgr));
         //homeTreeButton.GetComponent<UnityEngine.UI.Toggle>().isOn = true;
         //TODO hacky workaround. Revisit 
         ExecuteAfterFrames(1, ()=>
@@ -100,21 +100,21 @@ public class UnitPanel : GameBehaviour
         }
     }
 
-    public void ShowPanel(BuildingID _baseID)
+    public void ShowPanel(SiteID _baseID)
     {
         switch (_baseID)
         {
-            case BuildingID.HomeTree:
+            case SiteID.HomeTree:
                 unitButtons[0].SetupButton(_DATA.GetUnit(CreatureID.Satyr));
                 unitButtons[1].SetupButton(_DATA.GetUnit(CreatureID.Orcus));
                 unitButtons[2].SetupButton(_DATA.GetUnit(CreatureID.Leshy));
                 break;
-            case BuildingID.Hut:
+            case SiteID.Hut:
                 unitButtons[0].SetupButton(_DATA.GetUnit(CreatureID.Goblin));
                 unitButtons[1].SetupButton(_DATA.GetUnit(CreatureID.Skessa));
                 unitButtons[2].SetupButton(_DATA.GetUnit(CreatureID.Fidhain));
                 break;
-            case BuildingID.Horgr:
+            case SiteID.Horgr:
                 unitButtons[0].SetupButton(_DATA.GetUnit(CreatureID.Huldra));
                 unitButtons[1].SetupButton(_DATA.GetUnit(CreatureID.Mistcalf));
                 unitButtons[2].SetupButton(_DATA.GetUnit(CreatureID.Unknown));
@@ -141,15 +141,15 @@ public class UnitPanel : GameBehaviour
 
     private void OnHomeTreeSelected()
     {
-        ShowPanel(BuildingID.HomeTree);
+        ShowPanel(SiteID.HomeTree);
     }
     private void OnHutSelected()
     {
-        ShowPanel(BuildingID.Hut);
+        ShowPanel(SiteID.Hut);
     }
     private void OnHorgrSelected()
     {
-        ShowPanel(BuildingID.Horgr);
+        ShowPanel(SiteID.Horgr);
     }
     private void OnGroundClicked()
     {

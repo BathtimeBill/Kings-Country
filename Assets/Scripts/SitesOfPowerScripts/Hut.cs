@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class Hut : GameBehaviour
+public class Hut : SiteOfPower
 {
+    [Header("Hut Specific")]
     public float enemyTimeLeft;
     public float enemyMaxTimeLeft;
     public float unitTimeLeft;
@@ -13,10 +14,6 @@ public class Hut : GameBehaviour
     public bool playerHasControl;
     public GameObject playerControlFX;
     public GameObject enemyControlFX;
-    public GameObject spawnLocation;
-    public GameObject skessa;
-    public GameObject huldra;
-    public GameObject selectionCircle;
     public Slider slider;
     public Image fill;
     public SpriteRenderer mapIcon;
@@ -32,8 +29,7 @@ public class Hut : GameBehaviour
         ClaimHut();
         centre = transform.position;
         audioSource = GetComponent<AudioSource>();
-        _HUTM.hutObject = gameObject;
-        _HUTM.spawnLocation = spawnLocation;
+        StartCoroutine(SpawnEnemyUnits());
     }
 
     private void Update()
@@ -54,14 +50,14 @@ public class Hut : GameBehaviour
         {
             if (other.name == "Wathe(Clone)" || other.name == "Hunter(Clone)" || other.name == "Bjornjeger(Clone)")
             {
-                if (_HUTM.enemies.Count > _HUTM.units.Count)
+                if (enemies.Count > units.Count)
                 {
                     enemyTimeLeft += claimRate * Time.deltaTime;
                 }
             }
             if (other.tag == "Unit" || other.tag == "LeshyUnit")
             {
-                if (_HUTM.enemies.Count < _HUTM.units.Count)
+                if (enemies.Count < units.Count)
                 {
                     enemyTimeLeft -= claimRate * Time.deltaTime;
                 }
@@ -71,14 +67,14 @@ public class Hut : GameBehaviour
         {
             if (other.name == "Wathe(Clone)" || other.name == "Hunter(Clone)" || other.name == "Bjornjeger(Clone)")
             {
-                if (_HUTM.enemies.Count > _HUTM.units.Count)
+                if (enemies.Count > units.Count)
                 {
                     enemyTimeLeft -= claimRate * Time.deltaTime;
                 }
             }
             if (other.tag == "Unit" || other.tag == "LeshyUnit")
             {
-                if (_HUTM.enemies.Count < _HUTM.units.Count)
+                if (enemies.Count < units.Count)
                 {
                     enemyTimeLeft += claimRate * Time.deltaTime;
                 }
@@ -89,13 +85,13 @@ public class Hut : GameBehaviour
 
             if (!playerHasControl)
             {
-                if (_HUTM.units.Count != 0)
+                if (units.Count != 0)
                     playerHasControl = true;
                 mapIcon.color = neutralColour;
             }
             else
             {
-                if (_HUTM.enemies.Count != 0)
+                if (enemies.Count != 0)
                     playerHasControl = false;
                 mapIcon.color = neutralColour;
             }
@@ -107,21 +103,18 @@ public class Hut : GameBehaviour
                 enemyTimeLeft = enemyMaxTimeLeft;
                 mapIcon.color = unitSliderColour;
                 playerControlFX.SetActive(true);
-                _HUTM.playerOwns = true;
-                _HUTM.hasBeenClaimed = true;
+                playerOwns = true;
             }
             else
             {
                 enemyTimeLeft = enemyMaxTimeLeft;
                 mapIcon.color = enemySliderColour;
                 enemyControlFX.SetActive(true);
-                _HUTM.enemyOwns = true;
             }
         }
         else
         {
-            _HUTM.playerOwns = false;
-            _HUTM.enemyOwns = false;
+            playerOwns = false;
             enemyControlFX.SetActive(false);
             playerControlFX.SetActive(false);
         }
@@ -130,42 +123,41 @@ public class Hut : GameBehaviour
     {
         return enemyTimeLeft / enemyMaxTimeLeft;
     }
-
-    public void SpawnSkessa()
-    {
-        Instantiate(skessa, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
-    }
+    
     public void ClaimHut()
     {
         enemyTimeLeft = enemyMaxTimeLeft;
         mapIcon.color = unitSliderColour;
         playerControlFX.SetActive(true);
-        _HUTM.playerOwns = true;
+        playerOwns = true;
         playerHasControl = true;
+        StopCoroutine(SpawnEnemyUnits());
     }
+    
+    IEnumerator SpawnEnemyUnits()
+    {
+        yield return new WaitForSeconds(Random.Range(spawnRates.min, spawnRates.max));
+        if (!playerOwns)
+        {
+            _EM.SpawnHutEnemy(spawnLocation.transform.position);
+        }
+        StartCoroutine(SpawnEnemyUnits());
+    }
+    
     private void OnContinueButton()
     {
         ClaimHut();
     }
-    private void OnHutSelected()
+    
+    protected override void OnEnable()
     {
-        selectionCircle.SetActive(true);
-    }
-    private void OnHutDeselected()
-    {
-        selectionCircle.SetActive(false);
-    }
-    private void OnEnable()
-    {
-        GameEvents.OnHutDeselected += OnHutDeselected;
-        GameEvents.OnHutSelected += OnHutSelected;
+        base.OnEnable();
         GameEvents.OnContinueButton += OnContinueButton;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
-        GameEvents.OnHutDeselected -= OnHutDeselected;
-        GameEvents.OnHutSelected -= OnHutSelected;
+        base.OnDisable();
         GameEvents.OnContinueButton -= OnContinueButton;
     }
 }

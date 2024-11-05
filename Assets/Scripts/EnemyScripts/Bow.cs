@@ -52,16 +52,10 @@ public class Bow : GameBehaviour
     }
     public void CheckForEnemies()
     {
-        if (_HUTM.enemies.Contains(transform.parent.gameObject))
-        {
-            //Debug.Log(name + " is in the enemy list");
-            if (_HUTM.units.Count == 0)
-                animator.SetBool("allWildlifeDead", true);
-        }
-        else
-        {
-            //Debug.Log(name + " is NOT the enemy list");
-        }
+        if (_HUT == null) return;
+        
+        if (_HUT.ContainsEnemy(transform.parent.GetComponent<Enemy>()) && _HUT.HasEnemies())
+            animator.SetBool("allWildlifeDead", true);
     }
 
     //Plays sounds and is triggered from animations.

@@ -33,17 +33,17 @@ public class EditorButtons : MonoBehaviour
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Show Home Tree Units"))
             {
-                editorButtons.unitPanel.ShowPanel(BuildingID.HomeTree);
+                editorButtons.unitPanel.ShowPanel(SiteID.HomeTree);
                 EditorUtility.SetDirty(editorButtons);
             }
             if (GUILayout.Button("Show Hut Units"))
             {
-                editorButtons.unitPanel.ShowPanel(BuildingID.Hut);
+                editorButtons.unitPanel.ShowPanel(SiteID.Hut);
                 EditorUtility.SetDirty(editorButtons);
             }
             if (GUILayout.Button("Show Hogyr Units"))
             {
-                editorButtons.unitPanel.ShowPanel(BuildingID.Horgr);
+                editorButtons.unitPanel.ShowPanel(SiteID.Horgr);
                 EditorUtility.SetDirty(editorButtons);
             }
             GUILayout.EndHorizontal();

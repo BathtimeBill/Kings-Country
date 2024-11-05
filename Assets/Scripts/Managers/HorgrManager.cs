@@ -46,13 +46,8 @@ public class HorgrManager : Singleton<HorgrManager>
         //StartCoroutine(AddMaegen());
         //StartCoroutine(WaitToReferenceHorgr());
         StartCoroutine(SpawnEnemyUnits());
-        StartCoroutine(WaitToSpawn());
     }
-    IEnumerator WaitToSpawn()
-    {
-        yield return new WaitForEndOfFrame();
-        GameObject go = Instantiate(horgr, spawnLocations[RandomSpawnLocation()].transform.position, Quaternion.Euler(-90, 180, 0));
-    }
+
     IEnumerator SpawnEnemyUnits()
     {
         yield return new WaitForSeconds(Random.Range(minSpawnRate, maxSpawnRate));
@@ -97,99 +92,13 @@ public class HorgrManager : Singleton<HorgrManager>
         //transform.position = spawnLocation.transform.position;
     }
 
-
-    public void SpawnSkessaManager()
-    {
-        horgrObject = GameObject.FindGameObjectWithTag("Horgr");
-        if (playerOwns)
-        {
-            if (_GM.maegen >= 3 && _GM.populous < _GM.maxPopulous)
-            {
-                Instantiate(skessa, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
-                Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.maegen -= 3;
-                _UI.CheckPopulousUI();
-            }
-            else
-            {
-                _UI.SetError(ErrorID.InsufficientResources);
-            }
-        }
-       else
-        {
-            _UI.SetError(ErrorID.ClaimSite);
-        }
-    }
-    public void SpawnHuldraManager()
-    {
-        horgrObject = GameObject.FindGameObjectWithTag("Horgr");
-        int cost = _DATA.GetUnit(CreatureID.Huldra).cost;
-        if (playerOwns)
-        {
-            if (_GM.maegen >= cost && _GM.populous < _GM.maxPopulous)
-            {
-                Instantiate(huldra, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
-                Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.DecreaseMaegen(cost);
-                _UI.CheckPopulousUI();
-                if(_TUTORIAL.isTutorial && _TUTORIAL.tutorialStage == 12)
-                {
-                    GameEvents.ReportOnNextTutorial();  
-                }
-            }
-            else
-            {
-                _UI.SetError(ErrorID.InsufficientResources);
-            }
-        }
-        else
-        {
-            _UI.SetError(ErrorID.ClaimSite);
-        }
-    }
-    public void SpawnGolemManager()
-    {
-        horgrObject = GameObject.FindGameObjectWithTag("Horgr");
-        int cost = _DATA.GetUnit(CreatureID.Mistcalf).cost;
-        if (playerOwns)
-        {
-            if (_GM.maegen >= cost && _GM.populous < _GM.maxPopulous)
-            {
-                Instantiate(golem, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
-                Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
-                _GM.DecreaseMaegen(cost);
-                _UI.CheckPopulousUI();
-            }
-            else
-            {
-                _UI.SetError(ErrorID.InsufficientResources);
-            }
-        }
-        else
-        {
-            _UI.SetError(ErrorID.ClaimSite);
-        }
-    }
+    
     void OnContinueButton()
     {
         playerOwns = true;
         enemyOwns = false;
     }
-
-
-    private void OnUnitButtonPressed(UnitData _unitData)
-    {
-        switch (_unitData.id)
-        {
-            case CreatureID.Huldra:
-                SpawnHuldraManager();
-                break;
-            case CreatureID.Mistcalf:
-                SpawnGolemManager();
-                break;
-        }
-    }
-
+    
     private void OnHumanKilled(Enemy _enemy, string _killer)
     {
         if (enemies.Contains(_enemy.gameObject))
@@ -199,14 +108,12 @@ public class HorgrManager : Singleton<HorgrManager>
     private void OnEnable()
     {
         GameEvents.OnContinueButton += OnContinueButton;
-        GameEvents.OnUnitButtonPressed += OnUnitButtonPressed;
         GameEvents.OnHumanKilled += OnHumanKilled;
     }
 
     private void OnDisable()
     {
         GameEvents.OnContinueButton -= OnContinueButton;
-        GameEvents.OnUnitButtonPressed -= OnUnitButtonPressed;
         GameEvents.OnHumanKilled -= OnHumanKilled;
     }
 }

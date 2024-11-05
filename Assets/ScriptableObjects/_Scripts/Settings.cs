@@ -246,7 +246,7 @@ public class Colours
     public Color GetColour(CreatureID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
     public Color GetColour(HumanID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
     public Color GetColour(ToolID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
-    public Color GetColour(BuildingID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
+    public Color GetColour(SiteID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
 
 
     public void ChangePanelColour(PanelColourID _color, SaveManager _save)

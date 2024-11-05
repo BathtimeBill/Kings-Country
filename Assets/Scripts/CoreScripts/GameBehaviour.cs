@@ -7,8 +7,8 @@ using UnityEngine.Rendering;
 public class GameBehaviour : BV.Behaviour
 {
     protected static GameManager _GM { get { return GameManager.instance; } }
-    protected static HorgrManager _HM { get { return HorgrManager.instance; } }
-    protected static HutManager _HUTM { get { return HutManager.instance; } }
+    protected static Horgr _HORGR { get { return GameManager.instance.horgr; } }
+    protected static Hut _HUT {get {return GameManager.instance.hut;}}
     protected static MusicManager _MM { get { return MusicManager.instance; } }
     protected static EnemyManager _EM { get { return EnemyManager.instance; } }
     protected static UnitManager _UM { get { return UnitManager.instance; } }
@@ -41,6 +41,8 @@ public class GameBehaviour : BV.Behaviour
     public bool _inGame => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build;
     public bool _inTutorial => _GM.gameState == GameState.Tutorial;
     public bool _inDay => _GM.gameState == GameState.Play;
+    public bool _hutExists => _GM.hut != null;
+    public bool _horgrExists => _GM.horgr != null;
     public bool _agroPhase => _GM.agroPhase;
     public bool _isPaused => _GM.gameState == GameState.Pause;
     public bool _gameFinished => _GM.gameState == GameState.Finish;
@@ -117,7 +119,7 @@ public enum PerkID
     HomeTree,
 }
 
-public enum BuildingID
+public enum SiteID
 {
     HomeTree,
     Hut,
@@ -210,7 +212,7 @@ public enum UnitType
 {
     Guardian,
     Human,
-    Building,
+    Site,
     Tool
 }
 

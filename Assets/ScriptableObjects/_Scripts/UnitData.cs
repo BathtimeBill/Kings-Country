@@ -6,7 +6,7 @@ using UnityEngine;
 public class UnitData : ScriptableObject
 {
     public CreatureID id;
-    public BuildingID home;
+    public SiteID home;
     public new string name;
     [TextArea(3, 5)]
     public string description;

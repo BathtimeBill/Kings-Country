@@ -21,7 +21,7 @@ public class LevelData : ScriptableObject
     [BV.EnumList(typeof(SeasonID))]
     public List<SeasonID> unlockedSeasons;
     [Space]
-    public List<BuildingID> availableBuildings;
+    public List<SiteID> availableBuildings;
     public List<ToolID> availableTrees;
     public List<HumanID> availableHumans;
     [Space]

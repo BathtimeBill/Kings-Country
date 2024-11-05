@@ -1,7 +1,7 @@
 using UnityEngine.UI;
 using UnityEngine;
 
-public class Horgr : GameBehaviour
+public class Horgr : SiteOfPower
 {
     public float enemyTimeLeft;
     public float enemyMaxTimeLeft;
@@ -11,7 +11,6 @@ public class Horgr : GameBehaviour
     public bool playerHasControl;
     public GameObject playerControlFX;
     public GameObject enemyControlFX;
-    public GameObject spawnLocation;
     public GameObject skessa;
     public GameObject huldra;
     public GameObject selectionCircle;
@@ -29,8 +28,6 @@ public class Horgr : GameBehaviour
     {
         centre = transform.position;
         audioSource = GetComponent<AudioSource>();
-        _HM.horgrObject = gameObject;
-        _HM.spawnLocation = spawnLocation;
         ClaimHorgr();
     }
 
@@ -52,14 +49,14 @@ public class Horgr : GameBehaviour
         {
             if (other.name == "Dreng(Clone)" || other.name == "Berserkr(Clone)" || other.name == "Knight(Clone)")
             {
-                if (_HM.enemies.Count > _HM.units.Count)
+                if (enemies.Count > units.Count)
                 {
                     enemyTimeLeft += claimRate * Time.deltaTime;
                 }
             }
             if (other.tag == "Unit" || other.tag == "LeshyUnit")
             {
-                if (_HM.enemies.Count < _HM.units.Count)
+                if (enemies.Count < units.Count)
                 {
                     enemyTimeLeft -= claimRate * Time.deltaTime;
                 }
@@ -69,14 +66,14 @@ public class Horgr : GameBehaviour
         {
             if (other.name == "Dreng(Clone)" || other.name == "Berserkr(Clone)" || other.name == "Knight(Clone)")
             {
-                if (_HM.enemies.Count > _HM.units.Count)
+                if (enemies.Count > units.Count)
                 {
                     enemyTimeLeft -= claimRate * Time.deltaTime;
                 }
             }
             if (other.tag == "Unit" || other.tag == "LeshyUnit")
             {
-                if (_HM.enemies.Count < _HM.units.Count)
+                if (enemies.Count < units.Count)
                 {
                     enemyTimeLeft += claimRate * Time.deltaTime;
                 }
@@ -87,13 +84,13 @@ public class Horgr : GameBehaviour
 
             if (!playerHasControl)
             {
-                if(_HM.units.Count != 0)
+                if(units.Count != 0)
                 playerHasControl = true;
                 mapIcon.color = neutralColour;
             }
             else
             {
-                if(_HM.enemies.Count != 0)
+                if(enemies.Count != 0)
                 playerHasControl = false;
                 mapIcon.color = neutralColour;
             }
@@ -105,21 +102,20 @@ public class Horgr : GameBehaviour
                 enemyTimeLeft = enemyMaxTimeLeft;
                 mapIcon.color = unitSliderColour;
                 playerControlFX.SetActive(true);
-                _HM.playerOwns = true;
-                _HM.hasBeenClaimed = true;
+                playerOwns = true;
+                //hasBeenClaimed = true;
             }
             else
             {
                 enemyTimeLeft = enemyMaxTimeLeft;
                 mapIcon.color = enemySliderColour;
                 enemyControlFX.SetActive(true);
-                _HM.enemyOwns = true;
+                //enemyOwns = true;
             }
         }
         else
         {
-            _HM.playerOwns = false;
-            _HM.enemyOwns = false;
+            playerOwns = false;
             enemyControlFX.SetActive(false);
             playerControlFX.SetActive(false);
         }
@@ -130,17 +126,12 @@ public class Horgr : GameBehaviour
         enemyTimeLeft = enemyMaxTimeLeft;
         mapIcon.color = unitSliderColour;
         playerControlFX.SetActive(true);
-        _HM.playerOwns = true;
+        playerOwns = true;
         playerHasControl = true;
     }
     float CalculateTimeLeft()
     {
         return enemyTimeLeft / enemyMaxTimeLeft;
-    }
-
-    public void SpawnSkessa()
-    {
-        Instantiate(skessa, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0));
     }
 
     private void OnContinueButton()
@@ -156,15 +147,17 @@ public class Horgr : GameBehaviour
         selectionCircle.SetActive(false);
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         GameEvents.OnHorgrDeselected += OnHorgrDeselected;
         GameEvents.OnHorgrSelected += OnHorgrSelected;
         GameEvents.OnContinueButton += OnContinueButton;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         GameEvents.OnHorgrDeselected -= OnHorgrDeselected;
         GameEvents.OnHorgrSelected -= OnHorgrSelected;
         GameEvents.OnContinueButton -= OnContinueButton;

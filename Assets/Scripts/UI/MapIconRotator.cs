@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class MapIconRotator : GameBehaviour
 {
@@ -7,8 +8,8 @@ public class MapIconRotator : GameBehaviour
     public CreatureID creatureID;
     [BV.DrawIf("unitType", UnitType.Human)]
     public HumanID humanID;
-    [BV.DrawIf("unitType", UnitType.Building)]
-    public BuildingID buildingID;
+    [FormerlySerializedAs("buildingID")] [BV.DrawIf("unitType", UnitType.Site)]
+    public SiteID siteID;
 
     private GameObject playerCam;
     private Quaternion targetRotation;
@@ -54,9 +55,9 @@ public class MapIconRotator : GameBehaviour
                 sprite.color = _COLOUR.GetColour(_DATA.GetUnit(humanID).id);
                 sprite.transform.localScale = Vector3.one * _SETTINGS.miniMap.humanIconSize;
                 break;
-            case UnitType.Building:
-                sprite.sprite = _DATA.GetUnit(buildingID).mapIcon;
-                sprite.color = _COLOUR.GetColour(_DATA.GetUnit(buildingID).id); 
+            case UnitType.Site:
+                sprite.sprite = _DATA.GetSiteData(siteID).mapIcon;
+                sprite.color = _COLOUR.GetColour(_DATA.GetSiteData(siteID).id); 
                 sprite.transform.localScale = Vector3.one * _SETTINGS.miniMap.buildingIconSize;
                 break;
         }

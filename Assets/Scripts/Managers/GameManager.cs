@@ -9,6 +9,9 @@ public class GameManager : Singleton<GameManager>
     [Header("Level Related")]
     public LevelID thisLevel;
 
+    [HideInInspector] public Hut hut;
+    [HideInInspector] public Horgr horgr;
+
     public bool tutorial;
     public float gameTime = 0;
     public LevelNumber level;
@@ -89,11 +92,30 @@ public class GameManager : Singleton<GameManager>
         SetPlayMode(PlayMode.DefaultMode);
         SetGame();
         trees.AddRange(GameObject.FindGameObjectsWithTag("Tree"));
+        CheckSites();
 
         if (!_TESTING.skipIntro)
             ChangeGameState(GameState.Intro);
         else
             CheckTutorial();
+    }
+
+    private void CheckSites()
+    {
+        if (_DATA.currentLevel.availableBuildings.Contains(SiteID.Hut))
+        {
+            GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("HutSpawnPoint");
+            Transform t = ArrayX.GetRandomItemFromArray(spawnPoints).transform;
+            GameObject go = Instantiate(_DATA.GetSitePrefab(SiteID.Hut), t.position, t.rotation);
+            hut = go.GetComponent<Hut>();
+        }
+        if (_DATA.currentLevel.availableBuildings.Contains(SiteID.Horgr))
+        {
+            GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("HorgrSpawnPoint");
+            Transform t = ArrayX.GetRandomItemFromArray(spawnPoints).transform;
+            GameObject go = Instantiate(_DATA.GetSitePrefab(SiteID.Horgr), t.position, t.rotation);
+            horgr = go.GetComponent<Horgr>();
+        }  
     }
 
     public void CheckTutorial()

@@ -70,4 +70,26 @@ public static class ArrayX
         int index = UnityEngine.Random.Range(0, _array.Length);
         return _array[index];
     }
+    
+    /// <summary>
+    /// Increments a counter in an array and loops back to the start when it reaches the end
+    /// </summary>
+    /// <param name="_current">The variable holding the current value</param>
+    /// <param name="_array">The array to increment through</param>
+    /// <returns></returns>
+    static public int IncrementCounter<T>(int _current, T[] _array)
+    {
+        return _current == _array.Length - 1 ? 0 : _current + 1;
+    }
+
+    /// <summary>
+    /// Decrements a counter in an array and loops back to the end when it reaches the start
+    /// </summary>
+    /// <param name="_current">The variable holding the current value</param>
+    /// <param name="_array">The array to decrement through</param>
+    /// <returns></returns>
+    static public int DecrementCounter<T>(int _current, T[] _array)
+    {
+        return _current == 0 ? _array.Length - 1 : _current - 1;
+    }
 }

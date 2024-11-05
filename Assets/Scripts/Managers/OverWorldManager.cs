@@ -132,11 +132,11 @@ public class OverWorldManager : GameBehaviour
 
     private void ShowIcons(LevelData _levelData)
     {
-        buildingLevelIcons.homeTreeIcon.DOColor(_DATA.LevelContains(_levelData.id, BuildingID.HomeTree) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        buildingLevelIcons.hutIcon.DOColor(_DATA.LevelContains(_levelData.id, BuildingID.Hut) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        buildingLevelIcons.hogyrIcon.DOColor(_DATA.LevelContains(_levelData.id, BuildingID.Horgr) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        buildingLevelIcons.unknownIcon.DOColor(_DATA.LevelContains(_levelData.id, BuildingID.Unknown) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        buildingLevelIcons.unknown2Icon.DOColor(_DATA.LevelContains(_levelData.id, BuildingID.Unknown2) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        buildingLevelIcons.homeTreeIcon.DOColor(_DATA.LevelContains(_levelData.id, SiteID.HomeTree) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        buildingLevelIcons.hutIcon.DOColor(_DATA.LevelContains(_levelData.id, SiteID.Hut) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        buildingLevelIcons.hogyrIcon.DOColor(_DATA.LevelContains(_levelData.id, SiteID.Horgr) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        buildingLevelIcons.unknownIcon.DOColor(_DATA.LevelContains(_levelData.id, SiteID.Unknown) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        buildingLevelIcons.unknown2Icon.DOColor(_DATA.LevelContains(_levelData.id, SiteID.Unknown2) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
 
         humanLevelIcons.loggerIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Logger) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         humanLevelIcons.lumberjackIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Lumberjack) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);

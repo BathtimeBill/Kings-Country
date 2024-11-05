@@ -56,6 +56,7 @@ public static class GameEvents
     public static event Action OnHomeTreeSelected = null;
     public static event Action OnHorgrSelected = null;
     public static event Action OnHutSelected = null;
+    public static event Action<SiteID, bool> OnSiteSelected = null;
 
     public static event Action OnHomeTreeDeselected = null;
     public static event Action OnHorgrDeselected = null;
@@ -135,6 +136,8 @@ public static class GameEvents
     {
         OnHutSelected?.Invoke();
     }
+    
+    public static void ReportOnSiteSelected(SiteID _ID, bool _selected)=> OnSiteSelected?.Invoke(_ID, _selected);
     
     public static void ReportOnWispDestroy()
     {

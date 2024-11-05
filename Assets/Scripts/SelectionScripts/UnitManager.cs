@@ -33,7 +33,7 @@ public class UnitManager : Singleton<UnitManager>
         //}
         foreach (Unit unit in unitSelected)
         {
-            unit.ChangeGroupNumber(_group.ToString());
+            unit.healthBar.ChangeGroupNumber(_group.ToString());
             GetGroup(_group).Add(unit);
         }
     }
@@ -49,7 +49,20 @@ public class UnitManager : Singleton<UnitManager>
         selectedUnit = GetGroup(_group)[0].gameObject;
     }
 
-    public List<Unit> GetGroup(int _group)
+    public void RemoveSelectedUnit(Unit _unit)
+    {
+        if (controlGroup01.Contains(_unit)) controlGroup01.Remove(_unit);
+        if (controlGroup02.Contains(_unit)) controlGroup02.Remove(_unit);
+        if (controlGroup03.Contains(_unit)) controlGroup03.Remove(_unit);
+        if (controlGroup04.Contains(_unit)) controlGroup04.Remove(_unit);
+        if (controlGroup05.Contains(_unit)) controlGroup05.Remove(_unit);
+        if (controlGroup06.Contains(_unit)) controlGroup06.Remove(_unit);
+        if (controlGroup07.Contains(_unit)) controlGroup07.Remove(_unit);
+        if (controlGroup08.Contains(_unit)) controlGroup08.Remove(_unit);
+        if (controlGroup09.Contains(_unit)) controlGroup09.Remove(_unit);
+        if (controlGroup10.Contains(_unit)) controlGroup10.Remove(_unit);
+    }
+    private List<Unit> GetGroup(int _group)
     {
         List<Unit> _units = controlGroup01;
         if (_group == 1) _units = controlGroup01;
@@ -95,7 +108,7 @@ public class UnitManager : Singleton<UnitManager>
         DeselectAll();
         unitSelected.Add(unitToAdd);
         unitToAdd.isSelected = true;
-        unitToAdd.selectionCircle.SetActive(true);
+        unitToAdd.selectionRing.Select(true);
         GameEvents.ReportOnObjectSelected(unitToAdd.gameObject);
         StartCoroutine(WaitToCheckIsTower());
     }
@@ -106,14 +119,14 @@ public class UnitManager : Singleton<UnitManager>
         {
             unitSelected.Add(unitToAdd);
             unitToAdd.isSelected = true;
-            unitToAdd.selectionCircle.SetActive(true);
+            unitToAdd.selectionRing.Select(true);
             StartCoroutine(WaitToCheckIsTower());
         }
         else
         {
             unitToAdd.isSelected = false;
             unitSelected.Remove(unitToAdd);
-            unitToAdd.selectionCircle.SetActive(true);
+            unitToAdd.selectionRing.Select(true);
             StartCoroutine(WaitToCheckIsTower());
         }
     }
@@ -122,7 +135,7 @@ public class UnitManager : Singleton<UnitManager>
     {
         unitSelected.Add(unitToAdd);
         unitToAdd.isSelected = true;
-        unitToAdd.selectionCircle.SetActive(true);
+        unitToAdd.selectionRing.Select(true);
         StartCoroutine(WaitToCheckIsTower());
     }
 
@@ -132,7 +145,7 @@ public class UnitManager : Singleton<UnitManager>
         {
             unitSelected.Add(unitToAdd);
             unitToAdd.isSelected = true;
-            unitToAdd.selectionCircle.SetActive(true);
+            unitToAdd.selectionRing.Select(true);
             StartCoroutine(WaitToCheckIsTower());
         }
     }
@@ -144,7 +157,7 @@ public class UnitManager : Singleton<UnitManager>
             foreach (var unit in unitSelected)
             {
                 unit.isSelected = false;
-                unit.selectionCircle.SetActive(false);
+                unit.selectionRing.Select(false);
                 _UI.DisableTowerText();
             }
             unitSelected.Clear();
@@ -155,7 +168,7 @@ public class UnitManager : Singleton<UnitManager>
     public void Deselect(Unit unitToDeselect)
     {
         unitToDeselect.isSelected = false;
-        unitToDeselect.selectionCircle.SetActive(false);
+        unitToDeselect.selectionRing.Select(false);
         _UI.DisableTowerText();
         unitSelected.Remove(unitToDeselect);
         GameEvents.ReportOnObjectSelected(null);

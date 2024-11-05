@@ -23,8 +23,7 @@ public class Warrior : Enemy
     public float distanceFromClosestUnit;
 
     [Header("Horgr")]
-    public GameObject horgr;
-    public float distanceFromClosestHorgr;
+    private float distanceFromClosestHorgr;
     public bool hasArrivedAtHorgr;
     public bool horgrSwitch;
     public bool spawnedFromBuilding;
@@ -46,7 +45,6 @@ public class Warrior : Enemy
     {
         base.Start();
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
-        horgr = GameObject.FindGameObjectWithTag("HorgrRally");
         if(_GM.gameState == GameState.Lose)
         {
             OnGameOver();
@@ -72,9 +70,6 @@ public class Warrior : Enemy
         {
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
         }
-        distanceFromClosestHorgr = Vector3.Distance(horgr.transform.position, transform.position);
-
-
 
         switch (state)
         {
@@ -108,13 +103,18 @@ public class Warrior : Enemy
                         agent.stoppingDistance = stoppingDistance;
                     }
                 }
-                if (distanceFromClosestHorgr < distanceFromClosestUnit && !spawnedFromBuilding)
+
+                if (_horgrExists)
                 {
-                    state = EnemyState.Horgr;
-                }
-                if (distanceFromClosestHorgr >= distanceFromClosestUnit)
-                {
-                    state = EnemyState.Attack;
+                    distanceFromClosestHorgr = Vector3.Distance(_HORGR.transform.position, transform.position);
+                    if (distanceFromClosestHorgr < distanceFromClosestUnit && !spawnedFromBuilding)
+                    {
+                        state = EnemyState.Horgr;
+                    }
+                    if (distanceFromClosestHorgr >= distanceFromClosestUnit)
+                    {
+                        state = EnemyState.Attack;
+                    }
                 }
                 break;
             case EnemyState.Flee:
@@ -128,16 +128,16 @@ public class Warrior : Enemy
                 break;
             case EnemyState.Horgr:
                 if (!hasArrivedAtHorgr)
-                    agent.SetDestination(horgr.transform.position);
+                    agent.SetDestination(_HORGR.transform.position);
                 else
                 {
-                    if (_HM.units.Count > 0)
+                    if (_horgrExists && _HORGR.HasUnits())
                     {
                         animator.SetBool("hasStoppedHorgr", false);
                         state = EnemyState.Attack;
                         horgrSwitch = false;
                     }
-                    if (_HM.units.Count == 0)
+                    else
                     {
                         if (horgrSwitch == false)
                         {
@@ -209,11 +209,17 @@ public class Warrior : Enemy
     public override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-        if(other.tag == "Horgr")
+        if (!_horgrExists)
+            return;
+        
+        if(other.CompareTag("Horgr"))
         {
-            if(!_HM.enemies.Contains(gameObject) && spawnedFromBuilding == false)
+            if (_HORGR.ContainsEnemy(this))
+                return;
+            
+            if(!spawnedFromBuilding)
             {
-                _HM.enemies.Add(gameObject);
+                _HORGR.AddEnemy(this);
                 StartCoroutine(WaitForHorgr());
             }
         }
@@ -221,11 +227,15 @@ public class Warrior : Enemy
     public override void OnTriggerExit(Collider other)
     {
         base.OnTriggerExit(other);
-        if (other.tag == "Horgr")
+
+        if (!_horgrExists)
+            return;
+        
+        if (other.CompareTag("Horgr"))
         {
             if(spawnedFromBuilding == false)
             {
-                _HM.enemies.Remove(gameObject);
+                _HORGR.RemoveEnemy(this);
                 hasArrivedAtHorgr = false;
             }
 

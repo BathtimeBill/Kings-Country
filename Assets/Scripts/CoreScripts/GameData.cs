@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameData : Singleton<GameData>
 {
@@ -34,12 +35,14 @@ public class GameData : Singleton<GameData>
     public bool IsHumanUnit(string _id) => humanData.Find(x => x.id.ToString() == _id);
     #endregion;
 
-    #region Building Units
-    [Header("Building Unit Data")]
-    [BV.EnumList(typeof(BuildingID))]
-    public List<BuildingData> buildingData;
-    public BuildingData GetUnit(BuildingID _id) => buildingData.Find(x => x.id == _id);
-    public bool IsBuildingUnit(string _id) => buildingData.Find(x => x.id.ToString() == _id);
+    #region Site Units
+    [FormerlySerializedAs("buildingData")]
+    [Header("Site Data")]
+    [BV.EnumList(typeof(SiteID))]
+    public List<SiteData> siteData;
+    public SiteData GetSiteData(SiteID _id) => siteData.Find(x => x.id == _id);
+    public GameObject GetSitePrefab(SiteID _id) => siteData.Find(x => x.id == _id).sitePrefab;
+    public bool IsBuildingUnit(string _id) => siteData.Find(x => x.id.ToString() == _id);
     #endregion;
 
     #region Tools
@@ -86,7 +89,7 @@ public class GameData : Singleton<GameData>
     public LevelData GetLevel(LevelID _id) => levelData.Find(x => x.id == _id);
     public LevelID currentLevelID => currentLevel.id;
     public bool LevelContains(LevelID _levelID, HumanID _humanID) => GetLevel(_levelID).availableHumans.Contains(_humanID);
-    public bool LevelContains(LevelID _levelID, BuildingID _buildingID) => GetLevel(_levelID).availableBuildings.Contains(_buildingID);
+    public bool LevelContains(LevelID _levelID, SiteID siteID) => GetLevel(_levelID).availableBuildings.Contains(siteID);
     public bool levelAvailable(LevelID _id) => _SAVE.GetLevelSaveData(_id).unlocked && GetLevel(_id).canBePlayed;
 
     public int levelMaxDays => currentLevel.days;

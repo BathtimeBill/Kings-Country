@@ -142,12 +142,12 @@ public class Hunter : Enemy
                 else
                 {
                     agent.stoppingDistance = range;
-                    if (_HUTM.units.Count > 0)
+                    if (_HUT != null && _HUT.HasUnits())
                     {
                         animator.SetBool("hasStoppedHorgr", false);
                         Attack();
                     }
-                    if (_HUTM.units.Count == 0)
+                    else
                     {
                         if (hutSwitch == false)
                         {
@@ -155,7 +155,6 @@ public class Hunter : Enemy
                             agent.SetDestination(transform.position);
                             hutSwitch = true;
                         }
-
                     }
                 }
                 break;
@@ -209,11 +208,16 @@ public class Hunter : Enemy
     public override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-        if (other.tag == "Hut")
+        if (!_hutExists)
+            return;
+        if (other.CompareTag("Hut"))
         {
-            if (!_HUTM.enemies.Contains(gameObject) && spawnedFromBuilding == false)
+            if (_HUT.ContainsEnemy(this))
+                return;
+
+            if (spawnedFromBuilding == false)
             {
-                _HUTM.enemies.Add(gameObject);
+                _HUT.AddEnemy(this);
                 StartCoroutine(WaitForHorgr());
             }
 
@@ -223,15 +227,18 @@ public class Hunter : Enemy
     public override void OnTriggerExit(Collider other)
     {
         base.OnTriggerExit(other);
-        if (other.tag == "Hut")
+        
+        if (!_hutExists)
+            return;
+        
+        if (other.CompareTag("Hut"))
         {
             if(spawnedFromBuilding == false)
             {
-                _HUTM.enemies.Remove(gameObject);
+                _HUT.RemoveEnemy(this);
                 state = EnemyState.Attack;
                 hasArrivedAtHorgr = false;
             }
-
         }
     }
 

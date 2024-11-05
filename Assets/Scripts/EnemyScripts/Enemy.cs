@@ -157,8 +157,8 @@ public class Enemy : GameBehaviour
     {
         bool isColliding = false;
 
-        if (_HUTM.enemies.Contains(gameObject))
-            _HUTM.enemies.Remove(gameObject);
+        RemoveFromSites();
+        
         if (!isColliding)
         {
             isColliding = true;
@@ -181,8 +181,7 @@ public class Enemy : GameBehaviour
     {
 
         bool isColliding = false;
-        if (_HUTM.enemies.Contains(gameObject))
-            _HUTM.enemies.Remove(gameObject);
+        RemoveFromSites();
 
         DropMaegen();
         float thrust = 20000f;
@@ -202,6 +201,15 @@ public class Enemy : GameBehaviour
             
             Destroy(go, 25);
         }
+    }
+
+    private void RemoveFromSites()
+    {
+        if (_hutExists)
+            _HUT.RemoveEnemy(this);
+        
+        if (_horgrExists)
+            _HORGR.RemoveEnemy(this);
     }
 
     public virtual void DropMaegen()
