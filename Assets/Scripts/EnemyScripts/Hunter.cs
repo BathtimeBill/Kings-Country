@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.Serialization;
 
 public class Hunter : Enemy
 {
@@ -27,12 +28,12 @@ public class Hunter : Enemy
     public float distanceFromClosestUnit;
     public float range;
 
-    [Header("Hut")]
-    public GameObject horgr;
-    public float distanceFromClosestHorgr;
+    [FormerlySerializedAs("horgr")] [Header("Hut")]
+    public GameObject destination;
+    [FormerlySerializedAs("distanceFromClosestHorgr")] public float distanceFromClosestHut;
     public bool hasArrivedAtHorgr;
     public bool hutSwitch;
-    public bool spawnedFromBuilding;
+    [FormerlySerializedAs("spawnedFromBuilding")] public bool spawnedFromSite;
 
     [Header("Audio")]
     public GameObject SFXPool;
@@ -51,7 +52,8 @@ public class Hunter : Enemy
     public override void Start()
     {
         base.Start();
-        horgr = GameObject.FindGameObjectWithTag("HutRally");
+        
+        destination = _hutExists ? _HUT.gameObject : _HOME.gameObject;
         agent.stoppingDistance = range;
         if (_GM.gameState == GameState.Lose)
         {
@@ -70,7 +72,8 @@ public class Hunter : Enemy
     #region AI
 
     IEnumerator Tick()
-    {//Tracks the closest animal and player unit.
+    {
+        //Tracks the closest animal and player unit.
         if (_GM.gameState == GameState.Lose)
         {
             StopAllCoroutines();
@@ -78,7 +81,7 @@ public class Hunter : Enemy
         wildlife = GameObject.FindGameObjectsWithTag("Wildlife");
         closestUnit = GetClosestUnit();
         closestWildlife = GetClosestWildlife();
-        distanceFromClosestHorgr = Vector3.Distance(horgr.transform.position, transform.position);
+        distanceFromClosestHut = Vector3.Distance(destination.transform.position, transform.position);
 
 
         if (_UM.unitList.Count != 0)
@@ -133,16 +136,16 @@ public class Hunter : Enemy
                     agent.SetDestination(transform.position);
                 break;
 
-            case EnemyState.Horgr:
+            case EnemyState.ClaimSite:
                 if (!hasArrivedAtHorgr)
                 {
-                    agent.SetDestination(horgr.transform.position);
+                    agent.SetDestination(destination.transform.position);
                     agent.stoppingDistance = range / 2;
                 }
                 else
                 {
                     agent.stoppingDistance = range;
-                    if (_HUT != null && _HUT.HasUnits())
+                    if (_hutExists && _HUT.HasUnits())
                     {
                         animator.SetBool("hasStoppedHorgr", false);
                         Attack();
@@ -164,13 +167,13 @@ public class Hunter : Enemy
                 break;
         }
 
-        if (distanceFromClosestHorgr > distanceFromClosestWildlife)
+        if (distanceFromClosestHut > distanceFromClosestWildlife)
         {
             state = EnemyState.Work;
         }
-        if (distanceFromClosestHorgr <= distanceFromClosestWildlife && !spawnedFromBuilding)
+        if (distanceFromClosestHut <= distanceFromClosestWildlife && !spawnedFromSite)
         {
-            state = EnemyState.Horgr;
+            state = EnemyState.ClaimSite;
         }
 
         if (agent.velocity != Vector3.zero || distanceFromClosestUnit >= 10)
@@ -214,11 +217,11 @@ public class Hunter : Enemy
         {
             if (_HUT.ContainsEnemy(this))
                 return;
-
-            if (spawnedFromBuilding == false)
+            
+            if (spawnedFromSite == false)
             {
                 _HUT.AddEnemy(this);
-                StartCoroutine(WaitForHorgr());
+                StartCoroutine(WaitForHut());
             }
 
         }
@@ -233,7 +236,7 @@ public class Hunter : Enemy
         
         if (other.CompareTag("Hut"))
         {
-            if(spawnedFromBuilding == false)
+            if(spawnedFromSite == false)
             {
                 _HUT.RemoveEnemy(this);
                 state = EnemyState.Attack;
@@ -258,7 +261,7 @@ public class Hunter : Enemy
         base.Die(_thisUnit, _killedBy, _deathID);
     }
 
-    IEnumerator WaitForHorgr()
+    IEnumerator WaitForHut()
     {
         Log("Hut coroutine");
         yield return new WaitForSeconds(2f);

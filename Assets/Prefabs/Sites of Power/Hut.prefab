@@ -302,21 +302,15 @@ MonoBehaviour:
   enemies: []
   units: []
   playerOwns: 0
+  playerControlFX: {fileID: 757379359469620630}
+  enemyControlFX: {fileID: 757379359469620630}
   spawnRates:
     min: 10
     max: 15
-  enemyTimeLeft: 0
+  currentClaimTime: 0
   enemyMaxTimeLeft: 160
+  siteState: 0
   claimRate: 3
-  playerControlFX: {fileID: 757379359469620630}
-  enemyControlFX: {fileID: 757379359469620630}
-  fill: {fileID: 8544369924474517941}
-  enemySliderColour: {r: 1, g: 0, b: 0, a: 1}
-  unitSliderColour: {r: 0, g: 0, b: 1, a: 1}
-  neutralColour: {r: 1, g: 1, b: 1, a: 1}
-  radius: 47.18
-  centre: {x: 0, y: 0, z: 0}
-  audioSource: {fileID: 0}
 --- !u!208 &2286181209366235852
 NavMeshObstacle:
   m_ObjectHideFlags: 0

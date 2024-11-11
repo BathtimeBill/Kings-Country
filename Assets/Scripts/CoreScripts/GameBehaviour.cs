@@ -7,6 +7,7 @@ using UnityEngine.Rendering;
 public class GameBehaviour : BV.Behaviour
 {
     protected static GameManager _GM { get { return GameManager.instance; } }
+    protected static HomeTree _HOME { get { return GameManager.instance.homeTree; } }
     protected static Horgr _HORGR { get { return GameManager.instance.horgr; } }
     protected static Hut _HUT {get {return GameManager.instance.hut;}}
     protected static MusicManager _MM { get { return MusicManager.instance; } }
@@ -159,7 +160,7 @@ public enum EnemyState
     Attack,
     Flee,
     Beacon,
-    Horgr,
+    ClaimSite,
     Cheer,
 }
 public enum UnitState

@@ -13,7 +13,6 @@ public class HomeTree : SiteOfPower
     {
         maxHealth = siteData.health;
         health = maxHealth;
-        healthBar.AdjustHealthBar(health, maxHealth, true);
     }
     
     //If the Home Tree collides with the enemy weapons, it takes damage.
@@ -49,7 +48,7 @@ public class HomeTree : SiteOfPower
     private void TakeDamage(float damage, Vector3 spawn)
     {
         health -= damage;
-        healthBar.AdjustHealthBar(health, maxHealth, true);
+        healthBar.AdjustHealthBar(health, maxHealth, GetCaptureColor(siteState));
         audioSource.clip = _SM.GetChopSounds();
         audioSource.Play();
         Instantiate(hitParticle, spawn, transform.rotation);

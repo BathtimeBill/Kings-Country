@@ -109,7 +109,7 @@ public class Warrior : Enemy
                     distanceFromClosestHorgr = Vector3.Distance(_HORGR.transform.position, transform.position);
                     if (distanceFromClosestHorgr < distanceFromClosestUnit && !spawnedFromBuilding)
                     {
-                        state = EnemyState.Horgr;
+                        state = EnemyState.ClaimSite;
                     }
                     if (distanceFromClosestHorgr >= distanceFromClosestUnit)
                     {
@@ -126,7 +126,7 @@ public class Warrior : Enemy
                 else
                     agent.SetDestination(transform.position);
                 break;
-            case EnemyState.Horgr:
+            case EnemyState.ClaimSite:
                 if (!hasArrivedAtHorgr)
                     agent.SetDestination(_HORGR.transform.position);
                 else

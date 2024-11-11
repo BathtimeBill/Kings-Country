@@ -16,19 +16,20 @@ public class SiteOfPower : GameBehaviour
     
     public List<Enemy> enemies;
     public List<Unit> units;
-    public bool playerOwns;
     public GameObject playerControlFX;
     public GameObject enemyControlFX;
 
     public BV.Range spawnRates;
     [FormerlySerializedAs("enemyTimeLeft")] public float currentClaimTime;
-    public float enemyMaxTimeLeft;
     public SiteState siteState;
-    public float claimRate;
+    [FormerlySerializedAs("claimRate")] public float currentClaimRate;
+    private float spawnDelay = 1f;
 
     public void Start()
     {
+        currentClaimRate = siteData.claimRate;
         ChangeSiteState(SiteState.Claimed);
+        healthBar.AdjustHealthBar(currentClaimTime, siteData.claimTime, GetCaptureColor(siteState));
     }
 
     public void OnTriggerStay(Collider other)
@@ -42,29 +43,23 @@ public class SiteOfPower : GameBehaviour
         if (isSpecialEnemy && siteState != SiteState.Captured)
         {
             if(enemies.Count > units.Count)
-                currentClaimTime -= claimRate * Time.deltaTime;
+                currentClaimTime -= currentClaimRate * Time.deltaTime;
         }
 
         if (isUnit && siteState != SiteState.Claimed)
         {
             if(units.Count > enemies.Count)
-                currentClaimTime += claimRate * Time.deltaTime;
+                currentClaimTime += currentClaimRate * Time.deltaTime;
         }
 
         if (currentClaimTime <= 0)
-        {
-            currentClaimTime = 0;
             ChangeSiteState(SiteState.Captured);
-        }
         else if (currentClaimTime >= siteData.claimTime)
-        {
-            currentClaimTime = siteData.claimTime;
             ChangeSiteState(SiteState.Claimed);
-        }
         else
-        {
             ChangeSiteState(SiteState.Neutral);
-        }
+        
+        healthBar.AdjustHealthBar(currentClaimTime, siteData.claimTime, GetCaptureColor(siteState));
     }
 
     private void ChangeSiteState(SiteState _state)
@@ -76,64 +71,39 @@ public class SiteOfPower : GameBehaviour
         switch (_state)
         {
             case SiteState.Claimed:
-                currentClaimTime = enemyMaxTimeLeft;
-                mapIcon.ChangeMapIconColor(Color.green);
+                currentClaimTime = siteData.claimTime;
                 playerControlFX.SetActive(true);
                 enemyControlFX.SetActive(false);
-                StopCoroutine(SpawnHumanUnits());
                 break;
             case SiteState.Neutral:
-                currentClaimTime = enemyMaxTimeLeft;
-                mapIcon.ChangeMapIconColor(Color.white);
                 playerControlFX.SetActive(false);
                 enemyControlFX.SetActive(false);
-                StopCoroutine(SpawnHumanUnits());
                 break;
             case SiteState.Captured:
-                currentClaimTime = enemyMaxTimeLeft;
-                mapIcon.ChangeMapIconColor(Color.red);
+                currentClaimTime = 0;
                 playerControlFX.SetActive(false);
                 enemyControlFX.SetActive(true);
-                StartCoroutine(SpawnHumanUnits());
+                spawnDelay -= Time.deltaTime;
+                if (spawnDelay <= 0)
+                {
+                    spawnDelay = Random.Range(spawnRates.min, spawnRates.max);
+                    _EM.SpawnHutEnemy(spawnLocation.transform.position);
+                }
                 break;
         }
+        mapIcon.ChangeMapIconColor(GetCaptureColor(_state));
     }
-    
-    private IEnumerator SpawnHumanUnits()
+
+    public Color GetCaptureColor(SiteState _state)
     {
-        yield return new WaitForSeconds(Random.Range(spawnRates.min, spawnRates.max));
-        _EM.SpawnHutEnemy(spawnLocation.transform.position);
-        StartCoroutine(SpawnHumanUnits());
+        if (_state == SiteState.Claimed) return Color.green;
+        else if (_state == SiteState.Captured) return Color.red;
+        else return Color.white;
     }
-    
-    public void AddUnit(Unit _unit)
-    {
-        if (!units.Contains(_unit)) units.Add(_unit);
-    }
-    public void RemoveUnit(Unit _unit)
-    {
-        if (units.Contains(_unit)) units.Remove(_unit);
-    }
-    
-    public bool ContainsUnit(Unit _unit) => units.Contains(_unit);
-    public bool HasUnits() => units.Count > 0;
-    
-    public void AddEnemy(Enemy _enemy)
-    {
-        if (!enemies.Contains(_enemy)) enemies.Add(_enemy);
-    }
-    
-    public void RemoveEnemy(Enemy _enemy)
-    {
-        if (enemies.Contains(_enemy)) enemies.Remove(_enemy);
-    }
-    public bool ContainsEnemy(Enemy _enemy) => enemies.Contains(_enemy);
-    public bool HasEnemies() => enemies.Count > 0;
     
     private void SpawnGuardian(UnitData _unitData)
     {
-        int cost = _unitData.cost;
-        if (_GM.maegen < cost)
+        if (_GM.maegen < _unitData.cost)
         {
             _UI.SetError(ErrorID.InsufficientMaegen);
             return;
@@ -141,7 +111,7 @@ public class SiteOfPower : GameBehaviour
 
         if(_GM.populous < _GM.maxPopulous)
         {
-            _GM.DecreaseMaegen(cost);
+            _GM.DecreaseMaegen(_unitData.cost);
             Instantiate(_unitData.playModel, spawnLocation.transform.position, spawnLocation.transform.rotation);
             Instantiate(spawnParticle, spawnLocation.transform.position, Quaternion.Euler(-90, 0, 0));
             _UI.CheckPopulousUI();
@@ -152,11 +122,17 @@ public class SiteOfPower : GameBehaviour
         }
     }
     
-    private void OnUnitButtonPressed(UnitData _unitData)
-    {
-        if(siteData.siteGuardians.Contains(_unitData.id))
-            SpawnGuardian(_unitData);
-    }
+    public void AddUnit(Unit _unit) { if (!units.Contains(_unit)) units.Add(_unit); }
+    public void RemoveUnit(Unit _unit) { if (units.Contains(_unit)) units.Remove(_unit); }
+    public bool ContainsUnit(Unit _unit) => units.Contains(_unit);
+    public bool HasUnits() => units.Count > 0;
+    public void AddEnemy(Enemy _enemy) { if (!enemies.Contains(_enemy)) enemies.Add(_enemy); }
+    public void RemoveEnemy(Enemy _enemy) { if (enemies.Contains(_enemy)) enemies.Remove(_enemy); }
+    public bool ContainsEnemy(Enemy _enemy) => enemies.Contains(_enemy);
+    public bool HasEnemies() => enemies.Count > 0;
+    
+    
+    private void OnUnitButtonPressed(UnitData _unitData) { if(siteData.siteGuardians.Contains(_unitData.id)) SpawnGuardian(_unitData); }
     private void OnSiteSelected(SiteID _ID, bool _selected) => selectionRing.Select(_ID == siteData.id && _selected);
     private void OnHumanKilled(Enemy _enemy, string _killer) => RemoveEnemy(_enemy);
     private void OnGameStateChanged(GameState _gameState) => healthBar.gameObject.SetActive(_inGame);
