@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class MapIconRotator : GameBehaviour
+public class MapIcon : GameBehaviour
 {
     public UnitType unitType;
     [BV.DrawIf("unitType", UnitType.Guardian)]
@@ -10,16 +10,15 @@ public class MapIconRotator : GameBehaviour
     public HumanID humanID;
     [FormerlySerializedAs("buildingID")] [BV.DrawIf("unitType", UnitType.Site)]
     public SiteID siteID;
+    public SpriteRenderer sprite;
 
     private GameObject playerCam;
     private Quaternion targetRotation;
     private float targetScale;
-    private SpriteRenderer sprite;
 
-
+    public void ChangeMapIconColor(Color _color) => sprite.color = _color;
     private void Start()
     {
-        sprite = GetComponentInChildren<SpriteRenderer>();
         if (!_SETTINGS.miniMap.showIcons)
             sprite.enabled = false;
         else

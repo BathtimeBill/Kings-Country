@@ -161,12 +161,37 @@ public class CameraController : Singleton<CameraController>
 
     public void LockCamera(bool _lock) => lockCamera = _lock;
 
+    private void OnSiteSelected(SiteID _siteID, bool _active)
+    {
+        if (!_active)
+            return;
+        
+        switch (_siteID)
+        {
+            case SiteID.HomeTree:
+                TweenCameraPosition(_GM.homeTree.transform, _TWEENING.focusTweenTime);
+                break;
+            case SiteID.Hut:
+                TweenCameraPosition(_GM.hut.transform, _TWEENING.focusTweenTime);
+                break;
+            case SiteID.Horgr:
+                TweenCameraPosition(_GM.horgr.transform, _TWEENING.focusTweenTime);
+                break;
+            case SiteID.Unknown:
+                break;
+            case SiteID.Unknown2:
+                break;
+        }
+    }
+    
     private void OnEnable()
     {
         InputManager.OnCameraMove += OnCameraMove;
         InputManager.OnCameraZoom += OnCameraZoom;
         InputManager.OnCameraRotate += OnCameraRotate;
         InputManager.OnCameraHaste += OnCameraHaste;
+        
+        GameEvents.OnSiteSelected += OnSiteSelected;
     }
 
     private void OnDisable()
@@ -175,5 +200,7 @@ public class CameraController : Singleton<CameraController>
         InputManager.OnCameraZoom -= OnCameraZoom;
         InputManager.OnCameraRotate -= OnCameraRotate;
         InputManager.OnCameraHaste -= OnCameraHaste;
+        
+        GameEvents.OnSiteSelected -= OnSiteSelected;
     }
 }

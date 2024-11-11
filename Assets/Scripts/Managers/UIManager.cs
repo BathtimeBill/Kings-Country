@@ -375,21 +375,18 @@ public class UIManager : Singleton<UIManager>
         homeTreePanel.SetActive(false);
         audioSource.clip = _SM.closeMenuSound;
         audioSource.Play();
-        GameEvents.ReportOnHomeTreeDeselected();
     }
     public void CloseHorgrMenu()
     {
         horgrPanel.SetActive(false);
         audioSource.clip = _SM.closeMenuSound;
         audioSource.Play();
-        GameEvents.ReportOnHorgrDeselected();
     }
     public void CloseHutMenu()
     {
         hutPanel.SetActive(false);
         audioSource.clip = _SM.closeMenuSound;
         audioSource.Play();
-        GameEvents.ReportOnHutDeselected();
     }
 
     public void SetBuildingToggleShiny(bool _shine)

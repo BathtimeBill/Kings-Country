@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class SettingsManager : GameBehaviour
@@ -14,11 +15,14 @@ public class SettingsManager : GameBehaviour
     [SerializeField] private Slider sfxSlider;
     [Header("Units")]
     [SerializeField] private Toggle unitOutlinesToggle;
-    [SerializeField] private Toggle unitHealthBarToggle;
+    [FormerlySerializedAs("unitHealthBarToggle")] [SerializeField] private Toggle guardianHealthBarToggle;
+    [SerializeField] private Toggle humanHealthBarToggle;
     [Header("Mini Map")]
     [SerializeField] private Toggle showMiniMapToggle;
     [SerializeField] private Toggle showMiniMapIconsToggle;
     [SerializeField] private Toggle miniMapRotationToggle;
+    [Header("Gameplay")]
+    [SerializeField] private Toggle playLogToggle;
     [Header("Aesthetics")]
     [SerializeField] private Toggle colourBlackToggle;
     [SerializeField] private Toggle colourWhiteToggle;
@@ -41,8 +45,10 @@ public class SettingsManager : GameBehaviour
         //Units
         unitOutlinesToggle.onValueChanged.AddListener((bool _show) => GameEvents.ReportOnUnitOutlines(_show));
         unitOutlinesToggle.isOn = _SAVE.GetUnitOutline;
-        unitHealthBarToggle.onValueChanged.AddListener((bool _show) => GameEvents.ReportOnUnitHealthBars(_show));
-        unitHealthBarToggle.isOn = _SAVE.GetUnitHealthBars;
+        guardianHealthBarToggle.onValueChanged.AddListener((bool _show) => GameEvents.ReportOnGuardianHealthBars(_show));
+        guardianHealthBarToggle.isOn = _SAVE.GetGuardianHealthBars;
+        humanHealthBarToggle.onValueChanged.AddListener((bool _show) => GameEvents.ReportOnHumanHealthBars(_show));
+        humanHealthBarToggle.isOn = _SAVE.GetGuardianHealthBars;
 
         //Mini Map
         showMiniMapToggle.onValueChanged.AddListener((bool _show) => GameEvents.ReportOnMiniMapShow(_show));
@@ -51,6 +57,10 @@ public class SettingsManager : GameBehaviour
         showMiniMapIconsToggle.isOn = _SAVE.GetMiniMapIcons;
         miniMapRotationToggle.onValueChanged.AddListener((bool _show) => GameEvents.ReportOnMiniMapRotation(_show));
         miniMapRotationToggle.isOn = _SAVE.GetMiniMapRotation;
+        
+        //Gameplay
+        playLogToggle.onValueChanged.AddListener((bool _show) => GameEvents.ReportOnPlayLog(_show));
+        playLogToggle.isOn = _SAVE.GetPlayLog;
 
         //Aesthetics
         colourBlackToggle.onValueChanged.AddListener((bool _on) => ChangePanelColour(PanelColourID.Black));
@@ -91,7 +101,6 @@ public class SettingsManager : GameBehaviour
     {
        
         float newVolume = 7 * sliderValue - 60;
-        print(newVolume);
         musicAudioMixer.SetFloat("MusicVolume", newVolume);
         _SAVE.SetMusicVolume(newVolume);
     }

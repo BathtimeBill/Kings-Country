@@ -41,7 +41,7 @@ public class EditorButtons : MonoBehaviour
                 editorButtons.unitPanel.ShowPanel(SiteID.Hut);
                 EditorUtility.SetDirty(editorButtons);
             }
-            if (GUILayout.Button("Show Hogyr Units"))
+            if (GUILayout.Button("Show Horgr Units"))
             {
                 editorButtons.unitPanel.ShowPanel(SiteID.Horgr);
                 EditorUtility.SetDirty(editorButtons);

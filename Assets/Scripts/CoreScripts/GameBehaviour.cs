@@ -297,7 +297,7 @@ public enum UpgradeType
 
 public enum UpgradeCategoryID
 {
-    HomeTree,Hut,Hogyr,Tree,Tool,Wildlife
+    HomeTree,Hut,Horgr,Tree,Tool,Wildlife
 }
 
 public enum DifficultyRating
@@ -385,3 +385,5 @@ public enum TutorialID
     DayNightCycle,
     Story,
 }
+
+public enum SiteState {Claimed, Neutral, Captured}

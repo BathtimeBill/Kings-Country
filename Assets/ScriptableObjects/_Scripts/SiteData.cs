@@ -15,8 +15,8 @@ public class SiteData : ScriptableObject
     [Header("Stats")]
     public int health;
     public int damage;
-    public int speed;
-    public int cost;
+    public float claimTime;
+    public float claimRate = 3f;
     [Header("Non Stats")]
     public Sprite icon;
     public Sprite selectionIcon;

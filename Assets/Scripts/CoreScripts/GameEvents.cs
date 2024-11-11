@@ -58,10 +58,6 @@ public static class GameEvents
     public static event Action OnHutSelected = null;
     public static event Action<SiteID, bool> OnSiteSelected = null;
 
-    public static event Action OnHomeTreeDeselected = null;
-    public static event Action OnHorgrDeselected = null;
-    public static event Action OnHutDeselected = null;
-
     public static event Action OnToggleOutline = null;
 
     public static event Action OnMineSpawned = null;
@@ -75,7 +71,7 @@ public static class GameEvents
     public static event Action<int> OnMaegenChange = null;
     
     public static event Action<GameObject> OnObjectSelected = null; 
-
+    
     //Title Events
     public static event Action OnLevelStart = null;
 
@@ -111,30 +107,6 @@ public static class GameEvents
     public static void ReportOnToggleOutline()
     {
         OnToggleOutline?.Invoke();
-    }
-    public static void ReportOnHomeTreeDeselected()
-    {
-        OnHomeTreeDeselected?.Invoke();
-    }
-    public static void ReportOnHorgrDeselected()
-    {
-        OnHorgrDeselected?.Invoke();
-    }
-    public static void ReportOnHutDeselected()
-    {
-        OnHutDeselected?.Invoke();
-    }
-    public static void ReportOnHomeTreeSelected()
-    {
-        OnHomeTreeSelected?.Invoke();
-    }
-    public static void ReportOnHorgrSelected()
-    {
-        OnHorgrSelected?.Invoke();
-    }
-    public static void ReportOnHutSelected()
-    {
-        OnHutSelected?.Invoke();
     }
     
     public static void ReportOnSiteSelected(SiteID _ID, bool _selected)=> OnSiteSelected?.Invoke(_ID, _selected);
@@ -267,6 +239,8 @@ public static class GameEvents
     {
         OnLevelStart?.Invoke();
     }
+    
+    
 
     #region Unit Management
     public static event Action<string, string, int> OnCreatureKilled = null;
@@ -281,15 +255,19 @@ public static class GameEvents
 
     #region Settings
     public static event Action<bool> OnUnitOutlines = null;
-    public static event Action<bool> OnUnitHealthBars = null;
+    public static event Action<bool> OnGuardianHealthBars = null;
+    public static event Action<bool> OnHumanHealthBars = null;
     public static event Action<bool> OnMiniMapShow = null;
     public static event Action<bool> OnMiniMapIcons = null;
     public static event Action<bool> OnMiniMapRotation = null;
+    public static event Action<bool> OnPlayLog = null;
 
     public static void ReportOnUnitOutlines(bool _show) => OnUnitOutlines?.Invoke(_show);
-    public static void ReportOnUnitHealthBars(bool _show) => OnUnitHealthBars?.Invoke(_show);
+    public static void ReportOnGuardianHealthBars(bool _show) => OnGuardianHealthBars?.Invoke(_show);
+    public static void ReportOnHumanHealthBars(bool _show) => OnHumanHealthBars?.Invoke(_show);
     public static void ReportOnMiniMapShow(bool _show) => OnMiniMapShow?.Invoke(_show);
     public static void ReportOnMiniMapIcons(bool _show) => OnMiniMapIcons?.Invoke(_show);
     public static void ReportOnMiniMapRotation(bool _show) => OnMiniMapRotation?.Invoke(_show);
+    public static void ReportOnPlayLog(bool _show) => OnPlayLog?.Invoke(_show);
     #endregion
 }

@@ -304,11 +304,6 @@ public class Unit : GameBehaviour
         health = _health;
         healthBar.AdjustHealthBar(health, maxHealth);
     }
-
-    private float CalculateHealth()
-    {
-        return MathX.MapTo01(health, 0, maxHealth);
-    }
     #endregion
 
     #region UI
@@ -402,31 +397,33 @@ public class Unit : GameBehaviour
 
             Destroy(other.gameObject);
         }
-        if(other.tag == "Heal")
+        
+        
+        
+        if(other.CompareTag("Heal"))
         {
             if(unitID != CreatureID.Mistcalf)
             {
                 IncreaseHealth(100);
             }
         }
-        if (other.tag == "Maegen")
+        if (other.CompareTag("Maegen"))
         {
             _GM.maegen += 1;
         }
-        if (other.tag == "Horgr")
+        if (other.CompareTag("Horgr"))
         {
             if(_horgrExists)
                 _HORGR.AddUnit(this);
             GameEvents.ReportOnUnitArrivedAtHorgr();
         }
-        if (other.tag == "Hut")
+        if (other.CompareTag("Hut"))
         {
-            if (_HUT != null)
+            if (_hutExists)
                 _HUT.AddUnit(this);
-
             GameEvents.ReportOnUnitArrivedAtHut();
         }
-        if(other.tag == "Tower")
+        if(other.CompareTag("Tower"))
         {
             isTooCloseToTower = true;
         }
@@ -456,24 +453,15 @@ public class Unit : GameBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Horgr")
-        {
-            if(_HORGR != null)
-                _HORGR.RemoveUnit(this);
-        }
-        if(other.tag == "Hut")
-        {
-            if(_HUT != null)
-                _HUT.RemoveUnit(this);
-        }
-        if (other.tag == "Tower")
-        {
+        if (other.CompareTag("Horgr") && _horgrExists)
+            _HORGR.RemoveUnit(this);
+        
+        if(other.CompareTag("Hut") && _hutExists)
+            _HUT.RemoveUnit(this);
+        
+        if (other.CompareTag("Tower"))
             isTooCloseToTower = false;
-        }
-        //if (other.tag == "Boundry")
-        //{
-        //    isOutOfBounds = true;
-        //}
+        
         if (unitID != CreatureID.Mistcalf)
         {
             healingParticle.SetActive(false);

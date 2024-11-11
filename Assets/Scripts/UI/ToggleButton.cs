@@ -11,7 +11,7 @@ public class ToggleButton : GameBehaviour
     public UnitPanel togglePanel;
     Toggle toggle;
 
-    private void Awake()
+    private void Start()
     {
         toggle = GetComponent<Toggle>();
         if (toggle != null)

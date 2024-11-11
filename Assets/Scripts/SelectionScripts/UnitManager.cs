@@ -192,7 +192,7 @@ public class UnitManager : Singleton<UnitManager>
         if (selectedUnit == null)
             return;
         
-        _CAMERA.TweenCameraPosition(selectedUnit.transform, 0.5f);
+        _CAMERA.TweenCameraPosition(selectedUnit.transform, _TWEENING.focusTweenTime);
     }
     
     private void OnDeselectButtonPressed()

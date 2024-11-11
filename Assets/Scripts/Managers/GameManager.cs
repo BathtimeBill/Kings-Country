@@ -9,6 +9,7 @@ public class GameManager : Singleton<GameManager>
     [Header("Level Related")]
     public LevelID thisLevel;
 
+    [HideInInspector] public HomeTree homeTree;
     [HideInInspector] public Hut hut;
     [HideInInspector] public Horgr horgr;
 
@@ -84,6 +85,11 @@ public class GameManager : Singleton<GameManager>
     public void SetPlayMode(PlayMode _mode) => playmode = _mode;
     public void SetPreviousState(GameState _gs) => previousState = _gs;
 
+    private new void Awake()
+    {
+        base.Awake();
+        homeTree = FindFirstObjectByType<HomeTree>();
+    }
     void Start()
     {
         SetPreviousState(GameState.Build);

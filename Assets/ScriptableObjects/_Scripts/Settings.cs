@@ -345,6 +345,7 @@ public class Tweening
     public Ease experienceEase;
     public float experienceDelay = 1f;
     public float experienceDuration = 2f;
+    [Header("Camera")] public float focusTweenTime = 0.5f;
 }
 
 [Serializable]

@@ -182,9 +182,9 @@ public class UpgradeManager : Singleton<UpgradeManager>
                 upgrades.ChangeCategory(UpgradeCategoryID.Hut);
                 EditorUtility.SetDirty(upgrades);
             }
-            if (GUILayout.Button("Hogyr"))
+            if (GUILayout.Button("Horgr"))
             {
-                upgrades.ChangeCategory(UpgradeCategoryID.Hogyr);
+                upgrades.ChangeCategory(UpgradeCategoryID.Horgr);
                 EditorUtility.SetDirty(upgrades);
             }
             GUILayout.EndHorizontal();

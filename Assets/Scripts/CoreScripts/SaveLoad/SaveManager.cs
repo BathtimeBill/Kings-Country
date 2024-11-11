@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 [Serializable]
@@ -64,7 +65,9 @@ public class PlayerSettings
     public bool miniMapShowing = true;
     public bool miniMapIcons = true;
     public bool unitOutlines = true;
-    public bool unitHealthBars = false;
+    [FormerlySerializedAs("unitHealthBars")] public bool guardianHealthBars = true;
+    public bool humanHealthBars = true;
+    public bool playLog = true;
     public PanelColourID panelColour;
     [Header("Audio")]
     public float musicVolume = 1.0f;
@@ -257,10 +260,12 @@ public class SaveManager : BGG.GameData
         save.playerSettings.musicVolume = 0.8f;
         save.playerSettings.sfxVolume = 0.8f;
         save.playerSettings.unitOutlines = true;
-        save.playerSettings.unitHealthBars = true;
+        save.playerSettings.guardianHealthBars = true;
+        save.playerSettings.humanHealthBars = true;
         save.playerSettings.miniMapShowing = true;
         save.playerSettings.miniMapIcons = true;
         save.playerSettings.miniMapRotation = true;
+        save.playerSettings.playLog = true;
         save.playerSettings.panelColour = PanelColourID.Black;
 
         save.playerStats = new PlayerStats();
@@ -323,63 +328,30 @@ public class SaveManager : BGG.GameData
 
     
     //Audio
-    public void SetMusicVolume(float _volume)
-    {
-        save.playerSettings.musicVolume = _volume;
-        //SaveData();
-    }
+    public void SetMusicVolume(float _volume) => save.playerSettings.musicVolume = _volume;
     public float GetMusicVolume => save.playerSettings.musicVolume;
-    public void SetSFXVolume(float _volume)
-    {
-        save.playerSettings.sfxVolume = _volume;
-        //SaveData();
-    }
+    public void SetSFXVolume(float _volume) => save.playerSettings.sfxVolume = _volume;
     public float GetSFXVolume => save.playerSettings.sfxVolume;
 
     //Units
-    public void SetUnitOutline(bool _outline)
-    {
-        save.playerSettings.unitOutlines = _outline;
-        //SaveData();
-    }
+    public void SetUnitOutline(bool _outline) => save.playerSettings.unitOutlines = _outline;
     public bool GetUnitOutline => save.playerSettings.unitOutlines;
-    public void SetUnitHealthBars(bool _show)
-    {
-        save.playerSettings.unitHealthBars = _show;
-        //SaveData();
-    }
-    public bool GetUnitHealthBars => save.playerSettings.unitHealthBars;
+    public void SetGuardianHealthBars(bool _show) => save.playerSettings.guardianHealthBars = _show;
+    public bool GetGuardianHealthBars => save.playerSettings.guardianHealthBars;
 
     //Mini Map
-    public void SetMiniMapShow(bool _show)
-    {
-        save.playerSettings.miniMapShowing = _show;
-        //SaveData() ;
-    }
+    public void SetMiniMapShow(bool _show) => save.playerSettings.miniMapShowing = _show;
     public bool GetMiniMapShow => save.playerSettings.miniMapShowing;
-    public void SetMiniMapIcons(bool _show)
-    {
-        save.playerSettings.miniMapIcons = _show;
-        //SaveData();
-    }
+    public void SetMiniMapIcons(bool _show) => save.playerSettings.miniMapIcons = _show;
     public bool GetMiniMapIcons => save.playerSettings.miniMapIcons;
-    public void SetMiniMapRotation(bool _rotation)
-    {
-        save.playerSettings.miniMapRotation = _rotation;
-        //SaveData();
-    }
+    public void SetMiniMapRotation(bool _rotation) => save.playerSettings.miniMapRotation = _rotation;
     public bool GetMiniMapRotation => save.playerSettings.miniMapRotation;
-
+    public bool GetPlayLog => save.playerSettings.playLog;
+    public void SetPlayLog(bool _show) => save.playerSettings.playLog = _show;
+    
     //Aesthetics
-    public void SetPanelColour(PanelColourID _panelColour)
-    {
-        save.playerSettings.panelColour = _panelColour;
-        //SaveData();
-    }
-    public PanelColourID GetPanelColour()
-    {
-        return save.playerSettings.panelColour;
-    }
+    public void SetPanelColour(PanelColourID _panelColour) => save.playerSettings.panelColour = _panelColour;
+    public PanelColourID GetPanelColour() => save.playerSettings.panelColour;
     #endregion
 
     #region Tutorial/Glossary
@@ -846,7 +818,7 @@ public class SaveManager : BGG.GameData
         GameEvents.OnDayBegin += OnDayBegin;
         GameEvents.OnDayOver += OnDayOver;
         GameEvents.OnUnitOutlines += SetUnitOutline;
-        GameEvents.OnUnitHealthBars += SetUnitHealthBars;
+        GameEvents.OnGuardianHealthBars += SetGuardianHealthBars;
         GameEvents.OnMiniMapShow += SetMiniMapShow;
         GameEvents.OnMiniMapIcons += SetMiniMapIcons;
         GameEvents.OnMiniMapRotation += SetMiniMapRotation;
@@ -871,7 +843,7 @@ public class SaveManager : BGG.GameData
         GameEvents.OnDayBegin -= OnDayBegin;
         GameEvents.OnDayOver -= OnDayOver;
         GameEvents.OnUnitOutlines -= SetUnitOutline;
-        GameEvents.OnUnitHealthBars -= SetUnitHealthBars;
+        GameEvents.OnGuardianHealthBars -= SetGuardianHealthBars;
         GameEvents.OnMiniMapShow -= SetMiniMapShow;
         GameEvents.OnMiniMapIcons -= SetMiniMapIcons;
         GameEvents.OnMiniMapRotation -= SetMiniMapRotation;

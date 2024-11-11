@@ -32,7 +32,7 @@ namespace BGG
     {
         public bool dontDestroyOnLoad;
         // Change this to whatever you want
-        protected string fileName = "data.bgg";
+        protected string fileName = "data.sss";
         // The subdirectory for the save file
         string subDir = "Save";
         // Do we want to use Encryption

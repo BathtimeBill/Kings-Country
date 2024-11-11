@@ -6,6 +6,7 @@ using DG.Tweening;
 
 public class GameLog : GameBehaviour
 {
+    public CanvasGroup canvasGroup;
     public List<TMP_Text> logLines;
     public int currentLogLine = 0;
 
@@ -16,6 +17,8 @@ public class GameLog : GameBehaviour
             logLines[i].text = "";
             logLines[i].alpha = 0;
         }
+
+        OnPlayLog(_SAVE.GetPlayLog);
     }
 
     private void ChangeLogLine(string _message)
@@ -59,16 +62,12 @@ public class GameLog : GameBehaviour
         ChangeLogLine(unit + " was killed by " + killer);
     }
 
-    private void OnDayOver()
-    {
-        ChangeLogLine("Day Complete");
-    }
+    private void OnDayOver() => ChangeLogLine("Day Complete");
 
-    private void OnTreePlaced(ToolID _treeID)
-    {
-        ChangeLogLine("You placed a " + _treeID);
-    }
+    private void OnTreePlaced(ToolID _treeID) => ChangeLogLine("You placed a " + _treeID);
 
+    private void OnPlayLog(bool _show) => canvasGroup.alpha = _show ? 1 : 0;
+    
     private void OnEnable()
     {
         GameEvents.OnHumanSpawned    += OnHumanSpawned;
@@ -77,9 +76,8 @@ public class GameLog : GameBehaviour
         GameEvents.OnHumanKilled += OnHumanKilled;
         GameEvents.OnDayOver       += OnDayOver;
         GameEvents.OnTreePlaced     += OnTreePlaced;
+        GameEvents.OnPlayLog += OnPlayLog;
     }
-
-    
 
     private void OnDisable()
     {
@@ -89,5 +87,6 @@ public class GameLog : GameBehaviour
         GameEvents.OnHumanKilled -= OnHumanKilled;
         GameEvents.OnDayOver       -= OnDayOver;
         GameEvents.OnTreePlaced     -= OnTreePlaced;
+        GameEvents.OnPlayLog -= OnPlayLog;
     }
 }
