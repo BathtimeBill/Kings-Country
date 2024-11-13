@@ -79,7 +79,7 @@ public class Hunter : Enemy
             StopAllCoroutines();
         }
         wildlife = GameObject.FindGameObjectsWithTag("Wildlife");
-        closestUnit = GetClosestUnit();
+        closestUnit = GetClosestUnit();// ObjectX.GetClosest(gameObject, _UM.unitList).transform;
         closestWildlife = ObjectX.GetClosest(gameObject, wildlife).transform;
         distanceFromClosestHut = Vector3.Distance(destination.transform.position, transform.position);
 

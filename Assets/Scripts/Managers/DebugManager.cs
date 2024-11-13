@@ -4,11 +4,8 @@ public class DebugManager : GameBehaviour
 {
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            GameEvents.ReportOnWaveOver();
-            //GameEvents.ReportOnGameWin();
-        }
+        if (Input.GetKeyDown(KeyCode.O))
+            GameEvents.ReportOnDayOver(_currentDay);
 
         if(Input.GetKeyDown(KeyCode.K))
             StartCoroutine(_EM.KillAllEnemies());

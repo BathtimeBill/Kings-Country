@@ -92,17 +92,31 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip horseGallopSound;
 
 
-
-
     public void PlaySound(AudioClip _clip)
     {
-        if (soundPoolCurrent == soundPool.Length - 1)
-            soundPoolCurrent = 0;
-        else
-            soundPoolCurrent += 1;
-
+        soundPoolCurrent = ArrayX.IncrementCounter(soundPoolCurrent, soundPool);
         soundPool[soundPoolCurrent].clip = _clip;
         soundPool[soundPoolCurrent].Play();
+    }
+    
+    public void PlaySound(AudioSource _source, AudioClip[] _sounds, bool _randomPitch = true)
+    {
+        if (_source == null || _sounds.Length == 0)
+            return;
+        
+        _source.clip = ArrayX.GetRandomItemFromArray(_sounds);
+        _source.pitch = _randomPitch ? Random.Range(0.9f, 1.1f) : 1.0f;
+        _source.Play();
+    }
+    
+    public void PlaySound(AudioSource _source, AudioClip _sound, bool _randomPitch = true)
+    {
+        if (!_source || !_sound)
+            return;
+        
+        _source.clip = _sound;
+        _source.pitch = _randomPitch ? Random.Range(0.9f, 1.1f) : 1.0f;
+        _source.Play();
     }
 
     public AudioClip GetSatyrDeathSound()

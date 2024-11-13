@@ -561,7 +561,7 @@ public class TutorialManager : GameBehaviour
         }
     }
 
-    public void OnDayBegin()
+    public void OnDayBegin(int _day)
     {
         if (tutorialComplete)
             return;

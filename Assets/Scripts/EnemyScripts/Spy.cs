@@ -6,7 +6,6 @@ using UnityEngine;
 public class Spy : Enemy
 {
     [Header("Components")]
-    public GameObject homeTree;
     public GameObject spawnParticle;
 
     [Header("Death Objects")]
@@ -24,22 +23,14 @@ public class Spy : Enemy
         health = maxHealth;
         soundPool = SFXPool.GetComponents<AudioSource>();
         agent = gameObject.GetComponent<NavMeshAgent>();
-        homeTree = GameObject.FindGameObjectWithTag("Home Tree");
-        agent.SetDestination(homeTree.transform.position);
+        agent.SetDestination(_HOME.transform.position);
         GameEvents.ReportOnSpySpawned();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (agent.velocity != Vector3.zero)
-        {
-            animator.SetBool("hasStopped", false);
-        }
-        if (agent.velocity == Vector3.zero)
-        {
-            animator.SetBool("hasStopped", true);
-        }
+        animator.SetBool("hasStopped", agent.velocity == Vector3.zero);
     }
 
     public override void OnTriggerEnter(Collider other)
@@ -54,11 +45,10 @@ public class Spy : Enemy
         {
             TakeDamage(_GM.spitExplosionDamage);
         }*/
-        if (other.tag == "River")
+        if (other.CompareTag("River"))
         {
-            _SPYM.Respawn();
+            transform.position = SpawnX.GetSpawnPositionOnLevel();
             Instantiate(spawnParticle, transform.position, transform.rotation);
-            Destroy(gameObject);
         }
     }
     public override void TakeDamage(int damage, string _damagedBy)

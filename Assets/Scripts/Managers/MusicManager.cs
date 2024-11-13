@@ -61,7 +61,7 @@ public class MusicManager : Singleton<MusicManager>
     }
 
 
-    public void OnWaveOver()
+    public void OnDayOver(int _day)
     {
         musicPlayer.Stop();
         StopCoroutine(WaitForCombatTrackToEnd());
@@ -70,7 +70,7 @@ public class MusicManager : Singleton<MusicManager>
     {
         StartCoroutine(WaitForPeaceTrackToEnd());
     }
-    public void OnStartNextRound()
+    public void OnDayBegin(int _day)
     {
         musicPlayer.Stop();
         StopCoroutine(WaitForPeaceTrackToEnd());
@@ -90,17 +90,17 @@ public class MusicManager : Singleton<MusicManager>
     {
         GameEvents.OnGameOver += OnGameOver;
         GameEvents.OnLevelWin += OnLevelWin;
-        GameEvents.OnDayOver += OnWaveOver;
+        GameEvents.OnDayOver += OnDayOver;
         GameEvents.OnContinueButton += OnContinueButton;
-        GameEvents.OnDayBegin += OnStartNextRound;
+        GameEvents.OnDayBegin += OnDayBegin;
     }
 
     private void OnDisable()
     {
         GameEvents.OnGameOver -= OnGameOver;
         GameEvents.OnLevelWin -= OnLevelWin;
-        GameEvents.OnDayOver -= OnWaveOver;
+        GameEvents.OnDayOver -= OnDayOver;
         GameEvents.OnContinueButton -= OnContinueButton;
-        GameEvents.OnDayBegin -= OnStartNextRound;
+        GameEvents.OnDayBegin -= OnDayBegin;
     }
 }

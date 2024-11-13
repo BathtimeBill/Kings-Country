@@ -14,6 +14,7 @@ public class LevelData : ScriptableObject
     [TextArea]
     public string description;
     public DifficultyRating difficultyRating;
+    public int startingMaegen = 25;
     public int days;
     public int spawnPoints;
     public Sprite icon;

@@ -20,7 +20,6 @@ public class GameBehaviour : BV.Behaviour
     protected static TreePlacement _TPlace { get { return TreePlacement.instance; } }
     protected static RunePlacement _RPlace { get { return RunePlacement.instance; } }
     protected static TooltipManager _Tool { get { return TooltipManager.instance; } }
-    protected static SpyManager _SPYM { get { return SpyManager.instance; } }
     protected static PerkManager _PERK { get { return PerkManager.instance; } }
     protected static GameData _DATA { get { return GameData.instance; } }
     protected static SaveManager _GAMESAVE { get { return SaveManager.instance; } }
@@ -52,6 +51,7 @@ public class GameBehaviour : BV.Behaviour
     public LevelData _currentLevel => _DATA.GetLevel(_GM.thisLevel);
     public GameState _currentGameState => _GM.gameState;
     public GameState _previousGameState => _GM.previousState;
+    public bool _NoTrees => _GM.trees.Count == 0;
 
     public Experience _EXP(int i) => _SETTINGS.experience.Find(x=> x.level == i);
 

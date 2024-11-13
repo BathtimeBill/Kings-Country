@@ -51,6 +51,7 @@ public class InputManager : InputX
     public static event Action OnUnitFocus = null;
     public static event Action OnTowerButton = null;
     public static event Action OnSuicideButton = null;
+    public static event Action<bool> OnWildlifeOutlineButton = null;
 
     public static event Action OnGroup01Selected = null;
     public static event Action OnGroup02Selected = null;
@@ -120,6 +121,7 @@ public class InputManager : InputX
         actions.FindActionMap("Gameplay").FindAction("Focus").performed += UnitFocus;
         actions.FindActionMap("Gameplay").FindAction("Tower").performed += TowerButton;
         actions.FindActionMap("Gameplay").FindAction("Suicide").performed += SuicideButton;
+        actions.FindActionMap("Gameplay").FindAction("WildlifeOutline").performed += WildlifeOutlineButton;
         //Menus
         //menuMoveAction = actions.FindActionMap("Menus").FindAction("MenuMove");
         //actions.FindActionMap("Menus").FindAction("MenuSelect").performed += OnMenuSelect;
@@ -228,6 +230,14 @@ public class InputManager : InputX
     private void SuicideButton(CallbackContext context)
     {
         if (context.action.WasPressedThisFrame()) OnSuicideButton?.Invoke();
+    }
+    
+    private void WildlifeOutlineButton(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame()) 
+            OnWildlifeOutlineButton?.Invoke(true);
+        if (context.action.WasReleasedThisFrame()) 
+            OnWildlifeOutlineButton?.Invoke(false);
     }
 
 

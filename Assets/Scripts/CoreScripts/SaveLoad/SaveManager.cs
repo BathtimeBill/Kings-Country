@@ -801,12 +801,12 @@ public class SaveManager : BGG.GameData
         SaveData();
     }
 
-    private void OnDayBegin()
+    private void OnDayBegin(int _day)
     {
         save.playerStats.daysPlayed += 1;
     }
 
-    private void OnDayOver()
+    private void OnDayOver(int _day)
     {
         save.playerStats.daysWon += 1;
     }

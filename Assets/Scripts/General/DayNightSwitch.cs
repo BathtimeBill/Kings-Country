@@ -74,7 +74,7 @@ public class DayNightSwitch : GameBehaviour
         _SM.weatherAudioSource.clip = _SM.forestSoundNight;
         _SM.weatherAudioSource.Play();
     }
-    public void OnDayBegin()
+    public void OnDayBegin(int _day)
     {
         TweenButtonRotation(buttonRotationDay, duration);
         MoonIntensityTween(0, duration);

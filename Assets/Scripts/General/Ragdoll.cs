@@ -2,18 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ragdoll : MonoBehaviour
+public class Ragdoll : GameBehaviour
 {
-    public AudioClip[] deathVocals;
-    AudioSource audioSource;
+    public GameObject fireParticles;
+    public AudioSource audioSource;
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        audioSource.clip = GetDeathSound();
-        audioSource.Play();
+        fireParticles.SetActive(false);
     }
-    public AudioClip GetDeathSound()
+
+    public void Die(AudioClip _deathSound, bool _onFire = false)
     {
-        return deathVocals[Random.Range(0, deathVocals.Length)];
+        if(_onFire) 
+            fireParticles.SetActive(true);
+        _SM.PlaySound(audioSource, _deathSound);
+    }
+
+    public void Launch(float _up, float _forward)
+    {
+        GetComponentInChildren<Rigidbody>().AddForce(transform.up * _up);
+        GetComponentInChildren<Rigidbody>().AddForce(transform.forward * _forward);
     }
 }

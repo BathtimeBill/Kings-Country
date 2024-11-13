@@ -8,7 +8,7 @@ public class Rune : GameBehaviour
     public bool hasUpgrade;
     public GameObject colliderObject;
 
-    public void OnWaveOver()
+    public void OnDayOver(int _day)
     {
         if(!_DATA.HasPerk(PerkID.Rune))
             Destroy(gameObject);
@@ -16,11 +16,11 @@ public class Rune : GameBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnDayOver += OnWaveOver;
+        GameEvents.OnDayOver += OnDayOver;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnDayOver -= OnWaveOver;
+        GameEvents.OnDayOver -= OnDayOver;
     }
 }

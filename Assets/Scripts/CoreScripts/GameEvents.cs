@@ -28,8 +28,8 @@ public static class GameEvents
     public static event Action OnJustStragglers = null;
     public static event Action OnCollectMaegenButton = null;
 
-    public static event Action OnDayBegin = null;
-    public static event Action OnDayOver = null;
+    public static event Action<int> OnDayBegin = null;
+    public static event Action<int> OnDayOver = null;
     public static event Action OnContinueButton = null;
 
     public static event Action OnWispDestroy = null;
@@ -158,14 +158,10 @@ public static class GameEvents
     {
         OnContinueButton?.Invoke();
     }
-    public static void ReportOnDayBegin()
-    {
-        OnDayBegin?.Invoke();
-    }
-    public static void ReportOnWaveOver()
-    {
-        OnDayOver?.Invoke();
-    }
+    public static void ReportOnDayBegin(int _day) => OnDayBegin?.Invoke(_day);
+
+    public static void ReportOnDayOver(int _day) => OnDayOver?.Invoke(_day);
+
     public static void ReportOnTreeHit()
     {
         OnTreeHit?.Invoke();

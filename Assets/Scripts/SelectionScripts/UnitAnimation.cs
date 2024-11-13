@@ -64,7 +64,7 @@ public class UnitAnimation : GameBehaviour
 
         if (!_EM.allEnemiesDead)
         {
-            closestUnit = GetClosestEnemy();
+            closestUnit = _UM.unitList == null ? null : ObjectX.GetClosest(gameObject, _EM.enemies).transform;
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
             if(unit.unitID != CreatureID.Goblin)
             {
@@ -176,28 +176,5 @@ public class UnitAnimation : GameBehaviour
     {
         int i = Random.Range(1, 4);
         return i;
-    }
-
-    private Transform GetClosestEnemy()
-    {
-        float closestDistance = Mathf.Infinity;
-        Transform trans = null;
-
-        foreach (GameObject go in _EM.enemies)
-        {
-            float currentDistance = Vector3.Distance(transform.position, go.transform.position);
-            if (currentDistance < closestDistance)
-            {
-                closestDistance = currentDistance;
-                trans = go.transform;
-            }
-        }
-
-        if (_UM.unitList == null)
-        {
-            return null;
-        }
-        else
-            return trans;
     }
 }

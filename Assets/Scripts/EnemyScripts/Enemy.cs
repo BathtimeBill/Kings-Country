@@ -4,6 +4,7 @@ using UnityEngine.AI;
 public class Enemy : GameBehaviour
 {
     public HumanID unitID;
+    private EnemyData unitData;
     [Header("Stats")]
     public int health;
     public int maxHealth;
@@ -27,11 +28,13 @@ public class Enemy : GameBehaviour
 
     private void Setup()
     {
-        agent.speed = _DATA.GetUnit(unitID).speed;
-        maxHealth = _DATA.GetUnit(unitID).health;
+        unitData = _DATA.GetUnit(unitID);
+        agent.speed = unitData.speed;
+        maxHealth = unitData.health;
         health = maxHealth;
-        speed = _DATA.GetUnit(unitID).speed;
-        damage = _DATA.GetUnit(unitID).damage;
+        speed = unitData.speed;
+        damage = unitData.damage;
+        _SM.PlaySound(unitData.spawnSounds);
     }
 
     public virtual void Die(Enemy _unitID, string _killedBy, DeathID _deathID) 
@@ -162,43 +165,36 @@ public class Enemy : GameBehaviour
         if (!isColliding)
         {
             isColliding = true;
-            GameObject go;
-            go = Instantiate(_DATA.GetUnit(unitID).ragdollModel, transform.position, transform.rotation);
+            GameObject go = Instantiate(unitData.ragdollModel, transform.position, transform.rotation);
+            go.GetComponent<Ragdoll>().Die(ArrayX.GetRandomItemFromArray(unitData.dieSounds));
             Destroy(go, 15);
         }
     }
 
     private void ExplosionDeath()
     {
-        GameObject go;
-        go = Instantiate(_DATA.GetUnit(unitID).ragdollFireModel, transform.position, transform.rotation);
-        go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * 2000);
-        go.GetComponentInChildren<Rigidbody>().AddForce(transform.forward * -16000);
+        RemoveFromSites();
+        GameObject go = Instantiate(unitData.ragdollModel, transform.position, transform.rotation);
+        Ragdoll ragdoll = go.GetComponent<Ragdoll>();
+        ragdoll.Die(ArrayX.GetRandomItemFromArray(unitData.dieSounds), true);
+        ragdoll.Launch(2000, -16000);
         Destroy(go, 15);
     }
 
     public virtual void LaunchDeath()
     {
-
         bool isColliding = false;
         RemoveFromSites();
-
         DropMaegen();
         float thrust = 20000f;
         if (!isColliding)
         {
             print("Launching");
             isColliding = true;
-            GameObject go;
-            go = Instantiate(_DATA.GetUnit(unitID).ragdollModel, transform.position, transform.rotation);
-            if (go.GetComponent<RagdollSound>() != null)
-            {
-
-                go.GetComponent<RagdollSound>().hasBeenLaunched = true;
-            }
-            go.GetComponentInChildren<Rigidbody>().AddForce(transform.up * thrust);
-            go.GetComponentInChildren<Rigidbody>().AddForce(transform.forward * -thrust);
-            
+            GameObject go = Instantiate(unitData.ragdollModel, transform.position, transform.rotation);
+            Ragdoll ragdoll = go.GetComponent<Ragdoll>();
+            ragdoll.Die(ArrayX.GetRandomItemFromArray(unitData.dieSounds));
+            ragdoll.Launch(20000, -20000);
             Destroy(go, 25);
         }
     }

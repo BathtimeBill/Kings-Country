@@ -580,7 +580,7 @@ public class UIManager : Singleton<UIManager>
     #region Wave Over
 
 
-    public void OnDayOver()
+    public void OnDayOver(int _day)
     {
         ExecuteNextFrame(() =>
         {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Enemy Data", menuName = "BGG/Enemy Data", order = 4)]
+[CreateAssetMenu(fileName = "New Enemy Data", menuName = "SSS/Enemy Data", order = 4)]
 public class EnemyData : ScriptableObject
 {
     public HumanID id;
@@ -15,10 +15,13 @@ public class EnemyData : ScriptableObject
     [Header("Non Stats")]
     public Sprite icon;
     public Sprite mapIcon;
+    [Header("Audio")]
     public AudioClip[] voiceSounds;
+    public AudioClip spawnSounds;
+    public AudioClip[] hitSounds;
+    public AudioClip[] dieSounds;
     [Header("Models")]
     public GameObject playModel;
     public GameObject ragdollModel;
-    public GameObject ragdollFireModel;
     public GameObject bloodParticles;
 }

@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine.AI;
 using UnityEngine;
 
 public class EnemyManager : Singleton<EnemyManager>
@@ -17,14 +17,20 @@ public class EnemyManager : Singleton<EnemyManager>
     public bool allEnemiesDead => enemies.Count == 0;
     public bool allEnemiesSpawned => enemyIDList.Count == 0;
     public int currentKillCount;
+    
+    public GameObject spyNotification;
     public void AddSpawnPoint(GameObject spawnPoint) => spawnPoints.Add(spawnPoint);
 
+    private Transform RandomSpawnPoint => ListX.GetRandomItemFromList(spawnPoints).transform; 
     private void Start()
     {
         enemyIDList = new List<HumanID>();
         spawnAmounts = new List<SpawnAmounts>();
         spawnAmounts.Clear();
         spawnAmounts = _DATA.currentLevel.spawnAmounts;
+        
+        if(_currentLevel.availableHumans.Contains(HumanID.Spy))
+            StartCoroutine(SpawnSpy());
     }
 
     public void BeginNewDay()
@@ -41,10 +47,8 @@ public class EnemyManager : Singleton<EnemyManager>
         yield return new WaitForEndOfFrame();
         for (int i = 0; i < enemyIDList.Count; i++)
         {
-            //Get a Random Spawn
-            int rndSpawn = Random.Range(0, _EM.spawnPoints.Count);
             //Get the human model from the human data
-            GameObject go = Instantiate(_DATA.GetUnit(enemyIDList[i]).playModel, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
+            GameObject go = Instantiate(_DATA.GetUnit(enemyIDList[i]).playModel, RandomSpawnPoint.position, transform.rotation);
             //Add to the enemies list
             enemies.Add(go);
             //Wat a random time before spawning in the next enemy so they aren't on top of each other
@@ -65,14 +69,77 @@ public class EnemyManager : Singleton<EnemyManager>
         //Add to the enemies list
         enemies.Add(go);
     }
-    public void SpawnSpyEnemy(Vector3 spawnLocation)
+    
+    private void SpawnDog()  //CHECK IF VALUES ARE RIGHT
     {
-        int rndHuman = Random.Range(0, enemyIDList.Count);
-        //Get the human model from the human data
-        GameObject go = Instantiate(_DATA.GetUnit(enemyIDList[11]).playModel, spawnLocation, transform.rotation);
+        for (int day = 1; day <= _currentLevel.days; day++)
+        {
+            int requiredTreeCount = (day == 1) ? 5 : (day * 5);
+            if (_currentDay == day && _GM.treeCount > requiredTreeCount)
+            {
+                int rndCoin = Random.Range(0, 2);
+                if (rndCoin == 1)
+                {
+                    Instantiate(_DATA.GetUnit(HumanID.Dog).playModel, RandomSpawnPoint.position, transform.rotation);
+                }
+            }
+        }
+    }
+    
+    private void SpawnSpyEnemy(Vector3 spawnLocation)
+    {
+        GameObject go = Instantiate(_DATA.GetUnit(HumanID.Spy).playModel, spawnLocation, transform.rotation);
         //Add to the enemies list
         enemies.Add(go);
     }
+    
+    private IEnumerator SpawnSpy() //CHECK - Can the spawn intervals be changed to a formula or got from somewhere else?
+    {
+        float spySpawnInterval = 1000f;
+        switch (_GM.currentDay)
+        {
+            case 0:
+                spySpawnInterval = Random.Range(500, 600);
+                break;
+            case 1:
+                spySpawnInterval = Random.Range(450, 550);
+                goto default;
+            case 2:
+                spySpawnInterval = Random.Range(400, 500);
+                goto default;
+            case 3:
+                spySpawnInterval = Random.Range(350, 430);
+                goto default;
+            case 4:
+                spySpawnInterval = Random.Range(300, 400);
+                goto default;
+            case 5:
+                spySpawnInterval = Random.Range(250, 350);
+                goto default;
+            case 6:
+                spySpawnInterval = Random.Range(200, 300);
+                goto default;
+            case 7:
+                spySpawnInterval = Random.Range(150, 250);
+                goto default;
+            case 8:
+                spySpawnInterval = Random.Range(100, 200);
+                goto default;
+            case 9:
+                spySpawnInterval = Random.Range(50, 150);
+                goto default;
+            default:
+                Vector3 spawnPos = SpawnX.GetSpawnPositionOnLevel();
+                SpawnSpyEnemy(spawnPos);
+                _UI.SetError(ErrorID.SpyClose);
+                Instantiate(spyNotification, spawnPos, transform.rotation);
+                break;
+        }
+
+        yield return new WaitForSeconds(spySpawnInterval);
+        StartCoroutine(SpawnSpy());
+    }
+
 
     private void SpawnLoop()
     {
@@ -146,7 +213,7 @@ public class EnemyManager : Singleton<EnemyManager>
             return;
 
         StopCoroutine(SpawnEnemies());
-        GameEvents.ReportOnWaveOver();
+        GameEvents.ReportOnDayOver(_currentDay);
     }
 
     /// <summary>
@@ -179,6 +246,10 @@ public class EnemyManager : Singleton<EnemyManager>
         currentKillCount = 0;
     }
 
+    private void OnDayBegin(int _day)
+    {
+        SpawnDog();
+    }
 
     private void OnEnemyUnitKilled(Enemy _enemy, string _killedBy)
     {
@@ -192,12 +263,13 @@ public class EnemyManager : Singleton<EnemyManager>
     private void OnEnable()
     {
         GameEvents.OnHumanKilled += OnEnemyUnitKilled;
-
+        GameEvents.OnDayBegin += OnDayBegin;
     }
 
     private void OnDisable()
     {
         GameEvents.OnHumanKilled -= OnEnemyUnitKilled;
+        GameEvents.OnDayBegin += OnDayBegin;
     }
 }
 

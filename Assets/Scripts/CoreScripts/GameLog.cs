@@ -62,7 +62,7 @@ public class GameLog : GameBehaviour
         ChangeLogLine(unit + " was killed by " + killer);
     }
 
-    private void OnDayOver() => ChangeLogLine("Day Complete");
+    private void OnDayOver(int _day) => ChangeLogLine("Day " + _day + " Complete");
 
     private void OnTreePlaced(ToolID _treeID) => ChangeLogLine("You placed a " + _treeID);
 

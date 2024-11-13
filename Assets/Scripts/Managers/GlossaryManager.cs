@@ -115,7 +115,7 @@ public class GlossaryManager : GameBehaviour
             case GlossaryID.WitchsHut:
                 _glossaryItem.title = "Witch's Hut";
                 _glossaryItem.description =
-                    $"A lone witch in the woods allows the {GetName(ObjectID.Grove)}’s {GetName(ObjectID.HomeTree, true)} to gather here.<br><br>"+
+                    $"A lone witch in the woods allows the {GetName(ObjectID.Grove)}ï¿½s {GetName(ObjectID.HomeTree, true)} to gather here.<br><br>"+
                     $"{GetName(ObjectID.Human, true)} will attempt to claim this site for themselves, which they do by being in its vicinity without opposition from any {GetName(ObjectID.Guardian, true)}, at which point they will begin to spawn their top tier {GetName(ObjectID.Human)} units into the game.<br><br>"+
                     $"You'll need to either defend it or attack it before the {GetName(ObjectID.Day)} is over.<br><br>" +
                     $"If the {GetName(ObjectID.Guardian, true)} outnumber the {GetName(ObjectID.Human, true)} in the vicinity of the site, it will begin to be claimed back. The more units, the more quickly it will be claimed.<br><br>" +
@@ -156,7 +156,7 @@ public class GlossaryManager : GameBehaviour
                 _glossaryItem.description =
                     $"These ferocious hounds have explosives strapped to their backs.<br><br>" +
                     $"They will appear at the beginning of a {GetName(ObjectID.Day)} if there are plentiful {GetName(ObjectID.Tree, true)} populating the {GetName(ObjectID.Grove, true)} and will attempt to blow up your {GetName(ObjectID.Tree, true)}.<br><br>" +
-                    $"They are easy to stop if you can intercept them but they’re fast moving!";
+                    $"They are easy to stop if you can intercept them but theyï¿½re fast moving!";
                 break;
             case GlossaryID.Mines:
                 _glossaryItem.title = "Mines";
@@ -176,9 +176,9 @@ public class GlossaryManager : GameBehaviour
             case GlossaryID.LordsOfTheLand:
                 _glossaryItem.title = "Lords of the Land";
                 _glossaryItem.description =
-                    $"These are high ranking members of the King’s Court, tasked with weakening the defences of the {GetName(ObjectID.Grove)}.<br><br>" +
+                    $"These are high ranking members of the Kingï¿½s Court, tasked with weakening the defences of the {GetName(ObjectID.Grove)}.<br><br>" +
                     $"They are incredibly deadly fighters that will appear sporadically to cause as much chaos as possible.<br><br>" +
-                    $"If you’re not prepared, they can easily cut through your {GetName(ObjectID.Guardian, true)} and destroy your {GetName(ObjectID.HomeTree, true)}.";
+                    $"If youï¿½re not prepared, they can easily cut through your {GetName(ObjectID.Guardian, true)} and destroy your {GetName(ObjectID.HomeTree, true)}.";
                 break;
             case GlossaryID.Combat:
                 _glossaryItem.title = "Combat";
@@ -252,7 +252,7 @@ public class GlossaryManager : GameBehaviour
     }
 
     #region Events
-    public void OnDayBegin()
+    public void OnDayBegin(int _day)
     {
         ExecuteAfterSeconds(1, () => NewGlossaryAvailable(GlossaryID.HumanClasses, "Human Classes"));
 

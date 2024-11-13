@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 9140295034157426839}
   - component: {fileID: 9140295034157426830}
+  - component: {fileID: 9140295034157426829}
   - component: {fileID: 9140295034157426825}
   - component: {fileID: 9140295034157426826}
   - component: {fileID: 9140295034157426827}
-  - component: {fileID: 9140295034157426829}
   - component: {fileID: 9140295034157426828}
   - component: {fileID: 1669366730}
   - component: {fileID: 1669366731}
@@ -279,6 +279,49 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1e982d140a32691429eacc4f8271cd0d, type: 3}
   - {fileID: 8300000, guid: a36bb882ec02a8347b93f804bc46017c, type: 3}
   horseGallopSound: {fileID: 8300000, guid: 3eeca9b10f52d684a8c3fc6322e6514b, type: 3}
+--- !u!114 &9140295034157426829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9140295034157426838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c5744060fb8bbf41a0665d93798a459, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicPlayer: {fileID: 1669366741}
+  combatMusic:
+  - {fileID: 8300000, guid: e348b01165e77b245a276a92e9aeb17d, type: 3}
+  - {fileID: 8300000, guid: de259925395ec7e4195c81e5ab8c9427, type: 3}
+  - {fileID: 8300000, guid: 973c56d160e061e42ba966191414a514, type: 3}
+  - {fileID: 8300000, guid: e7a4b9f36aa2ecb409873ef80a23fc4d, type: 3}
+  - {fileID: 8300000, guid: c12eb30021dfeea4d817c4a21ed02463, type: 3}
+  - {fileID: 8300000, guid: 893b7b0c27b1fe54096118683c8657cc, type: 3}
+  - {fileID: 8300000, guid: 8a83290c819feb047a791bb5a987307a, type: 3}
+  - {fileID: 8300000, guid: 3ac583feb1273024cad168be1e5da9b6, type: 3}
+  - {fileID: 8300000, guid: a8dff0fc186680644beb5471b1982952, type: 3}
+  - {fileID: 8300000, guid: 04ad4ef6b7c33d545bad5290d17f4225, type: 3}
+  - {fileID: 8300000, guid: 879234c73eb8da3409bb21b57548e56e, type: 3}
+  - {fileID: 8300000, guid: 9bd2e112435669349a0b4c8794f2e8b3, type: 3}
+  - {fileID: 8300000, guid: 27f47b4a5d612bc44bbc2979b2d92d6e, type: 3}
+  - {fileID: 8300000, guid: 331f8761d1cd32b4e8a88726ac3c5bef, type: 3}
+  peaceMusic:
+  - {fileID: 8300000, guid: e22255bd4ed5f0a40ac3f74a35e80981, type: 3}
+  - {fileID: 8300000, guid: b74ca1eb648f3d2409d4ac4e739489b1, type: 3}
+  - {fileID: 8300000, guid: 7129fad665e4fc94ab182d9a78667427, type: 3}
+  - {fileID: 8300000, guid: 6f9f1177e72fcd74db39cb30798667f7, type: 3}
+  - {fileID: 8300000, guid: 4fcc29f1072c6e941bbe56f7fad67f2a, type: 3}
+  - {fileID: 8300000, guid: 0f7bc3a0a63bad749a80ed412dfc48af, type: 3}
+  - {fileID: 8300000, guid: f7ee37686ce5cd14aa61599cbe2168d7, type: 3}
+  - {fileID: 8300000, guid: 637c89f8b73d91542b8871745d024ccf, type: 3}
+  - {fileID: 8300000, guid: a6b62e714358e8e43ba11cfe18945992, type: 3}
+  - {fileID: 8300000, guid: b2f63f415a225754497ebe577a4cfd81, type: 3}
+  - {fileID: 8300000, guid: 4d64da75ecf8dab4f80a8bfa6c0508ed, type: 3}
+  - {fileID: 8300000, guid: aa33b5a8078815d4a9185750833b8f07, type: 3}
+  winMusic: {fileID: 8300000, guid: 70a3813141d8e66489aaed00b2f44c50, type: 3}
+  currentClip: {fileID: 0}
 --- !u!82 &9140295034157426825
 AudioSource:
   m_ObjectHideFlags: 0
@@ -573,49 +616,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &9140295034157426829
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9140295034157426838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c5744060fb8bbf41a0665d93798a459, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicPlayer: {fileID: 1669366741}
-  combatMusic:
-  - {fileID: 8300000, guid: e348b01165e77b245a276a92e9aeb17d, type: 3}
-  - {fileID: 8300000, guid: de259925395ec7e4195c81e5ab8c9427, type: 3}
-  - {fileID: 8300000, guid: 973c56d160e061e42ba966191414a514, type: 3}
-  - {fileID: 8300000, guid: e7a4b9f36aa2ecb409873ef80a23fc4d, type: 3}
-  - {fileID: 8300000, guid: c12eb30021dfeea4d817c4a21ed02463, type: 3}
-  - {fileID: 8300000, guid: 893b7b0c27b1fe54096118683c8657cc, type: 3}
-  - {fileID: 8300000, guid: 8a83290c819feb047a791bb5a987307a, type: 3}
-  - {fileID: 8300000, guid: 3ac583feb1273024cad168be1e5da9b6, type: 3}
-  - {fileID: 8300000, guid: a8dff0fc186680644beb5471b1982952, type: 3}
-  - {fileID: 8300000, guid: 04ad4ef6b7c33d545bad5290d17f4225, type: 3}
-  - {fileID: 8300000, guid: 879234c73eb8da3409bb21b57548e56e, type: 3}
-  - {fileID: 8300000, guid: 9bd2e112435669349a0b4c8794f2e8b3, type: 3}
-  - {fileID: 8300000, guid: 27f47b4a5d612bc44bbc2979b2d92d6e, type: 3}
-  - {fileID: 8300000, guid: 331f8761d1cd32b4e8a88726ac3c5bef, type: 3}
-  peaceMusic:
-  - {fileID: 8300000, guid: e22255bd4ed5f0a40ac3f74a35e80981, type: 3}
-  - {fileID: 8300000, guid: b74ca1eb648f3d2409d4ac4e739489b1, type: 3}
-  - {fileID: 8300000, guid: 7129fad665e4fc94ab182d9a78667427, type: 3}
-  - {fileID: 8300000, guid: 6f9f1177e72fcd74db39cb30798667f7, type: 3}
-  - {fileID: 8300000, guid: 4fcc29f1072c6e941bbe56f7fad67f2a, type: 3}
-  - {fileID: 8300000, guid: 0f7bc3a0a63bad749a80ed412dfc48af, type: 3}
-  - {fileID: 8300000, guid: f7ee37686ce5cd14aa61599cbe2168d7, type: 3}
-  - {fileID: 8300000, guid: 637c89f8b73d91542b8871745d024ccf, type: 3}
-  - {fileID: 8300000, guid: a6b62e714358e8e43ba11cfe18945992, type: 3}
-  - {fileID: 8300000, guid: b2f63f415a225754497ebe577a4cfd81, type: 3}
-  - {fileID: 8300000, guid: 4d64da75ecf8dab4f80a8bfa6c0508ed, type: 3}
-  - {fileID: 8300000, guid: aa33b5a8078815d4a9185750833b8f07, type: 3}
-  winMusic: {fileID: 8300000, guid: 70a3813141d8e66489aaed00b2f44c50, type: 3}
-  currentClip: {fileID: 0}
 --- !u!82 &9140295034157426828
 AudioSource:
   m_ObjectHideFlags: 0

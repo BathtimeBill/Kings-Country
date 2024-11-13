@@ -26,7 +26,7 @@ public class LevelEvents : GameBehaviour
 
 
 
-    void OnStartNextRound()
+    void OnStartNextRound(int _day)
     {
         //LEVEL 1//
 
@@ -43,59 +43,7 @@ public class LevelEvents : GameBehaviour
         }
 
         //LEVEL 2//
-        if (_GM.level == LevelNumber.Two && _GM.currentDay == 2)
-        {
-            int dice = Random.Range(1, 6);
-            if (dice == 6 && mineExists == false)
-            {
-                mineExists = true;
-                SpawnMine();
-            }
-        }
-        if (_GM.level == LevelNumber.Two && _GM.currentDay == 3)
-        {
-            int dice = Random.Range(1, 6);
-            if(dice >= 5 && mineExists == false)
-            {
-                mineExists = true;  
-                SpawnMine();
-            }
-        }
-        if (_GM.level == LevelNumber.Two && _GM.currentDay == 4)
-        {
-            int dice = Random.Range(1, 6);
-            if (dice >= 4 && mineExists == false)
-            {
-                mineExists = true;
-                SpawnMine();
-            }
-        }
-        if (_GM.level == LevelNumber.Two && _GM.currentDay == 5)
-        {
-            int dice = Random.Range(1, 6);
-            if (dice >= 3 && mineExists == false)
-            {
-                mineExists = true;
-                SpawnMine();
-            }
-        }
-        if (_GM.level == LevelNumber.Two && _GM.currentDay == 6)
-        {
-            int dice = Random.Range(1, 6);
-            if (dice >= 2 && mineExists == false)
-            {
-                mineExists = true;
-                SpawnMine();
-            }
-        }
-        if (_GM.level == LevelNumber.Two && _GM.currentDay == 7)
-        {
-            if (mineExists == false)
-            {
-                mineExists = true;
-                SpawnMine();
-            }
-        }
+        MineLogic();
 
         //LEVEL 3//
 
@@ -196,6 +144,24 @@ public class LevelEvents : GameBehaviour
             {
                 mineExists = true;
                 SpawnMine();
+            }
+        }
+    }
+
+    private void MineLogic() //CHECK
+    {
+        if (_currentLevel.id == LevelID.WormturnRoad && !mineExists)
+        {
+            int currentDay = _GM.currentDay;
+            if (currentDay >= 2 && currentDay <= 7)
+            {
+                int[] requiredRolls = { 6, 5, 4, 3, 2, 1 };
+                int dice = Random.Range(1, 6);
+                if (dice >= requiredRolls[currentDay - 2])
+                {
+                    mineExists = true;
+                    SpawnMine();
+                }
             }
         }
     }

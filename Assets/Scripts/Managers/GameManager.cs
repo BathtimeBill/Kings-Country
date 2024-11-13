@@ -22,8 +22,6 @@ public class GameManager : Singleton<GameManager>
     public GameState gameState;
     public GameState previousState;
     public List<GameObject> trees;
-    public int startingMaegen;
-    public GameObject boundry;
     public StartCamera startCamera;
 
     [Header("Score")]
@@ -92,6 +90,7 @@ public class GameManager : Singleton<GameManager>
     public bool runesAvailable => wildlifeCount >= runesWildlifeCost[runesCount] && maegen >= runesMaegenCost[runesCount] && !atMaxRuins;
     public bool atMaxRuins => runesCount == runesMaegenCost.Length;
     public int runesCount => runes.Count;
+    public GameObject GetRandomTree => ListX.GetRandomItemFromList(trees);
     
     #endregion
 
@@ -106,7 +105,7 @@ public class GameManager : Singleton<GameManager>
     void Start()
     {
         SetPreviousState(GameState.Build);
-        IncreaseMaegen(startingMaegen);
+        IncreaseMaegen(_DATA.GetLevel(thisLevel).startingMaegen);
         currentDay = 0;
         SetPlayMode(PlayMode.DefaultMode);
         SetGame();
@@ -259,9 +258,9 @@ public class GameManager : Singleton<GameManager>
         ChangeGameState(GameState.Play);
         _EM.BeginNewDay();
         _UI.BeginNewDay();
-        GameEvents.ReportOnDayBegin();
+        GameEvents.ReportOnDayBegin(currentDay);
         ExecuteAfterSeconds(1, () => currentAgroTime = 0f);
-        //boundry.SetActive(false);
+        StartCoroutine(SpawnPickups());
     }
 
     public void ContinueToNextRound()
@@ -352,7 +351,7 @@ public class GameManager : Singleton<GameManager>
         timeSinceAttack = 0;
     }
 
-    public void OnDayOver()
+    public void OnDayOver(int _day)
     {
         //print(currentDay + " / " + _DATA.levelMaxDays);
         if(currentDay == _DATA.levelMaxDays)
@@ -494,6 +493,33 @@ public class GameManager : Singleton<GameManager>
         timeSinceWildlifeKilled = 0;
         GameEvents.ReportOnWildlifeValueChanged(wildlifeCount);
     }
+    
+    #endregion
+    
+    #region Pickups
+    
+    [Header("Pickups")]
+    public float pickupPlacementRadius;
+    public GameObject[] pickups;
+    
+    IEnumerator SpawnPickups()
+    {
+        if(_currentGameState == GameState.Play)
+            SpawnPickup();
+
+        yield return new WaitForSeconds(Random.Range(20, 50));
+        StartCoroutine(SpawnPickups());
+    }
+
+    private void SpawnPickup()
+    {
+        _GLOSSARY.NewGlossaryAvailable(GlossaryID.Portal, "Portals");
+        Vector3 randomLocation = transform.position + Random.insideUnitSphere * pickupPlacementRadius;
+        NavMesh.SamplePosition(randomLocation, out NavMeshHit hit, pickupPlacementRadius, 1);
+        GameObject pickup = Instantiate(ArrayX.GetRandomItemFromArray(pickups), hit.position, transform.rotation);
+        Destroy(pickup, 45);
+    }
+    
     
     #endregion
     
