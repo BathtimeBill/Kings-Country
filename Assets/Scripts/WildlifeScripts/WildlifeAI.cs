@@ -217,7 +217,7 @@ public class WildlifeAI : GameBehaviour
             GameObject ws = Instantiate(_GM.warningSprite, transform.position + wildlifeLocation, Quaternion.Euler(90f, 0f, 0f));
             Destroy(ws, 5);
         }
-        GameEvents.ReportOnWildlifeKilled();
+        GameEvents.ReportOnWildlifeKilled(gameObject);
         Destroy(gameObject);
     }
     private void OnFertileSoilUpgrade()

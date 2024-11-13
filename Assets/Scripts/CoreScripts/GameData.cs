@@ -50,7 +50,7 @@ public class GameData : Singleton<GameData>
     [BV.EnumList(typeof(ToolID))]
     public List<ToolData> toolData;
     public ToolData GetTool(ToolID _id) => toolData.Find(x => x.id == _id);
-    public bool CanUseTool(ToolID _id) => GetTool(_id).wildlifePrice <= _GM.wildlife && GetTool(_id).maegenPrice <= _GM.maegen;
+    public bool CanUseTool(ToolID _id) => GetTool(_id).wildlifePrice <= _GM.wildlifeCount && GetTool(_id).maegenPrice <= _GM.maegen;
     #endregion
 
     #region Wildlife

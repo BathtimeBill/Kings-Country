@@ -19,7 +19,6 @@ public class GameBehaviour : BV.Behaviour
     protected static SoundManager _SM { get { return SoundManager.instance; } }
     protected static TreePlacement _TPlace { get { return TreePlacement.instance; } }
     protected static RunePlacement _RPlace { get { return RunePlacement.instance; } }
-    protected static ForestManager _FM { get { return ForestManager.instance; } }
     protected static TooltipManager _Tool { get { return TooltipManager.instance; } }
     protected static SpyManager _SPYM { get { return SpyManager.instance; } }
     protected static PerkManager _PERK { get { return PerkManager.instance; } }

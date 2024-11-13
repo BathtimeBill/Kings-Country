@@ -167,19 +167,48 @@ public static class ObjectX
     /// <returns>The closest object in the object list</returns>
     static public GameObject GetClosest(GameObject _this, List<GameObject> _objectList)
     {
+        if (_objectList == null || _objectList.Count == 0)
+            return null;
+        
         float closestDistance = Mathf.Infinity;
         GameObject closest = null;
 
-        foreach (GameObject go in _objectList)
+        for (int i = 0; i < _objectList.Count; i++)
         {
-            float currentDistance;
-            currentDistance = Vector3.Distance(_this.transform.position, go.transform.position);
+            float currentDistance = Vector3.Distance(_this.transform.position, _objectList[i].transform.position);
             if (currentDistance < closestDistance)
             {
                 closestDistance = currentDistance;
-                closest = go;
+                closest = _objectList[i];
             }
         }
+        return closest;
+    }
+    
+    /// <summary>
+    /// Gets the closest object from an array of objects
+    /// </summary>
+    /// <param name="_this">The object to measure from</param>
+    /// <param name="_objectList">The array of objects to check</param>
+    /// <returns>The closest object in the object list</returns>
+    static public GameObject GetClosest(GameObject _this, GameObject[] _objectList)
+    {
+        if (_objectList == null || _objectList.Length == 0)
+            return null;
+
+        float closestDistance = Mathf.Infinity;
+        GameObject closest = null;
+
+        for (int i = 0; i < _objectList.Length; i++)
+        {
+            float currentDistance = Vector3.Distance(_this.transform.position, _objectList[i].transform.position);
+            if (currentDistance < closestDistance)
+            {
+                closestDistance = currentDistance;
+                closest = _objectList[i];
+            }
+        }
+
         return closest;
     }
 }

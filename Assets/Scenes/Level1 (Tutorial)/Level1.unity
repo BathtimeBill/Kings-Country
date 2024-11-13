@@ -2394,7 +2394,6 @@ Transform:
   - {fileID: 119048984}
   - {fileID: 9140295032925581145}
   - {fileID: 1477172095}
-  - {fileID: 224918043}
   - {fileID: 1268897800}
   m_Father: {fileID: 908462719540279016}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3293,6 +3292,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1900971912}
   - {fileID: 124407171}
   - {fileID: 1105307979}
   - {fileID: 1692726607}
@@ -3354,6 +3354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisLevel: 0
+  homeTree: {fileID: 0}
   hut: {fileID: 0}
   horgr: {fileID: 0}
   tutorial: 0
@@ -3375,7 +3376,6 @@ MonoBehaviour:
   horgrCooldown: 5
   maegen: 0
   maxTrees: 40
-  wildlife: 0
   populous: 0
   maxPopulous: 10
   maxMaegen: 10000
@@ -3394,6 +3394,11 @@ MonoBehaviour:
   warningSprite: {fileID: 6463376580486566839, guid: 97dda30723d3c2544bd97b2cd7e9527a,
     type: 3}
   timeAudioSource: {fileID: 135427407}
+  wildlifeSpawnRadius: 60
+  tutorialWildlifeSpawnLocation: {fileID: 1900971912}
+  currentWildlife: []
+  availableWildlife: 
+  numberOfWildlifeToSpawn: 0
 --- !u!114 &135427405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5123,69 +5128,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 650859992}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &224918042
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 224918043}
-  - component: {fileID: 224918044}
-  m_Layer: 0
-  m_Name: ForestManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &224918043
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 224918042}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1900971912}
-  m_Father: {fileID: 93676440}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &224918044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 224918042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a43f28164e8ff74c93a3c85ec704b06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnRocks: 0
-  rockPlacementRadius: 250
-  levelRocks: {fileID: 2137070294761209132, guid: 747109bd94a13e74b97b29f6a1298d4e,
-    type: 3}
-  amountOfRocks: 25
-  totalTrees: 0
-  numberOfWildlifeToSpawn: 0
-  rabbit: {fileID: 7333044533837775725, guid: f61bde3145262634d8a682812be35263, type: 3}
-  deer: {fileID: 1110297117584734567, guid: 8092213cea6521948b647c0e11538b8b, type: 3}
-  boar: {fileID: 571176725606196648, guid: f5fdb5bf49c76044b945e70b5645da5d, type: 3}
-  spawnableAnimals: []
-  minSpawnRate: 5
-  maxSpawnRate: 6
-  wildlifeSpawnRadius: 60
-  wildlifeSpawnParticle: {fileID: 15948004919313363, guid: 95895b27e8346d9499c2fd665f1d0a27,
-    type: 3}
-  spawnLocation: {x: 0, y: 0, z: 0}
-  tutorialSpawnLocation: {fileID: 1900971912}
 --- !u!1 &229466099
 GameObject:
   m_ObjectHideFlags: 0
@@ -43802,7 +43744,7 @@ PrefabInstance:
     - target: {fileID: 4310157924188156475, guid: 2f05544f87c006c4b9361fa6a0a48ee8,
         type: 3}
       propertyPath: m_Name
-      value: SaveManager
+      value: DataManager
       objectReference: {fileID: 0}
     - target: {fileID: 4381501529522911202, guid: 2f05544f87c006c4b9361fa6a0a48ee8,
         type: 3}
@@ -44636,7 +44578,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 224918043}
+  m_Father: {fileID: 125257328}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1913092576
 PrefabInstance:

@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Analytics;
 
 public class GameManager : Singleton<GameManager>
 {
+    #region Varialbles
     [Header("Level Related")]
     public LevelID thisLevel;
 
@@ -43,10 +45,10 @@ public class GameManager : Singleton<GameManager>
     [Header("Player Resources")]
     public int maegen;
     public int maxTrees;
-    public int wildlife;
     public int populous;
     public int maxPopulous = 10;
     public int maxMaegen;
+    public int treeCount => trees.Count;
 
     [Header("Runes")]
     public ToolData runesTool;
@@ -75,12 +77,23 @@ public class GameManager : Singleton<GameManager>
 
     [Header("Time")]
     public AudioSource timeAudioSource;
+    
+    [Header("Wildlife")]
+    public float wildlifeSpawnRadius = 60f;
+
+    public Transform tutorialWildlifeSpawnLocation;
+    public  List<GameObject> currentWildlife = new List<GameObject>();
+    public int wildlifeCount => currentWildlife.Count;
+    public List<WildlifeID> availableWildlife = new List<WildlifeID>();
+    [HideInInspector] public float numberOfWildlifeToSpawn;
 
     public bool fyreAvailable => _DATA.CanUseTool(ToolID.Fyre);
     public bool stormerAvailable => _DATA.CanUseTool(ToolID.Stormer);
-    public bool runesAvailable => wildlife >= runesWildlifeCost[runesCount] && maegen >= runesMaegenCost[runesCount] && !atMaxRuins;
+    public bool runesAvailable => wildlifeCount >= runesWildlifeCost[runesCount] && maegen >= runesMaegenCost[runesCount] && !atMaxRuins;
     public bool atMaxRuins => runesCount == runesMaegenCost.Length;
     public int runesCount => runes.Count;
+    
+    #endregion
 
     public void SetPlayMode(PlayMode _mode) => playmode = _mode;
     public void SetPreviousState(GameState _gs) => previousState = _gs;
@@ -99,6 +112,12 @@ public class GameManager : Singleton<GameManager>
         SetGame();
         trees.AddRange(GameObject.FindGameObjectsWithTag("Tree"));
         CheckSites();
+
+        ExecuteAfterFrames(1, () =>
+        {
+            if (!_inTutorial)
+                WildlifeInstantiate();
+        });
 
         if (!_TESTING.skipIntro)
             ChangeGameState(GameState.Intro);
@@ -347,16 +366,20 @@ public class GameManager : Singleton<GameManager>
             ChangeGameState(GameState.Win);
             GameEvents.ReportOnRuneDestroyed();
         }
+        
+        //Wildlife Stuff
+        numberOfWildlifeToSpawn = Mathf.Round(_DATA.HasPerk(PerkID.Fertile) ? treeCount / 3f : treeCount / 5f);
     }
     public void OnContinueButton()
     {
         ChangeGameState(GameState.Build);
         SetGame();
+        
+        for (int i = 0; i < numberOfWildlifeToSpawn; i++)
+        {
+            WildlifeInstantiate();
+        }
     }
-    //public void OnCollectMaegenButton()
-    //{
-    //    StopCoroutine(CheckForCollectMaegen());
-    //}
     
     private void OnWispDestroy()
     {
@@ -377,27 +400,13 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    public void OnWildlifeKilled()
-    {
-        if (timeSinceWildlifeKilled > 30)
-        {
-            _UI.SetError(ErrorID.WildlifeUnderAttack);
-            _UI.warningAudioSource.clip = _SM.warningSound;
-            _UI.warningAudioSource.Play();
-        }
-        timeSinceWildlifeKilled = 0;
-    }
 
-    private void OnWildlifeValueChange(int _value)
-    {
-        wildlife = _value;
-    }
 
     //Score Stuff
     public void CalculateScore()
     {
         int maegenAmount = maegen;
-        int wildlifeAmount = wildlife;
+        int wildlifeAmount = wildlifeCount;
         int treeAmount = trees.Count;
         int populousAmount = populous;
 
@@ -447,6 +456,47 @@ public class GameManager : Singleton<GameManager>
         StartCoroutine(_UI.UpdateWinUI(maegenAmount, maegenBonus, treeAmount, treeBonus, wildlifeAmount, wildlifeBonus, populousAmount, populousBonus, finalScore));
     }
 
+    #region Wildlife
+    //This finds a random location within a sphere from the home tree and spawns an animal there.
+    public void WildlifeInstantiate(bool _tutorial = false)
+    {
+        CheckForAvailableWildlife();
+        WildlifeData wildlifeData = _DATA.GetWildlife(ListX.GetRandomItemFromList(availableWildlife));
+        Vector3 randomLocation = transform.position + Random.insideUnitSphere * wildlifeSpawnRadius;
+        NavMesh.SamplePosition(randomLocation, out NavMeshHit hit, wildlifeSpawnRadius, 1);
+        Vector3 spawnLocation = _tutorial ? tutorialWildlifeSpawnLocation.position : hit.position;
+        GameObject spawnAnimal = Instantiate(wildlifeData.playModel, spawnLocation, transform.rotation);
+        currentWildlife.Add(spawnAnimal);
+        Instantiate(wildlifeData.spawnParticle, spawnLocation, transform.rotation);
+        GameEvents.ReportOnWildlifeValueChanged(wildlifeCount);
+    }
+    
+    
+    //This checks how many trees are in the scene and adjusts the available wildlife accordingly.
+    private void CheckForAvailableWildlife()
+    {
+        for (int i = 0; i < _DATA.wildlifeData.Count; i++)
+        {
+            if(!availableWildlife.Contains(_DATA.wildlifeData[i].id) && wildlifeCount >= _DATA.wildlifeData[i].avalaibleAt)
+               availableWildlife.Add(_DATA.wildlifeData[i].id);
+        }
+    }
+    
+    private void OnWildlifeKilled(GameObject _wildlife)
+    {
+        currentWildlife.Remove(_wildlife);
+        if (timeSinceWildlifeKilled > 30)
+        {
+            _UI.SetError(ErrorID.WildlifeUnderAttack);
+            _UI.warningAudioSource.clip = _SM.warningSound;
+            _UI.warningAudioSource.Play();
+        }
+        timeSinceWildlifeKilled = 0;
+        GameEvents.ReportOnWildlifeValueChanged(wildlifeCount);
+    }
+    
+    #endregion
+    
     private void OnGameStateChanged(GameState _gameState)
     {
         if(_gameState != gameState)
@@ -472,7 +522,6 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnDayOver += OnDayOver;
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnWildlifeKilled += OnWildlifeKilled;
-        GameEvents.OnWildlifeValueChange += OnWildlifeValueChange;
         GameEvents.OnGameOver += OnGameOver;
     }
 
@@ -490,7 +539,6 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnDayOver -= OnDayOver;
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnWildlifeKilled -= OnWildlifeKilled;
-        GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange;
         GameEvents.OnGameOver -= OnGameOver;
     }
 }

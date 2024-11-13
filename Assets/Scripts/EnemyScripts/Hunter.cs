@@ -80,7 +80,7 @@ public class Hunter : Enemy
         }
         wildlife = GameObject.FindGameObjectsWithTag("Wildlife");
         closestUnit = GetClosestUnit();
-        closestWildlife = GetClosestWildlife();
+        closestWildlife = ObjectX.GetClosest(gameObject, wildlife).transform;
         distanceFromClosestHut = Vector3.Distance(destination.transform.position, transform.position);
 
 
@@ -323,29 +323,6 @@ public class Hunter : Enemy
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * damping);
         agent.SetDestination(closestUnit.transform.position);
     }
-
-    public Transform GetClosestWildlife()
-    {
-        float closestDistance = Mathf.Infinity;
-        Transform trans = null;
-
-        foreach (GameObject go in wildlife)
-        {
-            float currentDistance;
-            currentDistance = Vector3.Distance(transform.position, go.transform.position);
-            if (currentDistance < closestDistance)
-            {
-                closestDistance = currentDistance;
-                trans = go.transform;
-            }
-        }
-        return trans;
-    }
-    //private void OnBeaconPlaced()
-    //{
-    //    fyreBeacon = GameObject.FindGameObjectWithTag("Beacon");
-    //    state = EnemyState.Beacon;
-    //}
 
     private void OnArrivedAtHut()
     {

@@ -423,7 +423,7 @@ public class UIManager : Singleton<UIManager>
 
     public void CheckEldyr()
     {
-        if(_GM.maegen >= 5000 && _GM.wildlife >= 50)
+        if(_GM.maegen >= 5000 && _GM.wildlifeCount >= 50)
         {
             eldyrButton.SetActive(true);
             ObjectiveText.SetActive(false);
@@ -444,7 +444,7 @@ public class UIManager : Singleton<UIManager>
     }
     public void CheckWildlifeUI()
     {
-        wildlifeText.text = _GM.wildlife.ToString();
+        wildlifeText.text = _GM.wildlifeCount.ToString();
     }
 
     public void ResetAgroBar() => agroFill.fillAmount = 0;
@@ -618,7 +618,7 @@ public class UIManager : Singleton<UIManager>
         totalMaegenDrops = GameObject.FindGameObjectsWithTag("MaegenDrop").Length;
         totalMaegen = totalTrees + totalMaegenDrops + GetTreeBonusTotal();
 
-        penaltyText.text = "+" + _FM.numberOfWildlifeToSpawn.ToString();
+        penaltyText.text = "+" + _GM.numberOfWildlifeToSpawn.ToString();
         totalTreesText.text = totalTrees.ToString();
         treeBonusText.text = "(+" + GetTreeBonusTotal().ToString() + ")";
         totalMaegenDropsText.text = totalMaegenDrops.ToString();
@@ -930,10 +930,7 @@ public class UIManager : Singleton<UIManager>
     }
     #endregion
 
-    private void OnWildlifeValueChange(int _value)
-    {
-        wildlifeText.text = _value.ToString();
-    }
+    private void OnWildlifeValueChange(int _value) => wildlifeText.text = _value.ToString();
 
     private void OnLevelWin(LevelID _levelID, int _score, int _maegen)
     {
@@ -1081,7 +1078,7 @@ public class UIManager : Singleton<UIManager>
 
         GameEvents.OnPerkSelected -= OnPerkSelected;
 
-        GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange;
+        GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange ;
         GameEvents.OnCombatSelected -= OnCombatSelected;
         GameEvents.OnHumanKilled -= OnEnemyUnitKilled;
 

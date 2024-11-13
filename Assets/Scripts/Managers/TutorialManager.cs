@@ -371,7 +371,7 @@ public class TutorialManager : GameBehaviour
             gamePanels.treePanel.GetComponent<InGamePanel>().ToggleOnActiveShiny();
 
         if (currentTutorialID == TutorialID.Wildlife)
-            _FM.TutorialWildlifeInstantiate();
+            _GM.WildlifeInstantiate(true);
 
         if (currentTutorialID == TutorialID.Glossary)
         {

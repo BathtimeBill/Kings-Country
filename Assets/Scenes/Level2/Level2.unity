@@ -14031,6 +14031,7 @@ MonoBehaviour:
   creatureID: 0
   humanID: 5
   siteID: 0
+  sprite: {fileID: 0}
 --- !u!4 &484878046 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: e022880a2c3ac6647ab7b2aadb945d82,
@@ -20603,7 +20604,7 @@ PrefabInstance:
     - target: {fileID: 4310157924188156475, guid: 2f05544f87c006c4b9361fa6a0a48ee8,
         type: 3}
       propertyPath: m_Name
-      value: SaveManager
+      value: DataManager
       objectReference: {fileID: 0}
     - target: {fileID: 4381501529522911202, guid: 2f05544f87c006c4b9361fa6a0a48ee8,
         type: 3}
@@ -23622,6 +23623,7 @@ MonoBehaviour:
   creatureID: 0
   humanID: 5
   siteID: 0
+  sprite: {fileID: 0}
 --- !u!1001 &938031153
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26364,6 +26366,7 @@ MonoBehaviour:
   creatureID: 0
   humanID: 5
   siteID: 0
+  sprite: {fileID: 0}
 --- !u!1001 &1114311777
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -78655,36 +78658,6 @@ MonoBehaviour:
   placementRadius: 230
   pickups:
   - {fileID: 8515745610419126221, guid: a0cb9389dc9bcf940ba11a727ef70625, type: 3}
---- !u!114 &7361388584741299651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7361388584741299654}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a43f28164e8ff74c93a3c85ec704b06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnRocks: 0
-  rockPlacementRadius: 250
-  levelRocks: {fileID: 2137070294761209132, guid: 747109bd94a13e74b97b29f6a1298d4e,
-    type: 3}
-  amountOfRocks: 25
-  totalTrees: 0
-  numberOfWildlifeToSpawn: 0
-  rabbit: {fileID: 7333044533837775725, guid: f61bde3145262634d8a682812be35263, type: 3}
-  deer: {fileID: 1110297117584734567, guid: 8092213cea6521948b647c0e11538b8b, type: 3}
-  boar: {fileID: 571176725606196648, guid: f5fdb5bf49c76044b945e70b5645da5d, type: 3}
-  spawnableAnimals: []
-  minSpawnRate: 5
-  maxSpawnRate: 6
-  wildlifeSpawnRadius: 60
-  wildlifeSpawnParticle: {fileID: 15948004919313363, guid: 95895b27e8346d9499c2fd665f1d0a27,
-    type: 3}
-  spawnLocation: {x: 0, y: 0, z: 0}
-  tutorialSpawnLocation: {fileID: 0}
 --- !u!114 &7361388584741299652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78698,6 +78671,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisLevel: 1
+  homeTree: {fileID: 0}
   hut: {fileID: 0}
   horgr: {fileID: 0}
   tutorial: 0
@@ -78719,7 +78693,6 @@ MonoBehaviour:
   horgrCooldown: 5
   maegen: 0
   maxTrees: 40
-  wildlife: 5
   populous: 0
   maxPopulous: 10
   maxMaegen: 10000
@@ -78738,6 +78711,11 @@ MonoBehaviour:
   warningSprite: {fileID: 6463376580486566839, guid: 97dda30723d3c2544bd97b2cd7e9527a,
     type: 3}
   timeAudioSource: {fileID: 7361388584741299648}
+  wildlifeSpawnRadius: 60
+  tutorialWildlifeSpawnLocation: {fileID: 0}
+  currentWildlife: []
+  availableWildlife: 
+  numberOfWildlifeToSpawn: 0
 --- !u!4 &7361388584741299653
 Transform:
   m_ObjectHideFlags: 0
@@ -78763,7 +78741,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7361388584741299653}
   - component: {fileID: 7361388584741299652}
-  - component: {fileID: 7361388584741299651}
   - component: {fileID: 7361388584741299650}
   - component: {fileID: 7361388584741299648}
   - component: {fileID: 1524005453687080144}

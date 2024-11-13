@@ -8,7 +8,7 @@ public static class GameEvents
     public static event Action OnTutorialFinished = null;
     
     public static event Action<int> OnWildlifeValueChange = null;
-    public static event Action OnWildlifeKilled = null;
+    public static event Action<GameObject> OnWildlifeKilled = null;
     public static event Action<ToolID> OnTreePlaced = null;
     public static event Action<ToolID> OnTreeDestroyed = null;
     public static event Action OnUnitMove = null;
@@ -222,7 +222,7 @@ public static class GameEvents
     }
 
     public static void ReportOnWildlifeValueChanged(int _value) => OnWildlifeValueChange?.Invoke(_value);
-    public static void ReportOnWildlifeKilled() => OnWildlifeKilled?.Invoke();
+    public static void ReportOnWildlifeKilled(GameObject _wildlife) => OnWildlifeKilled?.Invoke(_wildlife);
     public static void ReportOnTreePlaced(ToolID _treeID)=> OnTreePlaced?.Invoke(_treeID);
     public static void ReportOnTreeDestroy(ToolID _id) => OnTreeDestroyed?.Invoke(_id);
     public static void ReportOnObjectSelected(GameObject _gameobject) => OnObjectSelected?.Invoke(_gameobject);

@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4310157924188156475}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4082756093008429057
 MonoBehaviour:
@@ -72,7 +72,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 393fef48703db5d46b7cd29282f7de0a, type: 2}
   - {fileID: 11400000, guid: 66ec2c9cb8f06884dabbde01c1872f31, type: 2}
   - {fileID: 11400000, guid: 45479659f01807448b320f192164b1e7, type: 2}
-  buildingData:
+  siteData:
   - {fileID: 11400000, guid: d923cd5b36b6f0a489ecb5bb75052acc, type: 2}
   - {fileID: 11400000, guid: 412170c6c1b07ef4082898ba4d25a0a6, type: 2}
   - {fileID: 11400000, guid: 5125db51a6ee7e2449cb22769fe72ff5, type: 2}
@@ -85,6 +85,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2dc54ab018a80404f81e6c8c8592c39e, type: 2}
   - {fileID: 11400000, guid: da64050cacebf494f9af01af591de4e9, type: 2}
   wildlifeData:
+  - {fileID: 11400000, guid: 17105f05511fdb74db5d7a8ac9bc9db6, type: 2}
+  - {fileID: 11400000, guid: d428127487462f6488c54b8e8cc9ee97, type: 2}
+  - {fileID: 11400000, guid: 500dfa84033bf494b8120ca764766dbb, type: 2}
   - {fileID: 11400000, guid: f290e2a9c14dacf4c97cee5d237321d2, type: 2}
   perkData:
   - {fileID: 11400000, guid: 3d1b2d4c54be018499711c621bc7177f, type: 2}
@@ -134,7 +137,9 @@ MonoBehaviour:
       miniMapShowing: 1
       miniMapIcons: 1
       unitOutlines: 1
-      unitHealthBars: 0
+      guardianHealthBars: 0
+      humanHealthBars: 1
+      playLog: 1
       panelColour: 0
       musicVolume: 1
       sfxVolume: 1

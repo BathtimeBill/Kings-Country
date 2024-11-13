@@ -730,7 +730,7 @@ public class SaveManager : BGG.GameData
     #endregion
 
     #region Wildlife
-    private void OnWildlifeKilled()
+    private void OnWildlifeKilled(GameObject _wildlife)
     {
         CheckIfNull(save.wildlifeStats);
         save.wildlifeStats.rabbitsKilled += 1;
