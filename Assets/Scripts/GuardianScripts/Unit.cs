@@ -49,6 +49,10 @@ public class Unit : GameBehaviour
     private Transform[] rangedAttackLocations;
     [Header("Perks")]
     public bool isUpgraded;
+
+    [Header("Body")] 
+    public Transform leftFoot;
+    public Transform rightFoot;
     
     //Stats
     private float health;
@@ -68,7 +72,7 @@ public class Unit : GameBehaviour
     private float distanceToClosestEnemy;
     public float DistanceToClosestEnemy => distanceToClosestEnemy;
     public Transform ClosestEnemy => closestEnemy;
-    private UnitData unitData => _DATA.GetUnit(unitID);
+    private UnitData unitData;
     
     //Misc
     private int startingDay;
@@ -76,6 +80,7 @@ public class Unit : GameBehaviour
     
     void Start()
     {
+        unitData = _DATA.GetUnit(unitID);
         if(!isFirstPerson)
         {
             soundPool = SFXPool.GetComponents<AudioSource>();
@@ -275,6 +280,13 @@ public class Unit : GameBehaviour
     public void PlayLeshyStompSound()
     {
         PlaySound(_SM.GetLeshyStompSound());
+    }
+
+    //Look to move into SFXPool script
+    public void PlaySound(AudioClip[] _clips)
+    {
+        AudioClip clip = ArrayX.GetRandomItemFromArray(_clips);
+        PlaySound(clip);
     }
     public void PlaySound(AudioClip _clip)
     {
@@ -596,7 +608,23 @@ public class Unit : GameBehaviour
         }
     }
     
+    #region Animation Events
+
+    public void PlayFootstep(string _foot)
+    {
+        PlaySound(unitData.footstepSounds);
+        PlayParticle(_foot == "Left" ? leftFoot : rightFoot);
+    }
+
+    public void PlayParticle(Transform _transform)
+    {
+        //TODO pool Particles
+        Instantiate(bloodParticle, _transform.position, Quaternion.Euler(0, 0, 0));
+    }
     
+    public void PlayParticle(){}
+    
+    #endregion
     
     #region Combat Buttons
     private void OnCombatSelected(CombatID _combatID)

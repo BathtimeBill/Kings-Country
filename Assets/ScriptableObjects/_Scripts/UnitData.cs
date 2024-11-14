@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Unit Data", menuName = "BGG/Unit Data", order = 3)]
+[CreateAssetMenu(fileName = "New Unit Data", menuName = "SSS/Unit Data", order = 3)]
 public class UnitData : ScriptableObject
 {
     public CreatureID id;
@@ -21,7 +19,11 @@ public class UnitData : ScriptableObject
     [Header("Non Stats")]
     public Sprite icon;
     public Sprite mapIcon;
+    [Header("Audio")]
     public AudioClip[] voiceSounds;
+    public AudioClip[] footstepSounds;
+    public AudioClip[] hitSounds;
+    public AudioClip[] dieSounds;
     [Header("Models")]
     public GameObject playModel;
     public GameObject ragdollModel;

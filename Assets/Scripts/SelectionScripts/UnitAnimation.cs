@@ -177,4 +177,12 @@ public class UnitAnimation : GameBehaviour
         int i = Random.Range(1, 4);
         return i;
     }
+    
+    #region Animation Events
+
+    public void PlayFootstep(string _foot) => unit.PlayFootstep(_foot);
+
+    public void PlayParticle() => unit.PlayParticle();
+
+    #endregion
 }
