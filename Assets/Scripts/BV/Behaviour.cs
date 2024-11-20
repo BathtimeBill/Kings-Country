@@ -207,6 +207,16 @@ namespace BV
 			func();
 		}
 
+		public void EnableAfterTime(GameObject _go, float _time)
+		{
+			ExecuteAfterSeconds(_time, () => { _go.SetActive(true); });
+		}
+		
+		public void DisableAfterTime(GameObject _go, float _time)
+		{
+			ExecuteAfterSeconds(_time, () => { _go.SetActive(false); });
+		}
+		
         #endregion
 
         #region Prefabs

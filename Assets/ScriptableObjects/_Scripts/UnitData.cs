@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "New Unit Data", menuName = "SSS/Unit Data", order = 3)]
 public class UnitData : ScriptableObject
@@ -16,16 +17,19 @@ public class UnitData : ScriptableObject
     public int cost;
     public float detectionRadius = 50f;
     public float stoppingDistance = 4f;
+    public float attackRange = 15f;
     [Header("Non Stats")]
     public Sprite icon;
     public Sprite mapIcon;
     [Header("Audio")]
     public AudioClip[] voiceSounds;
     public AudioClip[] footstepSounds;
+    public AudioClip[] attackSounds;
     public AudioClip[] hitSounds;
     public AudioClip[] dieSounds;
     [Header("Models")]
     public GameObject playModel;
     public GameObject ragdollModel;
-    public GameObject bloodParticles;
+    public GameObject hitParticles;
+    public GameObject dieParticles;
 }

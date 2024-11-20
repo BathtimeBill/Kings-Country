@@ -16,7 +16,7 @@ public class EnemyProjectile : GameBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

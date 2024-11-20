@@ -23,6 +23,8 @@ MonoBehaviour:
   speed: 16
   cost: 3
   detectionRadius: 50
+  stoppingDistance: 4
+  attackRange: 15
   icon: {fileID: 21300000, guid: f50310a6dadd9084bb57020f5e58734c, type: 3}
   mapIcon: {fileID: 1690248817, guid: b5841c504809ed34b8877f713db8425d, type: 3}
   voiceSounds:
@@ -31,8 +33,17 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 382178ef2fb2a514eae7027e49b594ab, type: 3}
   - {fileID: 8300000, guid: a4962baacdb6e8f41aab03b6ecc3c548, type: 3}
   - {fileID: 8300000, guid: 779fb480b35c3e34d8adcd098a5ea278, type: 3}
+  footstepSounds: []
+  attackSounds: []
+  hitSounds: []
+  dieSounds:
+  - {fileID: 8300000, guid: 66c4c77c7b7255242962995ce974a9b1, type: 3}
+  - {fileID: 8300000, guid: 489dbd0ff93c7814a8e9701b6f5f0184, type: 3}
+  - {fileID: 8300000, guid: 736db44224450f747bcc326523ea8745, type: 3}
+  - {fileID: 8300000, guid: 06320ccc15cb111499cb78c056a9686e, type: 3}
   playModel: {fileID: 1071894615449563641, guid: 097cbc6e89e54d44895325a760ffb3e4,
     type: 3}
   ragdollModel: {fileID: 7104668311302812332, guid: 07f8d8d2cb93a5f43b623f7c6edad579,
     type: 3}
-  bloodParticles: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}
+  hitParticles: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}
+  dieParticles: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}

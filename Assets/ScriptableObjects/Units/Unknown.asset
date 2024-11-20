@@ -21,14 +21,24 @@ MonoBehaviour:
     is high enough you can unlock.
 
 '
+  towerUnit: 0
   health: 0
   damage: 0
   speed: 0
   cost: 0
   detectionRadius: 50
+  stoppingDistance: 4
+  attackRange: 15
   icon: {fileID: 101537467, guid: 932a504f2cacdae4b98f9944f39959b2, type: 3}
   mapIcon: {fileID: 101537467, guid: 932a504f2cacdae4b98f9944f39959b2, type: 3}
-  mapIconColour: {r: 0.025231415, g: 0.764151, b: 0.44184878, a: 1}
   voiceSounds:
   - {fileID: 8300000, guid: 1e982d140a32691429eacc4f8271cd0d, type: 3}
   - {fileID: 8300000, guid: b46d5b60d2ca55b4d978eac1fe49997d, type: 3}
+  footstepSounds: []
+  attackSounds: []
+  hitSounds: []
+  dieSounds: []
+  playModel: {fileID: 0}
+  ragdollModel: {fileID: 0}
+  hitParticles: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}
+  dieParticles: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}

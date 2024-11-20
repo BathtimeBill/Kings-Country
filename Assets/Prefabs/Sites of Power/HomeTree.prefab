@@ -317,17 +317,20 @@ MonoBehaviour:
   mapIcon: {fileID: 6222763349614320254}
   enemies: []
   units: []
-  playerOwns: 0
+  playerControlFX: {fileID: 0}
+  enemyControlFX: {fileID: 0}
   spawnRates:
     min: 0
     max: 0
-  enemyTimeLeft: 0
-  enemyMaxTimeLeft: 0
+  currentClaimTime: 0
+  siteState: 0
+  currentClaimRate: 0
   health: 0
   maxHealth: 0
   hitParticle: {fileID: 4197850467115213477, guid: 6e4da939aea615a46acdc0d7d7e2e189,
     type: 3}
-  deathParticle: {fileID: 0}
+  deathParticle: {fileID: 5981666678807991387, guid: 80530fe8b03739242b422e89058c0fa2,
+    type: 3}
   audioSource: {fileID: 2742575085048848624}
   homeTreeTower: {fileID: 9108620099173285338}
 --- !u!82 &2742575085048848624

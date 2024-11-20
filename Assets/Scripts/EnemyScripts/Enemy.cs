@@ -122,7 +122,7 @@ public class Enemy : GameBehaviour
                 case CreatureID.Goblin:
                 case CreatureID.Mistcalf:
                 case CreatureID.Tower:
-                case CreatureID.SpitTower:
+                case CreatureID.FidhainTower:
                     TakeDamage(uwc.Damage, other.GetComponent<UnitWeaponCollider>().UnitID);
                     break;
                 case CreatureID.Fidhain:

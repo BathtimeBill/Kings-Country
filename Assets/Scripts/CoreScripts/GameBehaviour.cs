@@ -52,6 +52,8 @@ public class GameBehaviour : BV.Behaviour
     public GameState _currentGameState => _GM.gameState;
     public GameState _previousGameState => _GM.previousState;
     public bool _NoTrees => _GM.trees.Count == 0;
+    public bool _NoUnits => _UM.unitList.Count == 0;
+    public Transform _Pointer => _PC.targetPointer.transform;
 
     public Experience _EXP(int i) => _SETTINGS.experience.Find(x=> x.level == i);
 
@@ -186,7 +188,7 @@ public enum CreatureID
     Mistcalf,
     Fidhain,
     Tower,
-    SpitTower,
+    FidhainTower,
     Unknown
 }
 
@@ -329,7 +331,7 @@ public enum ErrorID
 public enum ObjectID
 {
     Resource    = 0,  Wildlife, Maegen, Populous, Day, Night, Guardian, Human, Grove, Perk,
-    Tool        = 20, Tree, Rune, Fyre, Stormer, Tower, SpitTower,
+    Tool        = 20, Tree, Rune, Fyre, Stormer, Tower, FidhainTower,
     HomeTree    = 30, Satyr, Orcus, Leshy,
     Hut         = 40, Goblin, Skessa, Fidhain,
     Horgr       = 50, Mistcalf, Huldra, Skuggi,

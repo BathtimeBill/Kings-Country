@@ -16,19 +16,7 @@ public class UnitWeapon : GameBehaviour
     public ParticleSystem spitParticle;
     public Collider spitCollider;
     
-    public void Arrow()
-    {
-        if (_EM.allEnemiesDead)
-            return;
-        
-        if(GetComponentInParent<Unit>().DistanceToClosestEnemy < 80)
-        {
-            firingPoint.transform.LookAt(gameObject.GetComponentInParent<Unit>().ClosestEnemy);
-            GameObject go = Instantiate(arrow, firingPoint.transform.position, transform.rotation);
-            go.GetComponent<EnemyProjectile>().target = GetComponentInParent<Unit>().ClosestEnemy.gameObject;
-            Destroy(go, 1);
-        }
-    }
+
     public void EnableCollider()
     {
         weaponCollider.enabled = true;
@@ -53,26 +41,7 @@ public class UnitWeapon : GameBehaviour
     {
         gameObject.GetComponentInParent<Unit>().PlayGolemFootstepSound();
     }
-    public void LeftLeshyFootstep()
-    {
-        gameObject.GetComponentInParent<Unit>().PlayLeshyFootstepSound();
-        Instantiate(footstepParticle, leftFoot.transform.position, Quaternion.Euler(0, 0, 0));
-    }
-    public void RightLeshyFootstep()
-    {
-        gameObject.GetComponentInParent<Unit>().PlayLeshyFootstepSound();
-        Instantiate(footstepParticle, rightFoot.transform.position, Quaternion.Euler(90, 0, 0));
-    }
-    public void Stomp()
-    {
-        Instantiate(stompParticle, rightFoot.transform.position, Quaternion.Euler(90, 0, 0));
-        gameObject.GetComponentInParent<Unit>().PlayLeshyStompSound();
-    }
-    public void HandStomp()
-    {
-        Instantiate(stompParticle, hand.transform.position, Quaternion.Euler(90, 0, 0));
-        gameObject.GetComponentInParent<Unit>().PlayLeshyStompSound();
-    }
+
     public void Flap()
     {
         gameObject.GetComponentInParent<Unit>().PlayFlapSound();

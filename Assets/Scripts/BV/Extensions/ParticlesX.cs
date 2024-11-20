@@ -31,4 +31,13 @@ public static class ParticlesX
                 _particles[i].Stop();
         }
     }
+    
+    static public void PlayParticles(ParticleSystem _particles, Vector3 _position)
+    {
+        if (!_particles)
+            return;
+        
+        _particles.transform.position = _position;
+        _particles.Play();
+    }
 }

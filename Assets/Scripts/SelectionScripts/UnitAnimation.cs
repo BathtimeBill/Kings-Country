@@ -26,7 +26,6 @@ public class UnitAnimation : GameBehaviour
         navAgent = GetComponentInParent<NavMeshAgent>();
         unit = GetComponentInParent<Unit>();
         StartCoroutine(Tick());
-        //StartCoroutine(AttackLoop());
     }
 
     private void Update()
@@ -100,7 +99,7 @@ public class UnitAnimation : GameBehaviour
                         isCloseToEnemy = true;
                         fadeOut = 1;
                         //StartCoroutine(AttackLoop());
-                        CheckAttackGoblin();
+                        CheckAttack();
                         //StopCoroutine(FadeOutArms());
                     }
                 }
@@ -147,41 +146,30 @@ public class UnitAnimation : GameBehaviour
         animator.SetTrigger("Attack" + GetRandomAnimation());
 
     }
-    private void CheckAttack()
+    public void CheckAttack()
     {
-        
-        if (!_EM.allEnemiesDead && distanceFromClosestUnit <= 15)
+        string attackName = unit.unitID == CreatureID.Goblin ? "Attack1" : "Attack" + GetRandomAnimation();
+        float dist = unit.unitID == CreatureID.Goblin ? 80 : 15;
+        if (!_EM.allEnemiesDead && distanceFromClosestUnit <= dist)
         {
-            animator.SetTrigger("Attack" + GetRandomAnimation());
+            animator.SetTrigger(attackName);
         }
         else
         {
             animator.SetLayerWeight(1, 0);
         }
-    }
-
-    private void CheckAttackGoblin()
-    {
-        if (!_EM.allEnemiesDead && distanceFromClosestUnit <= 80)
-        {
-            animator.SetTrigger("Attack1");
-        }
-        else
-        {
-            animator.SetLayerWeight(1, 0);
-        }
-    }
-
-    private int GetRandomAnimation()
-    {
-        int i = Random.Range(1, 4);
-        return i;
     }
     
+    private int GetRandomAnimation() => Random.Range(1, 4);
+
+    
     #region Animation Events
-
-    public void PlayFootstep(string _foot) => unit.PlayFootstep(_foot);
-
+    //These all come from Animation Events which is why they don't show as having references
+    public void EnableWeaponCollider(int _col)=>unit.attackColliders[_col].enabled = true;
+    public void DisableWeaponCollider(int _col)=>unit.attackColliders[_col].enabled = false;
+    public void Attack(int _attack) => unit.Attack(_attack);
+    public void StopAttack(int _attack) => unit.StopAttack(_attack);
+    public void Footstep(string _foot) => unit.Footstep(_foot);
     public void PlayParticle() => unit.PlayParticle();
 
     #endregion

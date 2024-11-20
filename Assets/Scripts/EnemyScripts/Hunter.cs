@@ -73,14 +73,13 @@ public class Hunter : Enemy
 
     IEnumerator Tick()
     {
-        //Tracks the closest animal and player unit.
         if (_GM.gameState == GameState.Lose)
         {
             StopAllCoroutines();
         }
         wildlife = GameObject.FindGameObjectsWithTag("Wildlife");
         closestUnit = GetClosestUnit();// ObjectX.GetClosest(gameObject, _UM.unitList).transform;
-        closestWildlife = ObjectX.GetClosest(gameObject, wildlife).transform;
+        closestWildlife = wildlife.Length > 0 ? ObjectX.GetClosest(gameObject, wildlife).transform : closestUnit;
         distanceFromClosestHut = Vector3.Distance(destination.transform.position, transform.position);
 
 
@@ -185,7 +184,9 @@ public class Hunter : Enemy
             animator.SetBool("hasStopped", false);
         }
         yield return new WaitForSeconds(seconds);
-        StartCoroutine(Tick());
+        
+        if(!_NoUnits)
+            StartCoroutine(Tick());
     }
 
     private void FixedUpdate()

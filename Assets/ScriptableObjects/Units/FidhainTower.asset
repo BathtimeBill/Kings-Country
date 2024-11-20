@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfe770dd331f2924e9eb55dc633ed1f0, type: 3}
-  m_Name: SpitTower
+  m_Name: FidhainTower
   m_EditorClassIdentifier: 
   id: 9
   home: 1
@@ -22,10 +22,17 @@ MonoBehaviour:
   speed: 0
   cost: 0
   detectionRadius: 50
+  stoppingDistance: 4
+  attackRange: 15
   icon: {fileID: -1202059081, guid: 932a504f2cacdae4b98f9944f39959b2, type: 3}
   mapIcon: {fileID: -1202059081, guid: 932a504f2cacdae4b98f9944f39959b2, type: 3}
   voiceSounds: []
+  footstepSounds: []
+  attackSounds: []
+  hitSounds: []
+  dieSounds: []
   playModel: {fileID: 4132771805544830452, guid: d6268017c80ef0a40bc92011d9cbc466,
     type: 3}
   ragdollModel: {fileID: 0}
-  bloodParticles: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}
+  hitParticles: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}
+  dieParticles: {fileID: 140772, guid: 0e6c3de422889da449bc1f712e17490a, type: 3}

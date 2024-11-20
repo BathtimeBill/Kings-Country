@@ -23,6 +23,8 @@ MonoBehaviour:
   speed: 16
   cost: 4
   detectionRadius: 50
+  stoppingDistance: 4
+  attackRange: 80
   icon: {fileID: 21300000, guid: e6c65949e99abd84cbe83004e97dcb8c, type: 3}
   mapIcon: {fileID: -377445969, guid: b5841c504809ed34b8877f713db8425d, type: 3}
   voiceSounds:
@@ -30,8 +32,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d7ca1baf1329d6b409d4cc285195d539, type: 3}
   - {fileID: 8300000, guid: eca88cfa3d1b47e469e53aa5a70fce67, type: 3}
   - {fileID: 8300000, guid: 02daebd915f64e744bcad4728000701c, type: 3}
+  footstepSounds: []
+  attackSounds: []
+  hitSounds: []
+  dieSounds: []
   playModel: {fileID: 4049935371749668072, guid: 4c5ff67181503214c9813f300680bd1b,
     type: 3}
   ragdollModel: {fileID: 4049935371749668072, guid: 992e32f7ec99329489062bb0a66b5530,
     type: 3}
-  bloodParticles: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}
+  hitParticles: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}
+  dieParticles: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}

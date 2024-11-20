@@ -1,0 +1,34 @@
+using UnityEngine;
+
+public class Fidhain : Unit
+{
+    [Header("Fidhain Specific")]
+    public ParticleSystem spitParticles;
+    public Collider spitCollider;
+    public GameObject towerUnit;
+    public override void Attack(int _attack)
+    {
+        base.Attack(_attack);
+        if (_EM.allEnemiesDead)
+            return;
+        
+        spitParticles.Play();
+        spitCollider.enabled = true;
+        
+        PlaySound(unitData.attackSounds);
+        ParticlesX.PlayParticles(attackParticles, rightHand.transform.position);
+    }
+
+    public override void StopAttack(int _attack)
+    {
+        spitParticles.Stop();
+        spitCollider.enabled = false;
+    }
+
+    protected override void Tower()
+    {
+        base.Tower();
+        Vector3 offset = new Vector3(0, -1.5f, 0);
+        Instantiate(towerUnit, transform.position + offset, Quaternion.Euler(0, 0, 0));
+    }
+}

@@ -73,7 +73,7 @@ public class Tower : GameBehaviour
             if(_DATA.HasPerk(PerkID.Tower))
             {
 
-                if(unitType == CreatureID.SpitTower)
+                if(unitType == CreatureID.FidhainTower)
                 {
                     animator.SetTrigger("Spit");
                 }
@@ -85,7 +85,7 @@ public class Tower : GameBehaviour
             }
             else
             {
-                if (unitType == CreatureID.SpitTower)
+                if (unitType == CreatureID.FidhainTower)
                 {
                     animator.SetTrigger("Spit");
                 }
@@ -186,7 +186,7 @@ public class Tower : GameBehaviour
                 Destroy(gameObject);
             }
 
-            if (unitType == CreatureID.SpitTower)
+            if (unitType == CreatureID.FidhainTower)
             {
                 _UM.unitList.Remove(parent);
                 Destroy(parent);
@@ -207,7 +207,7 @@ public class Tower : GameBehaviour
                 maxHealth = _GM.towerHealth;
             }
         }
-        if(unitType == CreatureID.SpitTower)
+        if(unitType == CreatureID.FidhainTower)
         {
             fireRate = 4;
             if (_DATA.HasPerk(PerkID.Tower))

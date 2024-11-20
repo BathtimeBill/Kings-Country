@@ -17,26 +17,23 @@ public class Unit : GameBehaviour
     public NavMeshAgent navAgent;
     public Animator animator;
     [Header("AI")]
-    public float tickRate;
     public UnitState state;
-    public GameObject pointer;
-    public GameObject trackTarget;
-    public float spawnInMoveDistance;
-
-    [Header("Death Objects")]
-    public GameObject deadSatyr;
-    [Header("Relevant Game Objects")]
-    public GameObject weaponCollider;
-    public GameObject rangedPrefab;
-    public GameObject towerPrefab;
-    public GameObject rangedSpawnLocation;
+    private float spawnInMoveDistance = 12f;
+    private GameObject trackTarget;
+    private Transform pointer;
+    
+    [FormerlySerializedAs("weaponCollider")] [Header("Weapon Objects")]
+    public Collider[] attackColliders;
+    [Header("Particles")]
+    public ParticleSystem attackParticles;
+    public ParticleSystem footstepLeftParticles;
+    public ParticleSystem footstepRightParticles;
     public GameObject healingParticle;
     [Header("Bools")]
     public bool isSelected;
     public bool inCombat;
     public bool isMovingCheck;
-    public bool isTooCloseToTower;
-    public bool isOutOfBounds;
+    private bool isTooCloseToTower;
     private bool hitByArrow;
     public bool isFirstPerson;
     //public float isMovingCheckTime;
@@ -45,12 +42,11 @@ public class Unit : GameBehaviour
     public GameObject SFXPool;
     public int soundPoolCurrent;
     public AudioSource[] soundPool;
-    public AudioSource spellSource;
     private Transform[] rangedAttackLocations;
-    [Header("Perks")]
-    public bool isUpgraded;
 
     [Header("Body")] 
+    public Transform leftHand;
+    public Transform rightHand;
     public Transform leftFoot;
     public Transform rightFoot;
     
@@ -59,7 +55,6 @@ public class Unit : GameBehaviour
     private float maxHealth;
     private float unitSpeed;
     private float stoppingDistance;
-    private float projectileSpeed = 1000;
     private float focusSpeed = 5f;
     
     //Combat Mode
@@ -69,22 +64,23 @@ public class Unit : GameBehaviour
     //AI
     private float detectionRadius;
     private Transform closestEnemy;
-    private float distanceToClosestEnemy;
-    public float DistanceToClosestEnemy => distanceToClosestEnemy;
+    [HideInInspector] public float distanceToClosestEnemy;
+
     public Transform ClosestEnemy => closestEnemy;
-    private UnitData unitData;
+    [HideInInspector] public UnitData unitData;
     
     //Misc
     private int startingDay;
-    private GameObject bloodParticle => _DATA.GetUnit(unitID).bloodParticles;
+    private GameObject hitParticle => _DATA.GetUnit(unitID).hitParticles;
+    private GameObject dieParticle => _DATA.GetUnit(unitID).dieParticles;
     
-    void Start()
+    public virtual void Start()
     {
         unitData = _DATA.GetUnit(unitID);
         if(!isFirstPerson)
         {
             soundPool = SFXPool.GetComponents<AudioSource>();
-            pointer = GameObject.FindGameObjectWithTag("Pointer");
+            pointer = _Pointer;
             Setup();
             GameEvents.ReportOnCreatureSpawned(unitID);
             SpawnInMove();
@@ -93,7 +89,7 @@ public class Unit : GameBehaviour
         _UM.unitList.Add(this);
     }
 
-    private void Setup()
+    public virtual void Setup()
     {
         //Health
         maxHealth = unitData.health;
@@ -118,7 +114,7 @@ public class Unit : GameBehaviour
 
     IEnumerator WaitForIsMovingCheck()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         if(GetComponentInChildren<UnitAnimation>().currentSpeed == 0)
         {
             state = UnitState.Idle;
@@ -133,7 +129,7 @@ public class Unit : GameBehaviour
 
     void Update()
     {
-        if (isFirstPerson)
+        if (isFirstPerson || !navAgent)
             return;
 
         if (!_EM.allEnemiesDead)
@@ -165,7 +161,6 @@ public class Unit : GameBehaviour
                     navAgent.SetDestination(defendPosition);
                 }
                 break;
-
             case UnitState.Attack:
                 if (_EM.allEnemiesDead)
                 {
@@ -202,14 +197,14 @@ public class Unit : GameBehaviour
                 }
                 if (unitID == CreatureID.Leshy)
                 {
-                    if (Vector3.Distance(pointer.transform.position, transform.position) <= 11)
+                    if (Vector3.Distance(pointer.position, transform.position) <= 11)
                     {
                         state = UnitState.Idle;
                     }
                 }
                 else
                 {
-                    if (Vector3.Distance(pointer.transform.position, transform.position) <= 5)
+                    if (Vector3.Distance(pointer.position, transform.position) <= 5)
                     {
                         state = UnitState.Idle;
                     }
@@ -279,17 +274,23 @@ public class Unit : GameBehaviour
     }
     public void PlayLeshyStompSound()
     {
-        PlaySound(_SM.GetLeshyStompSound());
+        PlaySound(unitData.attackSounds);
     }
 
     //Look to move into SFXPool script
     public void PlaySound(AudioClip[] _clips)
     {
+        if (_clips.Length == 0)
+            return;
+        
         AudioClip clip = ArrayX.GetRandomItemFromArray(_clips);
         PlaySound(clip);
     }
     public void PlaySound(AudioClip _clip)
     {
+        if (!_clip)
+            return;
+        
         soundPoolCurrent = ArrayX.IncrementCounter(soundPoolCurrent, soundPool);
         soundPool[soundPoolCurrent].clip = _clip;
         soundPool[soundPoolCurrent].pitch = Random.Range(0.8f, 1.2f);
@@ -330,14 +331,8 @@ public class Unit : GameBehaviour
         state = UnitState.Moving;
         navAgent.SetDestination(transform.position);
     }
-    void SpawnInMove()
-    {
-        Vector3 randomDirection = transform.position + Random.insideUnitSphere * spawnInMoveDistance;
-        NavMeshHit hit;
-        NavMesh.SamplePosition(randomDirection, out hit, spawnInMoveDistance, 1);
-        Vector3 finalPosition = hit.position;
-        navAgent.SetDestination(finalPosition);
-    }
+    void SpawnInMove() => navAgent.SetDestination(SpawnX.GetSpawnPositionInRadius(this.transform.position, spawnInMoveDistance));
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Axe1")
@@ -439,10 +434,7 @@ public class Unit : GameBehaviour
         {
             isTooCloseToTower = true;
         }
-        //if (other.tag == "Boundry")
-        //{
-        //    isOutOfBounds = false;
-        //}
+
         if (other.tag == "LordWeapon")
         {
             TakeDamage(_DATA.GetUnit(HumanID.Lord).id.ToString(), _DATA.GetUnit(HumanID.Lord).damage);
@@ -508,7 +500,7 @@ public class Unit : GameBehaviour
     public void TakeDamage(string attacker, float damage)
     {
         state = UnitState.Attack;
-        GameObject go = Instantiate(bloodParticle, transform.position + new Vector3(0, 5, 0), transform.rotation);
+        GameObject go = Instantiate(hitParticle, transform.position + new Vector3(0, 5, 0), transform.rotation);
         //go.transform.rotation = Quaternion.Inverse(transform.rotation);
         DecreaseHealth(damage);
         Die(attacker);
@@ -525,8 +517,7 @@ public class Unit : GameBehaviour
 
             if(!isColliding)
             {
-                GameObject go;
-                go = Instantiate(deadSatyr, transform.position, transform.rotation);
+                GameObject go = Instantiate(unitData.ragdollModel, transform.position, transform.rotation);
                 isColliding = true;
                 Destroy(go, 15);
             }
@@ -546,57 +537,6 @@ public class Unit : GameBehaviour
         if (_horgrExists)
             _HORGR.RemoveUnit(this);
     }
-
-    IEnumerator Attack()
-    {
-
-        while (Vector3.Distance(transform.position, attackDestination) > 4f)
-        {
-            navAgent.SetDestination(attackDestination);
-            //animator.SetBool("isAttacking", false);
-            yield return null;
-        }
-        while (Vector3.Distance(transform.position, attackDestination) < 4f)
-        {
-            transform.LookAt(attackDestination);
-            //animator.SetBool("isAttacking", true);
-
-            yield return null;
-        }
-        yield return null;
-
-        //animator.SetBool("isAttacking", false);
-        StartCoroutine(Attack());
-
-    }
-
-    public void EnableCollider()
-    {
-        weaponCollider.SetActive(true);
-    }
-    public void DisableCollider()
-    {
-        weaponCollider.SetActive(false);
-    }
-
-    public void SpawnRangedAttack()
-    {
-        if (inCombat == false)
-        {
-            //animator.SetBool("inCombat", false);
-        }
-        else
-        {
-            int rndDirection = Random.Range(0, rangedAttackLocations.Length);
-            spellSource.Play();
-            GameObject rangedInstance;
-            rangedInstance = Instantiate(rangedPrefab, rangedSpawnLocation.transform.position, transform.rotation);
-            rangedInstance.GetComponent<Rigidbody>().AddForce(transform.forward * projectileSpeed);
-            Destroy(rangedInstance, 3);
-            navAgent.SetDestination(rangedAttackLocations[rndDirection].transform.position);
-            DecreaseHealth(5);
-        }
-    }
     
     public void SetDestination(Transform _destination) => navAgent.SetDestination(_destination.position);
     
@@ -608,18 +548,27 @@ public class Unit : GameBehaviour
         }
     }
     
+    public virtual void Attack(int _attack)
+    {
+    }
+    public virtual void StopAttack(int _attack){}
+    
     #region Animation Events
 
-    public void PlayFootstep(string _foot)
+    public void Footstep(string _foot)
     {
         PlaySound(unitData.footstepSounds);
-        PlayParticle(_foot == "Left" ? leftFoot : rightFoot);
+
+        if (_foot == "Left")
+            ParticlesX.PlayParticles(footstepLeftParticles, leftFoot.position);
+        else
+            ParticlesX.PlayParticles(footstepRightParticles, rightFoot.position);
     }
 
     public void PlayParticle(Transform _transform)
     {
         //TODO pool Particles
-        Instantiate(bloodParticle, _transform.position, Quaternion.Euler(0, 0, 0));
+        Instantiate(hitParticle, _transform.position, Quaternion.Euler(0, 0, 0));
     }
     
     public void PlayParticle(){}
@@ -687,31 +636,27 @@ public class Unit : GameBehaviour
     #region Input
     private void OnTowerButton()
     {
-        Vector3 offset = new Vector3(0, -1.5f, 0);
-        if (unitID == CreatureID.Huldra && isSelected || unitID == CreatureID.Fidhain && isSelected)
+        if (unitID != CreatureID.Fidhain || unitID != CreatureID.Fidhain)
+            return;
+
+        if (!isSelected)
+            return;
+
+        if (isTooCloseToTower)
         {
-            if (_TUTORIAL.isTutorial && _TUTORIAL.tutorialStage == 13)
-            {
-                GameEvents.ReportOnNextTutorial();
-            }
-            if (isTooCloseToTower == false && isOutOfBounds == false)
-            {
-                Instantiate(towerPrefab, transform.position + offset, Quaternion.Euler(-90, 0, 0));
-                _UM.Deselect(this);
-                _UM.unitList.Remove(this);
-                Destroy(gameObject);
-            }
-            if (isTooCloseToTower == true)
-            {
-                _UI.SetError(ErrorID.TooCloseToTower);
-            }
-            if (isOutOfBounds == true && isTooCloseToTower == false)
-            {
-                _UI.SetError(ErrorID.OutOfBounds);
-            }
+            _UI.SetError(ErrorID.TooCloseToTower);
+        }
+        else
+        {
+            Tower();
+            _UM.Deselect(this);
+            _UM.unitList.Remove(this);
+            Destroy(gameObject);
         }
     }
-    
+
+    protected virtual void Tower(){}
+
     private void OnSuicideButton()
     {
         if(isSelected)
@@ -720,8 +665,7 @@ public class Unit : GameBehaviour
             if (_HORGR != null) _HORGR.RemoveUnit(this);
             _UM.Deselect(this);
             _UM.unitList.Remove(this);
-            GameObject go;
-            go = Instantiate(deadSatyr, transform.position, transform.rotation);
+            GameObject go = Instantiate(unitData.ragdollModel, transform.position, transform.rotation);
             Destroy(go, 15);
             _UI.CheckPopulousUI();
             int daysSurvived = _currentDay - startingDay;

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Ragdoll : GameBehaviour
@@ -8,7 +6,8 @@ public class Ragdoll : GameBehaviour
     public AudioSource audioSource;
     void Start()
     {
-        fireParticles.SetActive(false);
+        if(fireParticles)
+            fireParticles.SetActive(false);
     }
 
     public void Die(AudioClip _deathSound, bool _onFire = false)
