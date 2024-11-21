@@ -57,12 +57,15 @@ public class EnemyManager : Singleton<EnemyManager>
 
         yield return new WaitForSeconds(Random.Range(cooldown.min, cooldown.max));
 
-        if(_agroPhase)
+        if(_agroPhase && _inDay)
             StartCoroutine(SpawnEnemies());
     }
 
     public void SpawnHutEnemy(Vector3 spawnLocation)
     {
+        if(!_inDay) 
+            return;
+
         int rndHuman = Random.Range(0, enemyIDList.Count);
         //Get the human model from the human data
         GameObject go = Instantiate(_DATA.GetUnit(enemyIDList[rndHuman]).playModel, spawnLocation, transform.rotation);
@@ -72,6 +75,9 @@ public class EnemyManager : Singleton<EnemyManager>
     
     private void SpawnDog()  //CHECK IF VALUES ARE RIGHT
     {
+        if (!_inDay)
+            return;
+
         for (int day = 1; day <= _currentLevel.days; day++)
         {
             int requiredTreeCount = (day == 1) ? 5 : (day * 5);

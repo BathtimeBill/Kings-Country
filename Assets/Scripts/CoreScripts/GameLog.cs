@@ -51,8 +51,8 @@ public class GameLog : GameBehaviour
     private void OnUnitKilled(string _unitID, string _killedBy, int _daysSurvived)
     {
         string unit = GetName(EnumX.ToEnum<ObjectID>(_unitID));
-        string killer = GetName(EnumX.ToEnum<ObjectID>(_killedBy));
-        ChangeLogLine(unit + " was killed by " + killer + " after " + _daysSurvived + " days");
+        //string killer = GetName(EnumX.ToEnum<ObjectID>(_killedBy));
+        ChangeLogLine(unit + " was killed by " + _killedBy + " after " + _daysSurvived + " days");
     }
 
     private void OnHumanKilled(Enemy _unitID, string _killedBy)
