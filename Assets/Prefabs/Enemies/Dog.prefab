@@ -23131,6 +23131,7 @@ GameObject:
   - component: {fileID: 8941289788079202329}
   - component: {fileID: 3036103315878599519}
   - component: {fileID: 3428450813986838117}
+  - component: {fileID: 1417689076895601329}
   m_Layer: 0
   m_Name: Dog
   m_TagString: Enemy
@@ -23219,7 +23220,7 @@ MonoBehaviour:
   maxRandomDropChance: 0
   agent: {fileID: 0}
   animator: {fileID: 4669797841629322569}
-  targetTree: {fileID: 0}
+  detonationDistance: 10
   explosion: {fileID: 6667861000600669315, guid: 095ebad0de87f6749a3b705e227cbac6,
     type: 3}
 --- !u!82 &8941289788079202329
@@ -23369,6 +23370,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 2
+--- !u!114 &1417689076895601329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4669797842556170784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0bcff6a82b5f24c901b72b5aed2f5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitType: 1
+  creatureID: 0
+  humanID: 9
+  siteID: 0
+  toolID: 0
 --- !u!1 &4669797842556170786
 GameObject:
   m_ObjectHideFlags: 0

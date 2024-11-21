@@ -2,7 +2,6 @@ using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
 
 public class Unit : GameBehaviour
 {
@@ -11,7 +10,7 @@ public class Unit : GameBehaviour
     
     [Header("UI")]
     public HealthBar healthBar;
-    [FormerlySerializedAs("selectionRingCircle")] public SelectionRing selectionRing;
+    public SelectionRing selectionRing;
     
     [Header("Components")]
     public NavMeshAgent navAgent;
@@ -22,7 +21,7 @@ public class Unit : GameBehaviour
     private GameObject trackTarget;
     private Transform pointer;
     
-    [FormerlySerializedAs("weaponCollider")] [Header("Weapon Objects")]
+    [Header("Weapon Objects")]
     public Collider[] attackColliders;
     [Header("Particles")]
     public ParticleSystem attackParticles;
@@ -36,13 +35,10 @@ public class Unit : GameBehaviour
     private bool isTooCloseToTower;
     private bool hitByArrow;
     public bool isFirstPerson;
-    //public float isMovingCheckTime;
-    private Vector3 attackDestination;
     [Header("Audio")]
     public GameObject SFXPool;
     public int soundPoolCurrent;
     public AudioSource[] soundPool;
-    private Transform[] rangedAttackLocations;
 
     [Header("Body")] 
     public Transform leftHand;
@@ -133,124 +129,124 @@ public class Unit : GameBehaviour
             return;
 
         if (!_EM.allEnemiesDead)
-        {
-            closestEnemy = ObjectX.GetClosest(gameObject, _EM.enemies).transform;
-            distanceToClosestEnemy = Vector3.Distance(closestEnemy.transform.position, transform.position);
-            bool isLord = closestEnemy.gameObject.CompareTag("Lord"); 
-            bool isSpecialUnit = unitID != CreatureID.Fidhain && unitID != CreatureID.Goblin; 
-            navAgent.stoppingDistance = isLord && isSpecialUnit ? stoppingDistance * 2 : stoppingDistance;
-        }
+            UpdateClosestEnemy();
 
+        HandleState();
+    }
+
+    #region AI
+    private void UpdateClosestEnemy()
+    {
+        closestEnemy = ObjectX.GetClosest(gameObject, _EM.enemies).transform;
+        distanceToClosestEnemy = Vector3.Distance(closestEnemy.transform.position, transform.position);
+        bool isLord = closestEnemy.gameObject.CompareTag("Lord");
+        bool isSpecialUnit = unitID != CreatureID.Fidhain && unitID != CreatureID.Goblin;
+        navAgent.stoppingDistance = isLord && isSpecialUnit ? stoppingDistance * 2 : stoppingDistance;
+    }
+
+    private void HandleState()
+    {
         switch (state)
         {
             case UnitState.Idle:
-                if (_EM.allEnemiesDead)
-                    return;
-                
-                if (unitID == CreatureID.Goblin || unitID == CreatureID.Fidhain)
-                {
-                    navAgent.stoppingDistance = stoppingDistance;
-                }
-
-                if (distanceToClosestEnemy < detectionRadius)
-                {
-                    state = UnitState.Attack;
-                }
-                else if (combatMode == CombatMode.Defend)
-                {
-                    navAgent.SetDestination(defendPosition);
-                }
+                HandleIdleState();
                 break;
             case UnitState.Attack:
-                if (_EM.allEnemiesDead)
-                {
-                    state = UnitState.Idle;
-                }
-                else
-                {
-                    if (distanceToClosestEnemy < detectionRadius || hitByArrow)
-                    {
-                        navAgent.SetDestination(closestEnemy.transform.position);
-                        SmoothFocusOnEnemy();
-                    }
-
-                    if (distanceToClosestEnemy >= detectionRadius && !hitByArrow)
-                    {
-                        state = UnitState.Moving;
-                    }
-                }
-
-                if (unitID == CreatureID.Goblin)
-                {
-                    navAgent.stoppingDistance = 50;
-                }
-                else if (unitID == CreatureID.Fidhain)
-                {
-                    navAgent.stoppingDistance = 20;
-                }
+                HandleAttackState();
                 break;
             case UnitState.Moving:
-                if (isMovingCheck == false)
-                {
-                    isMovingCheck = true;
-                    StartCoroutine(WaitForIsMovingCheck());
-                }
-                if (unitID == CreatureID.Leshy)
-                {
-                    if (Vector3.Distance(pointer.position, transform.position) <= 11)
-                    {
-                        state = UnitState.Idle;
-                    }
-                }
-                else
-                {
-                    if (Vector3.Distance(pointer.position, transform.position) <= 5)
-                    {
-                        state = UnitState.Idle;
-                    }
-                }
-                if (unitID == CreatureID.Goblin || unitID == CreatureID.Fidhain)
-                {
-                    navAgent.stoppingDistance = 4;
-                }
-                if (combatMode == CombatMode.AttackMove)
-                {
-                    if (distanceToClosestEnemy < detectionRadius)
-                    {
-                        state = UnitState.Attack;
-                    }
-                }
+                HandleMovingState();
                 break;
             case UnitState.Track:
-                //navAgent.angularSpeed = 500;
-                if (trackTarget != null)
-                {
-                    navAgent.SetDestination(trackTarget.transform.position);
-                    if (unitID == CreatureID.Goblin)
-                    {
-                        if (Vector3.Distance(transform.position, trackTarget.transform.position) <= 30)
-                        {
-                            state = UnitState.Attack;
-                        }
-                    }
-                    else
-                    {
-                        if (Vector3.Distance(transform.position, trackTarget.transform.position) <= 10)
-                        {
-                            state = UnitState.Attack;
-                        }
-                    }
-
-                }
-                else
-                {
-                    state = UnitState.Idle;
-                }
+                HandleTrackState();
                 break;
         }
-
     }
-   
+
+    private void HandleIdleState()
+    {
+        if (_EM.allEnemiesDead)
+            return;
+
+        if (unitID == CreatureID.Goblin || unitID == CreatureID.Fidhain)
+        {
+            navAgent.stoppingDistance = stoppingDistance;
+        }
+
+        if (distanceToClosestEnemy < detectionRadius)
+        {
+            state = UnitState.Attack;
+        }
+        else if (combatMode == CombatMode.Defend)
+        {
+            navAgent.SetDestination(defendPosition);
+        }
+    }
+
+    private void HandleAttackState()
+    {
+        if (_EM.allEnemiesDead)
+        {
+            state = UnitState.Idle;
+            return;
+        }
+
+        if (distanceToClosestEnemy < detectionRadius || hitByArrow)
+        {
+            navAgent.SetDestination(closestEnemy.transform.position);
+            SmoothFocusOnEnemy();
+        }
+        else if (distanceToClosestEnemy >= detectionRadius && !hitByArrow)
+        {
+            state = UnitState.Moving;
+        }
+
+        navAgent.stoppingDistance = unitID == CreatureID.Goblin ? 50 : 20;
+    }
+
+    private void HandleMovingState()
+    {
+        if (!isMovingCheck)
+        {
+            isMovingCheck = true;
+            StartCoroutine(WaitForIsMovingCheck());
+        }
+
+        float distanceThreshold = unitID == CreatureID.Leshy ? 11 : 5;
+        if (Vector3.Distance(pointer.position, transform.position) <= distanceThreshold)
+        {
+            state = UnitState.Idle;
+        }
+
+        if (unitID == CreatureID.Goblin || unitID == CreatureID.Fidhain)
+        {
+            navAgent.stoppingDistance = 4;
+        }
+
+        if (combatMode == CombatMode.AttackMove && distanceToClosestEnemy < detectionRadius)
+        {
+            state = UnitState.Attack;
+        }
+    }
+
+    private void HandleTrackState()
+    {
+        if (trackTarget != null)
+        {
+            navAgent.SetDestination(trackTarget.transform.position);
+            float attackDistance = unitID == CreatureID.Goblin ? 30 : 10;
+            if (Vector3.Distance(transform.position, trackTarget.transform.position) <= attackDistance)
+            {
+                state = UnitState.Attack;
+            }
+        }
+        else
+        {
+            state = UnitState.Idle;
+        }
+    }
+    #endregion
+
     #region Sound
     public void PlayFootstepSound()
     {
@@ -335,84 +331,12 @@ public class Unit : GameBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Axe1")
-        {
-            TakeDamage(_DATA.GetUnit(HumanID.Logger).id.ToString(), _DATA.GetUnit(HumanID.Logger).damage);
-            other.enabled = false;
-        }
-        if (other.tag == "Axe2")
-        {
-            TakeDamage(_DATA.GetUnit(HumanID.Lumberjack).id.ToString(), _DATA.GetUnit(HumanID.Lumberjack).damage);
-            other.enabled = false;
-        }
-        if (other.tag == "Sword2")
-        {
-            if(unitID != CreatureID.Leshy)
-            {
-                TakeDamage(_DATA.GetUnit(HumanID.Dreng).id.ToString(), _DATA.GetUnit(HumanID.Dreng).damage);
-            }
-            else
-            {
-                TakeDamage("Unknown", 50);
-            }
- 
-            other.enabled = false;
-        }
-        if (other.tag == "Sword3")
-        {
-            if (unitID != CreatureID.Leshy)
-            {
-                TakeDamage(_DATA.GetUnit(HumanID.Berserkr).id.ToString(), _DATA.GetUnit(HumanID.Berserkr).damage);
-            }
-            else
-            {
-                TakeDamage("Unknown", 65);
-            }
-            other.enabled = false;
-        }
-        if (other.tag == "Arrow")
-        {
-            hitByArrow = true;
-            detectionRadius = detectionRadius * 2;
-            state = UnitState.Attack;
-            StartCoroutine(HitByArrowDelay());
-            if (unitID == CreatureID.Skessa)
-            {
-                TakeDamage(_DATA.GetUnit(HumanID.Wathe).id.ToString(), _DATA.GetUnit(HumanID.Wathe).damage * 3);
-            }
-            else
-            {
-                TakeDamage(_DATA.GetUnit(HumanID.Wathe).id.ToString(), _DATA.GetUnit(HumanID.Wathe).damage);
-            }
+        WeaponLogic(other);
 
-            Destroy(other.gameObject);
-        }
-        if (other.tag == "Arrow2")
-        {
-            hitByArrow = true;
-            detectionRadius = detectionRadius * 2;
-            state = UnitState.Attack;
-            StartCoroutine(HitByArrowDelay());
-            if (unitID == CreatureID.Skessa)
-            {
-                TakeDamage(_DATA.GetUnit(HumanID.Poacher).id.ToString(), _DATA.GetUnit(HumanID.Poacher).damage * 3);
-            }
-            else
-            {
-                TakeDamage(_DATA.GetUnit(HumanID.Poacher).id.ToString(), _DATA.GetUnit(HumanID.Poacher).damage);
-            }
-
-            Destroy(other.gameObject);
-        }
-        
-        
-        
         if(other.CompareTag("Heal"))
         {
             if(unitID != CreatureID.Mistcalf)
-            {
                 IncreaseHealth(100);
-            }
         }
         if (other.CompareTag("Maegen"))
         {
@@ -435,19 +359,12 @@ public class Unit : GameBehaviour
             isTooCloseToTower = true;
         }
 
-        if (other.tag == "LordWeapon")
-        {
-            TakeDamage(_DATA.GetUnit(HumanID.Lord).id.ToString(), _DATA.GetUnit(HumanID.Lord).damage);
-        }
-        if (other.tag == "Lord")
+        if (other.CompareTag("Lord"))
         {
             state = UnitState.Attack;
         }
-        if (other.tag == "Explosion3")
-        {
-            TakeDamage("Dog", 100);
-        }
-        if (other.tag == "Rune")
+
+        if (other.CompareTag("Rune"))
         {
             if (unitID != CreatureID.Mistcalf)
             {
@@ -467,34 +384,92 @@ public class Unit : GameBehaviour
             isTooCloseToTower = false;
         
         if (unitID != CreatureID.Mistcalf)
-        {
             healingParticle.SetActive(false);
-        }
+
     }
+
     private void OnTriggerStay(Collider other)
     {
-        if(other.tag == "Axe3")
+        
+        if(other.CompareTag("Rune"))
+        {
+            if (unitID != CreatureID.Mistcalf)
+            {
+                float healRate = _GM.runeHealRate * Time.deltaTime;
+                if (_DATA.HasPerk(PerkID.Rune))
+                {
+                    healRate *= 2;
+                }
+                IncreaseHealth(healRate);
+            }
+        }
+        if (!other.GetComponent<UnitWeaponCollider>())
+            return;
+        else if (other.GetComponent<UnitWeaponCollider>().humanID == HumanID.LogCutter)
         {
             DecreaseHealth(0.5f * Time.deltaTime);
-            if(health < 0)
+            if (health < 0)
             {
                 Die("Unknown");
             }
         }
-        if(other.tag == "Rune")
+    }
+
+    private void WeaponLogic(Collider _other)
+    {
+        UnitWeaponCollider uwc = _other.GetComponent<UnitWeaponCollider>();
+
+        if (!uwc)
+            return;
+
+        string attacker = _DATA.GetUnit(uwc.humanID).ToString();
+        float damage = _DATA.GetUnit(uwc.humanID).damage;
+
+        switch (uwc.humanID)
         {
-            if(unitID != CreatureID.Mistcalf)
-            {
-                if (_DATA.HasPerk(PerkID.Rune))
-                {
-                    IncreaseHealth(_GM.runeHealRate * 2 * Time.deltaTime);
-                }
-                else
-                {
-                    IncreaseHealth(_GM.runeHealRate * Time.deltaTime);
-                }
-            }
+            case HumanID.Logger:
+                TakeDamage(attacker, damage); 
+                break;
+            case HumanID.Lumberjack:
+                TakeDamage(attacker, damage);
+                break;
+            case HumanID.Dreng:
+                if (unitID == CreatureID.Leshy) { attacker = "Unknown"; damage = 50; }
+                TakeDamage(attacker, damage);
+                break;
+            case HumanID.Berserkr:
+                if (unitID == CreatureID.Leshy) { attacker = "Unknown"; damage = 65; }
+                TakeDamage(attacker, damage);
+                break;
+            case HumanID.Wathe:
+                HitByArrow();
+                if (unitID == CreatureID.Skessa) { damage *=3; }
+                TakeDamage(attacker, damage);
+                break;
+            case HumanID.Poacher:
+                HitByArrow();
+                if (unitID == CreatureID.Skessa) { damage *= 3; }
+                TakeDamage(attacker, damage);
+                break;
+            case HumanID.Lord:
+                HitByArrow();
+                TakeDamage(attacker, damage);
+                break;
+            case HumanID.Dog:
+                HitByArrow();
+                TakeDamage(attacker, damage);
+                break;
         }
+
+        _other.enabled = false;
+    }
+
+    private void HitByArrow()
+    {
+        hitByArrow = true;
+        detectionRadius = detectionRadius * 2;
+        state = UnitState.Attack;
+        StartCoroutine(HitByArrowDelay());
     }
 
     public void TakeDamage(string attacker, float damage)

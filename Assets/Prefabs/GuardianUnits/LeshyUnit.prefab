@@ -83,15 +83,11 @@ MonoBehaviour:
   healthBar: {fileID: 7900061855571342255}
   selectionRing: {fileID: 4788850790811092500}
   navAgent: {fileID: 1071894615449563646}
-  animator: {fileID: 0}
+  animator: {fileID: 6126063021410970943}
   state: 0
-  spawnInMoveDistance: 15
   attackColliders:
   - {fileID: 1311560639805662640}
   - {fileID: 8667411187863778880}
-  rangedPrefab: {fileID: 0}
-  towerPrefab: {fileID: 0}
-  rangedSpawnLocation: {fileID: 0}
   attackParticles: {fileID: 6571559982529011477}
   footstepLeftParticles: {fileID: 8100498934004770562}
   footstepRightParticles: {fileID: 7658446520720760702}
@@ -99,17 +95,15 @@ MonoBehaviour:
   isSelected: 0
   inCombat: 0
   isMovingCheck: 0
-  isTooCloseToTower: 0
-  isOutOfBounds: 0
   isFirstPerson: 0
   SFXPool: {fileID: 3825975933129653336}
   soundPoolCurrent: 0
   soundPool: []
-  isUpgraded: 0
   leftHand: {fileID: 6796728580328473965}
   rightHand: {fileID: 2151344857496432486}
   leftFoot: {fileID: 2663353375449779871}
   rightFoot: {fileID: 873558822490830546}
+  distanceToClosestEnemy: 0
   unitData: {fileID: 0}
 --- !u!195 &1071894615449563646
 NavMeshAgent:
@@ -637,6 +631,12 @@ Transform:
 --- !u!4 &2663353375449779871 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -6874584590210671055, guid: 14e06c6bf80d91a47832ee00d219a5eb,
+    type: 3}
+  m_PrefabInstance: {fileID: 319386643051827374}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6126063021410970943 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 14e06c6bf80d91a47832ee00d219a5eb,
     type: 3}
   m_PrefabInstance: {fileID: 319386643051827374}
   m_PrefabAsset: {fileID: 0}
