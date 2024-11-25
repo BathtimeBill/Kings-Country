@@ -12,14 +12,17 @@ public class EnemyData : ScriptableObject
     public int health;
     public int damage;
     public int speed;
+    public float attackRange = 30;
     [Header("Non Stats")]
     public Sprite icon;
     public Sprite mapIcon;
     [Header("Audio")]
     public AudioClip[] voiceSounds;
-    public AudioClip spawnSounds;
+    public AudioClip[] footstepSounds;
+    public AudioClip[] attackSounds;
     public AudioClip[] hitSounds;
     public AudioClip[] dieSounds;
+    public AudioClip spawnSound;
     [Header("Models")]
     public GameObject playModel;
     public GameObject ragdollModel;

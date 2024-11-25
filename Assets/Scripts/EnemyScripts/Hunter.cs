@@ -1,70 +1,47 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.AI;
 using UnityEngine;
-using UnityEngine.Analytics;
-using UnityEngine.Serialization;
 
 public class Hunter : Enemy
 {
-    public bool invincible = true;
-    [Header("Hunter Type")]
-    public HunterType type;
+    [Header("Hunter Specific")] 
+    public GameObject arrowObject;
+    private Arrow arrow;
+    public Transform firingPoint;
     [Header("Tick")]
     public float seconds = 0.5f;
     [Header("Stats")]
     public EnemyState state;
-    public bool hasArrivedAtBeacon;
-    public GameObject fyreBeacon;
     private float damping = 5;
     public float stoppingDistance;
-
-
+    
     [Header("Components")]
-    public GameObject[] wildlife;
     public Transform closestWildlife;
     public float distanceFromClosestWildlife;
     public Transform closestUnit;
     public float distanceFromClosestUnit;
-    public float range;
 
-    [FormerlySerializedAs("horgr")] [Header("Hut")]
+    [Header("Hut")]
     public GameObject destination;
-    [FormerlySerializedAs("distanceFromClosestHorgr")] public float distanceFromClosestHut;
+    public float distanceFromClosestHut;
     public bool hasArrivedAtHorgr;
     public bool hutSwitch;
-    [FormerlySerializedAs("spawnedFromBuilding")] public bool spawnedFromSite;
-
-    [Header("Audio")]
-    public GameObject SFXPool;
-    public int soundPoolCurrent;
-    public AudioSource[] soundPool;
-    public AudioSource audioSource;
+    public bool spawnedFromSite;
 
     #region Startup
     public override void Awake()
     {
         base.Awake();
-        soundPool = SFXPool.GetComponents<AudioSource>();
         state = EnemyState.Work;
     }
 
     public override void Start()
     {
         base.Start();
-        
+        arrow = arrowObject.GetComponent<Arrow>();
+        arrowObject.SetActive(false);
         destination = _hutExists ? _HUT.gameObject : _HOME.gameObject;
-        agent.stoppingDistance = range;
-        if (_GM.gameState == GameState.Lose)
-        {
-            OnGameOver();
-        }
-        else
-        {
-            StartCoroutine(Tick());
-        }
-        StartCoroutine(WaitForInvincible());
-
+        agent.stoppingDistance = attackRange;
+        StartCoroutine(Tick());
     }
     #endregion
 
@@ -77,36 +54,14 @@ public class Hunter : Enemy
         {
             StopAllCoroutines();
         }
-        wildlife = GameObject.FindGameObjectsWithTag("Wildlife");
+
         closestUnit = GetClosestUnit();// ObjectX.GetClosest(gameObject, _UM.unitList).transform;
-        closestWildlife = wildlife.Length > 0 ? ObjectX.GetClosest(gameObject, wildlife).transform : closestUnit;
+        closestWildlife = _WildlifeExist ? ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform : closestUnit;
         distanceFromClosestHut = Vector3.Distance(destination.transform.position, transform.position);
-
-
-        if (_UM.unitList.Count != 0)
-        {
-            distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
-        }
-        else
-        {
-            distanceFromClosestUnit = 200000;
-        }
-        if (wildlife.Length > 0)
-        {
-            distanceFromClosestWildlife = Vector3.Distance(closestWildlife.transform.position, transform.position);
-        }
-        else
-        {
-            distanceFromClosestWildlife = 200000;
-        }
-
-
-        //if (wildlife.Length > 0 || UnitSelection.Instance.unitList.Count > 0)
-        //{
-
-        //    animator.SetBool("allWildlifeDead", false);
-        //}
-        if (distanceFromClosestUnit < range && _UM.unitList.Count != 0)
+        distanceFromClosestUnit = _GuardiansExist ? Vector3.Distance(closestUnit.transform.position, transform.position) : 200000;
+        distanceFromClosestWildlife = _WildlifeExist ? Vector3.Distance(closestWildlife.transform.position, transform.position) : 200000;
+        
+        if (distanceFromClosestUnit < attackRange && _GuardiansExist)
         {
             state = EnemyState.Attack;
         }
@@ -115,39 +70,33 @@ public class Hunter : Enemy
         {
             case EnemyState.Work:
                 Hunt();
-
                 break;
 
             case EnemyState.Attack:
                 hutSwitch = false;
-                if (_UM.unitList.Count == 0 || distanceFromClosestUnit > range)
-                {
+                if (_NoGuardians || distanceFromClosestUnit > attackRange)
                     state = EnemyState.Work;
-                }
-                Attack();
+                FaceTarget();
                 break;
 
             case EnemyState.Beacon:
                 agent.stoppingDistance = 0;
-                if (!hasArrivedAtBeacon)
-                    agent.SetDestination(fyreBeacon.transform.position);
-                else
-                    agent.SetDestination(transform.position);
+                agent.SetDestination(transform.position);
                 break;
 
             case EnemyState.ClaimSite:
                 if (!hasArrivedAtHorgr)
                 {
                     agent.SetDestination(destination.transform.position);
-                    agent.stoppingDistance = range / 2;
+                    agent.stoppingDistance = attackRange / 2;
                 }
                 else
                 {
-                    agent.stoppingDistance = range;
+                    agent.stoppingDistance = attackRange;
                     if (_hutExists && _HUT.HasUnits())
                     {
                         animator.SetBool("hasStoppedHorgr", false);
-                        Attack();
+                        FaceTarget();
                     }
                     else
                     {
@@ -162,7 +111,6 @@ public class Hunter : Enemy
                 break;
             case EnemyState.Cheer:
                 agent.SetDestination(transform.position);
-
                 break;
         }
 
@@ -185,13 +133,13 @@ public class Hunter : Enemy
         }
         yield return new WaitForSeconds(seconds);
         
-        if(!_NoUnits)
+        if(!_NoGuardians)
             StartCoroutine(Tick());
     }
 
     private void FixedUpdate()
     {
-        if(distanceFromClosestUnit < range)
+        if(distanceFromClosestUnit < attackRange)
         {
             SmoothFocusOnEnemy();
         }
@@ -224,7 +172,6 @@ public class Hunter : Enemy
                 _HUT.AddEnemy(this);
                 StartCoroutine(WaitForHut());
             }
-
         }
     }
 
@@ -248,13 +195,7 @@ public class Hunter : Enemy
 
     public override void TakeDamage(int damage, string _damagedBy)
     {
-        if (!invincible)
-        {
-            audioSource.clip = _SM.GetGruntSounds();
-            audioSource.pitch = Random.Range(0.8f, 1.2f);
-            audioSource.Play();
-            base.TakeDamage(damage, _damagedBy);
-        }
+        base.TakeDamage(damage, _damagedBy);
     }
 
     public override void Die(Enemy _thisUnit, string _killedBy, DeathID _deathID)
@@ -269,54 +210,24 @@ public class Hunter : Enemy
         animator.SetBool("hasStoppedHorgr", true);
         hasArrivedAtHorgr = true;
     }
-    private int RandomCheerAnim()
-    {
-        int rnd = Random.Range(1, 3);
-        return rnd;
-    }
-    
-    IEnumerator WaitForInvincible()
-    {
-        invincible = true;
-        yield return new WaitForSeconds(5);
-        invincible = false;
-    }
     #endregion
 
-    public void PlayFootstepSound()
-    {
-        PlaySound(_SM.GetHumanFootstepSound());
-    }
-    public void PlaySound(AudioClip _clip)
-    {
-        if (soundPoolCurrent == soundPool.Length - 1)
-            soundPoolCurrent = 0;
-        else
-            soundPoolCurrent += 1;
-
-        soundPool[soundPoolCurrent].clip = _clip;
-        soundPool[soundPoolCurrent].Play();
-    }
     public void Hunt()
     {
-        if(wildlife.Length == 0)
+        if(_NoWildlife)
         {
-            agent.SetDestination(closestUnit.transform.position);
-            if (_UM.unitList.Count == 0)
-            {
-                agent.SetDestination(transform.position);
-            }
+            agent.SetDestination(_NoGuardians ? transform.position : closestUnit.transform.position);
         }
         else
         {
-            if (distanceFromClosestWildlife < range)
+            if (distanceFromClosestWildlife < attackRange)
             {
                 transform.LookAt(closestWildlife.transform.position);
             }
             agent.SetDestination(closestWildlife.transform.position);
         }
     }
-    public void Attack()
+    public void FaceTarget()
     {
         var lookPos = closestUnit.position - transform.position;
         lookPos.y = 0;
@@ -325,28 +236,52 @@ public class Hunter : Enemy
         agent.SetDestination(closestUnit.transform.position);
     }
 
+    public override void Attack(int _attack)
+    {
+        if (!_inGame)
+            return;
+
+        //checks if there are any animals in the scene then calculates the distance from the hunter enemy to that animal.
+        if(_WildlifeExist)
+            distanceFromClosestWildlife = Vector3.Distance(closestWildlife.transform.position, transform.position);
+        
+        //Checks weather the hunter is shooting at an animal or a player unit and then orients the arrow towards that result.
+        Transform closestTarget = distanceFromClosestWildlife < distanceFromClosestUnit ? closestWildlife : closestUnit;
+        
+        arrowObject.transform.position = firingPoint.transform.position;
+        arrowObject.transform.rotation = firingPoint.transform.rotation;
+        arrowObject.SetActive(true);
+        arrow.Setup(closestTarget);
+        DisableAfterTime(arrowObject, 1);
+        PlaySound(unitData.attackSounds[0]);
+    }
+
+    public override void CheckState()
+    {
+        if (_HUT == null) return;
+        
+        if (_HUT.ContainsEnemy(GetComponent<Enemy>()) && _HUT.HasEnemies())
+            animator.SetBool("allWildlifeDead", true);
+    }
+
     private void OnArrivedAtHut()
     {
         state = EnemyState.Attack;
     }
 
-    private void OnGameOver()
+    public override void Win()
     {
         StopCoroutine(Tick());
         state = EnemyState.Cheer;
-        animator.SetTrigger("Cheer" + RandomCheerAnim());
-        agent.SetDestination(transform.position);
     }
 
     private void OnEnable()
     {
         GameEvents.OnUnitArrivedAtHut += OnArrivedAtHut;
-        GameEvents.OnGameOver += OnGameOver;
     }
 
     private void OnDisable()
     {
         GameEvents.OnUnitArrivedAtHut -= OnArrivedAtHut;
-        GameEvents.OnGameOver -= OnGameOver;
     }
 }

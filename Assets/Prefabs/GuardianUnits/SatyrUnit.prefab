@@ -97,12 +97,8 @@ MonoBehaviour:
   navAgent: {fileID: 1071894615449563646}
   animator: {fileID: 3953316934649994405}
   state: 0
-  spawnInMoveDistance: 0
   attackColliders:
   - {fileID: 768954187}
-  rangedPrefab: {fileID: 0}
-  towerPrefab: {fileID: 0}
-  rangedSpawnLocation: {fileID: 0}
   attackParticles: {fileID: 0}
   footstepLeftParticles: {fileID: 0}
   footstepRightParticles: {fileID: 0}
@@ -110,17 +106,15 @@ MonoBehaviour:
   isSelected: 0
   inCombat: 0
   isMovingCheck: 0
-  isTooCloseToTower: 0
-  isOutOfBounds: 0
   isFirstPerson: 0
   SFXPool: {fileID: 8269677048223257376}
   soundPoolCurrent: 0
   soundPool: []
-  isUpgraded: 0
   leftHand: {fileID: 4434903997261509879}
   rightHand: {fileID: 9079883217228668668}
   leftFoot: {fileID: 5129323837355704069}
   rightFoot: {fileID: 8054305358408795976}
+  distanceToClosestEnemy: 0
   unitData: {fileID: 0}
 --- !u!195 &1071894615449563646
 NavMeshAgent:
@@ -1802,10 +1796,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 890879299}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: da502e8ab3eef394ab15a39777d2a7d4,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 890879300}
   m_SourcePrefab: {fileID: 100100000, guid: da502e8ab3eef394ab15a39777d2a7d4, type: 3}
 --- !u!4 &1626587583096563602 stripped
 Transform:
@@ -1922,31 +1912,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineScript: {fileID: 0}
   outlineScript2: {fileID: 0}
---- !u!114 &890879300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7743654469695757413}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daa94a4748d730c4798162cc438b9d6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firingPoint: {fileID: 0}
-  arrow: {fileID: 0}
-  arrow2: {fileID: 0}
-  weaponCollider: {fileID: 768954187}
-  weaponCollider2: {fileID: 0}
-  footstepParticle: {fileID: 0}
-  stompParticle: {fileID: 0}
-  leftFoot: {fileID: 0}
-  rightFoot: {fileID: 0}
-  hand: {fileID: 0}
-  spit: {fileID: 0}
-  spitParticle: {fileID: 0}
-  spitCollider: {fileID: 0}
 --- !u!4 &8054305358408795976 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 608321761475470972, guid: da502e8ab3eef394ab15a39777d2a7d4,

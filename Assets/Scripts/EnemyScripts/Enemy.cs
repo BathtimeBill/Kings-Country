@@ -1,67 +1,67 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 public class Enemy : GameBehaviour
 {
     public HumanID unitID;
-    private EnemyData unitData;
+    [HideInInspector] public EnemyData unitData;
+    public HealthBar healthBar;
     [Header("Stats")]
     public int health;
-    public int maxHealth;
-    public int damage;
-    public float speed;
+    private int maxHealth;
+    private int damage;
+    private float speed;
     public int maxRandomDropChance;
     [Header("General AI")]
     [HideInInspector] public NavMeshAgent agent;
     public Animator animator;
-
+    [Header("Audio")]
+    public GameObject SFXPool;
+    private int soundPoolCurrent;
+    private AudioSource[] soundPool;
+    private bool invincible = true;
+    [HideInInspector] public float attackRange;
+    
+    #region Initialization
     public virtual void Awake()
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
+        soundPool = SFXPool.GetComponents<AudioSource>();
+        unitData = _DATA.GetUnit(unitID);
     }
 
-    public virtual void Start()
-    {
-        Setup();
-        GameEvents.ReportOnHumanSpawned(unitID);
-    }
+    public virtual void Start() { }
 
     private void Setup()
     {
-        unitData = _DATA.GetUnit(unitID);
         agent.speed = unitData.speed;
         maxHealth = unitData.health;
         health = maxHealth;
         speed = unitData.speed;
         damage = unitData.damage;
-        _SM.PlaySound(unitData.spawnSounds);
+        attackRange = unitData.attackRange;
+        _SM.PlaySound(unitData.spawnSound);
+        if(healthBar != null)
+            healthBar.AdjustHealthBar(health, maxHealth);
+        StartCoroutine(WaitForInvincible());
+        GameEvents.ReportOnHumanSpawned(unitID);
     }
-
-    public virtual void Die(Enemy _unitID, string _killedBy, DeathID _deathID) 
+    
+    private IEnumerator WaitForInvincible()
     {
-        if(_deathID == DeathID.Regular)
-            RagdollDeath();
-        if (_deathID == DeathID.Launch)
-            LaunchDeath();
-        if (_deathID == DeathID.Explosion)
-            ExplosionDeath();
-
-        GameEvents.ReportOnHumanKilled(_unitID, _killedBy);
-        Destroy(gameObject);
+        invincible = true;
+        yield return new WaitForSeconds(5);
+        invincible = false;
     }
 
-    public virtual void TakeDamage(int _damage, string _damagedBy)
-    {
-        Vector3 forward = new Vector3(0, 180, 0);
-        GameObject bloodParticle = Instantiate(_DATA.GetUnit(unitID).bloodParticles, transform.position + new Vector3(0, 5, 0), transform.rotation);
-        //GameObject bloodParticle = Instantiate(_DATA.GetUnit(unitID).bloodParticles, transform.position, Quaternion.LookRotation(forward));
-        health -= _damage;
-        if (health <= 0)
-            Die(this, _damagedBy, DeathID.Regular);
-    }
-
+    #endregion
+    
     public virtual void OnTriggerEnter(Collider other)
     {
+        if (invincible)
+            return;
+        
         UnitWeaponCollider uwc = other.GetComponent<UnitWeaponCollider>();
         if (uwc == null)
             return;
@@ -138,6 +138,9 @@ public class Enemy : GameBehaviour
 
     public virtual void OnTriggerExit(Collider other)
     {
+        if (invincible)
+            return;
+        
         UnitWeaponCollider uwc = other.GetComponent<UnitWeaponCollider>();
         if (uwc == null)
             return;
@@ -156,6 +159,42 @@ public class Enemy : GameBehaviour
         }
     }
 
+    #region Damage/Death
+    public virtual void TakeDamage(int _damage, string _damagedBy)
+    {
+        if (invincible)
+            return;
+        
+        Vector3 forward = new Vector3(0, 180, 0);
+        GameObject bloodParticle = Instantiate(_DATA.GetUnit(unitID).bloodParticles, transform.position + new Vector3(0, 5, 0), transform.rotation);
+        //GameObject bloodParticle = Instantiate(_DATA.GetUnit(unitID).bloodParticles, transform.position, Quaternion.LookRotation(forward));
+        health -= _damage;
+        if(healthBar != null) 
+            healthBar.AdjustHealthBar(health, maxHealth);
+        if (health <= 0)
+        {
+            Die(this, _damagedBy, DeathID.Regular);
+        }
+        else
+        {
+            PlaySound(unitData.hitSounds);
+        }
+    }
+
+    public virtual void Die(Enemy _unitID, string _killedBy, DeathID _deathID) 
+    {
+        if(_deathID == DeathID.Regular)
+            RagdollDeath();
+        if (_deathID == DeathID.Launch)
+            LaunchDeath();
+        if (_deathID == DeathID.Explosion)
+            ExplosionDeath();
+
+        PlaySound(unitData.dieSounds);
+        GameEvents.ReportOnHumanKilled(_unitID, _killedBy);
+        gameObject.SetActive(false);
+    }
+    
     private void RagdollDeath()
     {
         bool isColliding = false;
@@ -199,6 +238,7 @@ public class Enemy : GameBehaviour
         }
     }
 
+    #endregion
     private void RemoveFromSites()
     {
         if (_hutExists)
@@ -240,4 +280,52 @@ public class Enemy : GameBehaviour
         else
             return trans;
     }
+
+    #region Animation
+    public int RandomCheerAnim() => Random.Range(1, 3);
+    #endregion
+    
+    
+    #region Sound
+    public void PlaySound(AudioClip[] _clips)
+    {
+        if (_clips.Length == 0)
+            return;
+        
+        AudioClip clip = ArrayX.GetRandomItemFromArray(_clips);
+        PlaySound(clip);
+    }
+    public void PlaySound(AudioClip _clip)
+    {
+        soundPoolCurrent = ArrayX.IncrementCounter(soundPoolCurrent, soundPool);
+        AudioX.PlaySound(_clip, soundPool[soundPoolCurrent]);
+    }
+    #endregion
+
+    #region Animation Events
+    public void Footstep(string _foot) => PlaySound(unitData.footstepSounds);
+    public virtual void Attack(int _attack) { }
+    public virtual void CheckState() { }
+
+    
+    #endregion
+    
+    public virtual void Win(){}
+    private void OnGameOver()
+    {
+        Win();
+        animator.SetTrigger("Cheer" + RandomCheerAnim());
+        agent.SetDestination(transform.position);
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnGameOver += OnGameOver;
+        Setup();
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnGameOver -= OnGameOver;
+    } 
 }

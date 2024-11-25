@@ -47,11 +47,27 @@ public class EnemyManager : Singleton<EnemyManager>
         yield return new WaitForEndOfFrame();
         for (int i = 0; i < enemyIDList.Count; i++)
         {
+            HumanID id = _DATA.GetUnit(enemyIDList[i]).id;
+            GameObject go = GetEnemyFromPool(id);
             //Get the human model from the human data
-            GameObject go = Instantiate(_DATA.GetUnit(enemyIDList[i]).playModel, RandomSpawnPoint.position, transform.rotation);
+
+            if (go == null)
+            {
+                go = Instantiate(_DATA.GetUnit(enemyIDList[i]).playModel, RandomSpawnPoint.position, transform.rotation);
+                AddToEnemyPool(go);
+            }
+            else
+            {
+                go = GetEnemyFromPool(id);
+                go.transform.position = RandomSpawnPoint.position;
+                go.transform.rotation = transform.rotation;
+                go.SetActive(true);
+            }
             //Add to the enemies list
             enemies.Add(go);
-            //Wat a random time before spawning in the next enemy so they aren't on top of each other
+            
+            
+            //Wait a random time before spawning in the next enemy so they aren't on top of each other
             yield return new WaitForSeconds(Random.Range(0.3f, 1f));
         }
 
@@ -277,6 +293,34 @@ public class EnemyManager : Singleton<EnemyManager>
         GameEvents.OnHumanKilled -= OnEnemyUnitKilled;
         GameEvents.OnDayBegin += OnDayBegin;
     }
+    
+    #region Enemy Pooling
+    public List<GameObject> enemyPool;
+
+    private void AddToEnemyPool(GameObject _enemy)
+    {
+        if (enemyPool.Contains(_enemy))
+            return;
+        enemyPool.Add(_enemy);
+    }
+
+    private GameObject GetEnemyFromPool(HumanID _humanID)
+    {
+        List<GameObject> available = enemyPool.FindAll(x=> x.GetComponent<Enemy>().unitID == _humanID);
+        if (available.Count == 0)
+            return null;
+
+        for (int i = 0; i < available.Count; i++)
+        {
+            if(!available[i].activeSelf)
+                return available[i];
+        }
+
+        return null;
+    }
+    
+    
+    #endregion
 }
 
 [System.Serializable]   

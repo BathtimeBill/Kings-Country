@@ -1,22 +1,13 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.AI;
 using UnityEngine;
 
 public class Warrior : Enemy
 {
-    public bool invincible = true;
-    [Header("Hunter Type")]
-    public WarriorType type;
     [Header("Tick")]
     public float seconds = 0.5f;
     [Header("Stats")]
     public EnemyState state;
     public float stoppingDistance;
-    public GameObject homeTree;
-    public bool hasArrivedAtBeacon;
-    public GameObject fyreBeacon;
-    public GameObject deadWarriorFire;
 
     [Header("Components")]
     public Transform closestUnit;
@@ -28,32 +19,17 @@ public class Warrior : Enemy
     public bool horgrSwitch;
     public bool spawnedFromBuilding;
 
-    [Header("Audio")]
-    public GameObject SFXPool;
-    public int soundPoolCurrent;
-    public AudioSource[] soundPool;
-    public AudioSource audioSource;
 
     #region Startup
     public override void Awake()
     {
         base.Awake();
-        soundPool = SFXPool.GetComponents<AudioSource>();
         state = EnemyState.Attack;
     }
     public override void Start()
     {
         base.Start();
-        homeTree = GameObject.FindGameObjectWithTag("Home Tree");
-        if(_GM.gameState == GameState.Lose)
-        {
-            OnGameOver();
-        }
-        else
-        {
-            StartCoroutine(Tick());
-        }
-        StartCoroutine(WaitForInvincible());
+        StartCoroutine(Tick());
     }
     #endregion
 
@@ -121,10 +97,7 @@ public class Warrior : Enemy
 
                 break;
             case EnemyState.Beacon:
-                if (!hasArrivedAtBeacon)
-                    agent.SetDestination(fyreBeacon.transform.position);
-                else
-                    agent.SetDestination(transform.position);
+                agent.SetDestination(transform.position);
                 break;
             case EnemyState.ClaimSite:
                 if (!hasArrivedAtHorgr)
@@ -192,7 +165,7 @@ public class Warrior : Enemy
         {
             if (_UM.unitList.Count == 0)
             {
-                var targetRotation = Quaternion.LookRotation(homeTree.transform.position - transform.position);
+                var targetRotation = Quaternion.LookRotation(_HOME.transform.position - transform.position);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
             }
             else
@@ -264,20 +237,7 @@ public class Warrior : Enemy
     }
     public override void TakeDamage(int damage, string _damagedBy)
     {
-        if(!invincible)
-        {
-            state = EnemyState.Attack;
-            audioSource.clip = _SM.GetGruntSounds();
-            audioSource.pitch = Random.Range(0.8f, 1.2f);
-            audioSource.Play();
-            base.TakeDamage(damage, _damagedBy);
-        }
-    }
-    IEnumerator WaitForInvincible()
-    {
-        invincible = true;
-        yield return new WaitForSeconds(5);
-        invincible = false;
+        base.TakeDamage(damage, _damagedBy);
     }
     public override void Die(Enemy _thisUnit, string _killedBy, DeathID _deathID)
     {
@@ -293,20 +253,10 @@ public class Warrior : Enemy
     {
         PlaySound(_SM.GetKnightFootstepSound());
     }
-    public void PlaySound(AudioClip _clip)
-    {
-        if (soundPoolCurrent == soundPool.Length - 1)
-            soundPoolCurrent = 0;
-        else
-            soundPoolCurrent += 1;
 
-        soundPool[soundPoolCurrent].clip = _clip;
-        soundPool[soundPoolCurrent].pitch = Random.Range(0.8f, 1.2f);
-        soundPool[soundPoolCurrent].Play();
-    }
     public void FindUnit()
     {
-        if (_UM.unitList.Count == 0)
+        if (_NoGuardians)
         {
             state = EnemyState.Work;
         }
@@ -315,29 +265,25 @@ public class Warrior : Enemy
 
     public void FindHomeTree()
     {
-        agent.SetDestination(homeTree.transform.position);
+        agent.SetDestination(_HOME.transform.position);
     }
 
     private void OnArrivedAtHorgr()
     {
         state = EnemyState.Attack;
     }
-    private void OnGameOver()
+    public override void Win()
     {
         state = EnemyState.Cheer;
         StopCoroutine(Tick());
-        animator.SetTrigger("Cheer" + RandomCheerAnim());
-        agent.SetDestination(transform.position);
     }
     private void OnEnable()
     {
         GameEvents.OnUnitArrivedAtHorgr += OnArrivedAtHorgr;
-        GameEvents.OnGameOver += OnGameOver;
     }
 
     private void OnDisable()
     {
         GameEvents.OnUnitArrivedAtHorgr -= OnArrivedAtHorgr;
-        GameEvents.OnGameOver -= OnGameOver;
     }
 }

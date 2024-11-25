@@ -73,7 +73,7 @@ public class WildlifeAI : GameBehaviour
         if (other.GetComponent<UnitWeaponCollider>() == null)
             return;
         
-        Destroy(other.gameObject);
+        other.gameObject.SetActive(false);
         animator.SetBool("IsPanicked", true);
         StopAllCoroutines();
         

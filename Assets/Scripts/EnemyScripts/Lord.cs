@@ -33,7 +33,6 @@ public class Lord : Enemy
     {
         base.Start();
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
-        slider.value = CalculateHealth();
         audioSource = GetComponent<AudioSource>();  
         StartCoroutine(Tick());
         StartCoroutine(Bark());
@@ -122,17 +121,9 @@ public class Lord : Enemy
     public override void OnTriggerExit(Collider other)
     {
         base.OnTriggerExit(other);
-        if (other.tag == "Spit")
-        {
-            agent.speed = speed;
-        }
     }
     public override void TakeDamage(int damage, string _damagedBy)
     {
-        audioSource.clip = _SM.GetGruntSounds();
-        audioSource.pitch = Random.Range(0.8f, 1.2f);
-        audioSource.Play();
-        slider.value = CalculateHealth();
         base.TakeDamage(damage, _damagedBy);
     }
     public override void Die(Enemy _thisUnit, string _killedBy, DeathID _deathID)
@@ -147,8 +138,4 @@ public class Lord : Enemy
 
     #endregion
 
-    float CalculateHealth()
-    {
-        return health / maxHealth;
-    }
 }

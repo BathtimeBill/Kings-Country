@@ -80,7 +80,7 @@ public class GameManager : Singleton<GameManager>
     public float wildlifeSpawnRadius = 60f;
 
     public Transform tutorialWildlifeSpawnLocation;
-    public  List<GameObject> currentWildlife = new List<GameObject>();
+    public List<GameObject> currentWildlife = new List<GameObject>();
     public int wildlifeCount => currentWildlife.Count;
     public List<WildlifeID> availableWildlife = new List<WildlifeID>();
     [HideInInspector] public float numberOfWildlifeToSpawn;

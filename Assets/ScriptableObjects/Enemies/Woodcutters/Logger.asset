@@ -19,10 +19,17 @@ MonoBehaviour:
   health: 100
   damage: 15
   speed: 8
+  attackRange: 30
   icon: {fileID: 0}
   mapIcon: {fileID: 2110873913, guid: b5841c504809ed34b8877f713db8425d, type: 3}
   voiceSounds: []
-  spawnSounds: {fileID: 8300000, guid: 639107530e70e92449f5666c6a89c3a6, type: 3}
+  footstepSounds:
+  - {fileID: 8300000, guid: f5111940f96336c40810b452fa0ed6dd, type: 3}
+  - {fileID: 8300000, guid: dbc7d833dbfd3d942b30c275d7cfbccb, type: 3}
+  - {fileID: 8300000, guid: e030087ce7f639f43bb5e703c9381db1, type: 3}
+  - {fileID: 8300000, guid: 4d997ddc86e340e40aa083c65b328cb5, type: 3}
+  - {fileID: 8300000, guid: 06f5a65172d7b05439936c4c6408f56c, type: 3}
+  attackSounds: []
   hitSounds:
   - {fileID: 8300000, guid: 129159dd04f3fe24cad38f54b2e216b2, type: 3}
   - {fileID: 8300000, guid: 46d3be1d1eb6aad4d87357b6decd9682, type: 3}
@@ -35,6 +42,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9fa53d06bca50d44a8792422cc255099, type: 3}
   - {fileID: 8300000, guid: 58e6edb527a607142b3cf0da85f1bb8c, type: 3}
   - {fileID: 8300000, guid: bae10223c20239642900aaa23f6a8466, type: 3}
+  spawnSound: {fileID: 0}
   playModel: {fileID: 2840439865804280860, guid: b7045cd0d5c3cab46b15990f6e201294,
     type: 3}
   ragdollModel: {fileID: 2840439865804280860, guid: cd5c853a05730e94b921406696b9a397,

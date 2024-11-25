@@ -84,12 +84,8 @@ MonoBehaviour:
   navAgent: {fileID: 1071894615449563646}
   animator: {fileID: 7012161357902533502}
   state: 0
-  spawnInMoveDistance: 10
   attackColliders:
   - {fileID: 6720631131214697138}
-  rangedPrefab: {fileID: 0}
-  towerPrefab: {fileID: 0}
-  rangedSpawnLocation: {fileID: 0}
   attackParticles: {fileID: 0}
   footstepLeftParticles: {fileID: 0}
   footstepRightParticles: {fileID: 0}
@@ -97,17 +93,15 @@ MonoBehaviour:
   isSelected: 0
   inCombat: 0
   isMovingCheck: 0
-  isTooCloseToTower: 0
-  isOutOfBounds: 0
   isFirstPerson: 0
   SFXPool: {fileID: 4602668742288647190}
   soundPoolCurrent: 0
   soundPool: []
-  isUpgraded: 0
   leftHand: {fileID: 5056594478012733639}
   rightHand: {fileID: 406847885258257100}
   leftFoot: {fileID: 4361829189533979445}
   rightFoot: {fileID: 1468723646433766264}
+  distanceToClosestEnemy: 0
   unitData: {fileID: 0}
 --- !u!195 &1071894615449563646
 NavMeshAgent:
@@ -704,10 +698,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 8506600201300946283}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a993d34075fd75848828f3d30265ce81,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 73491375081703153}
   m_SourcePrefab: {fileID: 100100000, guid: a993d34075fd75848828f3d30265ce81, type: 3}
 --- !u!4 &406847885258257100 stripped
 Transform:
@@ -798,31 +788,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineScript: {fileID: 7237213186214068481}
   outlineScript2: {fileID: 0}
---- !u!114 &73491375081703153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1211939875679973461}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daa94a4748d730c4798162cc438b9d6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firingPoint: {fileID: 0}
-  arrow: {fileID: 0}
-  arrow2: {fileID: 0}
-  weaponCollider: {fileID: 6720631131214697138}
-  weaponCollider2: {fileID: 0}
-  footstepParticle: {fileID: 0}
-  stompParticle: {fileID: 0}
-  leftFoot: {fileID: 0}
-  rightFoot: {fileID: 0}
-  hand: {fileID: 0}
-  spit: {fileID: 0}
-  spitParticle: {fileID: 0}
-  spitCollider: {fileID: 0}
 --- !u!4 &1468723646433766264 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 608321761475470972, guid: a993d34075fd75848828f3d30265ce81,

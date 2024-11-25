@@ -99,7 +99,7 @@ public class Unit : GameBehaviour
             unitSpeed = MathX.GetPercentageIncrease(unitSpeed, _DATA.GetPerk(PerkID.FlyFoot).increaseValue);
         navAgent.speed = unitSpeed;
 
-        //Detecion
+        //Detection
         detectionRadius = unitData.detectionRadius;
         stoppingDistance = unitData.stoppingDistance;
 
@@ -248,31 +248,6 @@ public class Unit : GameBehaviour
     #endregion
 
     #region Sound
-    public void PlayFootstepSound()
-    {
-        PlaySound(_SM.GetForestFootstepSound());
-    }
-    public void PlayFlapSound()
-    {
-        PlaySound(_SM.GetFlapSound());
-    }
-    public void PlayGolemFootstepSound()
-    {
-        PlaySound(_SM.GetGolemFootsteps());
-    }
-    public void PlayGolemVocalSound()
-    {
-        PlaySound(_SM.GetGolemVocal());
-    }
-    public void PlayLeshyFootstepSound()
-    {
-        PlaySound(_SM.GetLeshyFootstepSound());
-    }
-    public void PlayLeshyStompSound()
-    {
-        PlaySound(unitData.attackSounds);
-    }
-
     //Look to move into SFXPool script
     public void PlaySound(AudioClip[] _clips)
     {
@@ -288,9 +263,7 @@ public class Unit : GameBehaviour
             return;
         
         soundPoolCurrent = ArrayX.IncrementCounter(soundPoolCurrent, soundPool);
-        soundPool[soundPoolCurrent].clip = _clip;
-        soundPool[soundPoolCurrent].pitch = Random.Range(0.8f, 1.2f);
-        soundPool[soundPoolCurrent].Play();
+        AudioX.PlaySound(_clip, soundPool[soundPoolCurrent]);
     }
     #endregion
     

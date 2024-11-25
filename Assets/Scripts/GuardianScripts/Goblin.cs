@@ -4,7 +4,14 @@ public class Goblin : Unit
 {
     [Header("Goblin Specific")] 
     public Transform firingPoint;
-    public GameObject arrow;
+    public GameObject arrowObject;
+    private Arrow arrow;
+
+    public override void Start()
+    {
+        base.Start();
+        arrow = arrowObject.GetComponent<Arrow>();
+    }
 
     public override void Attack(int _attack)
     {
@@ -14,11 +21,11 @@ public class Goblin : Unit
         
         if(distanceToClosestEnemy < unitData.attackRange)
         {
-            arrow.transform.position = firingPoint.position;
+            arrowObject.transform.position = firingPoint.position;
             firingPoint.transform.LookAt(ClosestEnemy);
-            arrow.SetActive(true);
-            arrow.GetComponent<EnemyProjectile>().target = ClosestEnemy.gameObject;
-            DisableAfterTime(arrow, 1);
+            arrowObject.SetActive(true);
+            arrow.Setup(ClosestEnemy);
+            DisableAfterTime(arrowObject, 1);
         }
     }
 }

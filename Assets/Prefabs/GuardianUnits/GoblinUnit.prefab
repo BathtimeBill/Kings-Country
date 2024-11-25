@@ -71,8 +71,8 @@ Transform:
   - {fileID: 2255614694343760908}
   - {fileID: 6626176547092974786}
   - {fileID: 7125486171636384153}
-  - {fileID: 4273809341054195895}
   - {fileID: 7465055251235457631}
+  - {fileID: 7921192788752133351}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &4049935371749668073
@@ -116,11 +116,7 @@ MonoBehaviour:
   navAgent: {fileID: 4049935371749668079}
   animator: {fileID: 2021720854}
   state: 0
-  spawnInMoveDistance: 10
   attackColliders: []
-  rangedPrefab: {fileID: 0}
-  towerPrefab: {fileID: 0}
-  rangedSpawnLocation: {fileID: 0}
   attackParticles: {fileID: 0}
   footstepLeftParticles: {fileID: 0}
   footstepRightParticles: {fileID: 0}
@@ -128,20 +124,18 @@ MonoBehaviour:
   isSelected: 0
   inCombat: 0
   isMovingCheck: 0
-  isTooCloseToTower: 0
-  isOutOfBounds: 0
   isFirstPerson: 0
   SFXPool: {fileID: 3832059481830835584}
   soundPoolCurrent: 0
   soundPool: []
-  isUpgraded: 0
   leftHand: {fileID: 6135593950801531432}
   rightHand: {fileID: 6135593950801531434}
   leftFoot: {fileID: 6135593950801531440}
   rightFoot: {fileID: 6135593950801531452}
+  distanceToClosestEnemy: 0
   unitData: {fileID: 0}
   firingPoint: {fileID: 5362936605395791815}
-  arrow: {fileID: 1351998711129876865}
+  arrowObject: {fileID: 4927333292947168721}
 --- !u!195 &4049935371749668079
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -268,86 +262,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6135593950801531434}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &2650480650597595576
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 4049935371749668076}
-    m_Modifications:
-    - target: {fileID: 2272058214052946191, guid: a7363cc060e9aec4a839d5e9d107343a,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2272058214052946191, guid: a7363cc060e9aec4a839d5e9d107343a,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2272058214052946191, guid: a7363cc060e9aec4a839d5e9d107343a,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2272058214052946191, guid: a7363cc060e9aec4a839d5e9d107343a,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2272058214052946191, guid: a7363cc060e9aec4a839d5e9d107343a,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2272058214052946191, guid: a7363cc060e9aec4a839d5e9d107343a,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2272058214052946191, guid: a7363cc060e9aec4a839d5e9d107343a,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2272058214052946191, guid: a7363cc060e9aec4a839d5e9d107343a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2272058214052946191, guid: a7363cc060e9aec4a839d5e9d107343a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2272058214052946191, guid: a7363cc060e9aec4a839d5e9d107343a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3894247749214064697, guid: a7363cc060e9aec4a839d5e9d107343a,
-        type: 3}
-      propertyPath: m_Name
-      value: GoblinProjectile
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a7363cc060e9aec4a839d5e9d107343a, type: 3}
---- !u!1 &1351998711129876865 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3894247749214064697, guid: a7363cc060e9aec4a839d5e9d107343a,
-    type: 3}
-  m_PrefabInstance: {fileID: 2650480650597595576}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &4273809341054195895 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2272058214052946191, guid: a7363cc060e9aec4a839d5e9d107343a,
-    type: 3}
-  m_PrefabInstance: {fileID: 2650480650597595576}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2942623365767636039
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -623,10 +537,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 7363534647966204730}
-    - targetCorrespondingSourceObject: {fileID: 100086, guid: f80781be66fad4b4d8009b408672c2a0,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8689616733042416316}
   m_SourcePrefab: {fileID: 100100000, guid: f80781be66fad4b4d8009b408672c2a0, type: 3}
 --- !u!1 &6135593950801038850 stripped
 GameObject:
@@ -711,31 +621,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineScript: {fileID: 5706256015578100147}
   outlineScript2: {fileID: 0}
---- !u!114 &8689616733042416316
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6135593950801038850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daa94a4748d730c4798162cc438b9d6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firingPoint: {fileID: 8227420821533532717}
-  arrow: {fileID: 3894247749214064697, guid: a7363cc060e9aec4a839d5e9d107343a, type: 3}
-  arrow2: {fileID: 0}
-  weaponCollider: {fileID: 0}
-  weaponCollider2: {fileID: 0}
-  footstepParticle: {fileID: 0}
-  stompParticle: {fileID: 0}
-  leftFoot: {fileID: 0}
-  rightFoot: {fileID: 0}
-  hand: {fileID: 0}
-  spit: {fileID: 0}
-  spitParticle: {fileID: 0}
-  spitCollider: {fileID: 0}
 --- !u!4 &6135593950801531426 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400086, guid: f80781be66fad4b4d8009b408672c2a0,
@@ -1040,4 +925,49 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 277118202812873055, guid: f759df6ee259d254ea02dba6e9d3d9ce,
     type: 3}
   m_PrefabInstance: {fileID: 7679014054419605237}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8244474875726958056
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4049935371749668076}
+    m_Modifications:
+    - target: {fileID: 2272058214052946191, guid: a7363cc060e9aec4a839d5e9d107343a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2272058214052946191, guid: a7363cc060e9aec4a839d5e9d107343a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2272058214052946191, guid: a7363cc060e9aec4a839d5e9d107343a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3894247749214064697, guid: a7363cc060e9aec4a839d5e9d107343a,
+        type: 3}
+      propertyPath: m_Name
+      value: GoblinProjectile
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a7363cc060e9aec4a839d5e9d107343a, type: 3}
+--- !u!1 &4927333292947168721 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3894247749214064697, guid: a7363cc060e9aec4a839d5e9d107343a,
+    type: 3}
+  m_PrefabInstance: {fileID: 8244474875726958056}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7921192788752133351 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2272058214052946191, guid: a7363cc060e9aec4a839d5e9d107343a,
+    type: 3}
+  m_PrefabInstance: {fileID: 8244474875726958056}
   m_PrefabAsset: {fileID: 0}

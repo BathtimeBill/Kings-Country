@@ -1,13 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.AI;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using UnityEngine.Analytics;
 
 public class Logger : Enemy
 {
-    public bool invincible = true;
     [Header("Woodcutter Type")]
     public WoodcutterType woodcutterType;
     [Header("Tick")]
@@ -20,46 +15,20 @@ public class Logger : Enemy
     public EnemyState state;
     public Transform closestUnit;
     public float distanceFromClosestUnit;
-
-    [Header("Beacon")]
-    public GameObject fyreBeacon;
-    public bool hasArrivedAtBeacon;
-
-
+    
     [Header("Trees")]
     public Transform closestTree;
     public GameObject axeObject;
     public float distanceFromClosestTree;
     public GameObject homeTree;
-
-    [Header("Audio")]
-    public GameObject SFXPool;
-    public int soundPoolCurrent;
-    public AudioSource[] soundPool;
-    public AudioSource audioSource;
-    private AudioClip audioClip;
-
+    
     #region Startup
-    public override void Awake()
-    {
-        base.Awake();
-        soundPool = SFXPool.GetComponents<AudioSource>();
-        
-    }
     public override void Start()
     {
         base.Start();
         state = EnemyState.Work;
         homeTree = GameObject.FindGameObjectWithTag("Home Tree");
-        if (_GM.gameState == GameState.Lose)
-        {
-            OnGameOver();
-        }
-        else
-        {
-            StartCoroutine(Tick());
-        }
-        StartCoroutine(WaitForInvincible());
+        StartCoroutine(Tick());
     }
     #endregion
 
@@ -116,7 +85,6 @@ public class Logger : Enemy
                     }
                     FindTree();
                 }
-
                 break;
 
             case EnemyState.Attack:
@@ -133,18 +101,13 @@ public class Logger : Enemy
                 //{
                 //    state = EnemyState.Cheer;
                 //}
-
                 break;
             case EnemyState.Beacon:
-                if (!hasArrivedAtBeacon)
-                    agent.SetDestination(fyreBeacon.transform.position);
-                else
-                    agent.SetDestination(transform.position);
+                agent.SetDestination(transform.position);
 
                 break;
             case EnemyState.Cheer:
                 agent.SetDestination(transform.position);
-
                 break;
         }
 
@@ -168,24 +131,8 @@ public class Logger : Enemy
     public override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-        /*
-        if (other.tag == "Spit")
-        {
-            TakeDamage(_GM.spitDamage);
-        }
-        if (other.tag == "SpitExplosion")
-        {
-            TakeDamage(_GM.spitExplosionDamage);
-        }*/
-        if (other.tag == "Beacon")
-        {
-            if(woodcutterType != WoodcutterType.LogCutter)
-            {
-                animator.SetTrigger("Cheer" + RandomCheerAnim());
-                hasArrivedAtBeacon = true;
-            }
-        }
-        if (other.tag == "Hand") //TODO what is the hand?
+
+        if (other.CompareTag("Hand")) //TODO what is the hand?
         {
             Die(this, "Hand", DeathID.Regular);
         }
@@ -194,28 +141,12 @@ public class Logger : Enemy
     {
         base.OnTriggerExit(other);
     }
-    private int RandomCheerAnim()
-    {
-        int rnd = Random.Range(1, 3);
-        return rnd;
-    }
+
+    private int RandomCheerAnim() => Random.Range(1, 3);
+
 
     #endregion
 
-    public void PlayFootstepSound()
-    {
-        PlaySound(_SM.GetHumanFootstepSound());
-    }
-    public void PlaySound(AudioClip _clip)
-    {
-        if (soundPoolCurrent == soundPool.Length - 1)
-            soundPoolCurrent = 0;
-        else
-            soundPoolCurrent += 1;
-
-        soundPool[soundPoolCurrent].clip = _clip;
-        soundPool[soundPoolCurrent].Play();
-    }
     private void SmoothFocusOnEnemy()
     {
         var targetRotation = Quaternion.LookRotation(closestUnit.transform.position - transform.position);
@@ -238,29 +169,9 @@ public class Logger : Enemy
 
     public override void TakeDamage(int damage, string _damagedBy)
     {
-        if(!invincible)
-        {
-            if (woodcutterType != WoodcutterType.LogCutter)
-            {
-                audioSource.clip = _SM.GetGruntSounds();
-                audioSource.pitch = Random.Range(0.8f, 1.2f);
-                audioSource.Play();
-            }
-            else
-            {
-                audioSource.clip = _SM.GetChopSounds();
-                audioSource.pitch = Random.Range(0.8f, 1.2f);
-                audioSource.Play();
-            }
-            base.TakeDamage(damage, _damagedBy);
-        }
+        base.TakeDamage(damage, _damagedBy);
     }
-    IEnumerator WaitForInvincible()
-    {
-        invincible = true;
-        yield return new WaitForSeconds(5);
-        invincible = false;
-    }
+    
     public override void Die(Enemy _thisUnit, string _killedBy, DeathID _deathID)
     {
         base.Die(_thisUnit, _killedBy, _deathID);
@@ -324,20 +235,9 @@ public class Logger : Enemy
         Log("Finding Home Tree");
         agent.SetDestination(homeTree.transform.position);
     }
-    private void OnGameOver()
+    public override void Win()
     {
         StopCoroutine(Tick());
         state = EnemyState.Cheer;
-        animator.SetTrigger("Cheer" + RandomCheerAnim());
-        agent.SetDestination(transform.position);
-    }
-    private void OnEnable()
-    {
-        GameEvents.OnGameOver += OnGameOver;
-    }
-
-    private void OnDisable()
-    {
-        GameEvents.OnGameOver -= OnGameOver;
     }
 }
