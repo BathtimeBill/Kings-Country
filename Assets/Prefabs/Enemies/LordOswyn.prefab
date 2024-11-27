@@ -268,13 +268,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitID: 11
+  unitData: {fileID: 0}
+  healthBar: {fileID: 0}
   health: 0
-  maxHealth: 500
-  damage: 0
-  speed: 25
   maxRandomDropChance: 0
   agent: {fileID: 0}
   animator: {fileID: 0}
+  SFXPool: {fileID: 0}
+  attackRange: 0
   horseAnimator: {fileID: 9180876596496797862}
   knightAnimator: {fileID: 5508842140857460853}
   closestUnit: {fileID: 0}
@@ -2116,8 +2117,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb6e1964cd2fdd40a9e422f616806f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemy: {fileID: 0}
   weaponCollider: {fileID: 2866346829772053985}
-  weaponSource: {fileID: 8730365573455447050}
 --- !u!114 &6482488434287935446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2163,15 +2164,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400058, guid: 25011e2b5cb5bfb40b7c8925cd29d8ae, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400058, guid: 25011e2b5cb5bfb40b7c8925cd29d8ae, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400058, guid: 25011e2b5cb5bfb40b7c8925cd29d8ae, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400058, guid: 25011e2b5cb5bfb40b7c8925cd29d8ae, type: 3}
       propertyPath: m_LocalPosition.x

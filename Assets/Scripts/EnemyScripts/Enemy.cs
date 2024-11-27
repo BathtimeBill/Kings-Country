@@ -8,7 +8,7 @@ public class Enemy : GameBehaviour
     [HideInInspector] public EnemyData unitData;
     public HealthBar healthBar;
     [Header("Stats")]
-    public int health;
+    private int health;
     private int maxHealth;
     private int damage;
     private float speed;

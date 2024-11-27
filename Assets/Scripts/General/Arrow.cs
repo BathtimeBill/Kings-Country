@@ -12,14 +12,15 @@ public class Arrow : GameBehaviour
     }
     private void FixedUpdate()
     {
-        if(target != null)
+        if(!target)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.position + new Vector3(0, 2, 0), speed);
-            transform.LookAt(target.position);
+            gameObject.SetActive(false);
+            
         }
         else
         {
-            gameObject.SetActive(false);
+            transform.position = Vector3.MoveTowards(transform.position, target.position + new Vector3(0, 2, 0), speed);
+            transform.LookAt(target.position);
         }
     }
 }

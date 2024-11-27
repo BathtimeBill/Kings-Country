@@ -92,11 +92,7 @@ MonoBehaviour:
   navAgent: {fileID: 1071894615449563646}
   animator: {fileID: 6166074591476485992}
   state: 0
-  spawnInMoveDistance: 10
   attackColliders: []
-  rangedPrefab: {fileID: 0}
-  towerPrefab: {fileID: 0}
-  rangedSpawnLocation: {fileID: 0}
   attackParticles: {fileID: 0}
   footstepLeftParticles: {fileID: 0}
   footstepRightParticles: {fileID: 0}
@@ -104,17 +100,15 @@ MonoBehaviour:
   isSelected: 0
   inCombat: 0
   isMovingCheck: 0
-  isTooCloseToTower: 0
-  isOutOfBounds: 0
   isFirstPerson: 0
   SFXPool: {fileID: 1697729222918335139}
   soundPoolCurrent: 0
   soundPool: []
-  isUpgraded: 0
   leftHand: {fileID: 6166074591469048292}
   rightHand: {fileID: 6166074591468992684}
   leftFoot: {fileID: 6166074591469077870}
   rightFoot: {fileID: 6166074591469073484}
+  distanceToClosestEnemy: 0
   unitData: {fileID: 0}
   towerUnit: {fileID: 4132771805544830452, guid: 16c7e39dcc4b95e4bb37944b196f29d9,
     type: 3}
@@ -519,15 +513,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 458648, guid: a9582c782057f4640af9de39a218bc7b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 458648, guid: a9582c782057f4640af9de39a218bc7b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 458648, guid: a9582c782057f4640af9de39a218bc7b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 458648, guid: a9582c782057f4640af9de39a218bc7b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -535,7 +529,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 458648, guid: a9582c782057f4640af9de39a218bc7b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.98
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 458648, guid: a9582c782057f4640af9de39a218bc7b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -568,6 +562,10 @@ PrefabInstance:
     - target: {fileID: 458648, guid: a9582c782057f4640af9de39a218bc7b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 458648, guid: a9582c782057f4640af9de39a218bc7b, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9560088, guid: a9582c782057f4640af9de39a218bc7b, type: 3}
       propertyPath: m_Controller

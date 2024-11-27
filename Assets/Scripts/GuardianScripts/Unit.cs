@@ -37,8 +37,8 @@ public class Unit : GameBehaviour
     public bool isFirstPerson;
     [Header("Audio")]
     public GameObject SFXPool;
-    public int soundPoolCurrent;
-    public AudioSource[] soundPool;
+    private int soundPoolCurrent;
+    private AudioSource[] soundPool;
 
     [Header("Body")] 
     public Transform leftHand;
