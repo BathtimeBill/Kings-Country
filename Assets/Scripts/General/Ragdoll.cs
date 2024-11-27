@@ -4,7 +4,13 @@ public class Ragdoll : GameBehaviour
 {
     public GameObject fireParticles;
     public AudioSource audioSource;
-    void Start()
+    public void OnEnable()
+    {
+        if(fireParticles)
+            fireParticles.SetActive(false);
+    }
+
+    public void OnDisable()
     {
         if(fireParticles)
             fireParticles.SetActive(false);

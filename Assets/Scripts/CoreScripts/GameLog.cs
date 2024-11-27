@@ -40,7 +40,7 @@ public class GameLog : GameBehaviour
         string unit = GetName(id);
         ChangeLogLine(unit + " was spawned in ");
     }
-    private void OnCreatureSpawned(CreatureID _unitID)
+    private void OnOnGuardianSpawned(CreatureID _unitID)
     {
         string str = _unitID.ToString();
         ObjectID id = EnumX.ToEnum<ObjectID>(str);
@@ -71,7 +71,7 @@ public class GameLog : GameBehaviour
     private void OnEnable()
     {
         GameEvents.OnHumanSpawned    += OnHumanSpawned;
-        GameEvents.OnCreatureSpawned    += OnCreatureSpawned;
+        GameEvents.OnGuardianSpawned    += OnOnGuardianSpawned;
         GameEvents.OnCreatureKilled     += OnUnitKilled;
         GameEvents.OnHumanKilled += OnHumanKilled;
         GameEvents.OnDayOver       += OnDayOver;
@@ -82,7 +82,7 @@ public class GameLog : GameBehaviour
     private void OnDisable()
     {
         GameEvents.OnHumanSpawned -= OnHumanSpawned;
-        GameEvents.OnCreatureSpawned -= OnCreatureSpawned;
+        GameEvents.OnGuardianSpawned -= OnOnGuardianSpawned;
         GameEvents.OnCreatureKilled     -= OnUnitKilled;
         GameEvents.OnHumanKilled -= OnHumanKilled;
         GameEvents.OnDayOver       -= OnDayOver;

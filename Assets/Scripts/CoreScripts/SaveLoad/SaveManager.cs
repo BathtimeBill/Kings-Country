@@ -578,7 +578,7 @@ public class SaveManager : BGG.GameData
         //SaveData();
     }
 
-    private void OnCreatureSpawned(CreatureID _id)
+    private void OnOnGuardianSpawned(CreatureID _id)
     {
         UnitStats stat = GetUnitStats(_id.ToString());
         if (stat == null)
@@ -826,7 +826,7 @@ public class SaveManager : BGG.GameData
         GameEvents.OnCreatureKilled += OnCreatureKilled;
         GameEvents.OnHumanKilled += OnHumanKilled;
         GameEvents.OnHumanSpawned += OnHumanSpawned;
-        GameEvents.OnCreatureSpawned += OnCreatureSpawned;
+        GameEvents.OnGuardianSpawned += OnOnGuardianSpawned;
 
         GameEvents.OnTreePlaced += OnTreePlaced;
         GameEvents.OnTreeDestroyed += OnTreeDestroyed;
@@ -851,7 +851,7 @@ public class SaveManager : BGG.GameData
         GameEvents.OnCreatureKilled -= OnCreatureKilled;
         GameEvents.OnHumanKilled -= OnHumanKilled;
         GameEvents.OnHumanSpawned -= OnHumanSpawned;
-        GameEvents.OnCreatureSpawned -= OnCreatureSpawned;
+        GameEvents.OnGuardianSpawned -= OnOnGuardianSpawned;
 
         GameEvents.OnTreePlaced -= OnTreePlaced;
         GameEvents.OnTreeDestroyed -= OnTreeDestroyed;

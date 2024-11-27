@@ -30,6 +30,7 @@ public class UnitData : ScriptableObject
     [Header("Models")]
     public GameObject playModel;
     public GameObject ragdollModel;
+    public GameObject spawnParticles;
     public GameObject hitParticles;
     public GameObject dieParticles;
 }

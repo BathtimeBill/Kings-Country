@@ -21,9 +21,50 @@ public class UnitManager : Singleton<UnitManager>
     [HideInInspector] public List<Unit> controlGroup08;
     [HideInInspector] public List<Unit> controlGroup09;
     [HideInInspector] public List<Unit> controlGroup10;
-
     [HideInInspector] public GameObject selectedUnit;
+    
+    private List<GameObject> guardianPool = new List<GameObject>();
+    private List<GameObject> spawnParticlePool = new List<GameObject>();
+    private List<GameObject> ragdollPool = new List<GameObject>();
 
+    public void SpawnGuardian(UnitData _unitData, Transform _location)
+    {
+        if (_GM.maegen < _unitData.cost)
+        {
+            _UI.SetError(ErrorID.InsufficientMaegen);
+            return;
+        }
+
+        if (_GM.populous >= _GM.maxPopulous)
+        {
+            _UI.SetError(ErrorID.MaxPopulation);
+            return;
+        }
+
+        UnitData guardian = _unitData;
+        GameObject go = PoolX.GetFromPool(_DATA.GetUnit(guardian.id).playModel, guardianPool);
+        GameObject particles = PoolX.GetFromPool(_DATA.GetUnit(guardian.id).spawnParticles, spawnParticlePool);
+        go.transform.position = particles.transform.position = _location.transform.position;
+        go.transform.rotation = particles.transform.rotation = transform.rotation;
+        
+        _GM.DecreaseMaegen(_unitData.cost);
+        _UI.CheckPopulousUI();
+    }
+
+    public void RemoveGuardian(Unit _unit, Vector3 _position, Quaternion _rotation)
+    {
+        Deselect(_unit);
+        unitList.Remove(_unit);
+        RemoveSelectedUnit(_unit);
+        
+        //CHECK - May need to reset ragdoll physics when getting object
+        GameObject go = PoolX.GetFromPool(_unit.unitData.ragdollModel, ragdollPool);
+        go.transform.position = _position;
+        go.transform.rotation = _rotation;
+        
+        _unit.gameObject.SetActive(false);
+    }
+    
     public void GroupUnits(int _group)
     {
         GetGroup(_group).Clear();
@@ -251,6 +292,6 @@ public class UnitManager : Singleton<UnitManager>
         InputManager.OnUnitFocus -= OnUnitFocus;
         InputManager.OnDeselectButtonPressed -= OnDeselectButtonPressed;
     }
-
+    
     
 }

@@ -75,39 +75,16 @@ public static class GameEvents
     //Title Events
     public static event Action OnLevelStart = null;
 
-    public static void ReportOnGameStateChanged(GameState _gameState)
-    {
-        OnGameStateChanged?.Invoke(_gameState);
-    }
+    public static void ReportOnGameStateChanged(GameState _gameState) => OnGameStateChanged?.Invoke(_gameState);
     public static void ReportOnTutorialFinished() => OnTutorialFinished?.Invoke();
-    public static void ReportOnPerkButtonPressed()
-    {
-        OnPerkButtonPressed?.Invoke();
-    }
-    public static void ReportOnToolButtonPressed(ToolID _toolID)
-    {
-        OnToolButtonPressed?.Invoke(_toolID);
-    }
-    public static void ReportOnUnitButtonPressed(UnitData _unit)
-    {
-        OnUnitButtonPressed?.Invoke(_unit);
-    }
-    public static void ReportOnSpySpawned()
-    {
-        OnSpySpawned?.Invoke();
-    }
-    public static void ReportOnMineSpawned()
-    {
-        OnMineSpawned?.Invoke();
-    }
-    public static void ReportOnLordSpawned()
-    {
-        OnLordSpawned?.Invoke();
-    }
-    public static void ReportOnToggleOutline()
-    {
-        OnToggleOutline?.Invoke();
-    }
+    public static void ReportOnPerkButtonPressed() => OnPerkButtonPressed?.Invoke();
+    public static void ReportOnToolButtonPressed(ToolID _toolID) => OnToolButtonPressed?.Invoke(_toolID);
+    public static void ReportOnUnitButtonPressed(UnitData _unit) => OnUnitButtonPressed?.Invoke(_unit);
+    public static void ReportOnSpySpawned() => OnSpySpawned?.Invoke();
+    public static void ReportOnMineSpawned() => OnMineSpawned?.Invoke();
+    public static void ReportOnLordSpawned() => OnLordSpawned?.Invoke();
+    
+    public static void ReportOnToggleOutline() => OnToggleOutline?.Invoke();
     
     public static void ReportOnSiteSelected(SiteID _ID, bool _selected)=> OnSiteSelected?.Invoke(_ID, _selected);
     
@@ -242,11 +219,11 @@ public static class GameEvents
     public static event Action<string, string, int> OnCreatureKilled = null;
     public static event Action<Enemy, string> OnHumanKilled = null;
     public static event Action<HumanID> OnHumanSpawned = null;
-    public static event Action<CreatureID> OnCreatureSpawned = null;
-    public static void ReportOnCreatureKilled(string _unitID, string _killedBy, int _daysSurvived) => OnCreatureKilled?.Invoke(_unitID, _killedBy, _daysSurvived);
+    public static event Action<CreatureID> OnGuardianSpawned = null;
+    public static void ReportOnGuardianKilled(string _unitID, string _killedBy, int _daysSurvived) => OnCreatureKilled?.Invoke(_unitID, _killedBy, _daysSurvived);
     public static void ReportOnHumanKilled(Enemy _unitID, string _killedBy) => OnHumanKilled?.Invoke(_unitID, _killedBy);
     public static void ReportOnHumanSpawned(HumanID _ID) => OnHumanSpawned?.Invoke(_ID);
-    public static void ReportOnCreatureSpawned(CreatureID _ID) => OnCreatureSpawned?.Invoke(_ID);
+    public static void ReportOnGuardianSpawned(CreatureID _ID) => OnGuardianSpawned?.Invoke(_ID);
     #endregion
 
     #region Settings

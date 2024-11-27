@@ -9,19 +9,19 @@ public class EnemyManager : Singleton<EnemyManager>
     [HideInInspector] public List<GameObject> spawnPoints;
     [Header("Spawn Cooldown")]
     public BV.Range cooldown;
-
     private List<HumanID> enemyIDList;
     private List<SpawnAmounts> spawnAmounts;
     private SpawnAmounts currentDaySpawnAmount;
-
     public bool allEnemiesDead => enemies.Count == 0;
     public bool allEnemiesSpawned => enemyIDList.Count == 0;
     public int currentKillCount;
     
     public GameObject spyNotification;
+    private List<GameObject> enemyPool = new List<GameObject>();
+    private List<GameObject> ragdollPool = new List<GameObject>();
     public void AddSpawnPoint(GameObject spawnPoint) => spawnPoints.Add(spawnPoint);
-
     private Transform RandomSpawnPoint => ListX.GetRandomItemFromList(spawnPoints).transform; 
+    
     private void Start()
     {
         enemyIDList = new List<HumanID>();
@@ -42,31 +42,20 @@ public class EnemyManager : Singleton<EnemyManager>
     }
 
     #region Spawning
+
+    private void SpawnEnemy(GameObject _enemy, Vector3 _location)
+    {
+        GameObject go = PoolX.GetFromPool(_enemy, enemyPool);
+        go.transform.position = _location;
+        go.transform.rotation = transform.rotation;
+        enemies.Add(go);
+    }
     IEnumerator SpawnEnemies()
     {
         yield return new WaitForEndOfFrame();
         for (int i = 0; i < enemyIDList.Count; i++)
         {
-            HumanID id = _DATA.GetUnit(enemyIDList[i]).id;
-            GameObject go = GetEnemyFromPool(id);
-            //Get the human model from the human data
-
-            if (go == null)
-            {
-                go = Instantiate(_DATA.GetUnit(enemyIDList[i]).playModel, RandomSpawnPoint.position, transform.rotation);
-                AddToEnemyPool(go);
-            }
-            else
-            {
-                go = GetEnemyFromPool(id);
-                go.transform.position = RandomSpawnPoint.position;
-                go.transform.rotation = transform.rotation;
-                go.SetActive(true);
-            }
-            //Add to the enemies list
-            enemies.Add(go);
-            
-            
+            SpawnEnemy(_DATA.GetUnit(enemyIDList[i]).playModel, RandomSpawnPoint.position);
             //Wait a random time before spawning in the next enemy so they aren't on top of each other
             yield return new WaitForSeconds(Random.Range(0.3f, 1f));
         }
@@ -83,10 +72,7 @@ public class EnemyManager : Singleton<EnemyManager>
             return;
 
         int rndHuman = Random.Range(0, enemyIDList.Count);
-        //Get the human model from the human data
-        GameObject go = Instantiate(_DATA.GetUnit(enemyIDList[rndHuman]).playModel, spawnLocation, transform.rotation);
-        //Add to the enemies list
-        enemies.Add(go);
+        SpawnEnemy(_DATA.GetUnit(enemyIDList[rndHuman]).playModel, spawnLocation);
     }
     
     private void SpawnDog()  //CHECK IF VALUES ARE RIGHT
@@ -102,7 +88,7 @@ public class EnemyManager : Singleton<EnemyManager>
                 int rndCoin = Random.Range(0, 2);
                 if (rndCoin == 1)
                 {
-                    Instantiate(_DATA.GetUnit(HumanID.Dog).playModel, RandomSpawnPoint.position, transform.rotation);
+                    SpawnEnemy(_DATA.GetUnit(HumanID.Dog).playModel, RandomSpawnPoint.position);
                 }
             }
         }
@@ -110,9 +96,7 @@ public class EnemyManager : Singleton<EnemyManager>
     
     private void SpawnSpyEnemy(Vector3 spawnLocation)
     {
-        GameObject go = Instantiate(_DATA.GetUnit(HumanID.Spy).playModel, spawnLocation, transform.rotation);
-        //Add to the enemies list
-        enemies.Add(go);
+        SpawnEnemy(_DATA.GetUnit(HumanID.Dog).playModel, spawnLocation);
     }
     
     private IEnumerator SpawnSpy() //CHECK - Can the spawn intervals be changed to a formula or got from somewhere else?
@@ -161,19 +145,31 @@ public class EnemyManager : Singleton<EnemyManager>
         yield return new WaitForSeconds(spySpawnInterval);
         StartCoroutine(SpawnSpy());
     }
-
-
-    private void SpawnLoop()
+    
+    public void RemoveEnemy(Enemy _enemy, string _killedBy, DeathID _deathID, Vector3 _position, Quaternion _rotation)
     {
-        int rndSpawn = Random.Range(0, _EM.spawnPoints.Count);
-        //Get a random humanID from the current day list of available humans
-        HumanID human = ListX.GetRandomItemFromList(enemyIDList);
-        //Get the human model from the human data
-        GameObject go = Instantiate(_DATA.GetUnit(human).playModel, _EM.spawnPoints[rndSpawn].transform.position, transform.rotation);
-        print("Spawning in a " + human);
-        //Remove the spawned unit from the available human list
-        enemyIDList.Remove(human);
-        enemies.Add(go);
+        //CHECK - May need to reset ragdoll physics when getting object
+        GameObject go = PoolX.GetFromPool(_enemy.unitData.ragdollModel, ragdollPool);
+        go.transform.position = _position;
+        go.transform.rotation = _rotation;
+        Ragdoll ragdoll = go.GetComponent<Ragdoll>();
+        switch (_deathID)
+        {
+            case DeathID.Regular:
+                ragdoll.Die(ArrayX.GetRandomItemFromArray(_enemy.unitData.dieSounds));
+                ragdoll.Launch(0, 0);
+                break;
+            case DeathID.Explosion:
+                ragdoll.Die(ArrayX.GetRandomItemFromArray(_enemy.unitData.dieSounds), true);
+                ragdoll.Launch(2000, -16000);
+                break;
+            case DeathID.Launch:
+                ragdoll.Die(ArrayX.GetRandomItemFromArray(_enemy.unitData.dieSounds));
+                ragdoll.Launch(20000, -20000);
+                break;
+        }
+        _enemy.gameObject.SetActive(false);
+        GameEvents.ReportOnHumanKilled(_enemy, _killedBy);
     }
     #endregion
 
@@ -293,34 +289,6 @@ public class EnemyManager : Singleton<EnemyManager>
         GameEvents.OnHumanKilled -= OnEnemyUnitKilled;
         GameEvents.OnDayBegin += OnDayBegin;
     }
-    
-    #region Enemy Pooling
-    public List<GameObject> enemyPool;
-
-    private void AddToEnemyPool(GameObject _enemy)
-    {
-        if (enemyPool.Contains(_enemy))
-            return;
-        enemyPool.Add(_enemy);
-    }
-
-    private GameObject GetEnemyFromPool(HumanID _humanID)
-    {
-        List<GameObject> available = enemyPool.FindAll(x=> x.GetComponent<Enemy>().unitID == _humanID);
-        if (available.Count == 0)
-            return null;
-
-        for (int i = 0; i < available.Count; i++)
-        {
-            if(!available[i].activeSelf)
-                return available[i];
-        }
-
-        return null;
-    }
-    
-    
-    #endregion
 }
 
 [System.Serializable]   

@@ -181,63 +181,14 @@ public class Enemy : GameBehaviour
         }
     }
 
-    public virtual void Die(Enemy _unitID, string _killedBy, DeathID _deathID) 
+    public virtual void Die(Enemy _enemy, string _killedBy, DeathID _deathID) 
     {
-        if(_deathID == DeathID.Regular)
-            RagdollDeath();
-        if (_deathID == DeathID.Launch)
-            LaunchDeath();
-        if (_deathID == DeathID.Explosion)
-            ExplosionDeath();
-
-        PlaySound(unitData.dieSounds);
-        GameEvents.ReportOnHumanKilled(_unitID, _killedBy);
-        gameObject.SetActive(false);
+        RemoveFromSites();
+        _EM.RemoveEnemy(_enemy, _killedBy, _deathID, transform.position, transform.rotation);
+        if(_deathID == DeathID.Launch)
+            DropMaegen();
     }
     
-    private void RagdollDeath()
-    {
-        bool isColliding = false;
-
-        RemoveFromSites();
-        
-        if (!isColliding)
-        {
-            isColliding = true;
-            GameObject go = Instantiate(unitData.ragdollModel, transform.position, transform.rotation);
-            go.GetComponent<Ragdoll>().Die(ArrayX.GetRandomItemFromArray(unitData.dieSounds));
-            Destroy(go, 15);
-        }
-    }
-
-    private void ExplosionDeath()
-    {
-        RemoveFromSites();
-        GameObject go = Instantiate(unitData.ragdollModel, transform.position, transform.rotation);
-        Ragdoll ragdoll = go.GetComponent<Ragdoll>();
-        ragdoll.Die(ArrayX.GetRandomItemFromArray(unitData.dieSounds), true);
-        ragdoll.Launch(2000, -16000);
-        Destroy(go, 15);
-    }
-
-    public virtual void LaunchDeath()
-    {
-        bool isColliding = false;
-        RemoveFromSites();
-        DropMaegen();
-        float thrust = 20000f;
-        if (!isColliding)
-        {
-            print("Launching");
-            isColliding = true;
-            GameObject go = Instantiate(unitData.ragdollModel, transform.position, transform.rotation);
-            Ragdoll ragdoll = go.GetComponent<Ragdoll>();
-            ragdoll.Die(ArrayX.GetRandomItemFromArray(unitData.dieSounds));
-            ragdoll.Launch(20000, -20000);
-            Destroy(go, 25);
-        }
-    }
-
     #endregion
     private void RemoveFromSites()
     {

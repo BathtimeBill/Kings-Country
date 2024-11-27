@@ -78,7 +78,7 @@ public class Unit : GameBehaviour
             soundPool = SFXPool.GetComponents<AudioSource>();
             pointer = _Pointer;
             Setup();
-            GameEvents.ReportOnCreatureSpawned(unitID);
+            GameEvents.ReportOnGuardianSpawned(unitID);
             SpawnInMove();
             startingDay = _currentDay;
         }
@@ -451,30 +451,26 @@ public class Unit : GameBehaviour
         GameObject go = Instantiate(hitParticle, transform.position + new Vector3(0, 5, 0), transform.rotation);
         //go.transform.rotation = Quaternion.Inverse(transform.rotation);
         DecreaseHealth(damage);
-        Die(attacker);
+        if (health <= 0)
+            Die(attacker);
     }
 
     private void Die(string _attacker)
     {
+        RemoveFromSites();
+        _UM.Deselect(this);
+        _UM.unitList.Remove(this);
         bool isColliding = false;
-        if (health <= 0)
+        if(!isColliding)
         {
-            RemoveFromSites();
-            _UM.Deselect(this);
-            _UM.unitList.Remove(this);
-
-            if(!isColliding)
-            {
-                GameObject go = Instantiate(unitData.ragdollModel, transform.position, transform.rotation);
-                isColliding = true;
-                Destroy(go, 15);
-            }
-            _UI.CheckPopulousUI();
-            int daysSurvived = _currentDay - startingDay;
-            GameEvents.ReportOnCreatureKilled(unitID.ToString(), _attacker, daysSurvived);
-            _UM.RemoveSelectedUnit(this);
-            Destroy(gameObject);
+            GameObject go = Instantiate(unitData.ragdollModel, transform.position, transform.rotation);
+            isColliding = true;
+            Destroy(go, 15);
         }
+        _UI.CheckPopulousUI();
+        int daysSurvived = _currentDay - startingDay;
+        GameEvents.ReportOnGuardianKilled(unitID.ToString(), _attacker, daysSurvived);
+        _UM.RemoveGuardian(this, transform.position, transform.rotation);
     }
     
     private void RemoveFromSites()
@@ -617,7 +613,7 @@ public class Unit : GameBehaviour
             Destroy(go, 15);
             _UI.CheckPopulousUI();
             int daysSurvived = _currentDay - startingDay;
-            GameEvents.ReportOnCreatureKilled(unitID.ToString(), "Unknown", daysSurvived);
+            GameEvents.ReportOnGuardianKilled(unitID.ToString(), "Unknown", daysSurvived);
             _UM.RemoveSelectedUnit(this);
             GameEvents.ReportOnObjectSelected(null);
             Destroy(gameObject);

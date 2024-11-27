@@ -18,31 +18,12 @@ public class HomeTree : SiteOfPower
     //If the Home Tree collides with the enemy weapons, it takes damage.
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Axe1")
-        {
-            TakeDamage(10, other.transform.position);
-            other.enabled = false;
-        }
-        if (other.tag == "Axe2")
-        {
-            TakeDamage(20, other.transform.position);
-            other.enabled = false;
-        }
-        if (other.tag == "Sword2")
-        {
-            TakeDamage(35, other.transform.position);
-            other.enabled = false;
-        }
-        if (other.tag == "Sword3")
-        {
-            TakeDamage(50, other.transform.position);
-            other.enabled = false;
-        }
-        if(other.tag == "LordWeapon")
-        {
-            TakeDamage(50, other.transform.position);
-            other.enabled = false;
-        }
+        UnitWeaponCollider uwc = other.GetComponent<UnitWeaponCollider>();
+        if (uwc == null)
+            return;
+        
+        TakeDamage(uwc.Damage, other.transform.position);
+        other.enabled = false;
     }
     //Manages the amount of damage taken by an enemy weapon. Updates the health slider, plays an impact sound, and checks to see if the Home Tree is dead.
     private void TakeDamage(float damage, Vector3 spawn)
