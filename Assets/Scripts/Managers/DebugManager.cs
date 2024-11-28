@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEditor;
 public class DebugManager : GameBehaviour
 {
     void Update()
@@ -22,4 +22,48 @@ public class DebugManager : GameBehaviour
                 FindObjectOfType<ExperienceMeter>().IncreaseExperience(100);
         }
     }
+
+    public void ShowLevelColliders(bool _show)
+    {
+        GameObject[] col = GameObject.FindGameObjectsWithTag("LevelCollider");
+        ObjectX.ToggleObjects(col, _show);
+    }
+    
+    
+    #region Editor
+#if UNITY_EDITOR
+    [CustomEditor(typeof(DebugManager))]
+    [CanEditMultipleObjects]
+
+    public class DebugManagerEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            DebugManager debugManager = (DebugManager)target;
+            DrawDefaultInspector();
+            GUILayout.Space(20);
+
+            //GUI.backgroundColor = Color.blue;
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Show Level Colliders"))
+            {
+                debugManager.ShowLevelColliders(true);
+                EditorUtility.SetDirty(debugManager);
+            }
+            if (GUILayout.Button("Hide Level Colliders"))
+            {
+                debugManager.ShowLevelColliders(false);
+                EditorUtility.SetDirty(debugManager);
+            }
+           /* if (GUILayout.Button("Hide Title Labels"))
+            {
+                debugManager.ToggleTitleText(false);
+                EditorUtility.SetDirty(debugManager);
+            }*/
+            GUILayout.EndHorizontal();
+            
+        }
+    }
+#endif
+    #endregion
 }

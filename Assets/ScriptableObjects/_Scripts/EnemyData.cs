@@ -13,6 +13,7 @@ public class EnemyData : ScriptableObject
     public int damage;
     public int speed;
     public float attackRange = 30;
+    public float detectRange = 50;
     [Header("Non Stats")]
     public Sprite icon;
     public Sprite mapIcon;

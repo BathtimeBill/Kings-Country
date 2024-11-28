@@ -238,6 +238,15 @@
                     "processors": "",
                     "interactions": "Press(behavior=2)",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ShowRange",
+                    "type": "Button",
+                    "id": "1cba4291-7300-4174-a27a-3d005df6c9c4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -766,6 +775,17 @@
                     "processors": "",
                     "groups": ";Keyboard",
                     "action": "WildlifeOutline",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bd3418b1-ba35-43d2-a70c-a90e7dbaf707",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "ShowRange",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

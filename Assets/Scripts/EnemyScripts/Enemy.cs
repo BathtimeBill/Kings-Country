@@ -20,8 +20,31 @@ public class Enemy : GameBehaviour
     public GameObject SFXPool;
     private int soundPoolCurrent;
     private AudioSource[] soundPool;
+    [Header("Debug")] 
+    public DebugUnit debugUnit;
     private bool invincible = true;
-    [HideInInspector] public float attackRange;
+    
+    #region Getters & Setters
+    [HideInInspector] private float attackRangeValue;
+    public float attackRange
+    {
+        get { return attackRangeValue; }
+        set {attackRangeValue = value; UpdateDebug(); }
+    }
+    private float detectRangeValue;
+    public float detectRange
+    {
+        get { return detectRangeValue; }
+        set {detectRangeValue = value; UpdateDebug(); }
+    }
+    private float stopRangeValue;
+    public float stopRange
+    {
+        get { return stopRangeValue; }
+        set {stopRangeValue = value; UpdateDebug(); }
+    }
+    
+    #endregion
     
     #region Initialization
     public virtual void Awake()
@@ -41,6 +64,7 @@ public class Enemy : GameBehaviour
         speed = unitData.speed;
         damage = unitData.damage;
         attackRange = unitData.attackRange;
+        detectRange = unitData.detectRange;
         _SM.PlaySound(unitData.spawnSound);
         if(healthBar != null)
             healthBar.AdjustHealthBar(health, maxHealth);
@@ -55,6 +79,12 @@ public class Enemy : GameBehaviour
         invincible = false;
     }
 
+    private void UpdateDebug()
+    {
+        if (!debugUnit)
+            return;
+        debugUnit.AdjustRange(detectRange, attackRange, stopRange);
+    }
     #endregion
     
     public virtual void OnTriggerEnter(Collider other)

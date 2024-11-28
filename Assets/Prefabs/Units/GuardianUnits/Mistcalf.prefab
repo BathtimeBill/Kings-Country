@@ -41,6 +41,7 @@ Transform:
   - {fileID: 1227300369318657997}
   - {fileID: 8905875959085544905}
   - {fileID: 1653063953274314098}
+  - {fileID: 6936281636602078781}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7674983680035343287
@@ -71,8 +72,7 @@ MonoBehaviour:
   isMovingCheck: 0
   isFirstPerson: 0
   SFXPool: {fileID: 9035299592255929110}
-  soundPoolCurrent: 0
-  soundPool: []
+  debugUnit: {fileID: 4213777655849115486}
   leftHand: {fileID: 7961987496525656871}
   rightHand: {fileID: 7961987496525590523}
   leftFoot: {fileID: 7961987496525562211}
@@ -1131,6 +1131,92 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 927cf5deb72517443b79921b26736393, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &4101266129313849938
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1071894615449563645}
+    m_Modifications:
+    - target: {fileID: 156961915069754130, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_Name
+      value: DebugUnit
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2d324fc5d0c0b504da66c9359c5d84a8, type: 3}
+--- !u!114 &4213777655849115486 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 184867089701059852, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+    type: 3}
+  m_PrefabInstance: {fileID: 4101266129313849938}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 230f3f103affc554791bdcfbb33671da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &6936281636602078781 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+    type: 3}
+  m_PrefabInstance: {fileID: 4101266129313849938}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4940628671384354388
 PrefabInstance:
   m_ObjectHideFlags: 0

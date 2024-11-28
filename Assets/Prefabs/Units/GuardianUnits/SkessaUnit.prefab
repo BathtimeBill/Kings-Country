@@ -40,6 +40,7 @@ Transform:
   - {fileID: 6260981790933355796}
   - {fileID: 3201223791632621365}
   - {fileID: 4284262696366659465}
+  - {fileID: 8183539409514144610}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7150132763614565594
@@ -72,6 +73,7 @@ MonoBehaviour:
   isMovingCheck: 0
   isFirstPerson: 0
   SFXPool: {fileID: 8908667843036519212}
+  debugUnit: {fileID: 3146048742879533569}
   leftHand: {fileID: 2627509588645737271}
   rightHand: {fileID: 7493710578186197308}
   leftFoot: {fileID: 6832593292213205189}
@@ -286,6 +288,92 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 983320805936880559, guid: f295c990c53d4e94482a107a8edc74f4,
     type: 3}
   m_PrefabInstance: {fileID: 2201850313905805844}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2970622079074608909
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1071894615449563645}
+    m_Modifications:
+    - target: {fileID: 156961915069754130, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_Name
+      value: DebugUnit
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2d324fc5d0c0b504da66c9359c5d84a8, type: 3}
+--- !u!114 &3146048742879533569 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 184867089701059852, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+    type: 3}
+  m_PrefabInstance: {fileID: 2970622079074608909}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 230f3f103affc554791bdcfbb33671da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &8183539409514144610 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6388356856006083695, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
+    type: 3}
+  m_PrefabInstance: {fileID: 2970622079074608909}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6965677363025692214
 PrefabInstance:

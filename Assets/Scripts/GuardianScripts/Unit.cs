@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 public class Unit : GameBehaviour
 {
@@ -39,6 +40,9 @@ public class Unit : GameBehaviour
     public GameObject SFXPool;
     private int soundPoolCurrent;
     private AudioSource[] soundPool;
+    
+    [Header("Debug")]
+    public DebugUnit debugUnit;
 
     [Header("Body")] 
     public Transform leftHand;
@@ -50,7 +54,6 @@ public class Unit : GameBehaviour
     private float health;
     private float maxHealth;
     private float unitSpeed;
-    private float stoppingDistance;
     private float focusSpeed = 5f;
     
     //Combat Mode
@@ -58,7 +61,6 @@ public class Unit : GameBehaviour
     private Vector3 defendPosition;
     
     //AI
-    private float detectionRadius;
     private Transform closestEnemy;
     [HideInInspector] public float distanceToClosestEnemy;
 
@@ -69,6 +71,33 @@ public class Unit : GameBehaviour
     private int startingDay;
     private GameObject hitParticle => _DATA.GetUnit(unitID).hitParticles;
     private GameObject dieParticle => _DATA.GetUnit(unitID).dieParticles;
+    
+    #region Getters & Setters
+    [HideInInspector] private float attackRangeValue;
+    public float attackRange
+    {
+        get { return attackRangeValue; }
+        set {attackRangeValue = value; UpdateDebug(); }
+    }
+    private float detectRangeValue;
+    public float detectRange
+    {
+        get { return detectRangeValue; }
+        set {detectRangeValue = value; UpdateDebug(); }
+    }
+    private float stopRangeValue;
+    public float stopRange
+    {
+        get { return stopRangeValue; }
+        set {stopRangeValue = value; UpdateDebug(); }
+    }
+    private void UpdateDebug()
+    {
+        if (!debugUnit)
+            return;
+        debugUnit.AdjustRange(detectRange, attackRange, stopRange);
+    }
+    #endregion
     
     public virtual void Start()
     {
@@ -100,12 +129,15 @@ public class Unit : GameBehaviour
         navAgent.speed = unitSpeed;
 
         //Detection
-        detectionRadius = unitData.detectionRadius;
-        stoppingDistance = unitData.stoppingDistance;
+        detectRange = unitData.detectionRadius;
+        stopRange = unitData.stoppingDistance;
+        attackRange = unitData.attackRange;
 
         //Other
         healthBar.ChangeCombatModeIcon(_ICONS.attackIcon);
         healthBar.ChangeGroupNumber("");
+        
+        UpdateDebug();
     }
 
     IEnumerator WaitForIsMovingCheck()
@@ -141,7 +173,7 @@ public class Unit : GameBehaviour
         distanceToClosestEnemy = Vector3.Distance(closestEnemy.transform.position, transform.position);
         bool isLord = closestEnemy.gameObject.CompareTag("Lord");
         bool isSpecialUnit = unitID != CreatureID.Fidhain && unitID != CreatureID.Goblin;
-        navAgent.stoppingDistance = isLord && isSpecialUnit ? stoppingDistance * 2 : stoppingDistance;
+        navAgent.stoppingDistance = isLord && isSpecialUnit ? stopRange * 2 : stopRange;
     }
 
     private void HandleState()
@@ -170,10 +202,10 @@ public class Unit : GameBehaviour
 
         if (unitID == CreatureID.Goblin || unitID == CreatureID.Fidhain)
         {
-            navAgent.stoppingDistance = stoppingDistance;
+            navAgent.stoppingDistance = stopRange;
         }
 
-        if (distanceToClosestEnemy < detectionRadius)
+        if (distanceToClosestEnemy < detectRange)
         {
             state = UnitState.Attack;
         }
@@ -191,12 +223,12 @@ public class Unit : GameBehaviour
             return;
         }
 
-        if (distanceToClosestEnemy < detectionRadius || hitByArrow)
+        if (distanceToClosestEnemy < detectRange || hitByArrow)
         {
             navAgent.SetDestination(closestEnemy.transform.position);
             SmoothFocusOnEnemy();
         }
-        else if (distanceToClosestEnemy >= detectionRadius && !hitByArrow)
+        else if (distanceToClosestEnemy >= detectRange && !hitByArrow)
         {
             state = UnitState.Moving;
         }
@@ -223,7 +255,7 @@ public class Unit : GameBehaviour
             navAgent.stoppingDistance = 4;
         }
 
-        if (combatMode == CombatMode.AttackMove && distanceToClosestEnemy < detectionRadius)
+        if (combatMode == CombatMode.AttackMove && distanceToClosestEnemy < detectRange)
         {
             state = UnitState.Attack;
         }
@@ -296,7 +328,7 @@ public class Unit : GameBehaviour
     {
         yield return new WaitForSeconds(1);
         hitByArrow = false;
-        detectionRadius = detectionRadius / 2;
+        detectRange = detectRange / 2;
         state = UnitState.Moving;
         navAgent.SetDestination(transform.position);
     }
@@ -440,7 +472,7 @@ public class Unit : GameBehaviour
     private void HitByArrow()
     {
         hitByArrow = true;
-        detectionRadius = detectionRadius * 2;
+        detectRange = detectRange * 2;
         state = UnitState.Attack;
         StartCoroutine(HitByArrowDelay());
     }
@@ -546,7 +578,7 @@ public class Unit : GameBehaviour
         healthBar.ChangeCombatModeIcon(_ICONS.attackIcon);
         if(combatMode != CombatMode.Move || combatMode != CombatMode.AttackMove)
         {
-            detectionRadius = detectionRadius * 2;
+            detectRange = detectRange * 2;
             if (unitID == CreatureID.Goblin)
             {
                 navAgent.speed = unitData.speed;
@@ -561,7 +593,7 @@ public class Unit : GameBehaviour
         {
             if (unitID != CreatureID.Goblin)
             {
-                detectionRadius = detectionRadius / 2;
+                detectRange = detectRange / 2;
             }
             healthBar.ChangeCombatModeIcon(_ICONS.defendIcon);
         }
