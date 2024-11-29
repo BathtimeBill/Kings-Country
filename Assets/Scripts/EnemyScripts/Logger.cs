@@ -18,7 +18,6 @@ public class Logger : Enemy
     
     [Header("Trees")]
     public Transform closestTree;
-    public GameObject axeObject;
     public float distanceFromClosestTree;
     public GameObject homeTree;
     
@@ -55,7 +54,7 @@ public class Logger : Enemy
         //{
         //    state = EnemyState.Work;
         //}
-
+        healthBar.ChangeUnitState(state.ToString());
         switch (state)
         {
 

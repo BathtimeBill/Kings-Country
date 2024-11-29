@@ -47,6 +47,7 @@ public class Warrior : Enemy
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
         }
 
+        healthBar.ChangeUnitState(state.ToString());
         switch (state)
         {
             case EnemyState.Work:

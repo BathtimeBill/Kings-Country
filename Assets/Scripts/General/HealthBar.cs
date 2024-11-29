@@ -6,9 +6,11 @@ public class HealthBar : MonoBehaviour
     public Transform healthBarFill;
     public SpriteRenderer combatModeIcon;
     public TMPro.TMP_Text groupNumber;
+    public TMPro.TMP_Text unitState;
     
     public void AdjustHealthBar(float _currentHealth, float _maxHealth) => healthBarFill.DOScaleX(MathX.MapTo01(_currentHealth, 0, _maxHealth), 0.2f);
     public void ChangeGroupNumber(string _groupNumber) => groupNumber.text = _groupNumber;
     public void ChangeCombatModeIcon(Sprite _icon) => combatModeIcon.sprite = _icon;
+    public void ChangeUnitState(string _state) => unitState.text = _state;
     
 }

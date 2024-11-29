@@ -15,15 +15,10 @@ public class CameraController : Singleton<CameraController>
     [ReadOnly] public Vector3 newZoom;
     [ReadOnly] public Quaternion newRotation;
 
-    public float minZ;
-    public float maxZ;
-    public float minY;
-    public float maxY;
-
-    public float minMovementX;
-    public float maxMovementX;
-    public float minMovementZ;
-    public float maxMovementZ;
+    public BV.Range yZoom;
+    public BV.Range zZoom;
+    public BV.Range xMovement;
+    public BV.Range zMovement;
 
     public LayerMask groundLayer;
 
@@ -60,8 +55,8 @@ public class CameraController : Singleton<CameraController>
 
     private void OnCameraZoom(float _zoom)
     {
-        newZoom.z = Mathf.Clamp(newZoom.z, minZ, maxZ);
-        newZoom.y = Mathf.Clamp(newZoom.y, minY, maxY);
+        newZoom.z = Mathf.Clamp(newZoom.z, zZoom.min, zZoom.max);
+        newZoom.y = Mathf.Clamp(newZoom.y, yZoom.min, yZoom.max);
 
         if (_zoom != 0)
         {
@@ -72,7 +67,7 @@ public class CameraController : Singleton<CameraController>
             //    return;
             //}
 
-            if (newZoom.y != minY || newZoom.y != maxY)
+            if (newZoom.y != yZoom.min || newZoom.y != yZoom.max)
                 newZoom += (_zoom * _PLAYER.zoomSpeed) * zoomAmount;
             _TUTORIAL.CheckCameraTutorial(TutorialID.CameraZoom);
         }
@@ -85,8 +80,8 @@ public class CameraController : Singleton<CameraController>
 
     private void OnCameraMove(Vector2 _cursorPosition)
     {
-        newPosition.x = Mathf.Clamp(newPosition.x, minMovementX, maxMovementX);
-        newPosition.z = Mathf.Clamp(newPosition.z, minMovementZ, maxMovementZ);
+        newPosition.x = Mathf.Clamp(newPosition.x, xMovement.min, xMovement.max);
+        newPosition.z = Mathf.Clamp(newPosition.z, zMovement.min, zMovement.max);
         float posX = _cursorPosition.x;
         float posY = _cursorPosition.y;
         float mouseX = Input.mousePosition.x;

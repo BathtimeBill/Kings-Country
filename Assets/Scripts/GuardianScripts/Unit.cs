@@ -178,6 +178,7 @@ public class Unit : GameBehaviour
 
     private void HandleState()
     {
+        healthBar.ChangeUnitState(state.ToString());
         switch (state)
         {
             case UnitState.Idle:

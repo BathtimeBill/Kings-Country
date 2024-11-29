@@ -66,6 +66,7 @@ public class Hunter : Enemy
             state = EnemyState.Attack;
         }
 
+        healthBar.ChangeUnitState(state.ToString());
         switch (state)
         {
             case EnemyState.Work:

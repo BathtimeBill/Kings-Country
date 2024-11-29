@@ -103804,12 +103804,12 @@ PrefabInstance:
     - target: {fileID: 6900247461417144686, guid: a3b5ded55ce437940be00f316fc6b18d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.17
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6900247461417144686, guid: a3b5ded55ce437940be00f316fc6b18d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.32
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6900247461417144686, guid: a3b5ded55ce437940be00f316fc6b18d,
         type: 3}
@@ -106329,7 +106329,7 @@ Transform:
   m_GameObject: {fileID: 7361388584997120874}
   serializedVersion: 2
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 50, z: -45}
+  m_LocalPosition: {x: 0, y: 24, z: -16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -106369,7 +106369,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 2000
-  field of view: 60.000004
+  field of view: 45
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -106419,7 +106419,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
-  m_Antialiasing: 0
+  m_Antialiasing: 1
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 1
@@ -106834,14 +106834,26 @@ MonoBehaviour:
   fastSpeed: 6
   movementTime: 1
   edgeScrollThreshold: 20
-  zoomAmount: {x: 0, y: -2, z: 2}
+  zoomAmount: {x: 0, y: -3, z: 3}
   newPosition: {x: 0, y: 0, z: 0}
   newZoom: {x: 0, y: 0, z: 0}
   newRotation: {x: 0, y: 0, z: 0, w: 0}
-  minZ: -60
-  maxZ: -10
-  minY: 10
-  maxY: 100
+  yZoom:
+    min: 4
+    max: 40
+  zZoom:
+    min: -40
+    max: -4
+  xMovement:
+    min: -100
+    max: 100
+  zMovement:
+    min: -100
+    max: 100
+  minZ: -40
+  maxZ: -4
+  minY: 4
+  maxY: 40
   minMovementX: -100
   maxMovementX: 100
   minMovementZ: -100
@@ -106862,7 +106874,6 @@ GameObject:
   - component: {fileID: 7361388585211468902}
   - component: {fileID: 7361388585211468904}
   - component: {fileID: 7361388585211468903}
-  - component: {fileID: 7361388585211468908}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: PlayerCam
@@ -106870,39 +106881,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &7361388585211468908
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7361388585211468907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 174923a7f5ab0bf458794652d5d2f28f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraTransform: {fileID: 7361388584997120870}
-  movementModifier: 2
-  normalSpeed: 2
-  fastSpeed: 6
-  movementTime: 2
-  edgeScrollThreshold: 20
-  zoomAmount: {x: 0, y: -3, z: 3}
-  newPosition: {x: 101.21321, y: -1.9, z: -102.55502}
-  newZoom: {x: 0, y: 30, z: -30}
-  newRotation: {x: 0, y: 0.8171444, z: 0, w: 0.57643205}
-  minZ: -60
-  maxZ: -10
-  minY: 10
-  maxY: 100
-  minMovementX: -100
-  maxMovementX: 100
-  minMovementZ: -100
-  maxMovementZ: 100
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 384
 --- !u!1001 &7405383959289941136
 PrefabInstance:
   m_ObjectHideFlags: 0
