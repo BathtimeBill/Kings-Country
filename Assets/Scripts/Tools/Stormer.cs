@@ -33,13 +33,7 @@ public class Stormer : GameBehaviour
         TweenRockSmoothness(0, 0.1f);
         TweenSunIntensity(1f, 0.1f);
     }
-
-    private void Update()
-    {
-        enemies = GameObject.FindGameObjectsWithTag("Enemy");
-    }
-
-
+    
     private void TurnOnRain()
     {
         TweenGrassSmoothness(0.8f, wetSpeed);
@@ -81,9 +75,9 @@ public class Stormer : GameBehaviour
     IEnumerator SpawnLightning()
     {
         yield return new WaitForSeconds(Random.Range(1, 5));
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
         if(enemies.Length > 0 )
         {
-            
             GameObject gm = Instantiate(lightning, enemies[GetRandomEnemy()].transform.position, transform.rotation);
             Instantiate(lightningSound, transform.position, transform.rotation);
             Destroy(gm, 0.5f);

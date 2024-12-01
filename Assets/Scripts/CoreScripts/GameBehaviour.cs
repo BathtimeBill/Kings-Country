@@ -50,6 +50,7 @@ public class GameBehaviour : BV.Behaviour
     public int _currentDay => _GM.currentDay - 1;
     public LevelData _currentLevel => _DATA.GetLevel(_GM.thisLevel);
     public GameState _currentGameState => _GM.gameState;
+    public PlayMode _CurrentPlayMode => _GM.playmode;
     public GameState _previousGameState => _GM.previousState;
     public bool _NoTrees => _GM.trees.Count == 0;
     public bool _GuardiansExist => _UM.unitList.Count > 0;

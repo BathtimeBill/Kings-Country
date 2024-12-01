@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Tool", menuName = "BGG/Tool", order = 2)]
+[CreateAssetMenu(fileName = "New Tool", menuName = "SSS/Tool", order = 2)]
 public class ToolData : ScriptableObject
 {
     public ToolID id;

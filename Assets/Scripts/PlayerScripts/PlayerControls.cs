@@ -12,12 +12,10 @@ public class PlayerControls : Singleton<PlayerControls>
     public Camera mapCam;
     public GameObject targetPointer;
     public GameObject targetPointerGraphics;
-    public Material brightYellowMat;
-    public Material invisibleMat;
     public GameObject mouseOverEnemy;
     public bool mouseOverEnemyBool;
     public LayerMask uILayer;
-    public bool canPressEscape;
+    public Tools tools;
     [Header("Tree Tool")]
     public bool treeTooClose;
     public GameObject treePlacement;
@@ -33,15 +31,6 @@ public class PlayerControls : Singleton<PlayerControls>
     public GameObject runePlacement;
     public MeshRenderer runePlacementMeshRenderer;
     public GameObject runePrefab;
-    [Header("Beacon Placement")]
-    public GameObject beaconPlacement;
-    public MeshRenderer beaconPlacementMeshRenderer;
-    public GameObject beaconPrefab;
-    public GameObject explosion;
-    public GameObject explosion2;
-    [Header("Stormer Placement")]
-    public GameObject stormerPlacement;
-    public MeshRenderer stormerPlacementMeshRenderer;
     [Header("Control Groups")]
     public bool canGroup;
     [Header("Map")]
@@ -52,6 +41,8 @@ public class PlayerControls : Singleton<PlayerControls>
     public CursorMode cursorMode = CursorMode.Auto;
     public Vector2 hotSpot = Vector2.zero;
     public Vector2 hotSpotEnemy;
+
+    
 
     public void DeselectAllTools() => DeslectAllModes();
 
@@ -68,51 +59,15 @@ public class PlayerControls : Singleton<PlayerControls>
         }
     }
 
-    private void SelectTreeMode()
+    private void Update()
     {
-        if(!_tutorialComplete)
+        if (_hasInput)
         {
-            _GM.SetPlayMode(PlayMode.TreeMode);
-            treePlacement.SetActive(true);
-            _UI.ShowTreeModifier(true);
+            if (Input.GetKeyDown(KeyCode.F4))
+                _GM.SpeedGame();
+            if (Input.GetKeyDown(KeyCode.F3))
+                _GM.SetGame();
         }
-
-        if(_buildPhase)
-        {
-            _GM.SetPlayMode(PlayMode.TreeMode);
-            treePlacement.SetActive(true);
-            _UI.ShowTreeModifier(true);
-        }
-        _TPlace.canPlace = true;
-        //_TPlace.gameObject.GetComponent<Renderer>().material = _TPlace.canPlaceMat;
-    }
-
-    private void SelectRuneMode()
-    {
-        _GM.SetPlayMode(PlayMode.RuneMode);
-        runePlacement.SetActive(true);
-    }
-
-    private void SelectFyreMode()
-    {
-        _GM.SetPlayMode(PlayMode.FyreMode);
-        beaconPlacement.SetActive(true);
-    }    
-
-    private void SelectStormerMode()
-    {
-        _GM.SetPlayMode(PlayMode.StormerMode);
-        stormerPlacement.SetActive(true);
-    }
-
-    private void DeslectAllModes()
-    {
-        _GM.SetPlayMode(PlayMode.DefaultMode);
-        treePlacement.SetActive(false);
-        runePlacement.SetActive(false);
-        stormerPlacement.SetActive(false);
-        beaconPlacement.SetActive(false);
-        _UI.ShowTreeModifier(false);
     }
 
     public void MouseOverMap()
@@ -124,58 +79,31 @@ public class PlayerControls : Singleton<PlayerControls>
         mouseOverMap = false;
     }
 
-    private void Update()
-    {
-        if (_hasInput)
-        {
-            if (Input.GetKeyDown(KeyCode.F4))
-            {
-                if (_hasInput)
-                {
-                    _GM.SpeedGame();
-                }
-
-            }
-            if (Input.GetKeyDown(KeyCode.F3))
-            {
-                if (_hasInput)
-                {
-                    _GM.SetGame();
-                }
-
-            }
-        }
-    }
-
     #region Raycasting
     public void RayCast()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hitPoint;
-
-        if (Physics.Raycast(ray, out hitPoint)/* && hitPoint.collider.tag == "Ground"*/)
+        if (Physics.Raycast(ray, out RaycastHit hitPoint)/* && hitPoint.collider.tag == "Ground"*/)
         {
-            if (_GM.playmode == PlayMode.TreeMode)
+            switch (_GM.playmode)
             {
-                treePlacement.transform.position = hitPoint.point;
-                treePlacement.SetActive(true);
+                case PlayMode.TreeMode:
+                    treePlacement.transform.position = hitPoint.point;
+                    treePlacement.SetActive(true);
+                    break;
+                case PlayMode.RuneMode:
+                    runePlacement.transform.position = hitPoint.point;
+                    runePlacement.SetActive(true);
+                    break;
+                case PlayMode.FyreMode:
+                    tools.fyreTool.transform.position = hitPoint.point;
+                    break;
+                case PlayMode.StormerMode:
+                    tools.stormerTool.transform.position = hitPoint.point;
+                    break;
             }
-            if (_GM.playmode == PlayMode.RuneMode)
-            {
-                runePlacement.transform.position = hitPoint.point;
-                runePlacement.SetActive(true);
-            }
-            if (_GM.playmode == PlayMode.FyreMode)
-            {
-                beaconPlacement.transform.position = hitPoint.point;
-                beaconPlacement.SetActive(true);
-            }
-            if (_GM.playmode == PlayMode.StormerMode)
-            {
-                stormerPlacement.transform.position = hitPoint.point;
-                stormerPlacement.SetActive(true);
-            }
-            if (hitPoint.collider.tag == "Enemy")
+            
+            if (hitPoint.collider.CompareTag("Enemy"))
             {
                 mouseOverEnemy = hitPoint.collider.gameObject;
                 mouseOverEnemyBool = true;
@@ -187,27 +115,15 @@ public class PlayerControls : Singleton<PlayerControls>
                 Cursor.SetCursor(cursorTextureNormal, hotSpot, cursorMode);
             }
             Debug.DrawLine(ray.origin, hitPoint.point);
-            //Vector3 targetPosition = new Vector3(targetDest.transform.position.x, transform.position.y, targetDest.transform.position.z);
             targetDest.transform.position = hitPoint.point;
-            //treePlacementMeshRenderer.enabled = true;
-            //runePlacementMeshRenderer.enabled = true;
-
         }
-        else
-        {
-            //treePlacementMeshRenderer.enabled = false;
-            //runePlacementMeshRenderer.enabled = false;
-        }
-
     }
 
     public void RaycastClick()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hitPoint;
-        if (Physics.Raycast(ray, out hitPoint))
+        if (Physics.Raycast(ray, out RaycastHit hitPoint))
         {
-
             if(hitPoint.collider.CompareTag("Home Tree"))
             {
                 if (_GM.playmode == PlayMode.DefaultMode && _inGame)
@@ -247,21 +163,13 @@ public class PlayerControls : Singleton<PlayerControls>
         }
     }
     #endregion
-
     
-    IEnumerator DisablePointerDelay()
-    {
-        targetPointerGraphics.SetActive(true);
-        yield return new WaitForSeconds(0.6f);
-        targetPointerGraphics.SetActive(false);
-    }
-
     private void OnSelectButtonPressed()
     {
         if (_UI.mouseOverUI)
             return;
 
-        switch (_GM.playmode)
+        switch (_CurrentPlayMode)
         {
             //Trees
             case PlayMode.TreeMode:
@@ -312,30 +220,16 @@ public class PlayerControls : Singleton<PlayerControls>
             case PlayMode.FyreMode:
                 if (_GM.fyreAvailable && _UI.fyreAvailable)
                 {
-                    if (_DATA.HasPerk(PerkID.Fyre))
-                    {
-                        Instantiate(explosion2, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
-                        _CAMERA.CameraShake(_SETTINGS.cameraShake.fyreShakeIntensity * 2);
-                    }
-                    else
-                    {
-                        Instantiate(explosion, beaconPlacement.transform.position, beaconPrefab.transform.rotation);
-                        _CAMERA.CameraShake(_SETTINGS.cameraShake.fyreShakeIntensity);
-                    }
-
-                    beaconPlacement.SetActive(false);
+                    tools.fyreTool.Use();
                     DeslectAllModes();
-                    GameEvents.ReportOnFyrePlaced();
                 }
                 break;
             //Stormer
             case PlayMode.StormerMode:
                 if (_GM.stormerAvailable && _UI.stormerAvailable)
                 {
-                    stormerPlacement.SetActive(false);
+                    tools.stormerTool.Use();
                     DeslectAllModes();
-                    GameEvents.ReportOnStormerPlaced();
-                    _CAMERA.CameraShake(_SETTINGS.cameraShake.stormerShakeIntensity);
                 }
                 break;
             //Default
@@ -396,7 +290,54 @@ public class PlayerControls : Singleton<PlayerControls>
         //Debug.Log("Target Moving");
         targetPointerGraphics.GetComponent<Animator>().SetTrigger("Move");
     }
+    
+    private void SelectTreeMode()
+    {
+        if(!_tutorialComplete)
+        {
+            _GM.SetPlayMode(PlayMode.TreeMode);
+            treePlacement.SetActive(true);
+            _UI.ShowTreeModifier(true);
+        }
 
+        if(_buildPhase)
+        {
+            _GM.SetPlayMode(PlayMode.TreeMode);
+            treePlacement.SetActive(true);
+            _UI.ShowTreeModifier(true);
+        }
+        _TPlace.canPlace = true;
+        //_TPlace.gameObject.GetComponent<Renderer>().material = _TPlace.canPlaceMat;
+    }
+
+    private void SelectRuneMode()
+    {
+        _GM.SetPlayMode(PlayMode.RuneMode);
+        runePlacement.SetActive(true);
+    }
+
+    private void SelectFyreMode()
+    {
+        _GM.SetPlayMode(PlayMode.FyreMode);
+        tools.fyreTool.Select();
+    }    
+
+    private void SelectStormerMode()
+    {
+        _GM.SetPlayMode(PlayMode.StormerMode);
+        tools.stormerTool.Select();
+    }
+
+    private void DeslectAllModes()
+    {
+        _GM.SetPlayMode(PlayMode.DefaultMode);
+        treePlacement.SetActive(false);
+        runePlacement.SetActive(false);
+        tools.fyreTool.Deselect();
+        tools.stormerTool.Deselect();
+        _UI.ShowTreeModifier(false);
+    }
+    
     private void OnToolButtonPressed(ToolID _toolID)
     {
         _SM.PlaySound(_SM.buttonClickSound);
@@ -443,4 +384,11 @@ public class PlayerControls : Singleton<PlayerControls>
         GameEvents.OnUnitMove -= OnUnitMove;
         GameEvents.OnToolButtonPressed -= OnToolButtonPressed;
     }
+}
+
+[System.Serializable]
+public class Tools
+{
+    public FyreTool fyreTool;
+    public StormerTool stormerTool;
 }

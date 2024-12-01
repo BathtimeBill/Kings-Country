@@ -143,10 +143,7 @@ public static class GameEvents
     {
         OnTreeHit?.Invoke();
     }
-    public static void ReportOnStormerPlaced()
-    {
-        OnStormerPlaced?.Invoke();
-    }
+    
     public static void ReportOnUnitArrivedAtHorgr()
     {
         OnUnitArrivedAtHorgr?.Invoke();
@@ -172,27 +169,13 @@ public static class GameEvents
         OnPopulousUpgrade?.Invoke();
     }
 
-    public static void ReportOnFyrePlaced()
-    {
-        OnFyrePlaced?.Invoke();
-    }
-    public static void ReportOnRunePlaced()
-    {
-        OnRunePlaced?.Invoke();
-    }
-    public static void ReportOnRuneDestroyed()
-    {
-        OnRuneDestroyed?.Invoke();
-    }
+    public static void ReportOnFyrePlaced() => OnFyrePlaced?.Invoke();
+    public static void ReportOnStormerPlaced() => OnStormerPlaced?.Invoke();
+    public static void ReportOnRunePlaced() => OnRunePlaced?.Invoke();
+    public static void ReportOnRuneDestroyed() => OnRuneDestroyed?.Invoke();
+    public static void ReportOnGameOver() => OnGameOver?.Invoke();
 
-    public static void ReportOnGameOver()
-    {
-        OnGameOver?.Invoke();
-    }
-    public static void ReportOnUnitMove()
-    {
-        OnUnitMove?.Invoke();
-    }
+    public static void ReportOnUnitMove() => OnUnitMove?.Invoke();
 
     public static void ReportOnWildlifeValueChanged(int _value) => OnWildlifeValueChange?.Invoke(_value);
     public static void ReportOnWildlifeKilled(GameObject _wildlife) => OnWildlifeKilled?.Invoke(_wildlife);

@@ -117,6 +117,7 @@ public class CameraController : Singleton<CameraController>
         {
             if (_PC.mouseOverMap == true)
             {
+                print("Map over");
                 Ray ray = _PC.mapCam.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hitPoint;
                 if (Physics.Raycast(ray, out hitPoint))
