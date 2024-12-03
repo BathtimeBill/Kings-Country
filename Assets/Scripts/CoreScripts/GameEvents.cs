@@ -9,8 +9,8 @@ public static class GameEvents
     
     public static event Action<int> OnWildlifeValueChange = null;
     public static event Action<GameObject> OnWildlifeKilled = null;
-    public static event Action<ToolID> OnTreePlaced = null;
-    public static event Action<ToolID> OnTreeDestroyed = null;
+    public static event Action<TreeID> OnTreePlaced = null;
+    public static event Action<TreeID> OnTreeDestroyed = null;
     public static event Action OnUnitMove = null;
     public static event Action OnUnitArrivedAtHorgr = null;
     public static event Action OnUnitArrivedAtHut = null;
@@ -65,6 +65,7 @@ public static class GameEvents
     public static event Action OnSpySpawned = null;
 
     public static event Action OnPerkButtonPressed = null;
+    public static event Action<TreeID> OnTreeButtonPressed = null;
     public static event Action<ToolID> OnToolButtonPressed = null;
     public static event Action<UnitData> OnUnitButtonPressed = null;
     public static event Action OnGroundClicked = null;
@@ -78,6 +79,7 @@ public static class GameEvents
     public static void ReportOnGameStateChanged(GameState _gameState) => OnGameStateChanged?.Invoke(_gameState);
     public static void ReportOnTutorialFinished() => OnTutorialFinished?.Invoke();
     public static void ReportOnPerkButtonPressed() => OnPerkButtonPressed?.Invoke();
+    public static void ReportOnTreeButtonPressed(TreeID _treeID) => OnTreeButtonPressed?.Invoke(_treeID);
     public static void ReportOnToolButtonPressed(ToolID _toolID) => OnToolButtonPressed?.Invoke(_toolID);
     public static void ReportOnUnitButtonPressed(UnitData _unit) => OnUnitButtonPressed?.Invoke(_unit);
     public static void ReportOnSpySpawned() => OnSpySpawned?.Invoke();
@@ -179,8 +181,8 @@ public static class GameEvents
 
     public static void ReportOnWildlifeValueChanged(int _value) => OnWildlifeValueChange?.Invoke(_value);
     public static void ReportOnWildlifeKilled(GameObject _wildlife) => OnWildlifeKilled?.Invoke(_wildlife);
-    public static void ReportOnTreePlaced(ToolID _treeID)=> OnTreePlaced?.Invoke(_treeID);
-    public static void ReportOnTreeDestroy(ToolID _id) => OnTreeDestroyed?.Invoke(_id);
+    public static void ReportOnTreePlaced(TreeID _treeID)=> OnTreePlaced?.Invoke(_treeID);
+    public static void ReportOnTreeDestroy(TreeID _treeID) => OnTreeDestroyed?.Invoke(_treeID);
     public static void ReportOnObjectSelected(GameObject _gameobject) => OnObjectSelected?.Invoke(_gameobject);
     public static void ReportOnMaegenChange(int _amount) => OnMaegenChange?.Invoke(_amount);
 

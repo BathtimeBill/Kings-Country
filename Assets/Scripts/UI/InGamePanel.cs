@@ -25,6 +25,13 @@ public class InGamePanel : GameBehaviour
         titleText.text = _combatButton.title;
         descriptionText.text = _combatButton.description;
     }
+    
+    public virtual void PointerEnter(TreeButton _treeButton)
+    {
+        canvasGroup.gameObject.SetActive(true);
+        titleText.text = _DATA.GetTree(_treeButton.treeID).name;
+        descriptionText.text = _DATA.GetTree(_treeButton.treeID).description;
+    }
 
     public virtual void PointerEnter(ToolButton _toolButton)
     {

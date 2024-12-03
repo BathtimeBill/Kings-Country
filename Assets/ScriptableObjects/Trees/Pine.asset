@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 648804ba026668244b0de0664d98fec0, type: 3}
+  m_Name: Pine
+  m_EditorClassIdentifier: 
+  id: 0
+  name: Pine
+  description: Grow trees with varying levels of productivity based on their distance
+    from other trees.
+  icon: {fileID: 1497622900, guid: 932a504f2cacdae4b98f9944f39959b2, type: 3}
+  playModel: {fileID: 7876691224444295265, guid: 44ee7abcedbdb6a41938b24cdcd6dde2,
+    type: 3}
+  fallModel: {fileID: 3007671130291102949, guid: 9371f9656d5057e4cb0c04837ae6ec0e,
+    type: 3}
+  maegenPrice: 0
+  wildlifePrice: 0
+  upgradeLevel: 1
+  unlocked: 0
+  placeSounds:
+  - {fileID: 8300000, guid: 7f6832e17702c704c9ee44af09f3cb10, type: 3}
+  - {fileID: 8300000, guid: e50d82c03b3465245afcbf21eecb9f9d, type: 3}
+  - {fileID: 8300000, guid: 1096a3509aa5f2748a3f32b908045527, type: 3}
+  - {fileID: 8300000, guid: aa35862b2cd7892429e16ffd1be68bb0, type: 3}
+  - {fileID: 8300000, guid: d0e769985ac3f8a44ae50f081619ca9f, type: 3}
+  growSounds:
+  - {fileID: 8300000, guid: 78dd6228f9c001848ad3dc72857ba7f0, type: 3}
+  - {fileID: 8300000, guid: 82e10a543a65de74c9783bce8cf5260d, type: 3}
+  - {fileID: 8300000, guid: 7a25d79286e2cdb409a651db60ec478c, type: 3}
+  - {fileID: 8300000, guid: d398857830e394442b2245fa47243794, type: 3}
+  hitSounds:
+  - {fileID: 8300000, guid: cf318b315a99aad4b878b6854faaf54e, type: 3}
+  - {fileID: 8300000, guid: cb348f86f0516cc4f8b4e33446b04ec8, type: 3}
+  - {fileID: 8300000, guid: a9bb934f75870a84094ea9c6ac2ac4e0, type: 3}
+  fallSounds:
+  - {fileID: 8300000, guid: 020f9328d39e55749a5d77e17d8b9181, type: 3}
+  - {fileID: 8300000, guid: 38220cdbe45fa41419063841daaaf7a3, type: 3}
+  - {fileID: 8300000, guid: 32885f0c0b91a3b4396c82b2bc9bf0ef, type: 3}
+  - {fileID: 8300000, guid: a1be94724a222ae44b35977f267ba21d, type: 3}
+  instantiateParticles: {fileID: 1677371809342538679, guid: 42bbe8cc886a78d4d88f35814f3a9556,
+    type: 3}
+  destroyedParticles: {fileID: 5382783085058185736, guid: 60962ac7a508684408f0e8886b3bf6e5,
+    type: 3}
+  sizeRange:
+    min: 0.7
+    max: 1.3

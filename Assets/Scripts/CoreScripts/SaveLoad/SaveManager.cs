@@ -679,46 +679,46 @@ public class SaveManager : BGG.GameData
     #endregion
 
     #region Trees
-    public void OnTreePlaced(ToolID _id)
+    public void OnTreePlaced(TreeID _id)
     {
         CheckIfNull(save.treeStats);
-        if (_id == ToolID.Tree)
+        if (_id == TreeID.Tree)
             save.treeStats.treesPlanted += 1;
-        if (_id == ToolID.Willow)
+        if (_id == TreeID.Willow)
             save.treeStats.willowsPlanted += 1;
-        if (_id == ToolID.Ficus)
+        if (_id == TreeID.Ficus)
             save.treeStats.ficusPlanted += 1;
     }
-    private void OnTreeDestroyed(ToolID _id)
+    private void OnTreeDestroyed(TreeID _id)
     {
         CheckIfNull(save.treeStats);
-        if (_id == ToolID.Tree)
+        if (_id == TreeID.Tree)
             save.treeStats.treesLost += 1;
-        if (_id == ToolID.Willow)
+        if (_id == TreeID.Willow)
             save.treeStats.willowsLost += 1;
-        if (_id == ToolID.Ficus)
+        if (_id == TreeID.Ficus)
             save.treeStats.ficusLost += 1;
     }
-    public int GetTreePlantedStats(ToolID _id)
+    public int GetTreePlantedStats(TreeID _id)
     {
         CheckIfNull(save.toolStats);
-        if (_id == ToolID.Tree)
+        if (_id == TreeID.Tree)
             return save.treeStats.treesPlanted;
-        else if (_id == ToolID.Willow)
+        else if (_id == TreeID.Willow)
             return save.treeStats.willowsPlanted;
-        else if (_id == ToolID.Ficus)
+        else if (_id == TreeID.Ficus)
             return save.treeStats.ficusPlanted;
         else
             return 0;
     }
-    public int GetTreeLostStats(ToolID _id)
+    public int GetTreeLostStats(TreeID _id)
     {
         CheckIfNull(save.toolStats);
-        if (_id == ToolID.Tree)
+        if (_id == TreeID.Tree)
             return save.treeStats.treesLost;
-        else if (_id == ToolID.Willow)
+        else if (_id == TreeID.Willow)
             return save.treeStats.willowsLost;
-        else if (_id == ToolID.Ficus)
+        else if (_id == TreeID.Ficus)
             return save.treeStats.ficusLost;
         else
             return 0;

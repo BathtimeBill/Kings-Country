@@ -661,7 +661,7 @@ public class Unit : GameBehaviour
             {
                 StopAllCoroutines();
                 GameEvents.ReportOnUnitMove();
-                if (_PC.mouseOverEnemyBool)
+                if (_PC.mouseOverEnemy)
                 {
                     trackTarget = _PC.mouseOverEnemy;
                     state = UnitState.Track;

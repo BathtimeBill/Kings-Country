@@ -1,4 +1,4 @@
-using UnityEngine.Serialization;
+using UnityEngine;
 
 public class UnitWeaponCollider : GameBehaviour
 {
@@ -7,7 +7,7 @@ public class UnitWeaponCollider : GameBehaviour
     public CreatureID creatureID;
     [BV.DrawIf("unitType", UnitType.Human)]
     public HumanID humanID;
-    [FormerlySerializedAs("buildingID")] [BV.DrawIf("unitType", UnitType.Site)]
+    [BV.DrawIf("unitType", UnitType.Site)]
     public SiteID siteID;
     [BV.DrawIf("unitType", UnitType.Tool)]
     public ToolID toolID;
@@ -16,6 +16,9 @@ public class UnitWeaponCollider : GameBehaviour
     private string unitID;
     public int Damage => damage;
     public string UnitID => unitID;
+    
+    private Collider collider;
+    public void ToggleCollider(bool _active) => collider.enabled = _active;
 
     void Start()
     {
@@ -24,6 +27,7 @@ public class UnitWeaponCollider : GameBehaviour
 
     private void Setup()
     {
+        collider = GetComponent<Collider>();
         switch (unitType)
         {
             case UnitType.Guardian:

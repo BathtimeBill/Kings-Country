@@ -24,4 +24,9 @@ public class Tool : GameBehaviour
     {
         useAudioSource.Play();
     }
+    
+    public void SetPosition(Vector3 position)
+    {
+        transform.position = position;
+    }
 }

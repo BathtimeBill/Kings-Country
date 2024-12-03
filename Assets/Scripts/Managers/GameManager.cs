@@ -23,6 +23,7 @@ public class GameManager : Singleton<GameManager>
     public GameState previousState;
     public List<GameObject> trees;
     public StartCamera startCamera;
+    public GameSpeed gameSpeed = GameSpeed.Normal;
 
     [Header("Score")]
     public int score;
@@ -220,19 +221,28 @@ public class GameManager : Singleton<GameManager>
     public void SetGame()
     {
         maxMaegen = _UI.totalMaegen + maegen;
-        timeAudioSource.clip = _SM.timeStopSound;
-        timeAudioSource.Play();
-        _EFFECTS.SetChromatic(0);
-        _EFFECTS.SetGrain(0);
-        Time.timeScale = 1;
+        SetGameSpeed(GameSpeed.Normal);
     }
-    public void SpeedGame()
+    
+    public void SetGameSpeed(GameSpeed _gameSpeed)
     {
-        timeAudioSource.clip = _SM.timeSpeedUpSound;
+        gameSpeed = _gameSpeed;
+        switch (_gameSpeed)
+        {
+            case GameSpeed.Normal:
+                timeAudioSource.clip = _SM.timeStopSound;
+                _EFFECTS.SetChromatic(0);
+                _EFFECTS.SetGrain(0);
+                Time.timeScale = 1;
+                break;
+            case GameSpeed.Fast:
+                timeAudioSource.clip = _SM.timeSpeedUpSound;
+                _EFFECTS.SetChromatic(1);
+                _EFFECTS.SetGrain(1);
+                Time.timeScale = 3;
+                break;
+        }
         timeAudioSource.Play();
-        _EFFECTS.SetChromatic(1);
-        _EFFECTS.SetGrain(1);
-        Time.timeScale = 3;
     }
 
     public void IncreaseMaegen(int _value)
@@ -286,34 +296,19 @@ public class GameManager : Singleton<GameManager>
         populous = _UM.unitList.Count;
         return populous;
     }
-    //Updates the the count for how many trees exist and updates the UI.
-    private void OnTreePlaced(ToolID _treeID)
+
+    private void OnTreePlaced(TreeID _treeID)
     {
-        ////trees = GameObject.FindGameObjectsWithTag("Tree");
-        //if (_TPlace.maegenPerWave <= 1)
-        //{
-        //    maegen -= 2;
-        //}
-        //if (_TPlace.maegenPerWave == 2)
-        //{
-        //    maegen -= 3;
-        //}
-        //if (_TPlace.maegenPerWave == 3)
-        //{
-        //    maegen -= 4;
-        //}
-        //_UI.CheckTreeUI();
     }
 
     //When a tree is destroyed, we wait one frame and update the tree count and UI.
-    private void OnTreeDestroy(ToolID _id)
+    private void OnTreeDestroy(TreeID _id)
     {
         StartCoroutine(WaitForTreeDestroy());
     }
     IEnumerator WaitForTreeDestroy()
     {
         yield return new WaitForSeconds(0.1f);
-        //trees = GameObject.FindGameObjectsWithTag("Tree");
         _UI.CheckTreeUI();
     }
 
@@ -534,6 +529,12 @@ public class GameManager : Singleton<GameManager>
         ChangeGameState(GameState.Lose);
     }
 
+    private void OnGameSpeedButton(GameSpeed _gameSpeed)
+    {
+        if(_hasInput)
+            SetGameSpeed(_gameSpeed);
+    }
+    
     private void OnEnable()
     {
         GameEvents.OnGameStateChanged += OnGameStateChanged;
@@ -549,6 +550,8 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnContinueButton += OnContinueButton;
         GameEvents.OnWildlifeKilled += OnWildlifeKilled;
         GameEvents.OnGameOver += OnGameOver;
+        
+        InputManager.OnGameSpeedButton += OnGameSpeedButton;
     }
 
     private void OnDisable()
@@ -566,5 +569,7 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnContinueButton -= OnContinueButton;
         GameEvents.OnWildlifeKilled -= OnWildlifeKilled;
         GameEvents.OnGameOver -= OnGameOver;
+        
+        InputManager.OnGameSpeedButton -= OnGameSpeedButton;
     }
 }

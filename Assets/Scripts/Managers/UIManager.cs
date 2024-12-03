@@ -513,68 +513,6 @@ public class UIManager : Singleton<UIManager>
         //errorTweener = errorText.DOFade(1, _TWEENING.errorTweenTime).SetEase(_TWEENING.errorTweenEase).OnComplete(() => errorText.DOFade(0, _TWEENING.errorTweenTime).SetEase(_TWEENING.errorTweenEase).SetDelay(_TWEENING.errorTweenDuration));
         //TweenX.KillTweener(errorTweener);
     }
-
-    //public void SetErrorMessageTooClose()
-    //{
-    //    errorText.text = "";
-    //}
-    //public void SetErrorMessageTooFar()
-    //{
-    //    errorText.text = "Too far away from the forest";
-    //}
-    //public void SetErrorMessageInsufficientMaegen()
-    //{
-    //    errorText.text = "Not enough Maegen";
-    //}
-    //public void SetErrorMessageMaxPop()
-    //{
-    //    errorText.text = "You are at maximum population";
-    //}
-
-    //public void SetErrorMessageInsufficientResources()
-    //{
-    //    errorText.text = "Not enough resources";
-    //}
-    //public void SetErrorMessageBeaconCooldown()
-    //{
-    //    errorText.text = "Can't place until cooldown has ended";
-    //}
-    //public void SetErrorMessageTooManyTrees()
-    //{
-    //    errorText.text = "There are too many trees in the forest";
-    //}
-    //public void SetErrorMessageYouAreUnderAttack()
-    //{
-    //    errorText.text = "Your forest is under attack!";
-    //}
-    //public void SetErrorMessageYourWildlifeIsUnderAttack()
-    //{
-    //    errorText.text = "Your wildlife is under attack!";
-    //}
-    //public void SetErrorMessageNeedToClaimHorgr()
-    //{
-    //    errorText.text = "You need to claim this site";
-    //}
-    //public void SetErrorMessageCantPlaceTrees()
-    //{
-    //    errorText.text = "Can't place trees while the enemy is attacking";
-    //}
-    //public void SetErrorMessageTooCloseToTower()
-    //{
-    //    errorText.text = "Too close to another tower";
-    //}
-    //public void SetErrorMessageOutOfBounds()
-    //{
-    //    errorText.text = "Too far away from the Home Tree";
-    //}
-    //public void SetErrorMessageSpy()
-    //{
-    //    errorText.text = "A Spy is close by!";
-    //}
-    //public void SetErrorMessageCannotPlace()
-    //{
-    //    errorText.text = "";
-    //}
     #endregion
 
     #region Wave Over
@@ -757,7 +695,7 @@ public class UIManager : Singleton<UIManager>
 
     public void BeginNewDay()
     {
-        treeTool.SetInteractable(false);
+        _PC.tools.treeTool.Deselect();
         int enemyProgressTotal = _EM.GetDayTotalEnemyCount();
         enemyProgressText.text = dayProgressMessage + "0/" + enemyProgressTotal;
         waveText.text = dayMessage + ": " + _GM.currentDay.ToString() + "/" + _DATA.levelMaxDays;
@@ -819,8 +757,6 @@ public class UIManager : Singleton<UIManager>
         }
         _SM.PlaySound(_SM.upgradeSound);
     }
-    
-
     
     private void OnJustStragglers()
     {

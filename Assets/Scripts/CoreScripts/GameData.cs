@@ -44,6 +44,14 @@ public class GameData : Singleton<GameData>
     public GameObject GetSitePrefab(SiteID _id) => siteData.Find(x => x.id == _id).sitePrefab;
     public bool IsBuildingUnit(string _id) => siteData.Find(x => x.id.ToString() == _id);
     #endregion;
+    
+    #region Trees
+    [Header("Tree Data")]
+    [BV.EnumList(typeof(TreeID))]
+    public List<TreeData> treeData;
+    public TreeData GetTree(TreeID _id) => treeData.Find(x => x.id == _id);
+    #endregion
+    
 
     #region Tools
     [Header("Tool Data")]

@@ -484,7 +484,7 @@ public class TutorialManager : GameBehaviour
     }
 
     #region Events
-    private void OnToolButtonPressed(ToolID _toolID)
+    private void OnTreeButtonPressed(TreeID _treeID)
     {
         if (tutorialComplete)
             return;
@@ -492,12 +492,12 @@ public class TutorialManager : GameBehaviour
         if (currentTutorialID != TutorialID.PlantTree)
             return;
 
-        if (_toolID == ToolID.Tree)
+        if (_treeID == TreeID.Tree)
             HideTutorialPanel();
     }
 
     //Trees
-    private void OnTreePlaced(ToolID _toolID)
+    private void OnTreePlaced(TreeID _treeID)
     {
         if (tutorialComplete || _currentGameState != GameState.Tutorial)
             return;
@@ -599,7 +599,7 @@ public class TutorialManager : GameBehaviour
     
     private void OnEnable()
     {
-        GameEvents.OnToolButtonPressed += OnToolButtonPressed;
+        GameEvents.OnTreeButtonPressed += OnTreeButtonPressed;
         GameEvents.OnTreePlaced += OnTreePlaced;
         GameEvents.OnUnitButtonPressed += OnUnitButtonPressed;
         GameEvents.OnUnitMove += OnUnitMove;
@@ -611,7 +611,7 @@ public class TutorialManager : GameBehaviour
 
     private void OnDisable()
     {
-        GameEvents.OnToolButtonPressed -= OnToolButtonPressed;
+        GameEvents.OnTreeButtonPressed -= OnTreeButtonPressed;
         GameEvents.OnTreePlaced -= OnTreePlaced;
         GameEvents.OnUnitButtonPressed -= OnUnitButtonPressed;
         GameEvents.OnUnitMove -= OnUnitMove;

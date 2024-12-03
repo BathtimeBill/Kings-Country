@@ -43,7 +43,12 @@ public class Enemy : GameBehaviour
         get { return stopRangeValue; }
         set {stopRangeValue = value; UpdateDebug(); }
     }
-    
+    private void UpdateDebug()
+    {
+        if (!debugUnit)
+            return;
+        debugUnit.AdjustRange(detectRange, attackRange, stopRange);
+    }
     #endregion
     
     #region Initialization
@@ -54,14 +59,14 @@ public class Enemy : GameBehaviour
         unitData = _DATA.GetUnit(unitID);
     }
 
-    public virtual void Start() { }
+    public virtual void Start() { Setup();}
 
-    private void Setup()
+    public void Setup()
     {
-        agent.speed = unitData.speed;
         maxHealth = unitData.health;
         health = maxHealth;
         speed = unitData.speed;
+        agent.speed = speed;
         damage = unitData.damage;
         attackRange = unitData.attackRange;
         detectRange = unitData.detectRange;
@@ -79,12 +84,7 @@ public class Enemy : GameBehaviour
         invincible = false;
     }
 
-    private void UpdateDebug()
-    {
-        if (!debugUnit)
-            return;
-        debugUnit.AdjustRange(detectRange, attackRange, stopRange);
-    }
+    
     #endregion
     
     public virtual void OnTriggerEnter(Collider other)
@@ -302,7 +302,6 @@ public class Enemy : GameBehaviour
     private void OnEnable()
     {
         GameEvents.OnGameOver += OnGameOver;
-        Setup();
     }
 
     private void OnDisable()

@@ -20,13 +20,13 @@ public class SpeedButton : InteractableButton
         {
             isFast = true;
             icon.sprite = normalSpeedIcon;
-            _GM.SpeedGame();
+            _GM.SetGameSpeed(GameSpeed.Fast);
         }
         else
         {
             isFast = false;
             icon.sprite = fastSpeedIcon;
-            _GM.SetGame();
+            _GM.SetGameSpeed(GameSpeed.Normal);
         }
     }
 

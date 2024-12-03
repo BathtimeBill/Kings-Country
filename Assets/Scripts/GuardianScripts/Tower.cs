@@ -126,41 +126,12 @@ public class Tower : GameBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Axe1")
-        {
-            TakeDamage(10);
-            other.enabled = false;
-        }
-        if (other.tag == "Axe2")
-        {
-            TakeDamage(20);
-            other.enabled = false;
-        }
-        if (other.tag == "Sword2")
-        {
-            TakeDamage(35);
-
-            other.enabled = false;
-        }
-        if (other.tag == "Sword3")
-        {
-            TakeDamage(50);
-            other.enabled = false;
-        }
-        if (other.tag == "Arrow")
-        {
-            TakeDamage(15);
-            Destroy(other.gameObject);
-        }
-        if (other.tag == "Arrow2")
-        {
-            TakeDamage(35);
-            Destroy(other.gameObject);
-        }
-        if(other.tag == "LordWeapon")
-        {
-            TakeDamage(_DATA.GetUnit(HumanID.Lord).damage);
-        }
+        UnitWeaponCollider uwc = other.GetComponent<UnitWeaponCollider>();
+        if (!uwc)
+            return;
+        
+        TakeDamage(uwc.Damage);
+        uwc.ToggleCollider(false);
     }
     public void TakeDamage(float damage)
     {

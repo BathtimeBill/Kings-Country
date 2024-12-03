@@ -247,6 +247,24 @@
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SpeedGame",
+                    "type": "Button",
+                    "id": "85a3f8e9-2378-4482-b803-1afb4591d168",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SetGame",
+                    "type": "Button",
+                    "id": "152cb699-36a1-4de2-92f8-8bfa95c44075",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -786,6 +804,28 @@
                     "processors": "",
                     "groups": ";Keyboard",
                     "action": "ShowRange",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2939c2c1-7a07-4caf-b07f-bb13d0d9cf84",
+                    "path": "<Keyboard>/f4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "SpeedGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "397da358-bd15-428a-b6c2-36ff67232a5f",
+                    "path": "<Keyboard>/f3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "SetGame",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

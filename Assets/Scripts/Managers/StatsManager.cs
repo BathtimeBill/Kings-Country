@@ -82,12 +82,12 @@ public class StatsManager : GameBehaviour
 
     private void SetTreeStats()
     {
-        int treesPlanted = _SAVE.GetTreePlantedStats(ToolID.Tree);
-        int treesDestroyed = _SAVE.GetTreeLostStats(ToolID.Tree);
-        int willowPlanted = _SAVE.GetTreePlantedStats(ToolID.Willow);
-        int willowDestroyed = _SAVE.GetTreeLostStats(ToolID.Willow);
-        int ficusPlanted = _SAVE.GetTreePlantedStats(ToolID.Ficus);
-        int ficusDestroyed = _SAVE.GetTreeLostStats(ToolID.Ficus);
+        int treesPlanted = _SAVE.GetTreePlantedStats(TreeID.Tree);
+        int treesDestroyed = _SAVE.GetTreeLostStats(TreeID.Tree);
+        int willowPlanted = _SAVE.GetTreePlantedStats(TreeID.Willow);
+        int willowDestroyed = _SAVE.GetTreeLostStats(TreeID.Willow);
+        int ficusPlanted = _SAVE.GetTreePlantedStats(TreeID.Ficus);
+        int ficusDestroyed = _SAVE.GetTreeLostStats(TreeID.Ficus);
         treeStats.treePlanted.text = treesPlanted.ToString();
         treeStats.treeDestroyed.text = treesDestroyed.ToString();
         treeStats.treeRatio.text = MathX.CalculateWinLossRatio(treesPlanted, treesDestroyed).ToString("F2") + "%";

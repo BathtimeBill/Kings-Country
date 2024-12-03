@@ -53,6 +53,8 @@ public class InputManager : InputX
     public static event Action OnSuicideButton = null;
     public static event Action<bool> OnWildlifeOutlineButton = null;
     public static event Action<bool> OnShowRangeButton = null;
+    public static event Action<GameSpeed> OnGameSpeedButton = null;
+    public static event Action OnSetGameButton = null;
 
     public static event Action OnGroup01Selected = null;
     public static event Action OnGroup02Selected = null;
@@ -124,6 +126,8 @@ public class InputManager : InputX
         actions.FindActionMap("Gameplay").FindAction("Suicide").performed += SuicideButton;
         actions.FindActionMap("Gameplay").FindAction("WildlifeOutline").performed += WildlifeOutlineButton;
         actions.FindActionMap("Gameplay").FindAction("ShowRange").performed += ShowRangeButton;
+        actions.FindActionMap("Gameplay").FindAction("SpeedGame").performed += SpeedGameButton;
+        actions.FindActionMap("Gameplay").FindAction("SetGame").performed += SetGameButton;
         //Menus
         //menuMoveAction = actions.FindActionMap("Menus").FindAction("MenuMove");
         //actions.FindActionMap("Menus").FindAction("MenuSelect").performed += OnMenuSelect;
@@ -248,6 +252,15 @@ public class InputManager : InputX
             OnShowRangeButton?.Invoke(true);
         if (context.action.WasReleasedThisFrame()) 
             OnShowRangeButton?.Invoke(false);
+    }
+    
+    private void SpeedGameButton(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame()) OnGameSpeedButton?.Invoke(GameSpeed.Fast);
+    }
+    private void SetGameButton(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame()) OnGameSpeedButton?.Invoke(GameSpeed.Normal);
     }
 
 

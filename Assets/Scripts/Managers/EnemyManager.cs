@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnemyManager : Singleton<EnemyManager>
 {
     public List<GameObject> enemies;
-    [HideInInspector] public List<GameObject> spawnPoints;
+    [ReadOnly] public List<GameObject> spawnPoints;
     [Header("Spawn Cooldown")]
     public BV.Range cooldown;
     private List<HumanID> enemyIDList;
@@ -45,9 +45,11 @@ public class EnemyManager : Singleton<EnemyManager>
 
     private void SpawnEnemy(GameObject _enemy, Vector3 _location)
     {
-        GameObject go = PoolX.GetFromPool(_enemy, enemyPool);
-        go.transform.position = _location;
-        go.transform.rotation = transform.rotation;
+        //POOL REDO
+        GameObject go = Instantiate(_enemy, _location, Quaternion.identity);
+        //GameObject go = PoolX.GetFromPool(_enemy, enemyPool);
+        //go.transform.localPosition = _location;
+        //go.transform.rotation = transform.rotation;
         enemies.Add(go);
     }
     IEnumerator SpawnEnemies()
@@ -96,7 +98,7 @@ public class EnemyManager : Singleton<EnemyManager>
     
     private void SpawnSpyEnemy(Vector3 spawnLocation)
     {
-        SpawnEnemy(_DATA.GetUnit(HumanID.Dog).playModel, spawnLocation);
+        SpawnEnemy(_DATA.GetUnit(HumanID.Spy).playModel, spawnLocation);
     }
     
     private IEnumerator SpawnSpy() //CHECK - Can the spawn intervals be changed to a formula or got from somewhere else?
@@ -168,7 +170,9 @@ public class EnemyManager : Singleton<EnemyManager>
                 ragdoll.Launch(20000, -20000);
                 break;
         }
-        _enemy.gameObject.SetActive(false);
+        //POOL REDO
+        //_enemy.gameObject.SetActive(false);
+        Destroy(_enemy.gameObject);
         GameEvents.ReportOnHumanKilled(_enemy, _killedBy);
     }
     #endregion

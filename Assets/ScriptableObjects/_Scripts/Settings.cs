@@ -247,6 +247,7 @@ public class Colours
     public Color GetColour(HumanID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
     public Color GetColour(ToolID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
     public Color GetColour(SiteID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
+    public Color GetColour(TreeID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
 
 
     public void ChangePanelColour(PanelColourID _color, SaveManager _save)
@@ -401,9 +402,10 @@ public class MiniMap
 {
     public bool visible = true;
     public bool showIcons = true;
-    public int buildingIconSize = 24;
-    public int creatureIconSize = 16;
-    public int humanIconSize = 16;
+    public int buildingIconSize = 12;
+    public int creatureIconSize = 8;
+    public int humanIconSize = 8;
+    public int treeIconSize = 4;
 }
 
 [Serializable]

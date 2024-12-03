@@ -18,7 +18,7 @@ public class FallTreeCollider : GameBehaviour
     {
         if(other.tag == "Ground")
         {
-            Instantiate(landParticle, transform.position, Quaternion.Euler(-90, 0, 0));
+            Instantiate(landParticle, transform.position, Quaternion.Euler(0, 0, 0));
             audioSource.Play();
         }
     }

@@ -64,7 +64,7 @@ public class GameLog : GameBehaviour
 
     private void OnDayOver(int _day) => ChangeLogLine("Day " + _day + " Complete");
 
-    private void OnTreePlaced(ToolID _treeID) => ChangeLogLine("You placed a " + _treeID);
+    private void OnTreePlaced(TreeID _treeID) => ChangeLogLine("You placed a " + _treeID);
 
     private void OnPlayLog(bool _show) => canvasGroup.alpha = _show ? 1 : 0;
     

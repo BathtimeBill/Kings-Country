@@ -11,7 +11,6 @@ public class Lord : Enemy
     public Transform closestUnit;
     public float distanceFromClosestUnit;
     public ParticleSystem swingParticle;
-    public Slider slider;
     public AudioSource audioSource;
     public AudioSource barkSource;
     public GameObject bloodParticle1;

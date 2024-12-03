@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 
 public class PlayerControls : Singleton<PlayerControls>
 {
@@ -13,24 +9,9 @@ public class PlayerControls : Singleton<PlayerControls>
     public GameObject targetPointer;
     public GameObject targetPointerGraphics;
     public GameObject mouseOverEnemy;
-    public bool mouseOverEnemyBool;
     public LayerMask uILayer;
+    [Header("Tools")]
     public Tools tools;
-    [Header("Tree Tool")]
-    public bool treeTooClose;
-    public GameObject treePlacement;
-    public GameObject cantPlace;
-    public GameObject treePrefab;
-    public float minScale;
-    public float maxScale;
-    public MeshRenderer treePlacementMeshRenderer;
-    public Animator errorAnimator;
-    public AudioSource audioSource;
-    public AudioSource worldAudioSource;
-    [Header("Rune Placement")]
-    public GameObject runePlacement;
-    public MeshRenderer runePlacementMeshRenderer;
-    public GameObject runePrefab;
     [Header("Control Groups")]
     public bool canGroup;
     [Header("Map")]
@@ -42,32 +23,12 @@ public class PlayerControls : Singleton<PlayerControls>
     public Vector2 hotSpot = Vector2.zero;
     public Vector2 hotSpotEnemy;
 
-    
-
     public void DeselectAllTools() => DeslectAllModes();
-
-    private void Start()
-    {
-        treeTooClose = false;
-    }
-
+    
     private void FixedUpdate()
     {
         if (_hasInput)
-        {
             RayCast();
-        }
-    }
-
-    private void Update()
-    {
-        if (_hasInput)
-        {
-            if (Input.GetKeyDown(KeyCode.F4))
-                _GM.SpeedGame();
-            if (Input.GetKeyDown(KeyCode.F3))
-                _GM.SetGame();
-        }
     }
 
     public void MouseOverMap()
@@ -80,7 +41,7 @@ public class PlayerControls : Singleton<PlayerControls>
     }
 
     #region Raycasting
-    public void RayCast()
+    private void RayCast()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitPoint)/* && hitPoint.collider.tag == "Ground"*/)
@@ -88,30 +49,26 @@ public class PlayerControls : Singleton<PlayerControls>
             switch (_GM.playmode)
             {
                 case PlayMode.TreeMode:
-                    treePlacement.transform.position = hitPoint.point;
-                    treePlacement.SetActive(true);
+                    tools.treeTool.SetPosition(hitPoint.point);
                     break;
                 case PlayMode.RuneMode:
-                    runePlacement.transform.position = hitPoint.point;
-                    runePlacement.SetActive(true);
+                    tools.runeTool.SetPosition(hitPoint.point);
                     break;
                 case PlayMode.FyreMode:
-                    tools.fyreTool.transform.position = hitPoint.point;
+                    tools.fyreTool.SetPosition(hitPoint.point);
                     break;
                 case PlayMode.StormerMode:
-                    tools.stormerTool.transform.position = hitPoint.point;
+                    tools.stormerTool.SetPosition(hitPoint.point);
                     break;
             }
             
             if (hitPoint.collider.CompareTag("Enemy"))
             {
                 mouseOverEnemy = hitPoint.collider.gameObject;
-                mouseOverEnemyBool = true;
                 Cursor.SetCursor(cursorTextureRed, hotSpotEnemy, cursorMode);
             }
             else
             {
-                mouseOverEnemyBool = false;
                 Cursor.SetCursor(cursorTextureNormal, hotSpot, cursorMode);
             }
             Debug.DrawLine(ray.origin, hitPoint.point);
@@ -119,7 +76,7 @@ public class PlayerControls : Singleton<PlayerControls>
         }
     }
 
-    public void RaycastClick()
+    private void RaycastClick()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitPoint))
@@ -171,52 +128,16 @@ public class PlayerControls : Singleton<PlayerControls>
 
         switch (_CurrentPlayMode)
         {
-            //Trees
             case PlayMode.TreeMode:
-                if (_GM.trees.Count < _GM.maxTrees)
-                {
-                    if (_TPlace.canPlace == true)
-                    {
-                        GameObject treeInstance;
-                        GameObject cantDestroy;
-                        Vector3 randomSize = new Vector3(1, Random.Range(minScale, maxScale), 1);
-                        treeInstance = Instantiate(treePrefab, treePlacement.transform.position, treePlacement.transform.rotation);
-                        treeInstance.transform.localScale = randomSize;
-                        treeInstance.GetComponent<Tree>().energyMultiplier = _TPlace.maegenPerWave;
-                        cantDestroy = Instantiate(cantPlace, treePlacement.transform.position, treePlacement.transform.rotation);
-                        Destroy(cantDestroy, 15);
-                        GameEvents.ReportOnTreePlaced(ToolID.Tree);
-                        worldAudioSource = treeInstance.GetComponent<AudioSource>();
-                        worldAudioSource.clip = _SM.GetTreeGrowSound();
-                        worldAudioSource.Play();
-                        _GM.DecreaseMaegen(_TPlace.maegenCost);
-                    }
-                    if (_TPlace.tooFarAway == true)
-                    {
-                        _UI.SetError(ErrorID.TooFar);
-                    }
-                    if (_TPlace.insufficientMaegen == true)
-                    {
-                        _UI.SetError(ErrorID.InsufficientMaegen);
-                    }
-                }
-                else
-                {
-                    _UI.SetError(ErrorID.TooManyTrees);
-                }
+                tools.treeTool.Use();
                 break;
-            //Runes
             case PlayMode.RuneMode:
                 if (_GM.runesAvailable)
                 {
-                    GameObject runeInstance = Instantiate(runePrefab, runePlacement.transform.position, runePlacement.transform.rotation);
-                    _GM.DecreaseMaegen(_GM.runesMaegenCost[_GM.runesCount]);
-                    _GM.AddRune(runeInstance);
+                    tools.runeTool.Use();
                     DeslectAllModes();
-                    GameEvents.ReportOnRunePlaced();
                 }
                 break;
-            //Fyre
             case PlayMode.FyreMode:
                 if (_GM.fyreAvailable && _UI.fyreAvailable)
                 {
@@ -224,7 +145,6 @@ public class PlayerControls : Singleton<PlayerControls>
                     DeslectAllModes();
                 }
                 break;
-            //Stormer
             case PlayMode.StormerMode:
                 if (_GM.stormerAvailable && _UI.stormerAvailable)
                 {
@@ -232,7 +152,6 @@ public class PlayerControls : Singleton<PlayerControls>
                     DeslectAllModes();
                 }
                 break;
-            //Default
             case PlayMode.DefaultMode:
                 RaycastClick();
                 break;
@@ -265,12 +184,7 @@ public class PlayerControls : Singleton<PlayerControls>
                 _UI.TurnOffWarningPanel();
         }
     }
-
-    private void OnControlHold(bool _holding)
-    {
-        canGroup = _holding;
-    }
-
+    
     private void OnGroupSelected(int _group)
     {
         if (canGroup)
@@ -285,35 +199,22 @@ public class PlayerControls : Singleton<PlayerControls>
         }
     }
 
-    private void OnUnitMove()
-    {
-        //Debug.Log("Target Moving");
-        targetPointerGraphics.GetComponent<Animator>().SetTrigger("Move");
-    }
+    private void OnControlHold(bool _holding) => canGroup = _holding;
+    private void OnUnitMove() => targetPointerGraphics.GetComponent<Animator>().SetTrigger("Move");
     
-    private void SelectTreeMode()
+    private void SelectTreeMode(TreeID _treeID)
     {
-        if(!_tutorialComplete)
+        if(!_tutorialComplete || _buildPhase)
         {
             _GM.SetPlayMode(PlayMode.TreeMode);
-            treePlacement.SetActive(true);
-            _UI.ShowTreeModifier(true);
+            tools.treeTool.Select(_treeID);
         }
-
-        if(_buildPhase)
-        {
-            _GM.SetPlayMode(PlayMode.TreeMode);
-            treePlacement.SetActive(true);
-            _UI.ShowTreeModifier(true);
-        }
-        _TPlace.canPlace = true;
-        //_TPlace.gameObject.GetComponent<Renderer>().material = _TPlace.canPlaceMat;
     }
 
     private void SelectRuneMode()
     {
         _GM.SetPlayMode(PlayMode.RuneMode);
-        runePlacement.SetActive(true);
+        tools.runeTool.Select();
     }
 
     private void SelectFyreMode()
@@ -331,10 +232,10 @@ public class PlayerControls : Singleton<PlayerControls>
     private void DeslectAllModes()
     {
         _GM.SetPlayMode(PlayMode.DefaultMode);
-        treePlacement.SetActive(false);
-        runePlacement.SetActive(false);
+        tools.runeTool.Deselect();
         tools.fyreTool.Deselect();
         tools.stormerTool.Deselect();
+        tools.treeTool.Deselect();
         _UI.ShowTreeModifier(false);
     }
     
@@ -356,11 +257,15 @@ public class PlayerControls : Singleton<PlayerControls>
                 if (_GM.playmode != PlayMode.RuneMode)
                     SelectRuneMode();
                 break;
-            case ToolID.Tree:
-                if (_GM.playmode != PlayMode.TreeMode)
-                    SelectTreeMode();
-                break;
         }
+    }
+    
+    private void OnTreeButtonPressed(TreeID _treeID)
+    {
+        _SM.PlaySound(_SM.buttonClickSound);
+        DeslectAllModes();
+        if (_GM.playmode != PlayMode.TreeMode)
+            SelectTreeMode(_treeID);
     }
 
     private void OnEnable()
@@ -372,6 +277,7 @@ public class PlayerControls : Singleton<PlayerControls>
         InputManager.OnGroupSelected += OnGroupSelected;
         GameEvents.OnUnitMove += OnUnitMove;
         GameEvents.OnToolButtonPressed += OnToolButtonPressed;
+        GameEvents.OnTreeButtonPressed += OnTreeButtonPressed;
     }
 
     private void OnDisable()
@@ -383,12 +289,15 @@ public class PlayerControls : Singleton<PlayerControls>
         InputManager.OnGroupSelected -= OnGroupSelected;
         GameEvents.OnUnitMove -= OnUnitMove;
         GameEvents.OnToolButtonPressed -= OnToolButtonPressed;
+        GameEvents.OnTreeButtonPressed -= OnTreeButtonPressed;
     }
 }
 
 [System.Serializable]
 public class Tools
 {
+    public TreeTool treeTool;
     public FyreTool fyreTool;
     public StormerTool stormerTool;
+    public RuneTool runeTool;
 }

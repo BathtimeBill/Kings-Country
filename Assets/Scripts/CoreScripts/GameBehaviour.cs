@@ -17,8 +17,6 @@ public class GameBehaviour : BV.Behaviour
     protected static PlayerControls _PC { get { return PlayerControls.instance; } }
     protected static CameraController _CAMERA { get { return CameraController.instance; } }
     protected static SoundManager _SM { get { return SoundManager.instance; } }
-    protected static TreePlacement _TPlace { get { return TreePlacement.instance; } }
-    protected static RunePlacement _RPlace { get { return RunePlacement.instance; } }
     protected static TooltipManager _Tool { get { return TooltipManager.instance; } }
     protected static PerkManager _PERK { get { return PerkManager.instance; } }
     protected static GameData _DATA { get { return GameData.instance; } }
@@ -98,6 +96,13 @@ public enum ToolID
     Rune,
     Fyre,
     Stormer,
+    Tree = 30,
+    Willow,
+    Ficus,
+}
+
+public enum TreeID
+{
     Tree,
     Willow,
     Ficus,
@@ -219,7 +224,8 @@ public enum UnitType
     Guardian,
     Human,
     Site,
-    Tool
+    Tool,
+    Tree
 }
 
 public enum EnemyType
@@ -240,6 +246,7 @@ public enum LevelID
     None,
 }
 
+public enum GameSpeed{Normal, Fast, Slow}
 public enum SeasonID
 {
     Spring, Summer, Autumn, Winter

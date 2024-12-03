@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class MapIcon : GameBehaviour
 {
@@ -8,8 +7,10 @@ public class MapIcon : GameBehaviour
     public CreatureID creatureID;
     [BV.DrawIf("unitType", UnitType.Human)]
     public HumanID humanID;
-    [FormerlySerializedAs("buildingID")] [BV.DrawIf("unitType", UnitType.Site)]
+    [BV.DrawIf("unitType", UnitType.Site)]
     public SiteID siteID;
+    [BV.DrawIf("unitType", UnitType.Tree)]
+    public TreeID treeID;
     public SpriteRenderer sprite;
 
     private GameObject playerCam;
@@ -58,6 +59,11 @@ public class MapIcon : GameBehaviour
                 sprite.sprite = _DATA.GetSiteData(siteID).mapIcon;
                 sprite.color = _COLOUR.GetColour(_DATA.GetSiteData(siteID).id); 
                 sprite.transform.localScale = Vector3.one * _SETTINGS.miniMap.buildingIconSize;
+                break;
+            case UnitType.Tree:
+                sprite.sprite = _DATA.GetTree(treeID).icon;
+                sprite.color = _COLOUR.GetColour(_DATA.GetTree(treeID).id); 
+                sprite.transform.localScale = Vector3.one * _SETTINGS.miniMap.treeIconSize;
                 break;
         }
     }
