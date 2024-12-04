@@ -35,50 +35,34 @@ public class Logger : Enemy
     IEnumerator Tick()
     {
         if (_GM.gameState == GameState.Lose)
-        {
             StopAllCoroutines();
-        }
 
-        if (_UM.unitList.Count != 0)
+        if (_GuardiansExist)
         {
             closestUnit = GetClosestUnit();
             distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
         }
-        if (_GM.trees.Count != 0)
+        if (_TreesExist)
         {
             closestTree = GetClosestTree();
             distanceFromClosestTree = Vector3.Distance(closestTree.transform.position, transform.position);
         }
-
-        //if (UnitSelection.Instance.unitList.Count == 0)
-        //{
-        //    state = EnemyState.Work;
-        //}
+        
         healthBar.ChangeUnitState(state.ToString());
+        
         switch (state)
         {
-
             case EnemyState.Work:
-
-                if (distanceFromClosestUnit < 30)
-                {
+                if (distanceFromClosestUnit < attackRange)
                     state = EnemyState.Attack;
-                }
 
-                if (_GM.trees.Count == 0)
+                if (_NoTrees)
                 {
-                    if (woodcutterType != WoodcutterType.LogCutter)
-                    {
-                        agent.stoppingDistance = 7;
-                    }
-
-                    //SmoothFocusOnTree();
                     FindHomeTree();
                 }
                 else
                 {
-                    agent.stoppingDistance = loggerStoppingDistance;
-                    if (distanceFromClosestTree < 30)
+                    if (distanceFromClosestTree < attackRange)
                     {
                         SmoothFocusOnTree();
                     }
@@ -87,24 +71,17 @@ public class Logger : Enemy
                 break;
 
             case EnemyState.Attack:
-                if(_UM.unitList.Count > 0)
+                if(_GuardiansExist)
                 {
-                    if (distanceFromClosestUnit >= 30)
+                    if (distanceFromClosestUnit >= attackRange)
                     {
                         state = EnemyState.Work;
                     }
                     FindUnit();
                     SmoothFocusOnEnemy();
                 }
-                //else
-                //{
-                //    state = EnemyState.Cheer;
-                //}
                 break;
-            case EnemyState.Beacon:
-                agent.SetDestination(transform.position);
-
-                break;
+            
             case EnemyState.Cheer:
                 agent.SetDestination(transform.position);
                 break;
@@ -130,11 +107,6 @@ public class Logger : Enemy
     public override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-
-        if (other.CompareTag("Hand")) //TODO what is the hand?
-        {
-            Die(this, "Hand", DeathID.Regular);
-        }
     }
     public override void OnTriggerExit(Collider other)
     {
@@ -223,7 +195,7 @@ public class Logger : Enemy
     }
     public void FindUnit()
     {
-        if(_UM.unitList.Count == 0 && _GM.trees.Count > 0)
+        if(_NoGuardians && _TreesExist)
         {
             state = EnemyState.Work;
         }

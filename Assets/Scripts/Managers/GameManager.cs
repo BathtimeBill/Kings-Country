@@ -284,12 +284,6 @@ public class GameManager : Singleton<GameManager>
         runes.Add(_rune);
     }
 
-    //Checks the scene for how many Runes are present.
-    public void CheckRunes()
-    {
-        runes = GameObject.FindGameObjectsWithTag("RuneObject").ToList<GameObject>();
-    }
-
     //Checks the scene for how many player units are present.
     public int CheckPopulous()
     {

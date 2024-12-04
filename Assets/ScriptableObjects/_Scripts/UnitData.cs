@@ -15,7 +15,7 @@ public class UnitData : ScriptableObject
     public int damage;
     public int speed;
     public int cost;
-    public float detectionRadius = 50f;
+    [FormerlySerializedAs("detectionRadius")] public float detectRange = 50f;
     public float stoppingDistance = 4f;
     public float attackRange = 15f;
     [Header("Non Stats")]

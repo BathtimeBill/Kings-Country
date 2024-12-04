@@ -27,7 +27,7 @@ public class HomeTreeTower : GameBehaviour
     void Update()
     {
 
-        if (!_EM.allEnemiesDead)
+        if (_EnemiesExist)
         {
             closestEnemy = GetClosestEnemy().transform.position;
             transform.LookAt(closestEnemy);

@@ -21,6 +21,9 @@ public class DebugManager : GameBehaviour
             if (FindObjectOfType<ExperienceMeter>())
                 FindObjectOfType<ExperienceMeter>().IncreaseExperience(100);
         }
+        
+        if(Input.GetKeyDown(KeyCode.H))
+            _EM.SpawnSpecificEnemy();
     }
 
     public void ShowLevelColliders(bool _show)

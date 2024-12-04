@@ -10,9 +10,9 @@ public class DebugUnit : MonoBehaviour
     public void AdjustRange(float _detect, float _attack, float _stop)
     {
         ToggleObjects();
-        detectRange.transform.localScale = new Vector3(_detect, _detect, _detect);
-        attackRange.transform.localScale = new Vector3(_attack, _attack, _attack);
-        stopRange.transform.localScale = new Vector3(_stop, _stop, _stop);
+        detectRange.transform.localScale = new Vector3(_detect*2, _detect*2, _detect*2);
+        attackRange.transform.localScale = new Vector3(_attack*2, _attack*2, _attack*2);
+        stopRange.transform.localScale = new Vector3(_stop*2, _stop*2, _stop*2);
     }
 
     private void OnShowRangeButton(bool _show)

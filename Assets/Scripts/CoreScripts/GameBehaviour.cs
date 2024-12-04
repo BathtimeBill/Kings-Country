@@ -51,10 +51,13 @@ public class GameBehaviour : BV.Behaviour
     public PlayMode _CurrentPlayMode => _GM.playmode;
     public GameState _previousGameState => _GM.previousState;
     public bool _NoTrees => _GM.trees.Count == 0;
+    public bool _TreesExist => _GM.trees.Count > 0;
     public bool _GuardiansExist => _UM.unitList.Count > 0;
     public bool _NoGuardians => _UM.unitList.Count == 0;
     public bool _WildlifeExist => _GM.currentWildlife.Count > 0;
     public bool _NoWildlife => _GM.currentWildlife.Count == 0;
+    public bool _EnemiesExist => _EM.enemies.Count > 0;
+    public bool _NoEnemies => _EM.enemies.Count == 0;
     public Transform _Pointer => _PC.targetPointer.transform;
 
     public Experience _EXP(int i) => _SETTINGS.experience.Find(x=> x.level == i);
@@ -179,6 +182,7 @@ public enum UnitState
     Attack,
     Moving,
     Track,
+    Focus,
 }
 public enum CombatMode
 {

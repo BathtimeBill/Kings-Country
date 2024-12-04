@@ -6,10 +6,11 @@ public class Fidhain : Unit
     public ParticleSystem spitParticles;
     public Collider spitCollider;
     public GameObject towerUnit;
+    public float rangeMultiplier = 10f;
     public override void Attack(int _attack)
     {
         base.Attack(_attack);
-        if (_EM.allEnemiesDead)
+        if (_NoEnemies)
             return;
         
         spitParticles.Play();
@@ -23,6 +24,18 @@ public class Fidhain : Unit
     {
         spitParticles.Stop();
         spitCollider.enabled = false;
+    }
+    
+    public override void HandleAttackState()
+    {
+        stoppingDistance *= rangeMultiplier;
+        base.HandleAttackState();
+    }
+
+    public override void HandleMovingState()
+    {
+        stoppingDistance = unitData.stoppingDistance;
+        base.HandleMovingState();
     }
 
     protected override void Tower()

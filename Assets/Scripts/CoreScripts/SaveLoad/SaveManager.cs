@@ -72,6 +72,8 @@ public class PlayerSettings
     [Header("Audio")]
     public float musicVolume = 1.0f;
     public float sfxVolume = 1.0f;
+    [Header("Camera")]
+    public bool edgeScrolling = true;
     public float movementSpeed = 1.0f;
     public float zoomSpeed = 1.0f;
     public float rotationSpeed = 1.0f;
@@ -267,6 +269,7 @@ public class SaveManager : BGG.GameData
         save.playerSettings.miniMapRotation = true;
         save.playerSettings.playLog = true;
         save.playerSettings.panelColour = PanelColourID.Black;
+        save.playerSettings.edgeScrolling = true;
 
         save.playerStats = new PlayerStats();
 
@@ -352,6 +355,9 @@ public class SaveManager : BGG.GameData
     //Aesthetics
     public void SetPanelColour(PanelColourID _panelColour) => save.playerSettings.panelColour = _panelColour;
     public PanelColourID GetPanelColour() => save.playerSettings.panelColour;
+    
+    public bool GetCameraEdgeScrolling => save.playerSettings.edgeScrolling;
+    public void SetCameraEdgeScrolling(bool _scroll) => save.playerSettings.edgeScrolling = _scroll;
     #endregion
 
     #region Tutorial/Glossary

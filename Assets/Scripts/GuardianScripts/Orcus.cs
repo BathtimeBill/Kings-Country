@@ -3,7 +3,7 @@ public class Orcus : Unit
     public override void Attack(int _attack)
     {
         base.Attack(_attack);
-        if (_EM.allEnemiesDead)
+        if (_NoEnemies)
             return;
 
         PlaySound(unitData.attackSounds);

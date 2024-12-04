@@ -22,7 +22,7 @@ public class FidhainTower : Unit
     IEnumerator ShootProjectile()
     {
         yield return new WaitForSeconds(fireRate);
-        if (distanceToClosestEnemy < unitData.detectionRadius)
+        if (distanceToClosestEnemy < unitData.detectRange)
         {
             animator.SetTrigger("Spit");
             PlaySound(unitData.attackSounds);

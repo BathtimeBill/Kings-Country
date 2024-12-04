@@ -52,32 +52,22 @@ public class Warrior : Enemy
         {
             case EnemyState.Work:
                 agent.SetDestination(transform.position);
-
                 break;
 
             case EnemyState.Attack:
                 animator.SetBool("hasStoppedHorgr", false);
                 horgrSwitch = false;
-                if (_UM.unitList.Count == 0)
+                if (_NoGuardians)
                 {
-                    agent.stoppingDistance = 10;
                     FindHomeTree();
                     SmoothFocusOnEnemy();
                 }
                 else
                 {
                     FindUnit();
-                    if (distanceFromClosestUnit < 30)
+                    if (distanceFromClosestUnit < attackRange)
                     {
                         SmoothFocusOnEnemy();
-                    }
-                    if (closestUnit.tag == "LeshyUnit")
-                    {
-                        agent.stoppingDistance = 8;
-                    }
-                    else
-                    {
-                        agent.stoppingDistance = stoppingDistance;
                     }
                 }
 

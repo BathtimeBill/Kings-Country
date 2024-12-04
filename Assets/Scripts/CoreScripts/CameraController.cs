@@ -26,12 +26,14 @@ public class CameraController : Singleton<CameraController>
     private Vector3 startPos;
     private Quaternion startRot;
     private bool lockCamera = false;
+    public Vector3 siteOffset = new Vector3(0, 0, 5);
 
     private void Start()
     {
         startPos = newPosition = transform.position;
         startRot = newRotation = transform.rotation;
         startZoom = newZoom = cameraTransform.localPosition;
+        movementModifier = normalSpeed;
     }
 
     private void Update()
@@ -40,7 +42,7 @@ public class CameraController : Singleton<CameraController>
             return;
 
         HandleLerps();
-        HandleMouseInputNew();
+        HandleMouseInput();
     }
 
     void HandleLerps()
@@ -89,13 +91,13 @@ public class CameraController : Singleton<CameraController>
 
         //print("posX: " + posX + " | posY: " + posY + " | mouseX: " + mouseX + " | mouseY: " + mouseY);
 
-        if (posY > 0 || mouseY > Screen.height - edgeScrollThreshold)
+        if (posY > 0 || (_SAVE.GetCameraEdgeScrolling && mouseY > Screen.height - edgeScrollThreshold))
             newPosition += transform.forward * _PLAYER.movementSpeed * movementModifier;
-        if (posY < 0 || mouseY < edgeScrollThreshold)
+        if (posY < 0 || (_SAVE.GetCameraEdgeScrolling && mouseY < edgeScrollThreshold))
             newPosition -= transform.forward * _PLAYER.movementSpeed * movementModifier;
-        if (posX > 0 || mouseX > Screen.width - edgeScrollThreshold)
+        if (posX > 0 || (_SAVE.GetCameraEdgeScrolling && mouseX > Screen.width - edgeScrollThreshold))
             newPosition += transform.right * _PLAYER.movementSpeed * movementModifier;
-        if (posX < 0 || mouseX < edgeScrollThreshold)
+        if (posX < 0 || (_SAVE.GetCameraEdgeScrolling && mouseX < edgeScrollThreshold))
             newPosition -= transform.right * _PLAYER.movementSpeed * movementModifier;
 
         _TUTORIAL.CheckCameraTutorial(TutorialID.CameraMove);
@@ -106,7 +108,7 @@ public class CameraController : Singleton<CameraController>
         movementModifier = _held ? fastSpeed : normalSpeed;
     }
 
-    void HandleMouseInputNew()
+    void HandleMouseInput()
     {
         if (Input.GetMouseButtonUp(2))
         {
@@ -138,21 +140,21 @@ public class CameraController : Singleton<CameraController>
 
         float resetTime = 2f;
         lockCamera = true;
-        newRotation = startRot;
         newPosition = startPos;
+        newRotation = startRot;
         newZoom = startZoom;
-        transform.DOLocalMove(startPos, resetTime).SetEase(Ease.OutSine);
-        cameraTransform.DOLocalMove(startZoom, resetTime).SetEase(Ease.OutSine);
-        transform.DOLocalRotateQuaternion(startRot, resetTime).SetEase(Ease.OutSine);
+        transform.DOLocalMove(newPosition, resetTime).SetEase(Ease.OutSine);
+        transform.DOLocalRotateQuaternion(newRotation, resetTime).SetEase(Ease.OutSine);
+        cameraTransform.DOLocalMove(newZoom, resetTime).SetEase(Ease.OutSine);
         //ExecuteAfterSeconds(resetTime + 0.1f, () => lockCamera = false);
     }
 
-    public void TweenCameraPosition(Transform _transform, float _speed)
+    public void TweenCameraPosition(Vector3 _position, float _speed)
     {
-        newPosition = _transform.position;
+        newPosition = _position;
         newZoom = startZoom;
-        transform.DOLocalMove(_transform.position, _speed).SetEase(Ease.OutSine);
-        cameraTransform.DOLocalMove(startZoom, _speed).SetEase(Ease.OutSine);
+        transform.DOLocalMove(_position - siteOffset, _speed).SetEase(Ease.OutSine);
+        cameraTransform.DOLocalMove(newZoom, _speed).SetEase(Ease.OutSine);
     }
 
     public void LockCamera(bool _lock) => lockCamera = _lock;
@@ -165,13 +167,13 @@ public class CameraController : Singleton<CameraController>
         switch (_siteID)
         {
             case SiteID.HomeTree:
-                TweenCameraPosition(_GM.homeTree.transform, _TWEENING.focusTweenTime);
+                TweenCameraPosition(_GM.homeTree.transform.position, _TWEENING.focusTweenTime);
                 break;
             case SiteID.Hut:
-                TweenCameraPosition(_GM.hut.transform, _TWEENING.focusTweenTime);
+                TweenCameraPosition(_GM.hut.transform.position, _TWEENING.focusTweenTime);
                 break;
             case SiteID.Horgr:
-                TweenCameraPosition(_GM.horgr.transform, _TWEENING.focusTweenTime);
+                TweenCameraPosition(_GM.horgr.transform.position, _TWEENING.focusTweenTime);
                 break;
             case SiteID.Unknown:
                 break;

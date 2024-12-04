@@ -37,17 +37,17 @@ public class Enemy : GameBehaviour
         get { return detectRangeValue; }
         set {detectRangeValue = value; UpdateDebug(); }
     }
-    private float stopRangeValue;
-    public float stopRange
+    private float stoppingDistanceValue;
+    public float stoppingDistance
     {
-        get { return stopRangeValue; }
-        set {stopRangeValue = value; UpdateDebug(); }
+        get { return stoppingDistanceValue; }
+        set {stoppingDistanceValue = value; UpdateDebug(); }
     }
     private void UpdateDebug()
     {
         if (!debugUnit)
             return;
-        debugUnit.AdjustRange(detectRange, attackRange, stopRange);
+        debugUnit.AdjustRange(detectRange, attackRange, stoppingDistance);
     }
     #endregion
     
@@ -70,6 +70,8 @@ public class Enemy : GameBehaviour
         damage = unitData.damage;
         attackRange = unitData.attackRange;
         detectRange = unitData.detectRange;
+        stoppingDistance = unitData.stoppingDistance;
+        agent.stoppingDistance = stoppingDistance;
         _SM.PlaySound(unitData.spawnSound);
         if(healthBar != null)
             healthBar.AdjustHealthBar(health, maxHealth);

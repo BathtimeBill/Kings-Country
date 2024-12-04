@@ -9,22 +9,23 @@ public class EnemyManager : Singleton<EnemyManager>
     [ReadOnly] public List<GameObject> spawnPoints;
     [Header("Spawn Cooldown")]
     public BV.Range cooldown;
-    private List<HumanID> enemyIDList;
+    [SerializeField] private List<HumanID> enemyIDList = new List<HumanID>();
     private List<SpawnAmounts> spawnAmounts;
     private SpawnAmounts currentDaySpawnAmount;
-    public bool allEnemiesDead => enemies.Count == 0;
     public bool allEnemiesSpawned => enemyIDList.Count == 0;
     public int currentKillCount;
     
     public GameObject spyNotification;
     private List<GameObject> enemyPool = new List<GameObject>();
     private List<GameObject> ragdollPool = new List<GameObject>();
+    [Header("Testing")]
+    public HumanID testSpawnHuman;
+    public bool noAutoSpawning = false;
     public void AddSpawnPoint(GameObject spawnPoint) => spawnPoints.Add(spawnPoint);
     private Transform RandomSpawnPoint => ListX.GetRandomItemFromList(spawnPoints).transform; 
     
     private void Start()
     {
-        enemyIDList = new List<HumanID>();
         spawnAmounts = new List<SpawnAmounts>();
         spawnAmounts.Clear();
         spawnAmounts = _DATA.currentLevel.spawnAmounts;
@@ -35,6 +36,9 @@ public class EnemyManager : Singleton<EnemyManager>
 
     public void BeginNewDay()
     {
+        if (noAutoSpawning)
+            return;
+        
         currentDaySpawnAmount = spawnAmounts[_currentDay];
         enemies.Clear();
         FillDayEnemyList();
@@ -172,8 +176,10 @@ public class EnemyManager : Singleton<EnemyManager>
         }
         //POOL REDO
         //_enemy.gameObject.SetActive(false);
+        enemies.Remove(_enemy.gameObject);
         Destroy(_enemy.gameObject);
-        GameEvents.ReportOnHumanKilled(_enemy, _killedBy);
+        if(!noAutoSpawning)
+            GameEvents.ReportOnHumanKilled(_enemy, _killedBy);
     }
     #endregion
 
@@ -231,7 +237,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
     private void CheckEnemiesLeft()
     {
-        if (!allEnemiesDead || _agroPhase)
+        if (_EnemiesExist || _agroPhase)
             return;
 
         StopCoroutine(SpawnEnemies());
@@ -292,6 +298,11 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         GameEvents.OnHumanKilled -= OnEnemyUnitKilled;
         GameEvents.OnDayBegin += OnDayBegin;
+    }
+
+    public void SpawnSpecificEnemy()
+    {
+        SpawnEnemy(_DATA.GetUnit(testSpawnHuman).playModel, RandomSpawnPoint.position);
     }
 }
 

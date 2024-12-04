@@ -108,11 +108,11 @@ public class Lord : Enemy
         {
             TakeDamage(_GM.spitExplosionDamage);
         }
-        if (other.tag == "Explosion")
+        if (other.tag == "Explosion")//No longer in tags
         {
             TakeDamage(100, "Mine");//TODO where are these numbers from and from who?
         }
-        if (other.tag == "Explosion2")
+        if (other.tag == "Explosion2")//No longer in tags
         {
             TakeDamage(200, "Mine");//TODO where are these numbers from and from who?
         }*/

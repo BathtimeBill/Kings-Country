@@ -42,7 +42,7 @@ public class MusicManager : Singleton<MusicManager>
         combatMusic.Remove(currentClip);
         musicPlayer.clip = GetRandomCombatMusic();
         musicPlayer.Play();
-        if (!_EM.allEnemiesDead)
+        if (_EnemiesExist)
             StartCoroutine(WaitForCombatTrackToEnd());
         else
             StartCoroutine(WaitForPeaceTrackToEnd());

@@ -6,6 +6,7 @@ public class TreeTool : GameBehaviour
     public TreeID treeID;
     [BV.EnumList(typeof(TreeID))]
     public List<GameObject> treeObjects;
+    public GameObject objects;
     private TreeData treeData;
     private bool CanPlace = true;
     public bool canPlace
@@ -33,6 +34,7 @@ public class TreeTool : GameBehaviour
     public void Start()
     {
         ObjectX.ToggleObjects(treeObjects, false);
+        objects.SetActive(false);
         treeData = _DATA.GetTree(treeID);
         myRenderers = GetComponentsInChildren<Renderer>(true);
         collider = GetComponent<Collider>();
@@ -41,6 +43,7 @@ public class TreeTool : GameBehaviour
     {
         ExecuteNextFrame(() =>  //Used to stop the pop from the object not resetting in time
         {
+            objects.SetActive(true);
             treeObjects[(int)_treeID].SetActive(true);
             _UI.ShowTreeModifier(true);
             collider.enabled = true;
@@ -51,6 +54,7 @@ public class TreeTool : GameBehaviour
     public void Deselect()
     {
         ObjectX.ToggleObjects(treeObjects, false);
+        objects.SetActive(false);
         collider.enabled = false;
     }
 

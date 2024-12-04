@@ -14,6 +14,7 @@ public class EnemyData : ScriptableObject
     public float speed;
     public float attackRange = 10;
     public float detectRange = 20;
+    public float stoppingDistance = 1;
     [Header("Non Stats")]
     public Sprite icon;
     public Sprite mapIcon;

@@ -40,7 +40,6 @@ public class Hunter : Enemy
         arrow = arrowObject.GetComponent<Arrow>();
         arrowObject.SetActive(false);
         destination = _hutExists ? _HUT.gameObject : _HOME.gameObject;
-        agent.stoppingDistance = attackRange;
         StartCoroutine(Tick());
     }
     #endregion
@@ -79,21 +78,14 @@ public class Hunter : Enemy
                     state = EnemyState.Work;
                 FaceTarget();
                 break;
-
-            case EnemyState.Beacon:
-                agent.stoppingDistance = 0;
-                agent.SetDestination(transform.position);
-                break;
-
+            
             case EnemyState.ClaimSite:
                 if (!hasArrivedAtHorgr)
                 {
                     agent.SetDestination(destination.transform.position);
-                    agent.stoppingDistance = attackRange / 2;
                 }
                 else
                 {
-                    agent.stoppingDistance = attackRange;
                     if (_hutExists && _HUT.HasUnits())
                     {
                         animator.SetBool("hasStoppedHorgr", false);
@@ -124,13 +116,13 @@ public class Hunter : Enemy
             state = EnemyState.ClaimSite;
         }
 
-        if (agent.velocity != Vector3.zero || distanceFromClosestUnit >= 10)
-        {
-            animator.SetBool("hasStopped", true);
-        }
-        if (agent.velocity == Vector3.zero || distanceFromClosestUnit < 10)
+        if (agent.velocity != Vector3.zero || distanceFromClosestUnit >= stoppingDistance)
         {
             animator.SetBool("hasStopped", false);
+        }
+        if (agent.velocity == Vector3.zero || distanceFromClosestUnit < stoppingDistance)
+        {
+            animator.SetBool("hasStopped", true);
         }
         yield return new WaitForSeconds(seconds);
         
@@ -217,7 +209,10 @@ public class Hunter : Enemy
     {
         if(_NoWildlife)
         {
-            agent.SetDestination(_NoGuardians ? transform.position : closestUnit.transform.position);
+            if (_NoGuardians)
+                state = EnemyState.Cheer;
+            else
+                agent.SetDestination(closestUnit.transform.position);
         }
         else
         {
@@ -228,6 +223,7 @@ public class Hunter : Enemy
             agent.SetDestination(closestWildlife.transform.position);
         }
     }
+    
     public void FaceTarget()
     {
         var lookPos = closestUnit.position - transform.position;
@@ -259,7 +255,8 @@ public class Hunter : Enemy
 
     public override void CheckState()
     {
-        if (_HUT == null) return;
+        if (_HUT == null) 
+            return;
         
         if (_HUT.ContainsEnemy(GetComponent<Enemy>()) && _HUT.HasEnemies())
             animator.SetBool("allWildlifeDead", true);

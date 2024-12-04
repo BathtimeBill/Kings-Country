@@ -9,7 +9,7 @@ public class HealPickup : GameBehaviour
     //When a player unit enters the heal pickup's trigger, the heal particle is spawned.
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Unit" || other.tag == "LeshyUnit")
+        if(other.CompareTag("Unit"))
         {
             Instantiate(healParticle, transform.position, transform.rotation);
             Destroy(gameObject);

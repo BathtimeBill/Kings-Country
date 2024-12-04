@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using System.Collections;
 using UnityEngine;
@@ -63,6 +64,7 @@ public class Unit : GameBehaviour
     //AI
     private Transform closestEnemy;
     [HideInInspector] public float distanceToClosestEnemy;
+    private UnitAnimation unitAnimation;
 
     public Transform ClosestEnemy => closestEnemy;
     [HideInInspector] public UnitData unitData;
@@ -85,20 +87,26 @@ public class Unit : GameBehaviour
         get { return detectRangeValue; }
         set {detectRangeValue = value; UpdateDebug(); }
     }
-    private float stopRangeValue;
-    public float stopRange
+    private float stoppingDistanceValue;
+    public float stoppingDistance
     {
-        get { return stopRangeValue; }
-        set {stopRangeValue = value; UpdateDebug(); }
+        get { return stoppingDistanceValue; }
+        set {stoppingDistanceValue = value; UpdateDebug(); SetStoppingDistance(); }
     }
     private void UpdateDebug()
     {
         if (!debugUnit)
             return;
-        debugUnit.AdjustRange(detectRange, attackRange, stopRange);
+        debugUnit.AdjustRange(detectRange, attackRange, stoppingDistance);
     }
+    public void SetStoppingDistance() => navAgent.stoppingDistance = stoppingDistance;
     #endregion
-    
+
+    public void Awake()
+    {
+        unitAnimation = GetComponentInChildren<UnitAnimation>();
+    }
+
     public virtual void Start()
     {
         unitData = _DATA.GetUnit(unitID);
@@ -129,9 +137,10 @@ public class Unit : GameBehaviour
         navAgent.speed = unitSpeed;
 
         //Detection
-        detectRange = unitData.detectionRadius;
-        stopRange = unitData.stoppingDistance;
         attackRange = unitData.attackRange;
+        detectRange = unitData.detectRange;
+        stoppingDistance = unitData.stoppingDistance;
+        navAgent.stoppingDistance = stoppingDistance;
 
         //Other
         healthBar.ChangeCombatModeIcon(_ICONS.attackIcon);
@@ -143,7 +152,7 @@ public class Unit : GameBehaviour
     IEnumerator WaitForIsMovingCheck()
     {
         yield return new WaitForSeconds(0.1f);
-        if(GetComponentInChildren<UnitAnimation>().currentSpeed == 0)
+        if(unitAnimation.currentSpeed == 0)
         {
             state = UnitState.Idle;
         }    
@@ -160,7 +169,7 @@ public class Unit : GameBehaviour
         if (isFirstPerson || !navAgent)
             return;
 
-        if (!_EM.allEnemiesDead)
+        if (_EnemiesExist)
             UpdateClosestEnemy();
 
         HandleState();
@@ -169,11 +178,8 @@ public class Unit : GameBehaviour
     #region AI
     private void UpdateClosestEnemy()
     {
-        closestEnemy = ObjectX.GetClosest(gameObject, _EM.enemies).transform;
+        closestEnemy = _NoEnemies ? transform : ObjectX.GetClosest(gameObject, _EM.enemies).transform;
         distanceToClosestEnemy = Vector3.Distance(closestEnemy.transform.position, transform.position);
-        bool isLord = closestEnemy.gameObject.CompareTag("Lord");
-        bool isSpecialUnit = unitID != CreatureID.Fidhain && unitID != CreatureID.Goblin;
-        navAgent.stoppingDistance = isLord && isSpecialUnit ? stopRange * 2 : stopRange;
     }
 
     private void HandleState()
@@ -193,38 +199,39 @@ public class Unit : GameBehaviour
             case UnitState.Track:
                 HandleTrackState();
                 break;
+            case UnitState.Focus:
+                HandleFocusState();
+                break;
         }
     }
 
     private void HandleIdleState()
     {
-        if (_EM.allEnemiesDead)
+        if (_NoEnemies)
             return;
-
-        if (unitID == CreatureID.Goblin || unitID == CreatureID.Fidhain)
-        {
-            navAgent.stoppingDistance = stopRange;
-        }
-
+        
         if (distanceToClosestEnemy < detectRange)
         {
-            state = UnitState.Attack;
+            state = UnitState.Focus;
         }
         else if (combatMode == CombatMode.Defend)
         {
             navAgent.SetDestination(defendPosition);
         }
     }
-
-    private void HandleAttackState()
+    
+    //Within the detect range
+    public virtual void HandleFocusState()
     {
-        if (_EM.allEnemiesDead)
+        if (_NoEnemies)
         {
             state = UnitState.Idle;
             return;
         }
 
-        if (distanceToClosestEnemy < detectRange || hitByArrow)
+        if (distanceToClosestEnemy < attackRange)
+            state = UnitState.Attack;
+        else if (distanceToClosestEnemy < detectRange || hitByArrow)
         {
             navAgent.SetDestination(closestEnemy.transform.position);
             SmoothFocusOnEnemy();
@@ -233,51 +240,61 @@ public class Unit : GameBehaviour
         {
             state = UnitState.Moving;
         }
-
-        navAgent.stoppingDistance = unitID == CreatureID.Goblin ? 50 : 20;
     }
 
-    private void HandleMovingState()
+    //Within the attack range
+    public virtual void HandleAttackState()
+    {
+        if (_NoEnemies)
+        {
+            state = UnitState.Idle;
+            return;
+        }
+
+        if (distanceToClosestEnemy >= attackRange && !hitByArrow)
+        {
+            unitAnimation.CheckAttack();
+            state = UnitState.Focus;
+        }
+        
+        navAgent.SetDestination(closestEnemy.transform.position);
+        unitAnimation.PlayAttack();
+        SmoothFocusOnEnemy();
+    }
+
+    public virtual void HandleMovingState()
     {
         if (!isMovingCheck)
         {
             isMovingCheck = true;
             StartCoroutine(WaitForIsMovingCheck());
         }
-
-        float distanceThreshold = unitID == CreatureID.Leshy ? 11 : 5;
-        if (Vector3.Distance(pointer.position, transform.position) <= distanceThreshold)
+        
+        if (Vector3.Distance(pointer.position, transform.position) <= stoppingDistance)
         {
             state = UnitState.Idle;
-        }
-
-        if (unitID == CreatureID.Goblin || unitID == CreatureID.Fidhain)
-        {
-            navAgent.stoppingDistance = 4;
         }
 
         if (combatMode == CombatMode.AttackMove && distanceToClosestEnemy < detectRange)
         {
-            state = UnitState.Attack;
+            state = UnitState.Focus;
         }
     }
 
-    private void HandleTrackState()
+    //Targeting specific location
+    public virtual void HandleTrackState()
     {
-        if (trackTarget != null)
-        {
-            navAgent.SetDestination(trackTarget.transform.position);
-            float attackDistance = unitID == CreatureID.Goblin ? 30 : 10;
-            if (Vector3.Distance(transform.position, trackTarget.transform.position) <= attackDistance)
-            {
-                state = UnitState.Attack;
-            }
-        }
+        if(!trackTarget)
+            state = UnitState.Idle;
         else
         {
-            state = UnitState.Idle;
+            navAgent.SetDestination(trackTarget.transform.position);
+            if (Vector3.Distance(transform.position, trackTarget.transform.position) <= attackRange)
+                state = UnitState.Attack;
         }
     }
+
+    
     #endregion
 
     #region Sound
@@ -364,12 +381,6 @@ public class Unit : GameBehaviour
         {
             isTooCloseToTower = true;
         }
-
-        if (other.CompareTag("Lord"))
-        {
-            state = UnitState.Attack;
-        }
-
         if (other.CompareTag("Rune"))
         {
             if (unitID != CreatureID.Mistcalf)
@@ -411,7 +422,8 @@ public class Unit : GameBehaviour
         }
         if (!other.GetComponent<UnitWeaponCollider>())
             return;
-        else if (other.GetComponent<UnitWeaponCollider>().humanID == HumanID.LogCutter)
+        
+        if (other.GetComponent<UnitWeaponCollider>().humanID == HumanID.LogCutter)
         {
             DecreaseHealth(0.5f * Time.deltaTime);
             if (health < 0)
@@ -458,6 +470,7 @@ public class Unit : GameBehaviour
                 TakeDamage(attacker, damage);
                 break;
             case HumanID.Lord:
+                state = UnitState.Attack;
                 HitByArrow();
                 TakeDamage(attacker, damage);
                 break;
