@@ -3,19 +3,10 @@ using UnityEngine;
 
 public class Logger : Enemy
 {
-    [Header("Woodcutter Type")]
-    public WoodcutterType woodcutterType;
-    [Header("Tick")]
-    public float seconds = 0.5f;
     [Header("Stats")]
     public float loggerStoppingDistance;
     public bool hasStopped = false;
 
-    [Header("AI")]
-    public EnemyState state;
-    public Transform closestUnit;
-    public float distanceFromClosestUnit;
-    
     [Header("Trees")]
     public Transform closestTree;
     public float distanceFromClosestTree;
@@ -37,56 +28,14 @@ public class Logger : Enemy
         if (_GM.gameState == GameState.Lose)
             StopAllCoroutines();
 
-        if (_GuardiansExist)
-        {
-            closestUnit = GetClosestUnit();
-            distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
-        }
+        SetClosestUnit();
+        
         if (_TreesExist)
         {
-            closestTree = GetClosestTree();
+            closestTree = ObjectX.GetClosest(gameObject, _GM.trees).transform;
             distanceFromClosestTree = Vector3.Distance(closestTree.transform.position, transform.position);
         }
         
-        healthBar.ChangeUnitState(state.ToString());
-        
-        switch (state)
-        {
-            case EnemyState.Work:
-                if (distanceFromClosestUnit < attackRange)
-                    state = EnemyState.Attack;
-
-                if (_NoTrees)
-                {
-                    FindHomeTree();
-                }
-                else
-                {
-                    if (distanceFromClosestTree < attackRange)
-                    {
-                        SmoothFocusOnTree();
-                    }
-                    FindTree();
-                }
-                break;
-
-            case EnemyState.Attack:
-                if(_GuardiansExist)
-                {
-                    if (distanceFromClosestUnit >= attackRange)
-                    {
-                        state = EnemyState.Work;
-                    }
-                    FindUnit();
-                    SmoothFocusOnEnemy();
-                }
-                break;
-            
-            case EnemyState.Cheer:
-                agent.SetDestination(transform.position);
-                break;
-        }
-
         if (agent.velocity != Vector3.zero)
         {
             animator.SetBool("hasStopped", false);
@@ -97,8 +46,53 @@ public class Logger : Enemy
             animator.SetBool("hasStopped", true);
             hasStopped = true;
         }
-        yield return new WaitForSeconds(seconds);
+        HandleState();
+        yield return new WaitForSeconds(tickRate);
         StartCoroutine(Tick());
+    }
+    
+    public override void HandleWorkState()
+    {
+        if (distanceFromClosestUnit < attackRange)
+            state = EnemyState.Attack;
+
+        if (_NoTrees)
+        {
+            FindHomeTree();
+        }
+        else
+        {
+            if (distanceFromClosestTree < attackRange)
+            {
+                SmoothFocusOnTree();
+            }
+            FindTree();
+        }
+    }
+
+    public override void HandleRelaxState()
+    {
+    }
+
+    public override void HandleAttackState()
+    {
+        if(_GuardiansExist)
+        {
+            if (distanceFromClosestUnit >= attackRange)
+            {
+                state = EnemyState.Work;
+            }
+            FindUnit();
+            SmoothFocusOnEnemy();
+        }
+    }
+
+    public override void HandleClaimState()
+    {
+    }
+
+    public override void HandleVictoryState()
+    {
     }
     #endregion
 
@@ -126,7 +120,7 @@ public class Logger : Enemy
     private void SmoothFocusOnTree()
     {
 
-        if (_GM.trees.Count == 0)
+        if (_NoTrees)
         {
             var targetRotation = Quaternion.LookRotation(homeTree.transform.position - transform.position);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
@@ -167,27 +161,7 @@ public class Logger : Enemy
     //{
     //    base.Launch();
     //}
-
     
-
-    public Transform GetClosestTree()
-    {
-        
-        float closestDistance = Mathf.Infinity;
-        Transform trans = null;
-
-        foreach (GameObject go in _GM.trees)
-        {
-            float currentDistance;
-            currentDistance = Vector3.Distance(transform.position, go.transform.position);
-            if (currentDistance < closestDistance)
-            {
-                closestDistance = currentDistance;
-                trans = go.transform;
-            }
-        }
-        return trans;
-    }
 
     public void FindTree()
     {
@@ -203,12 +177,12 @@ public class Logger : Enemy
     }
     public void FindHomeTree()
     {
-        Log("Finding Home Tree");
         agent.SetDestination(homeTree.transform.position);
     }
     public override void Win()
     {
         StopCoroutine(Tick());
-        state = EnemyState.Cheer;
+        state = EnemyState.Victory;
+        base.Win();
     }
 }

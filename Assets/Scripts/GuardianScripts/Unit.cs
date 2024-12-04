@@ -367,13 +367,13 @@ public class Unit : GameBehaviour
         }
         if (other.CompareTag("Horgr"))
         {
-            if(_horgrExists)
+            if(_HorgrExists)
                 _HORGR.AddUnit(this);
             GameEvents.ReportOnUnitArrivedAtHorgr();
         }
         if (other.CompareTag("Hut"))
         {
-            if (_hutExists)
+            if (_HutExists)
                 _HUT.AddUnit(this);
             GameEvents.ReportOnUnitArrivedAtHut();
         }
@@ -391,10 +391,10 @@ public class Unit : GameBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Horgr") && _horgrExists)
+        if (other.CompareTag("Horgr") && _HorgrExists)
             _HORGR.RemoveUnit(this);
         
-        if(other.CompareTag("Hut") && _hutExists)
+        if(other.CompareTag("Hut") && _HutExists)
             _HUT.RemoveUnit(this);
         
         if (other.CompareTag("Tower"))
@@ -521,10 +521,10 @@ public class Unit : GameBehaviour
     
     private void RemoveFromSites()
     {
-        if (_hutExists)
+        if (_HutExists)
             _HUT.RemoveUnit(this);
         
-        if (_horgrExists)
+        if (_HorgrExists)
             _HORGR.RemoveUnit(this);
     }
     

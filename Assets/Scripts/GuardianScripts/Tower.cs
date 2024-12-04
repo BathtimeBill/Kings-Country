@@ -144,7 +144,7 @@ public class Tower : GameBehaviour
     {
         if (health <= 0)
         {
-            if(_horgrExists)
+            if(_HorgrExists)
                 _HORGR.RemoveUnit(parent);
 
             GameObject go = Instantiate(explosionParticle, transform.position, transform.rotation);

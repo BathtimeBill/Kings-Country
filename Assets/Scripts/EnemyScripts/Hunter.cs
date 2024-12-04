@@ -7,25 +7,17 @@ public class Hunter : Enemy
     public GameObject arrowObject;
     private Arrow arrow;
     public Transform firingPoint;
-    [Header("Tick")]
-    public float seconds = 0.5f;
     [Header("Stats")]
-    public EnemyState state;
     private float damping = 5;
-    public float stoppingDistance;
-    
-    [Header("Components")]
     public Transform closestWildlife;
     public float distanceFromClosestWildlife;
-    public Transform closestUnit;
-    public float distanceFromClosestUnit;
 
     [Header("Hut")]
     public GameObject destination;
     public float distanceFromClosestHut;
     public bool hasArrivedAtHorgr;
     public bool hutSwitch;
-    public bool spawnedFromSite;
+
 
     #region Startup
     public override void Awake()
@@ -39,82 +31,37 @@ public class Hunter : Enemy
         base.Start();
         arrow = arrowObject.GetComponent<Arrow>();
         arrowObject.SetActive(false);
-        destination = _hutExists ? _HUT.gameObject : _HOME.gameObject;
+        destination = _HutExists ? _HUT.gameObject : _HOME.gameObject;
         StartCoroutine(Tick());
     }
     #endregion
-
-
+    
     #region AI
 
     IEnumerator Tick()
     {
         if (_GM.gameState == GameState.Lose)
-        {
             StopAllCoroutines();
-        }
 
-        closestUnit = GetClosestUnit();// ObjectX.GetClosest(gameObject, _UM.unitList).transform;
+        SetClosestUnit();
+        
         closestWildlife = _WildlifeExist ? ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform : closestUnit;
-        distanceFromClosestHut = Vector3.Distance(destination.transform.position, transform.position);
-        distanceFromClosestUnit = _GuardiansExist ? Vector3.Distance(closestUnit.transform.position, transform.position) : 200000;
         distanceFromClosestWildlife = _WildlifeExist ? Vector3.Distance(closestWildlife.transform.position, transform.position) : 200000;
+        distanceFromClosestHut = Vector3.Distance(destination.transform.position, transform.position);
         
         if (distanceFromClosestUnit < attackRange && _GuardiansExist)
         {
-            state = EnemyState.Attack;
+            ChangeState(EnemyState.Attack);
         }
-
-        healthBar.ChangeUnitState(state.ToString());
-        switch (state)
-        {
-            case EnemyState.Work:
-                Hunt();
-                break;
-
-            case EnemyState.Attack:
-                hutSwitch = false;
-                if (_NoGuardians || distanceFromClosestUnit > attackRange)
-                    state = EnemyState.Work;
-                FaceTarget();
-                break;
-            
-            case EnemyState.ClaimSite:
-                if (!hasArrivedAtHorgr)
-                {
-                    agent.SetDestination(destination.transform.position);
-                }
-                else
-                {
-                    if (_hutExists && _HUT.HasUnits())
-                    {
-                        animator.SetBool("hasStoppedHorgr", false);
-                        FaceTarget();
-                    }
-                    else
-                    {
-                        if (hutSwitch == false)
-                        {
-                            animator.SetBool("hasStoppedHorgr", true);
-                            agent.SetDestination(transform.position);
-                            hutSwitch = true;
-                        }
-                    }
-                }
-                break;
-            case EnemyState.Cheer:
-                agent.SetDestination(transform.position);
-                break;
-        }
-
         if (distanceFromClosestHut > distanceFromClosestWildlife)
         {
-            state = EnemyState.Work;
+            ChangeState(EnemyState.Work);
         }
         if (distanceFromClosestHut <= distanceFromClosestWildlife && !spawnedFromSite)
         {
-            state = EnemyState.ClaimSite;
+            ChangeState(EnemyState.ClaimSite);
         }
+
 
         if (agent.velocity != Vector3.zero || distanceFromClosestUnit >= stoppingDistance)
         {
@@ -124,10 +71,75 @@ public class Hunter : Enemy
         {
             animator.SetBool("hasStopped", true);
         }
-        yield return new WaitForSeconds(seconds);
+        
+        HandleState();
+        
+        yield return new WaitForSeconds(tickRate);
         
         if(!_NoGuardians)
             StartCoroutine(Tick());
+    }
+    
+    public override void HandleWorkState()
+    {
+        if(_NoWildlife)
+        {
+            if (_NoGuardians)
+                state = EnemyState.Victory;
+            else
+                agent.SetDestination(closestUnit.transform.position);
+        }
+        else
+        {
+            if (distanceFromClosestWildlife < attackRange)
+            {
+                transform.LookAt(closestWildlife.transform.position);
+            }
+            agent.SetDestination(closestWildlife.transform.position);
+        }
+    }
+
+    public override void HandleRelaxState()
+    {
+        
+    }
+
+    public override void HandleAttackState()
+    {
+        hutSwitch = false;
+        if (_NoGuardians || distanceFromClosestUnit > attackRange)
+            state = EnemyState.Work;
+        FaceTarget();
+    }
+
+    public override void HandleClaimState()
+    {
+        if (!hasArrivedAtHorgr)
+        {
+            agent.SetDestination(destination.transform.position);
+        }
+        else
+        {
+            if (_HutExists && _HUT.HasUnits())
+            {
+                animator.SetBool("hasStoppedHorgr", false);
+                FaceTarget();
+            }
+            else
+            {
+                if (hutSwitch == false)
+                {
+                    animator.SetBool("hasStoppedHorgr", true);
+                    agent.SetDestination(transform.position);
+                    hutSwitch = true;
+                }
+            }
+        }
+    }
+
+    public override void HandleVictoryState()
+    {
+        
     }
 
     private void FixedUpdate()
@@ -153,7 +165,7 @@ public class Hunter : Enemy
     public override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-        if (!_hutExists)
+        if (!_HutExists)
             return;
         if (other.CompareTag("Hut"))
         {
@@ -172,7 +184,7 @@ public class Hunter : Enemy
     {
         base.OnTriggerExit(other);
         
-        if (!_hutExists)
+        if (!_HutExists)
             return;
         
         if (other.CompareTag("Hut"))
@@ -205,24 +217,7 @@ public class Hunter : Enemy
     }
     #endregion
 
-    public void Hunt()
-    {
-        if(_NoWildlife)
-        {
-            if (_NoGuardians)
-                state = EnemyState.Cheer;
-            else
-                agent.SetDestination(closestUnit.transform.position);
-        }
-        else
-        {
-            if (distanceFromClosestWildlife < attackRange)
-            {
-                transform.LookAt(closestWildlife.transform.position);
-            }
-            agent.SetDestination(closestWildlife.transform.position);
-        }
-    }
+    
     
     public void FaceTarget()
     {
@@ -270,7 +265,7 @@ public class Hunter : Enemy
     public override void Win()
     {
         StopCoroutine(Tick());
-        state = EnemyState.Cheer;
+        state = EnemyState.Victory;
     }
 
     private void OnEnable()

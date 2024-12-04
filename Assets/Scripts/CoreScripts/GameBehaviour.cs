@@ -38,8 +38,8 @@ public class GameBehaviour : BV.Behaviour
     public bool _inGame => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build;
     public bool _inTutorial => _GM.gameState == GameState.Tutorial;
     public bool _inDay => _GM.gameState == GameState.Play;
-    public bool _hutExists => _GM.hut != null;
-    public bool _horgrExists => _GM.horgr != null;
+    public bool _HutExists => _GM.hut != null;
+    public bool _HorgrExists => _GM.horgr != null;
     public bool _agroPhase => _GM.agroPhase;
     public bool _isPaused => _GM.gameState == GameState.Pause;
     public bool _gameFinished => _GM.gameState == GameState.Finish;
@@ -170,11 +170,10 @@ public enum PlayMode
 public enum EnemyState
 {
     Work,
+    Relax,
     Attack,
-    Flee,
-    Beacon,
     ClaimSite,
-    Cheer,
+    Victory,
 }
 public enum UnitState
 {

@@ -8,8 +8,6 @@ public class Lord : Enemy
 {
     public Animator horseAnimator;
     public Animator knightAnimator;
-    public Transform closestUnit;
-    public float distanceFromClosestUnit;
     public ParticleSystem swingParticle;
     public AudioSource audioSource;
     public AudioSource barkSource;
@@ -19,7 +17,6 @@ public class Lord : Enemy
     public GameObject rider;
     public AudioClip[] allLordVocals;
     public List<AudioClip> lordVocals;
-    public float stoppingDistance;
     public GameObject homeTree;
 
     #region Startup
@@ -41,11 +38,10 @@ public class Lord : Enemy
     #region AI
     IEnumerator Tick()
     {
-        yield return new WaitForSeconds(0.2f);
-        if(_UM.unitList.Count > 0)
+        yield return new WaitForSeconds(tickRate);
+        if(_GuardiansExist)
         {
-            closestUnit = GetClosestUnit();
-            distanceFromClosestUnit = Vector3.Distance(closestUnit.transform.position, transform.position);
+            SetClosestUnit();
             agent.SetDestination(closestUnit.transform.position);
             if (distanceFromClosestUnit < 40)
             {
@@ -72,7 +68,28 @@ public class Lord : Enemy
         {
             horseAnimator.SetBool("hasStopped", true);
         }
+        HandleState();
         StartCoroutine(Tick());
+    }
+    
+    public override void HandleWorkState()
+    {
+    }
+
+    public override void HandleRelaxState()
+    {
+    }
+
+    public override void HandleAttackState()
+    {
+    }
+
+    public override void HandleClaimState()
+    {
+    }
+
+    public override void HandleVictoryState()
+    {
     }
 
     IEnumerator Bark()

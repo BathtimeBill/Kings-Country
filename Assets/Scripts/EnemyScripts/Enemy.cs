@@ -6,7 +6,9 @@ public class Enemy : GameBehaviour
 {
     public HumanID unitID;
     [HideInInspector] public EnemyData unitData;
+    [ReadOnly] public EnemyState state;
     public HealthBar healthBar;
+    public bool spawnedFromSite;
     [Header("Stats")]
     private int health;
     private int maxHealth;
@@ -16,6 +18,9 @@ public class Enemy : GameBehaviour
     [Header("General AI")]
     [HideInInspector] public NavMeshAgent agent;
     public Animator animator;
+    public float tickRate = 0.5f;
+    public Transform closestUnit;
+    public float distanceFromClosestUnit;
     [Header("Audio")]
     public GameObject SFXPool;
     private int soundPoolCurrent;
@@ -89,6 +94,55 @@ public class Enemy : GameBehaviour
     
     #endregion
     
+    #region AI
+
+    public void SetClosestUnit()
+    {
+        if (_NoGuardians)
+            return;
+        closestUnit = GetClosestUnit();
+        distanceFromClosestUnit = closestUnit == null ? 20000 : Vector3.Distance(closestUnit.transform.position, transform.position);
+    }
+    
+    public void ChangeState(EnemyState _state)
+    {
+        state = _state;
+        healthBar.ChangeUnitState(state.ToString());
+    }
+    
+    public void HandleState()
+    {
+        healthBar.ChangeUnitState(state.ToString());
+        switch (state)
+        {
+            case EnemyState.Work:
+                HandleWorkState();
+                break;
+            case EnemyState.Relax:
+                HandleRelaxState();
+                break;
+            case EnemyState.Attack:
+                HandleAttackState();
+                break;
+            case EnemyState.ClaimSite:
+                HandleClaimState();
+                break;
+            case EnemyState.Victory:
+                HandleVictoryState();
+                break;
+        }
+    }
+    
+    public virtual void HandleWorkState() { }
+    public virtual void HandleRelaxState() { }
+    public virtual void HandleAttackState() { }
+    public virtual void HandleClaimState() { }
+    public virtual void HandleVictoryState()
+    {
+        agent.SetDestination(transform.position);
+    }
+    
+    #endregion
     public virtual void OnTriggerEnter(Collider other)
     {
         if (invincible)
@@ -174,7 +228,7 @@ public class Enemy : GameBehaviour
             return;
         
         UnitWeaponCollider uwc = other.GetComponent<UnitWeaponCollider>();
-        if (uwc == null)
+        if (!uwc)
             return;
 
         if (uwc.unitType == UnitType.Human)
@@ -224,10 +278,10 @@ public class Enemy : GameBehaviour
     #endregion
     private void RemoveFromSites()
     {
-        if (_hutExists)
+        if (_HutExists)
             _HUT.RemoveEnemy(this);
         
-        if (_horgrExists)
+        if (_HorgrExists)
             _HORGR.RemoveEnemy(this);
     }
 
@@ -267,7 +321,6 @@ public class Enemy : GameBehaviour
     #region Animation
     public int RandomCheerAnim() => Random.Range(1, 3);
     #endregion
-    
     
     #region Sound
     public void PlaySound(AudioClip[] _clips)
