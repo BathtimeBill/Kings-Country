@@ -110,6 +110,7 @@ public class Hunter : Enemy
         if (_NoGuardians || distanceFromClosestUnit > attackRange)
             state = EnemyState.Work;
         FaceTarget();
+        enemyAnimation.PlayAttackAnimation();
     }
 
     public override void HandleClaimState()
@@ -129,7 +130,8 @@ public class Hunter : Enemy
             {
                 if (hutSwitch == false)
                 {
-                    animator.SetBool("hasStoppedHorgr", true);
+                    //animator.SetBool("hasStoppedHorgr", true);
+                    enemyAnimation.PlayIdleAnimation();
                     agent.SetDestination(transform.position);
                     hutSwitch = true;
                 }
@@ -217,8 +219,6 @@ public class Hunter : Enemy
     }
     #endregion
 
-    
-    
     public void FaceTarget()
     {
         var lookPos = closestUnit.position - transform.position;

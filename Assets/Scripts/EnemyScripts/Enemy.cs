@@ -8,6 +8,7 @@ public class Enemy : GameBehaviour
     [HideInInspector] public EnemyData unitData;
     [ReadOnly] public EnemyState state;
     public HealthBar healthBar;
+    public EnemyAnimation enemyAnimation;
     public bool spawnedFromSite;
     [Header("Stats")]
     private int health;
@@ -165,8 +166,7 @@ public class Enemy : GameBehaviour
                     else
                     {
                         TakeDamage(uwc.Damage, _DATA.GetTool(ToolID.Fyre).id.ToString());
-                        if (animator != null)
-                            animator.SetTrigger("Impact");
+                        enemyAnimation.PlayImpactAnimation();
                     }
                     break;
                 case ToolID.Stormer:
@@ -175,8 +175,7 @@ public class Enemy : GameBehaviour
                     else
                     {
                         TakeDamage(uwc.Damage, _DATA.GetTool(ToolID.Stormer).id.ToString());
-                        if (animator != null)
-                            animator.SetTrigger("Impact");
+                        enemyAnimation.PlayImpactAnimation();
                     }
                     break;
             }
@@ -350,8 +349,8 @@ public class Enemy : GameBehaviour
     private void OnGameOver()
     {
         Win();
-        animator.SetTrigger("Cheer" + RandomCheerAnim());
         agent.SetDestination(transform.position);
+        enemyAnimation.PlayVictoryAnimation();
     }
 
     private void OnEnable()

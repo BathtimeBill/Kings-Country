@@ -4887,10 +4887,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitID: 10
   unitData: {fileID: 0}
+  state: 0
   healthBar: {fileID: 0}
+  enemyAnimation: {fileID: 2332302395408046503}
+  spawnedFromSite: 0
   maxRandomDropChance: 0
   agent: {fileID: 0}
   animator: {fileID: 3148144427849736570}
+  tickRate: 0.5
+  closestUnit: {fileID: 0}
+  distanceFromClosestUnit: 0
   SFXPool: {fileID: 6165854847123133826}
   debugUnit: {fileID: 184867089701059852, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
     type: 3}
@@ -5467,6 +5473,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 0}
   weaponCollider: {fileID: 3937694771119346946}
+  isAttacking: 0
 --- !u!114 &8602052069847019727
 MonoBehaviour:
   m_ObjectHideFlags: 0
