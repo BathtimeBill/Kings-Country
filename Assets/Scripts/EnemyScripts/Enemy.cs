@@ -6,7 +6,7 @@ public class Enemy : GameBehaviour
 {
     public HumanID unitID;
     [HideInInspector] public EnemyData unitData;
-    [ReadOnly] public EnemyState state;
+    public EnemyState state;
     public HealthBar healthBar;
     public EnemyAnimation enemyAnimation;
     public bool spawnedFromSite;
@@ -22,6 +22,7 @@ public class Enemy : GameBehaviour
     public float tickRate = 0.5f;
     public Transform closestUnit;
     public float distanceFromClosestUnit;
+    public float distanceFromTarget;
     [Header("Audio")]
     public GameObject SFXPool;
     private int soundPoolCurrent;
@@ -83,6 +84,7 @@ public class Enemy : GameBehaviour
             healthBar.AdjustHealthBar(health, maxHealth);
         StartCoroutine(WaitForInvincible());
         GameEvents.ReportOnHumanSpawned(unitID);
+        ChangeState(EnemyState.Work);
     }
     
     private IEnumerator WaitForInvincible()
@@ -109,11 +111,11 @@ public class Enemy : GameBehaviour
     {
         state = _state;
         healthBar.ChangeUnitState(state.ToString());
+        HandleState();
     }
     
     public void HandleState()
     {
-        healthBar.ChangeUnitState(state.ToString());
         switch (state)
         {
             case EnemyState.Work:
@@ -134,14 +136,22 @@ public class Enemy : GameBehaviour
         }
     }
     
-    public virtual void HandleWorkState() { }
+    public virtual void HandleWorkState() 
+    {
+        enemyAnimation.PlayWalkAnimation(agent.velocity.magnitude);
+    }
     public virtual void HandleRelaxState() { }
-    public virtual void HandleAttackState() { }
+    public virtual void HandleAttackState() 
+    { 
+        StandStill();
+        enemyAnimation.PlayAttackAnimation();
+    }
     public virtual void HandleClaimState() { }
     public virtual void HandleVictoryState()
     {
-        agent.SetDestination(transform.position);
+        StandStill();
     }
+    public void StandStill() => agent.SetDestination(transform.position);
     
     #endregion
     public virtual void OnTriggerEnter(Collider other)

@@ -9,8 +9,7 @@ public class Hunter : Enemy
     public Transform firingPoint;
     [Header("Stats")]
     private float damping = 5;
-    public Transform closestWildlife;
-    public float distanceFromClosestWildlife;
+    public Transform targetObject;
 
     [Header("Hut")]
     public GameObject destination;
@@ -43,49 +42,69 @@ public class Hunter : Enemy
         if (_GM.gameState == GameState.Lose)
             StopAllCoroutines();
 
-        SetClosestUnit();
         
-        closestWildlife = _WildlifeExist ? ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform : closestUnit;
-        distanceFromClosestWildlife = _WildlifeExist ? Vector3.Distance(closestWildlife.transform.position, transform.position) : 200000;
-        distanceFromClosestHut = Vector3.Distance(destination.transform.position, transform.position);
         
-        if (distanceFromClosestUnit < attackRange && _GuardiansExist)
+        /*if (distanceFromClosestUnit < attackRange && _GuardiansExist)
         {
             ChangeState(EnemyState.Attack);
         }
-        if (distanceFromClosestHut > distanceFromClosestWildlife)
+        else if (distanceFromClosestHut > distanceFromClosestWildlife)
         {
             ChangeState(EnemyState.Work);
         }
-        if (distanceFromClosestHut <= distanceFromClosestWildlife && !spawnedFromSite)
+        else if (distanceFromClosestHut <= distanceFromClosestWildlife && !spawnedFromSite)
         {
             ChangeState(EnemyState.ClaimSite);
-        }
+        }*/
 
 
         if (agent.velocity != Vector3.zero || distanceFromClosestUnit >= stoppingDistance)
         {
-            animator.SetBool("hasStopped", false);
+            //animator.SetBool("hasStopped", false);
         }
-        if (agent.velocity == Vector3.zero || distanceFromClosestUnit < stoppingDistance)
+        /*if (agent.velocity == Vector3.zero || distanceFromClosestUnit < stoppingDistance)
         {
             animator.SetBool("hasStopped", true);
-        }
+        }*/
+
+        //if(distanceFromClosestUnit < stoppingDistance)
+        //    ChangeState(EnemyState.Attack);
         
         HandleState();
         
         yield return new WaitForSeconds(tickRate);
         
-        if(!_NoGuardians)
+        //if(!_NoGuardians)
             StartCoroutine(Tick());
     }
     
     public override void HandleWorkState()
     {
-        if(_NoWildlife)
+        base.HandleWorkState();
+
+        SetClosestUnit();
+
+        targetObject = _WildlifeExist ? ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform : closestUnit;
+        distanceFromTarget = Vector3.Distance(targetObject.transform.position, transform.position);
+        //distanceFromClosestHut = Vector3.Distance(destination.transform.position, transform.position);
+
+        if (distanceFromTarget < attackRange)
+        {
+            print("Should Attack here");
+            transform.LookAt(targetObject.transform.position);
+            ChangeState(EnemyState.Attack);
+        }
+        else
+        {
+            print("I SHOULD STOP");
+            agent.SetDestination(targetObject.transform.position);
+        }
+            
+
+        /*if (_NoWildlife)
         {
             if (_NoGuardians)
-                state = EnemyState.Victory;
+                ChangeState(EnemyState.Victory);
             else
                 agent.SetDestination(closestUnit.transform.position);
         }
@@ -93,10 +112,12 @@ public class Hunter : Enemy
         {
             if (distanceFromClosestWildlife < attackRange)
             {
+                print("Should Attack here");
                 transform.LookAt(closestWildlife.transform.position);
+                ChangeState(EnemyState.Attack);
             }
             agent.SetDestination(closestWildlife.transform.position);
-        }
+        }*/
     }
 
     public override void HandleRelaxState()
@@ -106,11 +127,14 @@ public class Hunter : Enemy
 
     public override void HandleAttackState()
     {
+        base.HandleAttackState();
         hutSwitch = false;
-        if (_NoGuardians || distanceFromClosestUnit > attackRange)
-            state = EnemyState.Work;
+        //if (_NoGuardians || distanceFromTarget > attackRange)
+        //{ 
+        //    state = EnemyState.Work;
+        //    return;
+        //}
         FaceTarget();
-        enemyAnimation.PlayAttackAnimation();
     }
 
     public override void HandleClaimState()
@@ -146,16 +170,16 @@ public class Hunter : Enemy
 
     private void FixedUpdate()
     {
-        if(distanceFromClosestUnit < attackRange)
+        if(distanceFromTarget < attackRange)
         {
             SmoothFocusOnEnemy();
         }
     }
     private void SmoothFocusOnEnemy()
     {
-        if(closestUnit != null)
+        if(targetObject != null)
         {
-            var targetRotation = Quaternion.LookRotation(closestUnit.transform.position - transform.position);
+            var targetRotation = Quaternion.LookRotation(targetObject.transform.position - transform.position);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2 * Time.deltaTime);
         }
 
@@ -221,11 +245,10 @@ public class Hunter : Enemy
 
     public void FaceTarget()
     {
-        var lookPos = closestUnit.position - transform.position;
+        var lookPos = targetObject.position - transform.position;
         lookPos.y = 0;
         var rotation = Quaternion.LookRotation(lookPos);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * damping);
-        agent.SetDestination(closestUnit.transform.position);
     }
 
     public override void Attack(int _attack)
@@ -235,10 +258,10 @@ public class Hunter : Enemy
 
         //checks if there are any animals in the scene then calculates the distance from the hunter enemy to that animal.
         if(_WildlifeExist)
-            distanceFromClosestWildlife = Vector3.Distance(closestWildlife.transform.position, transform.position);
+            distanceFromTarget = Vector3.Distance(targetObject.transform.position, transform.position);
         
         //Checks weather the hunter is shooting at an animal or a player unit and then orients the arrow towards that result.
-        Transform closestTarget = distanceFromClosestWildlife < distanceFromClosestUnit ? closestWildlife : closestUnit;
+        Transform closestTarget = distanceFromTarget < distanceFromClosestUnit ? targetObject : closestUnit;
         
         arrowObject.transform.position = firingPoint.transform.position;
         arrowObject.transform.rotation = firingPoint.transform.rotation;
