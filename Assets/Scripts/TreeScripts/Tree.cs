@@ -48,16 +48,15 @@ public class Tree : GameBehaviour
         if (!uwc)
             return;
 
+        var collisionPoint = other.ClosestPoint(transform.position);
         switch (uwc.humanID)
         {
             case HumanID.Logger:
-                ChopSound();
-                health -= uwc.Damage;
-                break;
             case HumanID.Lumberjack:
-                ChopSound();
+                Chop();
                 health -= uwc.Damage;
-                Instantiate(chopParticle, transform.position, transform.rotation);
+                GameObject party = Instantiate(chopParticle, collisionPoint, transform.rotation);
+                Destroy(party, 2f);
                 break;
             case HumanID.Mine:
             case HumanID.Dog:
@@ -86,15 +85,15 @@ public class Tree : GameBehaviour
         {
             case HumanID.LogCutter:
                 health -= uwc.Damage;
+                if (health <= 0)
+                    Die();
                 break;
         }
-
-        if (health <= 0)
-            Die();
     }
     
-    private void ChopSound()
+    private void Chop()
     {
+        animator.SetTrigger("Chop");
         AudioX.PlayRandomSound(treeData.hitSounds, audioSource);
         if(_GM.timeSinceAttack >= 30)
         {

@@ -208,7 +208,33 @@ public static class ObjectX
                 closest = _objectList[i];
             }
         }
+        return closest;
+    }
+    
+    /// <summary>
+    /// Gets the closest object from an array of objects based on a tag
+    /// </summary>
+    /// <param name="_this">The object to measure from</param>
+    /// <param name="_objectTag">The tag of the objects you want to find</param>
+    /// <returns>The closest object that matches the tag</returns>
+    static public GameObject GetClosest(GameObject _this, string _objectTag)
+    {
+        GameObject[] objects = GameObject.FindGameObjectsWithTag(_objectTag);
+        if (objects == null || objects.Length == 0)
+            return null;
 
+        float closestDistance = Mathf.Infinity;
+        GameObject closest = null;
+
+        for (int i = 0; i < objects.Length; i++)
+        {
+            float currentDistance = Vector3.Distance(_this.transform.position, objects[i].transform.position);
+            if (currentDistance < closestDistance)
+            {
+                closestDistance = currentDistance;
+                closest = objects[i];
+            }
+        }
         return closest;
     }
 }

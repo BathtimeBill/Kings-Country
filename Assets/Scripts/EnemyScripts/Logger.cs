@@ -3,70 +3,47 @@ using UnityEngine;
 
 public class Logger : Enemy
 {
-    [Header("Stats")]
-    public float loggerStoppingDistance;
-    public bool hasStopped = false;
 
-    [Header("Trees")]
-    public Transform closestTree;
-    public float distanceFromClosestTree;
-    public GameObject homeTree;
-    
     #region Startup
     public override void Start()
     {
         base.Start();
-        state = EnemyState.Work;
-        homeTree = GameObject.FindGameObjectWithTag("Home Tree");
-        StartCoroutine(Tick());
     }
     #endregion
 
     #region AI
-    IEnumerator Tick()
-    {
-        if (_GM.gameState == GameState.Lose)
-            StopAllCoroutines();
-
-        SetClosestUnit();
-        
-        if (_TreesExist)
-        {
-            closestTree = ObjectX.GetClosest(gameObject, _GM.trees).transform;
-            distanceFromClosestTree = Vector3.Distance(closestTree.transform.position, transform.position);
-        }
-        
-        if (agent.velocity != Vector3.zero)
-        {
-            animator.SetBool("hasStopped", false);
-            hasStopped = false;
-        }
-        if (agent.velocity == Vector3.zero)
-        {
-            animator.SetBool("hasStopped", true);
-            hasStopped = true;
-        }
-        HandleState();
-        yield return new WaitForSeconds(tickRate);
-        StartCoroutine(Tick());
-    }
-    
     public override void HandleWorkState()
     {
-        if (distanceFromClosestUnit < attackRange)
-            state = EnemyState.Attack;
-
-        if (_NoTrees)
+        SetClosestUnit();
+        attackRange = unitData.attackRange;
+        if (_GuardiansExist && distanceFromClosestUnit < attackRange)
         {
-            FindHomeTree();
+            targetObject = closestUnit;
+            print("Targeting Unit");
+        }
+        else if (_TreesExist)
+        {
+            targetObject = ObjectX.GetClosest(gameObject, _GM.trees).transform;
+            print("Targeting Tree");
         }
         else
         {
-            if (distanceFromClosestTree < attackRange)
-            {
-                SmoothFocusOnTree();
-            }
-            FindTree();
+            targetObject = _HOME.transform;
+            attackRange *= 2;
+            print("Targeting Home Tree");
+        }
+
+        agent.SetDestination(targetObject.position);
+        distanceFromTarget = Vector3.Distance(targetObject.transform.position, transform.position);
+        
+        if (distanceFromTarget < attackRange)
+        {
+            ChangeState(EnemyState.Attack);
+            SmoothFocusOnTarget(targetObject);
+        }
+        else
+        {
+            base.HandleWorkState();
         }
     }
 
@@ -76,14 +53,14 @@ public class Logger : Enemy
 
     public override void HandleAttackState()
     {
-        if(_GuardiansExist)
+        if (distanceFromTarget > attackRange)
         {
-            if (distanceFromClosestUnit >= attackRange)
-            {
-                state = EnemyState.Work;
-            }
-            FindUnit();
-            SmoothFocusOnEnemy();
+            ChangeState(EnemyState.Work);
+            SmoothFocusOnTarget(targetObject);
+        }
+        else
+        {
+            base.HandleAttackState();
         }
     }
 
@@ -93,7 +70,9 @@ public class Logger : Enemy
 
     public override void HandleVictoryState()
     {
+        base.HandleVictoryState();
     }
+    
     #endregion
 
     #region Damage
@@ -106,32 +85,9 @@ public class Logger : Enemy
     {
         base.OnTriggerExit(other);
     }
-
-    private int RandomCheerAnim() => Random.Range(1, 3);
-
-
+    
     #endregion
-
-    private void SmoothFocusOnEnemy()
-    {
-        var targetRotation = Quaternion.LookRotation(closestUnit.transform.position - transform.position);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
-    }
-    private void SmoothFocusOnTree()
-    {
-
-        if (_NoTrees)
-        {
-            var targetRotation = Quaternion.LookRotation(homeTree.transform.position - transform.position);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
-        }
-        else
-        {
-            var targetRotation = Quaternion.LookRotation(closestTree.transform.position - transform.position);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
-        }
-    }
-
+    
     public override void TakeDamage(int damage, string _damagedBy)
     {
         base.TakeDamage(damage, _damagedBy);
@@ -161,28 +117,9 @@ public class Logger : Enemy
     //{
     //    base.Launch();
     //}
-    
 
-    public void FindTree()
-    {
-        agent.SetDestination(closestTree.transform.position);
-    }
-    public void FindUnit()
-    {
-        if(_NoGuardians && _TreesExist)
-        {
-            state = EnemyState.Work;
-        }
-        agent.SetDestination(closestUnit.transform.position);
-    }
-    public void FindHomeTree()
-    {
-        agent.SetDestination(homeTree.transform.position);
-    }
     public override void Win()
     {
-        StopCoroutine(Tick());
-        state = EnemyState.Victory;
         base.Win();
     }
 }

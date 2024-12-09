@@ -42,10 +42,7 @@ public class WildlifeAI : GameBehaviour
     IEnumerator Move()
     {
         navAgent.speed = wildlifeData.baseSpeed;
-        Vector3 randomDirection = transform.position + Random.insideUnitSphere * walkRadius;
-        NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, walkRadius, 1);
-        Vector3 finalPosition = hit.position;
-        navAgent.SetDestination(finalPosition);
+        navAgent.SetDestination(SpawnX.GetSpawnPositionInRadius(transform.position, walkRadius));
         yield return new WaitForSeconds(25f);
         StartCoroutine(Move());
     }
@@ -92,6 +89,8 @@ public class WildlifeAI : GameBehaviour
 
     private void Die()
     {
+        StopAllCoroutines();
+        navAgent.SetDestination(transform.position);
         animator.SetTrigger("Die");
         if (_GM.timeSinceWildlifeKilled >= 30)
         {

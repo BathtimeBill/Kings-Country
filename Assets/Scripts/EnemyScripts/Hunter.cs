@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Hunter : Enemy
 {
@@ -9,12 +10,11 @@ public class Hunter : Enemy
     public Transform firingPoint;
     [Header("Stats")]
     private float damping = 5;
-    public Transform targetObject;
 
-    [Header("Hut")]
-    public GameObject destination;
+    [FormerlySerializedAs("claimSite")] [Header("Hut")]
+    public GameObject hutObject;
     public float distanceFromClosestHut;
-    public bool hasArrivedAtHorgr;
+    public bool hasArrivedAtHut;
     public bool hutSwitch;
 
 
@@ -28,9 +28,8 @@ public class Hunter : Enemy
     public override void Start()
     {
         base.Start();
-        arrow = arrowObject.GetComponent<Arrow>();
-        arrowObject.SetActive(false);
-        destination = _HutExists ? _HUT.gameObject : _HOME.gameObject;
+        //arrow = arrowObject.GetComponent<Arrow>();
+        //arrowObject.SetActive(false);
         StartCoroutine(Tick());
     }
     #endregion
@@ -42,8 +41,6 @@ public class Hunter : Enemy
         if (_GM.gameState == GameState.Lose)
             StopAllCoroutines();
 
-        
-        
         /*if (distanceFromClosestUnit < attackRange && _GuardiansExist)
         {
             ChangeState(EnemyState.Attack);
@@ -56,16 +53,7 @@ public class Hunter : Enemy
         {
             ChangeState(EnemyState.ClaimSite);
         }*/
-
-
-        if (agent.velocity != Vector3.zero || distanceFromClosestUnit >= stoppingDistance)
-        {
-            //animator.SetBool("hasStopped", false);
-        }
-        /*if (agent.velocity == Vector3.zero || distanceFromClosestUnit < stoppingDistance)
-        {
-            animator.SetBool("hasStopped", true);
-        }*/
+        
 
         //if(distanceFromClosestUnit < stoppingDistance)
         //    ChangeState(EnemyState.Attack);
@@ -82,47 +70,46 @@ public class Hunter : Enemy
     {
         base.HandleWorkState();
 
-        SetClosestUnit();
+        if (_NoWildlife && _NoGuardians && !_HutExists)
+        {
+            ChangeState(EnemyState.Relax);
+            return;
+        }
 
-        targetObject = _WildlifeExist ? ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform : closestUnit;
+        if (_WildlifeExist)
+        {
+            targetObject = ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform;
+        }
+        else if (_HutExists)
+        {
+            hutObject = _HUT.gameObject;
+            distanceFromClosestHut = Vector3.Distance(hutObject.transform.position, transform.position);
+            if(distanceFromClosestHut <= distanceFromTarget && !spawnedFromSite)
+                ChangeState(EnemyState.ClaimSite);
+        }
+        else if (_GuardiansExist)
+        {
+            SetClosestUnit();
+            targetObject = closestUnit;
+        }
+        
         distanceFromTarget = Vector3.Distance(targetObject.transform.position, transform.position);
-        //distanceFromClosestHut = Vector3.Distance(destination.transform.position, transform.position);
-
         if (distanceFromTarget < attackRange)
         {
-            print("Should Attack here");
             transform.LookAt(targetObject.transform.position);
             ChangeState(EnemyState.Attack);
         }
         else
         {
-            print("I SHOULD STOP");
             agent.SetDestination(targetObject.transform.position);
         }
-            
-
-        /*if (_NoWildlife)
-        {
-            if (_NoGuardians)
-                ChangeState(EnemyState.Victory);
-            else
-                agent.SetDestination(closestUnit.transform.position);
-        }
-        else
-        {
-            if (distanceFromClosestWildlife < attackRange)
-            {
-                print("Should Attack here");
-                transform.LookAt(closestWildlife.transform.position);
-                ChangeState(EnemyState.Attack);
-            }
-            agent.SetDestination(closestWildlife.transform.position);
-        }*/
     }
 
     public override void HandleRelaxState()
     {
-        
+        base.HandleRelaxState();
+        if(_WildlifeExist || _GuardiansExist)
+            ChangeState(EnemyState.Work);
     }
 
     public override void HandleAttackState()
@@ -139,9 +126,10 @@ public class Hunter : Enemy
 
     public override void HandleClaimState()
     {
-        if (!hasArrivedAtHorgr)
+        base.HandleClaimState();
+        if (!hasArrivedAtHut)
         {
-            agent.SetDestination(destination.transform.position);
+            agent.SetDestination(hutObject.transform.position);
         }
         else
         {
@@ -182,7 +170,6 @@ public class Hunter : Enemy
             var targetRotation = Quaternion.LookRotation(targetObject.transform.position - transform.position);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2 * Time.deltaTime);
         }
-
     }
 
     #endregion
@@ -219,7 +206,7 @@ public class Hunter : Enemy
             {
                 _HUT.RemoveEnemy(this);
                 state = EnemyState.Attack;
-                hasArrivedAtHorgr = false;
+                hasArrivedAtHut = false;
             }
         }
     }
@@ -239,7 +226,7 @@ public class Hunter : Enemy
         Log("Hut coroutine");
         yield return new WaitForSeconds(2f);
         animator.SetBool("hasStoppedHorgr", true);
-        hasArrivedAtHorgr = true;
+        hasArrivedAtHut = true;
     }
     #endregion
 
@@ -256,29 +243,32 @@ public class Hunter : Enemy
         if (!_inGame)
             return;
 
+        print("Firing Arrow");
         //checks if there are any animals in the scene then calculates the distance from the hunter enemy to that animal.
-        if(_WildlifeExist)
-            distanceFromTarget = Vector3.Distance(targetObject.transform.position, transform.position);
+        //if(_WildlifeExist)
+        //    distanceFromTarget = Vector3.Distance(targetObject.transform.position, transform.position);
         
         //Checks weather the hunter is shooting at an animal or a player unit and then orients the arrow towards that result.
-        Transform closestTarget = distanceFromTarget < distanceFromClosestUnit ? targetObject : closestUnit;
+        //Transform closestTarget = distanceFromTarget < distanceFromClosestUnit ? targetObject : closestUnit;
         
-        arrowObject.transform.position = firingPoint.transform.position;
-        arrowObject.transform.rotation = firingPoint.transform.rotation;
-        arrowObject.SetActive(true);
-        arrow.Setup(closestTarget);
-        DisableAfterTime(arrowObject, 1);
+        //arrowObject.transform.position = firingPoint.transform.position;
+        //arrowObject.transform.rotation = firingPoint.transform.rotation;
+        //arrowObject.SetActive(true);
+        GameObject ar = Instantiate(arrowObject , firingPoint.transform.position, firingPoint.transform.rotation);
+        ar.SetActive(true);
+        ar.GetComponent<Arrow>().Setup(targetObject);
+        //DisableAfterTime(arrowObject, 1);
         PlaySound(unitData.attackSounds[0]);
     }
 
-    public override void CheckState()
+    /*public override void CheckState()
     {
         if (_HUT == null) 
             return;
         
         if (_HUT.ContainsEnemy(GetComponent<Enemy>()) && _HUT.HasEnemies())
             animator.SetBool("allWildlifeDead", true);
-    }
+    }*/
 
     private void OnArrivedAtHut()
     {

@@ -4,10 +4,12 @@ public class Arrow : GameBehaviour
 {
     public float speed;
     private Transform target;
+    private Vector3 colliderCentre;
 
     public void Setup(Transform _target)
     {
         target = _target;
+        colliderCentre = _target.GetComponent<Collider>().bounds.center;
         GetComponent<AudioSource>().Play();
     }
     private void FixedUpdate()
@@ -15,12 +17,11 @@ public class Arrow : GameBehaviour
         if(!target)
         {
             gameObject.SetActive(false);
-            
         }
         else
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.position + new Vector3(0, 2, 0), speed);
-            transform.LookAt(target.position);
+            transform.position = Vector3.MoveTowards(transform.position, colliderCentre, speed);
+            transform.LookAt(colliderCentre);
         }
     }
 }

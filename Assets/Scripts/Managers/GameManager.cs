@@ -11,9 +11,9 @@ public class GameManager : Singleton<GameManager>
     [Header("Level Related")]
     public LevelID thisLevel;
 
-    [HideInInspector] public HomeTree homeTree;
-    [HideInInspector] public Hut hut;
-    [HideInInspector] public Horgr horgr;
+    public HomeTree homeTree;
+    public Hut hut;
+    public Horgr horgr;
 
     public bool tutorial;
     public float gameTime = 0;
@@ -102,6 +102,7 @@ public class GameManager : Singleton<GameManager>
     {
         base.Awake();
         homeTree = FindFirstObjectByType<HomeTree>();
+        CheckSites();
     }
     void Start()
     {
@@ -111,7 +112,7 @@ public class GameManager : Singleton<GameManager>
         SetPlayMode(PlayMode.DefaultMode);
         SetGame();
         trees.AddRange(GameObject.FindGameObjectsWithTag("Tree"));
-        CheckSites();
+        
 
         ExecuteAfterFrames(1, () =>
         {

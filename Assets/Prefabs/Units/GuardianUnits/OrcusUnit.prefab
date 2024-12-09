@@ -456,13 +456,8 @@ MonoBehaviour:
   currentSpeed: 0
   smoothedSpeed: 0
   smoothSpeedFactor: 1
-  oldPosition: {x: 0, y: 0, z: 0}
   tickInterval: 0.1
-  attackSpeed: 1.8
-  closestUnit: {fileID: 0}
-  distanceFromClosestUnit: 0
-  isCloseToEnemy: 0
-  fadeOut: 0
+  isAttacking: 0
 --- !u!114 &7237213186214068481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -976,11 +971,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 0.4
   m_Center: {x: 0, y: 1.68, z: 0}
 --- !u!1001 &8912808064065759138
 PrefabInstance:

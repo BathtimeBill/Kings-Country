@@ -66,15 +66,16 @@ MonoBehaviour:
   tickRate: 0.5
   closestUnit: {fileID: 0}
   distanceFromClosestUnit: 0
+  distanceFromTarget: 0
   SFXPool: {fileID: 4063893735126406151}
   debugUnit: {fileID: 1979234857468078028}
-  arrowObject: {fileID: 3188616835271125187}
+  arrowObject: {fileID: 3894247749214064697, guid: 14b39ef80723d284f917eee55a8b908a,
+    type: 3}
   firingPoint: {fileID: 4745240352517088440}
-  closestWildlife: {fileID: 0}
-  distanceFromClosestWildlife: 0
-  destination: {fileID: 0}
+  targetObject: {fileID: 0}
+  hutObject: {fileID: 0}
   distanceFromClosestHut: 0
-  hasArrivedAtHorgr: 0
+  hasArrivedAtHut: 0
   hutSwitch: 0
 --- !u!114 &3818300508737214484
 MonoBehaviour:
@@ -629,12 +630,6 @@ PrefabInstance:
 --- !u!4 &417958761765591541 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2272058214052946191, guid: 14b39ef80723d284f917eee55a8b908a,
-    type: 3}
-  m_PrefabInstance: {fileID: 1894638510438004986}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &3188616835271125187 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3894247749214064697, guid: 14b39ef80723d284f917eee55a8b908a,
     type: 3}
   m_PrefabInstance: {fileID: 1894638510438004986}
   m_PrefabAsset: {fileID: 0}

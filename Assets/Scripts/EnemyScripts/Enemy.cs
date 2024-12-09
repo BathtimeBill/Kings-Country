@@ -22,6 +22,7 @@ public class Enemy : GameBehaviour
     public float tickRate = 0.5f;
     public Transform closestUnit;
     public float distanceFromClosestUnit;
+    public Transform targetObject;
     public float distanceFromTarget;
     [Header("Audio")]
     public GameObject SFXPool;
@@ -85,6 +86,7 @@ public class Enemy : GameBehaviour
         StartCoroutine(WaitForInvincible());
         GameEvents.ReportOnHumanSpawned(unitID);
         ChangeState(EnemyState.Work);
+        StartCoroutine(Tick());
     }
     
     private IEnumerator WaitForInvincible()
@@ -99,6 +101,17 @@ public class Enemy : GameBehaviour
     
     #region AI
 
+    public IEnumerator Tick()
+    {
+        if (_GM.gameState == GameState.Lose)
+            StopAllCoroutines();
+        
+        HandleState();
+        yield return new WaitForSeconds(tickRate);
+        StartCoroutine(Tick());
+        
+    }
+    
     public void SetClosestUnit()
     {
         if (_NoGuardians)
@@ -116,6 +129,8 @@ public class Enemy : GameBehaviour
     
     public void HandleState()
     {
+        enemyAnimation.PlayWalkAnimation(agent.velocity.magnitude);
+        
         switch (state)
         {
             case EnemyState.Work:
@@ -138,9 +153,14 @@ public class Enemy : GameBehaviour
     
     public virtual void HandleWorkState() 
     {
-        enemyAnimation.PlayWalkAnimation(agent.velocity.magnitude);
+        
     }
-    public virtual void HandleRelaxState() { }
+
+    public virtual void HandleRelaxState()
+    {
+        StandStill();
+        enemyAnimation.PlayRelaxAnimation();
+    }
     public virtual void HandleAttackState() 
     { 
         StandStill();
@@ -150,9 +170,18 @@ public class Enemy : GameBehaviour
     public virtual void HandleVictoryState()
     {
         StandStill();
+        StopAllCoroutines();
+        enemyAnimation.StopAllCoroutines();
+        enemyAnimation.PlayVictoryAnimation();
     }
+    
     public void StandStill() => agent.SetDestination(transform.position);
     
+    public void SmoothFocusOnTarget(Transform _target)
+    {
+        var targetRotation = Quaternion.LookRotation(_target.position - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
+    }
     #endregion
     public virtual void OnTriggerEnter(Collider other)
     {
@@ -326,10 +355,6 @@ public class Enemy : GameBehaviour
         else
             return trans;
     }
-
-    #region Animation
-    public int RandomCheerAnim() => Random.Range(1, 3);
-    #endregion
     
     #region Sound
     public void PlaySound(AudioClip[] _clips)
@@ -350,8 +375,6 @@ public class Enemy : GameBehaviour
     #region Animation Events
     public void Footstep(string _foot) => PlaySound(unitData.footstepSounds);
     public virtual void Attack(int _attack) { }
-    public virtual void CheckState() { }
-
     
     #endregion
     
@@ -359,8 +382,8 @@ public class Enemy : GameBehaviour
     private void OnGameOver()
     {
         Win();
-        agent.SetDestination(transform.position);
-        enemyAnimation.PlayVictoryAnimation();
+        StopCoroutine(Tick());
+        ChangeState(EnemyState.Victory);
     }
 
     private void OnEnable()

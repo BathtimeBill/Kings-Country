@@ -48,7 +48,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4961874759079767111}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf104de209843464fa6d8bf129028475, type: 3}
   m_Name: 
@@ -65,13 +65,10 @@ MonoBehaviour:
   tickRate: 0.5
   closestUnit: {fileID: 0}
   distanceFromClosestUnit: 0
+  targetObject: {fileID: 0}
+  distanceFromTarget: 0
   SFXPool: {fileID: 334179361621747066}
   debugUnit: {fileID: 7560740265149152950}
-  loggerStoppingDistance: 4.5
-  hasStopped: 0
-  closestTree: {fileID: 0}
-  distanceFromClosestTree: 0
-  homeTree: {fileID: 0}
 --- !u!114 &-5241974792929539636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,7 +76,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4961874759079767111}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9579f69b9ff51a24d9f21212bdb067f6, type: 3}
   m_Name: 
@@ -115,7 +112,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4961874759079767111}
-  m_Enabled: 0
+  m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.6
   m_Speed: 4
@@ -570,7 +567,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 4961874759079767109}
-  weaponCollider: {fileID: 0}
+  weaponCollider: {fileID: 8943349061234418086}
   isAttacking: 0
 --- !u!95 &7251786680643342835 stripped
 Animator:

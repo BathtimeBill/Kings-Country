@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Unity.IntegerTime;
 
 public class EnemyAnimation : GameBehaviour
 {
@@ -15,17 +16,18 @@ public class EnemyAnimation : GameBehaviour
 
     public void PlayAttackAnimation()
     {
-        if (!isAttacking)
-        {
-            isAttacking = true;
-            StartCoroutine(PlayAttackAnimationRoutine());
-        }
+        if (isAttacking)
+            return;
+        
+        isAttacking = true;
+        StartCoroutine(PlayAttackAnimationRoutine());
     }
 
     IEnumerator PlayAttackAnimationRoutine()
     {
         animator.SetTrigger("Attack");
-        print("Animation Started");
+
+        //print("Starting Attack Animation");
         //Wait for them to enter the Attacking state
         while (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
             yield return null;
@@ -33,13 +35,8 @@ public class EnemyAnimation : GameBehaviour
         //Now wait for them to finish
         while (animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
             yield return null;
-
-        print("Animation Finished");
+        //print("Finished Attack Animation");
         
-        CheckAttack();
-    }
-    public void CheckAttack()
-    {
         isAttacking = false;
         enemy.ChangeState(EnemyState.Work);
     }
@@ -47,6 +44,7 @@ public class EnemyAnimation : GameBehaviour
     public void PlayWalkAnimation(float _speed) => animator.SetFloat("Speed", _speed);
     public void PlayImpactAnimation() => animator.SetTrigger("Impact");
     public void PlayIdleAnimation() => animator.SetTrigger("Idle");
+    public void PlayRelaxAnimation() => animator.SetTrigger("Relax");
     public void PlayVictoryAnimation() => animator.SetTrigger("Cheer" + RandomCheerAnim());
     public int RandomCheerAnim(int _count = 3) => Random.Range(1, _count);
 
@@ -55,7 +53,6 @@ public class EnemyAnimation : GameBehaviour
     public void DisableWeaponCollider() => weaponCollider.enabled = false;
     public void Attack(int _attack) => enemy.Attack(_attack);
     public void Footstep(string _foot) => enemy.Footstep(_foot);
-    public void CheckState() => enemy.CheckState();
     //Note that the draw sound needs to be in the appropriate array element
     public void PlayBowDrawSound() => enemy.PlaySound(enemy.unitData.attackSounds[1]);  
     #endregion

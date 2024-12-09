@@ -6,6 +6,7 @@ using UnityEngine;
 public class UnitManager : Singleton<UnitManager>
 {
     public List<Unit> unitList = new List<Unit>();
+    private List<Ragdoll> ragdollList = new List<Ragdoll>();
     public List<Unit> unitSelected = new List<Unit>();
     public bool canDoubleClick = false;
     public float doubleClickTime = 0.3f;
@@ -42,7 +43,8 @@ public class UnitManager : Singleton<UnitManager>
         }
 
         UnitData guardian = _unitData;
-        GameObject go = PoolX.GetFromPool(_DATA.GetUnit(guardian.id).playModel, guardianPool);
+        //GameObject go = PoolX.GetFromPool(_DATA.GetUnit(guardian.id).playModel, guardianPool);
+        GameObject go = Instantiate(_DATA.GetUnit(guardian.id).playModel, _location.position, _location.rotation);
         GameObject particles = PoolX.GetFromPool(_DATA.GetUnit(guardian.id).spawnParticles, spawnParticlePool);
         go.transform.position = particles.transform.position = _location.transform.position;
         go.transform.rotation = particles.transform.rotation = transform.rotation;
@@ -58,11 +60,14 @@ public class UnitManager : Singleton<UnitManager>
         RemoveSelectedUnit(_unit);
         
         //CHECK - May need to reset ragdoll physics when getting object
-        GameObject go = PoolX.GetFromPool(_unit.unitData.ragdollModel, ragdollPool);
-        go.transform.position = _position;
-        go.transform.rotation = _rotation;
+        //GameObject go = PoolX.GetFromPool(_unit.unitData.ragdollModel, ragdollPool);
+        GameObject go = Instantiate(_unit.unitData.ragdollModel, _position, _rotation);
+        ragdollList.Add(go.GetComponent<Ragdoll>());
+        //go.transform.position = _position;
+        //go.transform.rotation = _rotation;
         
-        _unit.gameObject.SetActive(false);
+        Destroy(_unit.gameObject);
+        //_unit.gameObject.SetActive(false);
     }
     
     public void GroupUnits(int _group)
@@ -279,19 +284,26 @@ public class UnitManager : Singleton<UnitManager>
         }
     }
     
+    private void OnDayOver(int obj)
+    {
+        for(int i=0; i<ragdollList.Count; i++)
+            Destroy(ragdollList[i].gameObject);
+        ragdollList.Clear();
+    }
+    
     private void OnEnable()
     {
         GameEvents.OnObjectSelected += OnObjectSelected;
+        GameEvents.OnDayOver += OnDayOver;
         InputManager.OnUnitFocus += OnUnitFocus;
         InputManager.OnDeselectButtonPressed += OnDeselectButtonPressed;
-        
     }
+    
     private void OnDisable()
     {
         GameEvents.OnObjectSelected -= OnObjectSelected;
+        GameEvents.OnDayOver -= OnDayOver;
         InputManager.OnUnitFocus -= OnUnitFocus;
         InputManager.OnDeselectButtonPressed -= OnDeselectButtonPressed;
     }
-    
-    
 }
