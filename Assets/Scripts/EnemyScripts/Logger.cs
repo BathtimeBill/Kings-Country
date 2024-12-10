@@ -33,18 +33,7 @@ public class Logger : Enemy
             print("Targeting Home Tree");
         }
 
-        agent.SetDestination(targetObject.position);
-        distanceFromTarget = Vector3.Distance(targetObject.transform.position, transform.position);
-        
-        if (distanceFromTarget < attackRange)
-        {
-            ChangeState(EnemyState.Attack);
-            SmoothFocusOnTarget(targetObject);
-        }
-        else
-        {
-            base.HandleWorkState();
-        }
+        base.HandleWorkState();
     }
 
     public override void HandleRelaxState()
@@ -53,15 +42,7 @@ public class Logger : Enemy
 
     public override void HandleAttackState()
     {
-        if (distanceFromTarget > attackRange)
-        {
-            ChangeState(EnemyState.Work);
-            SmoothFocusOnTarget(targetObject);
-        }
-        else
-        {
-            base.HandleAttackState();
-        }
+       base.HandleAttackState();
     }
 
     public override void HandleClaimState()

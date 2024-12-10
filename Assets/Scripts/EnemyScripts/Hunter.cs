@@ -11,18 +11,18 @@ public class Hunter : Enemy
     [Header("Stats")]
     private float damping = 5;
 
-    [FormerlySerializedAs("claimSite")] [Header("Hut")]
-    public GameObject hutObject;
-    public float distanceFromClosestHut;
+    [Header("Hut")]
     public bool hasArrivedAtHut;
     public bool hutSwitch;
+    private float distanceToWildlife;
+    private float distanceToHut;
 
 
     #region Startup
     public override void Awake()
     {
         base.Awake();
-        state = EnemyState.Work;
+        //state = EnemyState.Work;
     }
 
     public override void Start()
@@ -30,113 +30,89 @@ public class Hunter : Enemy
         base.Start();
         //arrow = arrowObject.GetComponent<Arrow>();
         //arrowObject.SetActive(false);
-        StartCoroutine(Tick());
     }
     #endregion
     
     #region AI
 
-    IEnumerator Tick()
+    public override void SetTargets()
     {
-        if (_GM.gameState == GameState.Lose)
-            StopAllCoroutines();
+        distanceToWildlife = _WildlifeExist ? Vector3.Distance(ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform.position, transform.position) : 20000;
+        distanceToHut = _HutExists ? Vector3.Distance(_HUT.transform.position, transform.position) : 20000;
 
-        /*if (distanceFromClosestUnit < attackRange && _GuardiansExist)
+        if (distanceFromClosestUnit < attackRange && _GuardiansExist)
         {
+            SetClosestUnit();
+            targetObject = closestUnit;
+            print("Targeting Guardian");
             ChangeState(EnemyState.Attack);
         }
-        else if (distanceFromClosestHut > distanceFromClosestWildlife)
+        else if (distanceToHut > distanceToWildlife)
         {
+            targetObject = ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform;
+            print("Targeting Wildlife");
             ChangeState(EnemyState.Work);
         }
-        else if (distanceFromClosestHut <= distanceFromClosestWildlife && !spawnedFromSite)
+        else if (distanceToHut <= distanceToWildlife && !spawnedFromSite)
         {
-            ChangeState(EnemyState.ClaimSite);
-        }*/
+            targetObject = _HUT.transform;
+            print("Targeting Hut");
+            //ChangeState(EnemyState.ClaimSite);
+        }
         
-
-        //if(distanceFromClosestUnit < stoppingDistance)
-        //    ChangeState(EnemyState.Attack);
-        
+        agent.SetDestination(targetObject.position);
+        distanceFromTarget = Vector3.Distance(targetObject.transform.position, transform.position);
         HandleState();
-        
-        yield return new WaitForSeconds(tickRate);
-        
-        //if(!_NoGuardians)
-            StartCoroutine(Tick());
     }
     
     public override void HandleWorkState()
     {
-        base.HandleWorkState();
-
         if (_NoWildlife && _NoGuardians && !_HutExists)
         {
+            print("Relaxing");
             ChangeState(EnemyState.Relax);
-            return;
-        }
-
-        if (_WildlifeExist)
-        {
-            targetObject = ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform;
-        }
-        else if (_HutExists)
-        {
-            hutObject = _HUT.gameObject;
-            distanceFromClosestHut = Vector3.Distance(hutObject.transform.position, transform.position);
-            if(distanceFromClosestHut <= distanceFromTarget && !spawnedFromSite)
-                ChangeState(EnemyState.ClaimSite);
-        }
-        else if (_GuardiansExist)
-        {
-            SetClosestUnit();
-            targetObject = closestUnit;
         }
         
-        distanceFromTarget = Vector3.Distance(targetObject.transform.position, transform.position);
         if (distanceFromTarget < attackRange)
         {
-            transform.LookAt(targetObject.transform.position);
+            SmoothFocusOnTarget(targetObject);
             ChangeState(EnemyState.Attack);
         }
-        else
-        {
-            agent.SetDestination(targetObject.transform.position);
-        }
+        
+        
+        //base.HandleWorkState();
     }
 
     public override void HandleRelaxState()
     {
-        base.HandleRelaxState();
         if(_WildlifeExist || _GuardiansExist)
             ChangeState(EnemyState.Work);
+        else
+            base.HandleRelaxState();
     }
 
     public override void HandleAttackState()
     {
-        base.HandleAttackState();
         hutSwitch = false;
-        //if (_NoGuardians || distanceFromTarget > attackRange)
-        //{ 
-        //    state = EnemyState.Work;
-        //    return;
-        //}
-        FaceTarget();
+        base.HandleAttackState();
     }
 
     public override void HandleClaimState()
     {
+        if (!_HutExists)
+            return;
+        
         base.HandleClaimState();
         if (!hasArrivedAtHut)
         {
-            agent.SetDestination(hutObject.transform.position);
+            agent.SetDestination(_HUT.transform.position);
         }
         else
         {
-            if (_HutExists && _HUT.HasUnits())
+            if (_HUT.HasUnits())
             {
-                animator.SetBool("hasStoppedHorgr", false);
-                FaceTarget();
+                //animator.SetBool("hasStoppedHorgr", false);
+                //FaceTarget();
             }
             else
             {
@@ -156,88 +132,15 @@ public class Hunter : Enemy
         
     }
 
-    private void FixedUpdate()
-    {
-        if(distanceFromTarget < attackRange)
-        {
-            SmoothFocusOnEnemy();
-        }
-    }
-    private void SmoothFocusOnEnemy()
-    {
-        if(targetObject != null)
-        {
-            var targetRotation = Quaternion.LookRotation(targetObject.transform.position - transform.position);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2 * Time.deltaTime);
-        }
-    }
-
-    #endregion
-
-    #region Damage
-    public override void OnTriggerEnter(Collider other)
-    {
-        base.OnTriggerEnter(other);
-        if (!_HutExists)
-            return;
-        if (other.CompareTag("Hut"))
-        {
-            if (_HUT.ContainsEnemy(this))
-                return;
-            
-            if (spawnedFromSite == false)
-            {
-                _HUT.AddEnemy(this);
-                StartCoroutine(WaitForHut());
-            }
-        }
-    }
-
-    public override void OnTriggerExit(Collider other)
-    {
-        base.OnTriggerExit(other);
-        
-        if (!_HutExists)
-            return;
-        
-        if (other.CompareTag("Hut"))
-        {
-            if(spawnedFromSite == false)
-            {
-                _HUT.RemoveEnemy(this);
-                state = EnemyState.Attack;
-                hasArrivedAtHut = false;
-            }
-        }
-    }
-
-    public override void TakeDamage(int damage, string _damagedBy)
-    {
-        base.TakeDamage(damage, _damagedBy);
-    }
-
-    public override void Die(Enemy _thisUnit, string _killedBy, DeathID _deathID)
-    {
-        base.Die(_thisUnit, _killedBy, _deathID);
-    }
-
     IEnumerator WaitForHut()
     {
+        ChangeState(EnemyState.ClaimSite);
         Log("Hut coroutine");
         yield return new WaitForSeconds(2f);
-        animator.SetBool("hasStoppedHorgr", true);
+        //animator.SetBool("hasStoppedHorgr", true);
         hasArrivedAtHut = true;
     }
-    #endregion
-
-    public void FaceTarget()
-    {
-        var lookPos = targetObject.position - transform.position;
-        lookPos.y = 0;
-        var rotation = Quaternion.LookRotation(lookPos);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * damping);
-    }
-
+    
     public override void Attack(int _attack)
     {
         if (!_inGame)
@@ -263,22 +166,76 @@ public class Hunter : Enemy
 
     /*public override void CheckState()
     {
-        if (_HUT == null) 
+        if (_HUT == null)
             return;
-        
+
         if (_HUT.ContainsEnemy(GetComponent<Enemy>()) && _HUT.HasEnemies())
             animator.SetBool("allWildlifeDead", true);
     }*/
+    #endregion
+
+    #region Triggers
+    public override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+        if (!_HutExists)
+            return;
+        if (other.CompareTag("Hut"))
+        {
+            if (_HUT.ContainsEnemy(this))
+                return;
+            
+            if (!spawnedFromSite)
+            {
+                _HUT.AddEnemy(this);
+                StartCoroutine(WaitForHut());
+            }
+        }
+    }
+
+    public override void OnTriggerExit(Collider other)
+    {
+        base.OnTriggerExit(other);
+        
+        if (!_HutExists)
+            return;
+        
+        if (other.CompareTag("Hut"))
+        {
+            if(!spawnedFromSite)
+            {
+                _HUT.RemoveEnemy(this);
+                ChangeState(EnemyState.Attack);
+                hasArrivedAtHut = false;
+            }
+        }
+    }
+    
+    #endregion
+    
+    #region Damage
+    public override void TakeDamage(int damage, string _damagedBy)
+    {
+        base.TakeDamage(damage, _damagedBy);
+    }
+
+    public override void Die(Enemy _thisUnit, string _killedBy, DeathID _deathID)
+    {
+        base.Die(_thisUnit, _killedBy, _deathID);
+    }
+    #endregion
+
+    public void FaceTarget()
+    {
+        var lookPos = targetObject.position - transform.position;
+        lookPos.y = 0;
+        var rotation = Quaternion.LookRotation(lookPos);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * damping);
+    }
 
     private void OnArrivedAtHut()
     {
-        state = EnemyState.Attack;
-    }
-
-    public override void Win()
-    {
-        StopCoroutine(Tick());
-        state = EnemyState.Victory;
+        ChangeState(EnemyState.Attack);
     }
 
     private void OnEnable()

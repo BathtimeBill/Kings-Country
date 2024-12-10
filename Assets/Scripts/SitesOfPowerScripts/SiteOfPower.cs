@@ -19,9 +19,9 @@ public class SiteOfPower : GameBehaviour
     public GameObject enemyControlFX;
 
     public BV.Range spawnRates;
-    [FormerlySerializedAs("enemyTimeLeft")] public float currentClaimTime;
+    public float currentClaimTime;
     public SiteState siteState;
-    [FormerlySerializedAs("claimRate")] public float currentClaimRate;
+    public float currentClaimRate;
     private float spawnDelay = 1f;
 
     public void Start()

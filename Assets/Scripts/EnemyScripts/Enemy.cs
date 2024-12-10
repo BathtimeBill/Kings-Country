@@ -100,16 +100,15 @@ public class Enemy : GameBehaviour
     #endregion
     
     #region AI
-
     public IEnumerator Tick()
     {
         if (_GM.gameState == GameState.Lose)
             StopAllCoroutines();
         
-        HandleState();
+        SetTargets();
+        
         yield return new WaitForSeconds(tickRate);
         StartCoroutine(Tick());
-        
     }
     
     public void SetClosestUnit()
@@ -126,7 +125,9 @@ public class Enemy : GameBehaviour
         healthBar.ChangeUnitState(state.ToString());
         HandleState();
     }
-    
+
+    public virtual void SetTargets() { }
+
     public void HandleState()
     {
         enemyAnimation.PlayWalkAnimation(agent.velocity.magnitude);
@@ -151,22 +152,44 @@ public class Enemy : GameBehaviour
         }
     }
     
-    public virtual void HandleWorkState() 
+    public virtual void HandleWorkState()
     {
+        if (!targetObject)
+            return;
         
+        agent.SetDestination(targetObject.position);
+        distanceFromTarget = Vector3.Distance(targetObject.transform.position, transform.position);
+        if (distanceFromTarget < attackRange)
+        {
+            ChangeState(EnemyState.Attack);
+            SmoothFocusOnTarget(targetObject);
+        }
     }
 
     public virtual void HandleRelaxState()
     {
         StandStill();
-        enemyAnimation.PlayRelaxAnimation();
+        //enemyAnimation.PlayRelaxAnimation();
     }
+    
     public virtual void HandleAttackState() 
     { 
-        StandStill();
-        enemyAnimation.PlayAttackAnimation();
+        if (distanceFromTarget > attackRange)
+        {
+            ChangeState(EnemyState.Work);
+        }
+        else
+        {
+            StandStill();
+            SmoothFocusOnTarget(targetObject);
+            enemyAnimation.PlayAttackAnimation();
+        }
     }
-    public virtual void HandleClaimState() { }
+
+    public virtual void HandleClaimState()
+    {
+        
+    }
     public virtual void HandleVictoryState()
     {
         StandStill();
@@ -179,10 +202,21 @@ public class Enemy : GameBehaviour
     
     public void SmoothFocusOnTarget(Transform _target)
     {
+        if (!_target)
+            return;
         var targetRotation = Quaternion.LookRotation(_target.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
     }
+    private void FixedUpdate()
+    {
+        if(state == EnemyState.Attack)
+        {
+            SmoothFocusOnTarget(targetObject);
+        }
+    }
     #endregion
+    
+    #region Triggers
     public virtual void OnTriggerEnter(Collider other)
     {
         if (invincible)
@@ -282,6 +316,8 @@ public class Enemy : GameBehaviour
             }
         }
     }
+    
+    #endregion
 
     #region Damage/Death
     public virtual void TakeDamage(int _damage, string _damagedBy)

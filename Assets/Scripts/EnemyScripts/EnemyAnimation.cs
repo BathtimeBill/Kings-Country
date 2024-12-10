@@ -27,7 +27,7 @@ public class EnemyAnimation : GameBehaviour
     {
         animator.SetTrigger("Attack");
 
-        //print("Starting Attack Animation");
+        print("Starting Attack Animation");
         //Wait for them to enter the Attacking state
         while (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
             yield return null;
@@ -35,7 +35,7 @@ public class EnemyAnimation : GameBehaviour
         //Now wait for them to finish
         while (animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
             yield return null;
-        //print("Finished Attack Animation");
+        print("Finished Attack Animation");
         
         isAttacking = false;
         enemy.ChangeState(EnemyState.Work);
