@@ -25,6 +25,7 @@ public class EnemyAnimation : GameBehaviour
     IEnumerator PlayAttackAnimationRoutine()
     {
         animator.SetTrigger("Attack");
+        animator.SetBool("Attacking", true);
         print("Starting Attack Animation");
         //Wait for them to enter the Attacking state
         while (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
@@ -36,9 +37,11 @@ public class EnemyAnimation : GameBehaviour
         print("Finished Attack Animation");
         
         isAttacking = false;
+        animator.SetBool("Attacking", false);
         enemy.SetState();
     }
     public void PlayWalkAnimation(float _speed) => animator.SetFloat("Speed", _speed);
+    public void AttackFinished() => animator.SetTrigger("FinishAttack");
     public void PlayImpactAnimation() => animator.SetTrigger("Impact");
     public void PlayIdleAnimation() => animator.SetTrigger("Idle");
     public void PlayRelaxAnimation() => animator.SetTrigger("Relax");

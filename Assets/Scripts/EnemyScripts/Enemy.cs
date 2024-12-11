@@ -88,47 +88,26 @@ public class Enemy : GameBehaviour
         StartCoroutine(WaitForInvincible());
         GameEvents.ReportOnHumanSpawned(unitID);
         ChangeState(EnemyState.Work);
-        StartCoroutine(Tick());
     }
-    
     private IEnumerator WaitForInvincible()
     {
         invincible = true;
         yield return new WaitForSeconds(5);
         invincible = false;
     }
-
-    
     #endregion
     
     #region AI
-    public IEnumerator Tick()
-    {
-        if (_GM.gameState == GameState.Lose)
-            StopAllCoroutines();
-        
-        SetState();
-        
-        yield return new WaitForSeconds(tickRate);
-        StartCoroutine(Tick());
-    }
     public virtual void SetState() { }
     
     public void ChangeState(EnemyState _state)
     {
         state = _state;
         healthBar.ChangeUnitState(state.ToString());
-        if(state == EnemyState.Attack)
-            DoAttack();
     }
 
     public void HandleState()
     {
-        agent.SetDestination(targetObject.position);
-        distanceToTarget = Vector3.Distance(targetObject.transform.position, transform.position);
-        print("State: " + state + " | Target: " + targetObject.name);
-        enemyAnimation.PlayWalkAnimation(agent.velocity.magnitude);
-        
         switch (state)
         {
             case EnemyState.Work:
@@ -152,50 +131,20 @@ public class Enemy : GameBehaviour
         }
     }
     
-    public virtual void HandleWorkState()
-    {
-        if (!targetObject)
-            return;
-
-        if (TargetWithinRange)
-        {
-            ChangeState(EnemyState.Attack);
-        }
-    }
-
-    public virtual void HandleIdleState()
-    {
-        StandStill();
-    }
-    public virtual void HandleAttackState() 
-    { 
-        if (!TargetWithinRange)
-            ChangeState(EnemyState.Work);
-        else
-            DoAttack();
-    }
+    public virtual void HandleWorkState() { }
+    public virtual void HandleIdleState() { }
+    public virtual void HandleAttackState() { }
     public virtual void HandleClaimState() { }
-
-    public virtual void HandleDefendState()
-    {
-        StandStill(); 
-    }
-    public virtual void HandleVictoryState()
+    public virtual void HandleDefendState() { }
+    public void HandleVictoryState()
     {
         StandStill();
         StopAllCoroutines();
-        enemyAnimation.StopAllCoroutines();
         enemyAnimation.PlayVictoryAnimation();
-    }
-    //This ensures that we move into the attack animation
-    public void DoAttack()
-    {
-        StandStill();
-        SmoothFocusOnTarget(targetObject);
-        enemyAnimation.PlayAttackAnimation();
     }
     public void StandStill() => agent.SetDestination(transform.position);
     public bool TargetWithinRange => distanceToTarget < attackRange;
+    public bool CanAttack => distanceToTarget <= stoppingDistance;
     public void SmoothFocusOnTarget(Transform _target)
     {
         if (!_target)
@@ -418,9 +367,7 @@ public class Enemy : GameBehaviour
     public virtual void Win(){}
     private void OnGameOver()
     {
-        Win();
-        StopCoroutine(Tick());
-        ChangeState(EnemyState.Victory);
+        HandleAttackState();
     }
 
     private void OnEnable()

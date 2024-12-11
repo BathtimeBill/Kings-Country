@@ -42,10 +42,11 @@ public class Hunter : Enemy
             targetObject = transform;
             ChangeState(EnemyState.DefendSite);
         }
-        else if (distanceFromClosestUnit < attackRange && _GuardiansExist)
+        else if (distanceFromClosestUnit < attackRange)
         {
             targetObject = closestUnit;
             ChangeState(EnemyState.Attack);
+            
         }
         else if (distanceToHut > distanceToWildlife)
         {
@@ -108,7 +109,7 @@ public class Hunter : Enemy
     
     public override void Attack(int _attack)
     {
-        if (!_inGame)
+        if (!_inGame && _NoWildlife && _NoGuardians)
             return;
 
         //checks if there are any animals in the scene then calculates the distance from the hunter enemy to that animal.

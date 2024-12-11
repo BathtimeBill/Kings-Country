@@ -87,10 +87,7 @@ public class Lord : Enemy
     public override void HandleClaimState()
     {
     }
-
-    public override void HandleVictoryState()
-    {
-    }
+    
 
     IEnumerator Bark()
     {

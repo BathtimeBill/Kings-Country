@@ -22,12 +22,13 @@ public class Warrior : Enemy
             horgrTargetPoint.transform.position = randomHorgrPos;
         }
         base.Start();
+        StartCoroutine(Tick());
     }
     #endregion
 
     #region AI
     
-    public override void SetState()
+    public IEnumerator Tick()
     {
         distanceToTree = _HOME ? Vector3.Distance(_HOME.transform.position, transform.position) : 20000;
         distanceToHorgr = _HorgrExists ? Vector3.Distance(horgrTargetPoint.transform.position, transform.position) : 20000;
@@ -35,20 +36,28 @@ public class Warrior : Enemy
         
         if (hasArrivedAtHorgr)
         {
-            targetObject = transform;
-            ChangeState(EnemyState.DefendSite);
+            if (distanceFromClosestUnit < attackRange)
+            {
+                targetObject = closestUnit;
+                ChangeState(EnemyState.Attack);
+            }
+            else
+            {
+                targetObject = transform;
+                ChangeState(EnemyState.DefendSite);
+            }
         }
-        else if (distanceFromClosestUnit < attackRange && _GuardiansExist)
+        else if (distanceFromClosestUnit < attackRange)
         {
             targetObject = closestUnit;
             ChangeState(EnemyState.Attack);
         }
-        else if (distanceToHorgr > distanceFromClosestUnit)
+        else if (_HorgrExists && distanceToHorgr > distanceFromClosestUnit)
         {
             targetObject = closestUnit;
             ChangeState(EnemyState.Work);
         }
-        else if (distanceToHorgr <= distanceFromClosestUnit && !spawnedFromSite)
+        else if (_HorgrExists && distanceToHorgr <= distanceFromClosestUnit && !spawnedFromSite)
         {
             targetObject = horgrTargetPoint.transform;
             ChangeState(EnemyState.ClaimSite);
@@ -60,23 +69,45 @@ public class Warrior : Enemy
         }
         
         HandleState();
+        
+        print("State: " + state + " | Target: " + targetObject.name);
+        
+        agent.SetDestination(targetObject.position);
+        distanceToTarget = Vector3.Distance(targetObject.transform.position, transform.position);
+        bool attacking = agent.velocity == Vector3.zero || CanAttack; 
+        animator.SetBool("Attacking", attacking);
+        
+        if (_GM.gameState == GameState.Lose)
+        {
+            ChangeState(EnemyState.Victory);
+            StopAllCoroutines();
+            HandleVictoryState();
+        }
+        
+        yield return new WaitForSeconds(tickRate);
+        StartCoroutine(Tick());
     }
     
     public override void HandleWorkState()
     {
-        /*if (_NoWildlife && _NoGuardians && !_HorgrExists)
-        {
-            ChangeState(EnemyState.Idle);
+        if (!targetObject)
             return;
-        }*/
-        base.HandleWorkState();
+
+        if (TargetWithinRange)
+            ChangeState(EnemyState.Attack);
+    }
+
+    public override void HandleAttackState()
+    {
+        animator.SetBool("Holding", false);
+        if (!TargetWithinRange)
+            ChangeState(EnemyState.Work);
     }
 
     public override void HandleClaimState()
     {
         if(hasArrivedAtHorgr)
-            ChangeState(EnemyState.DefendSite);
-        base.HandleClaimState();
+            HandleDefendState();
     }
     
     public override void HandleDefendState()
@@ -88,6 +119,8 @@ public class Warrior : Enemy
         }
         else
         {
+            animator.SetBool("Holding", true);
+            StandStill(); 
             ChangeState(EnemyState.DefendSite);
         }
     }
@@ -97,6 +130,7 @@ public class Warrior : Enemy
         ChangeState(EnemyState.DefendSite);
         yield return new WaitForSeconds(0.5f);
         hasArrivedAtHorgr = true;
+        animator.SetBool("Holding", true);
     }
     #endregion
 
@@ -107,7 +141,7 @@ public class Warrior : Enemy
         if (!_HorgrExists)
             return;
         
-        if(other.CompareTag("Horgr") && _HORGR.ContainsEnemy(this) && !spawnedFromSite)
+        if(other.CompareTag("Horgr") && !_HORGR.ContainsEnemy(this) && !spawnedFromSite)
         {
             _HORGR.AddEnemy(this);
             StartCoroutine(WaitForHorgr());
