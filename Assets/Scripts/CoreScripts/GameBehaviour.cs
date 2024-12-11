@@ -172,7 +172,6 @@ public enum EnemyState
     Work,
     Idle,
     Attack,
-    ClaimSite,
     DefendSite,
     Victory,
 }

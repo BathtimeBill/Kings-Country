@@ -19,30 +19,37 @@ public class Hunter : Enemy
     {
         //arrow = arrowObject.GetComponent<Arrow>();
         //arrowObject.SetActive(false);
+        InitializeHutTargetPoint();
+        base.Start();
+    }
+
+    private void InitializeHutTargetPoint()
+    {
         if (_HutExists)
         {
             Vector3 randomHutPos = SpawnX.GetSpawnPositionInRadius(_HUT.transform.position, _HUT.GetComponent<SphereCollider>().radius);
             hutTargetPoint = new GameObject("HutTargetPoint");
             hutTargetPoint.transform.position = randomHutPos;
         }
-        base.Start();
     }
     #endregion
     
     #region AI
-
-    public override void SetState()
+    public override void UpdateDistances()
     {
         distanceToWildlife = _WildlifeExist ? Vector3.Distance(ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform.position, transform.position) : 20000;
         distanceToHut = _HutExists ? Vector3.Distance(hutTargetPoint.transform.position, transform.position) : 20000;
-        SetClosestUnit();
-        
+        base.UpdateDistances();
+    }
+
+    public override void DetermineState()
+    {
         if (hasArrivedAtHut)
         {
             targetObject = transform;
             ChangeState(EnemyState.DefendSite);
         }
-        else if (distanceFromClosestUnit < attackRange)
+        else if (distanceToClosestUnit < attackRange)
         {
             targetObject = closestUnit;
             ChangeState(EnemyState.Attack);
@@ -56,10 +63,8 @@ public class Hunter : Enemy
         else if (distanceToHut <= distanceToWildlife && !spawnedFromSite)
         {
             targetObject = hutTargetPoint.transform;
-            ChangeState(EnemyState.ClaimSite);
+            ChangeState(EnemyState.Work);
         }
-        
-        HandleState();
     }
     
     public override void HandleWorkState()
@@ -80,11 +85,11 @@ public class Hunter : Enemy
             base.HandleIdleState();
     }
     
-    public override void HandleClaimState()
+    public override void HandleAttackState()
     {
-        if(hasArrivedAtHut)
-            ChangeState(EnemyState.DefendSite);
-        base.HandleClaimState();
+        enemyAnimation.PlayHoldAnimation(false);
+        if (!TargetWithinRange)
+            ChangeState(EnemyState.Work);
     }
 
     public override void HandleDefendState()
@@ -96,20 +101,22 @@ public class Hunter : Enemy
         }
         else
         {
+            enemyAnimation.PlayHoldAnimation(true);
+            StandStill(); 
             ChangeState(EnemyState.DefendSite);
         }
     }
 
     private IEnumerator WaitForHut()
     {
+        yield return new WaitForSeconds(1f);
         ChangeState(EnemyState.DefendSite);
-        yield return new WaitForSeconds(2f);
         hasArrivedAtHut = true;
     }
     
     public override void Attack(int _attack)
     {
-        if (!_inGame && _NoWildlife && _NoGuardians)
+        if (!_inGame)
             return;
 
         //checks if there are any animals in the scene then calculates the distance from the hunter enemy to that animal.
@@ -147,8 +154,8 @@ public class Hunter : Enemy
         if (other.CompareTag("Hut") && !spawnedFromSite)
         {
             _HUT.RemoveEnemy(this);
-            SetState();
             hasArrivedAtHut = false;
+            ChangeState(EnemyState.Work);
         }
     }
     #endregion

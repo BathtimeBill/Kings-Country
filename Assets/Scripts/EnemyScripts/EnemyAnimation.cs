@@ -13,20 +13,9 @@ public class EnemyAnimation : GameBehaviour
         enemy = GetComponentInParent<Enemy>();
     }
 
-    public void PlayAttackAnimation()
-    {
-        if (isAttacking)
-            return;
-        
-        isAttacking = true;
-        StartCoroutine(PlayAttackAnimationRoutine());
-    }
-
     IEnumerator PlayAttackAnimationRoutine()
     {
         animator.SetTrigger("Attack");
-        animator.SetBool("Attacking", true);
-        print("Starting Attack Animation");
         //Wait for them to enter the Attacking state
         while (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
             yield return null;
@@ -37,11 +26,11 @@ public class EnemyAnimation : GameBehaviour
         print("Finished Attack Animation");
         
         isAttacking = false;
-        animator.SetBool("Attacking", false);
         enemy.SetState();
     }
     public void PlayWalkAnimation(float _speed) => animator.SetFloat("Speed", _speed);
-    public void AttackFinished() => animator.SetTrigger("FinishAttack");
+    public void PlayAttackAnimation(bool _attacking) => animator.SetBool("Attacking", _attacking);
+    public void PlayHoldAnimation(bool _holding) => animator.SetBool("Holding", _holding);
     public void PlayImpactAnimation() => animator.SetTrigger("Impact");
     public void PlayIdleAnimation() => animator.SetTrigger("Idle");
     public void PlayRelaxAnimation() => animator.SetTrigger("Relax");

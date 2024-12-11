@@ -4,28 +4,19 @@ using UnityEngine;
 public class Logger : Enemy
 {
     #region AI
-    public override void SetState()
+    public override void DetermineState()
     {
-        SetClosestUnit();
-        attackRange = unitData.attackRange;
-        if (_GuardiansExist && distanceFromClosestUnit < attackRange)
+        if (_GuardiansExist && distanceToClosestUnit < attackRange)
         {
             ChangeState(EnemyState.Attack);
             targetObject = closestUnit.transform;
         }
-        else if (_TreesExist)
-        {
-            targetObject = ObjectX.GetClosest(gameObject, _GM.trees).transform;
-        }
         else
         {
-            targetObject = _HOME.transform;
-            attackRange *= 2;
+            ChangeState(EnemyState.Work);
+            targetObject = _TreesExist ? ObjectX.GetClosest(gameObject, _GM.trees).transform : _HOME.transform;
+            attackRange = _TreesExist ? unitData.attackRange : unitData.attackRange * 2;
         }
-        
-        //agent.SetDestination(targetObject.position);
-        //distanceToTarget = Vector3.Distance(targetObject.transform.position, transform.position);
-        HandleState();
     }
     #endregion
 

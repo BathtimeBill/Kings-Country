@@ -21,7 +21,7 @@ public class Enemy : GameBehaviour
     public Animator animator;
     public float tickRate = 0.5f;
     public Transform closestUnit;
-    public float distanceFromClosestUnit;
+    public float distanceToClosestUnit;
     public Transform targetObject;
     public float distanceToTarget;
     [Header("Weapons")]
@@ -88,6 +88,7 @@ public class Enemy : GameBehaviour
         StartCoroutine(WaitForInvincible());
         GameEvents.ReportOnHumanSpawned(unitID);
         ChangeState(EnemyState.Work);
+        StartCoroutine(Tick());
     }
     private IEnumerator WaitForInvincible()
     {
@@ -98,7 +99,36 @@ public class Enemy : GameBehaviour
     #endregion
     
     #region AI
+    public IEnumerator Tick()
+    {
+        UpdateDistances();
+        DetermineState();
+        HandleState();
+        HandleMovement();
+        
+        print("State: " + state + " | Target: " + targetObject.name);
+        yield return new WaitForSeconds(tickRate);
+        if (_GM.gameState == GameState.Lose)
+            HandleVictoryState();
+        else
+            StartCoroutine(Tick());
+    }
     public virtual void SetState() { }
+
+    public virtual void UpdateDistances()
+    {
+        SetClosestUnit();
+    }
+    public virtual void DetermineState() { }
+
+    public void HandleMovement()
+    {
+        agent.SetDestination(targetObject.position);
+        distanceToTarget = Vector3.Distance(targetObject.transform.position, transform.position);
+        bool attacking = agent.velocity == Vector3.zero || CanAttack; 
+        enemyAnimation.PlayAttackAnimation(attacking);
+        enemyAnimation.PlayWalkAnimation(agent.velocity.magnitude);
+    }
     
     public void ChangeState(EnemyState _state)
     {
@@ -119,9 +149,6 @@ public class Enemy : GameBehaviour
             case EnemyState.Attack:
                 HandleAttackState();
                 break;
-            case EnemyState.ClaimSite:
-                HandleClaimState();
-                break;
             case EnemyState.DefendSite:
                 HandleDefendState();
                 break;
@@ -134,10 +161,10 @@ public class Enemy : GameBehaviour
     public virtual void HandleWorkState() { }
     public virtual void HandleIdleState() { }
     public virtual void HandleAttackState() { }
-    public virtual void HandleClaimState() { }
     public virtual void HandleDefendState() { }
     public void HandleVictoryState()
     {
+        ChangeState(EnemyState.Victory);
         StandStill();
         StopAllCoroutines();
         enemyAnimation.PlayVictoryAnimation();
@@ -155,11 +182,11 @@ public class Enemy : GameBehaviour
     public void SetClosestUnit()
     {
         closestUnit = GetClosestUnit();
-        distanceFromClosestUnit = !closestUnit ? 20000 : Vector3.Distance(closestUnit.transform.position, transform.position);
+        distanceToClosestUnit = !closestUnit ? 20000 : Vector3.Distance(closestUnit.transform.position, transform.position);
     }
     private void FixedUpdate()
     {
-        if(state == EnemyState.Attack || state == EnemyState.Work || state == EnemyState.ClaimSite)
+        if(state == EnemyState.Attack || state == EnemyState.Work)
         {
             SmoothFocusOnTarget(targetObject);
         }

@@ -43,7 +43,7 @@ public class Lord : Enemy
         {
             SetClosestUnit();
             agent.SetDestination(closestUnit.transform.position);
-            if (distanceFromClosestUnit < 40)
+            if (distanceToClosestUnit < 40)
             {
                 knightAnimator.SetBool("unitIsClose", true);
             }
@@ -83,11 +83,6 @@ public class Lord : Enemy
     public override void HandleAttackState()
     {
     }
-
-    public override void HandleClaimState()
-    {
-    }
-    
 
     IEnumerator Bark()
     {

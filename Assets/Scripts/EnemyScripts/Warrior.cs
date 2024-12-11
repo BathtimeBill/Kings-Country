@@ -3,16 +3,19 @@ using UnityEngine;
 
 public class Warrior : Enemy
 {
-    [Header("Horgr")]
-    private float distanceFromClosestHorgr;
-    private bool horgrSwitch;
-    public float distanceToTree;
-    public bool hasArrivedAtHorgr;
-    public float distanceToHorgr;
+    private float distanceToTree;
+    private bool hasArrivedAtHorgr;
+    private float distanceToHorgr;
     private GameObject horgrTargetPoint;
     
     #region Startup
     public override void Start()
+    {
+        InitializeHorgrTargetPoint();
+        base.Start();
+    }
+
+    private void InitializeHorgrTargetPoint()
     {
         if (_HorgrExists)
         {
@@ -21,22 +24,22 @@ public class Warrior : Enemy
             horgrTargetPoint = new GameObject("HorgrTargetPoint");
             horgrTargetPoint.transform.position = randomHorgrPos;
         }
-        base.Start();
-        StartCoroutine(Tick());
     }
     #endregion
 
     #region AI
-    
-    public IEnumerator Tick()
+    public override void UpdateDistances()
     {
         distanceToTree = _HOME ? Vector3.Distance(_HOME.transform.position, transform.position) : 20000;
         distanceToHorgr = _HorgrExists ? Vector3.Distance(horgrTargetPoint.transform.position, transform.position) : 20000;
-        SetClosestUnit();
-        
+        base.UpdateDistances();
+    }
+
+    public override void DetermineState()
+    {
         if (hasArrivedAtHorgr)
         {
-            if (distanceFromClosestUnit < attackRange)
+            if (distanceToClosestUnit < attackRange)
             {
                 targetObject = closestUnit;
                 ChangeState(EnemyState.Attack);
@@ -47,45 +50,26 @@ public class Warrior : Enemy
                 ChangeState(EnemyState.DefendSite);
             }
         }
-        else if (distanceFromClosestUnit < attackRange)
+        else if (distanceToClosestUnit < attackRange)
         {
             targetObject = closestUnit;
             ChangeState(EnemyState.Attack);
         }
-        else if (_HorgrExists && distanceToHorgr > distanceFromClosestUnit)
+        else if (_HorgrExists && distanceToHorgr > distanceToClosestUnit)
         {
             targetObject = closestUnit;
             ChangeState(EnemyState.Work);
         }
-        else if (_HorgrExists && distanceToHorgr <= distanceFromClosestUnit && !spawnedFromSite)
+        else if (_HorgrExists && distanceToHorgr <= distanceToClosestUnit && !spawnedFromSite)
         {
             targetObject = horgrTargetPoint.transform;
-            ChangeState(EnemyState.ClaimSite);
+            ChangeState(EnemyState.Work);
         }
         else
         {
             targetObject = _HOME.transform;
             ChangeState(EnemyState.Work);
         }
-        
-        HandleState();
-        
-        print("State: " + state + " | Target: " + targetObject.name);
-        
-        agent.SetDestination(targetObject.position);
-        distanceToTarget = Vector3.Distance(targetObject.transform.position, transform.position);
-        bool attacking = agent.velocity == Vector3.zero || CanAttack; 
-        animator.SetBool("Attacking", attacking);
-        
-        if (_GM.gameState == GameState.Lose)
-        {
-            ChangeState(EnemyState.Victory);
-            StopAllCoroutines();
-            HandleVictoryState();
-        }
-        
-        yield return new WaitForSeconds(tickRate);
-        StartCoroutine(Tick());
     }
     
     public override void HandleWorkState()
@@ -99,15 +83,9 @@ public class Warrior : Enemy
 
     public override void HandleAttackState()
     {
-        animator.SetBool("Holding", false);
+        enemyAnimation.PlayHoldAnimation(false);
         if (!TargetWithinRange)
             ChangeState(EnemyState.Work);
-    }
-
-    public override void HandleClaimState()
-    {
-        if(hasArrivedAtHorgr)
-            HandleDefendState();
     }
     
     public override void HandleDefendState()
@@ -119,7 +97,7 @@ public class Warrior : Enemy
         }
         else
         {
-            animator.SetBool("Holding", true);
+            enemyAnimation.PlayHoldAnimation(true);
             StandStill(); 
             ChangeState(EnemyState.DefendSite);
         }
@@ -127,10 +105,9 @@ public class Warrior : Enemy
     
     private IEnumerator WaitForHorgr()
     {
+        yield return new WaitForSeconds(1f);
         ChangeState(EnemyState.DefendSite);
-        yield return new WaitForSeconds(0.5f);
         hasArrivedAtHorgr = true;
-        animator.SetBool("Holding", true);
     }
     #endregion
 
@@ -138,9 +115,6 @@ public class Warrior : Enemy
     public override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-        if (!_HorgrExists)
-            return;
-        
         if(other.CompareTag("Horgr") && !_HORGR.ContainsEnemy(this) && !spawnedFromSite)
         {
             _HORGR.AddEnemy(this);
@@ -153,8 +127,8 @@ public class Warrior : Enemy
         if (other.CompareTag("Horgr") && !spawnedFromSite)
         {
             _HORGR.RemoveEnemy(this);
-            SetState();
             hasArrivedAtHorgr = false;
+            ChangeState(EnemyState.Work);
         }
     }
     #endregion
@@ -170,18 +144,4 @@ public class Warrior : Enemy
         base.Die(_thisUnit, _killedBy, _deathID);
     }
     #endregion
-    
-    public void FindUnit()
-    {
-        if (_NoGuardians)
-        {
-            state = EnemyState.Work;
-        }
-        agent.SetDestination(closestUnit.transform.position);
-    }
-
-    public void FindHomeTree()
-    {
-        agent.SetDestination(_HOME.transform.position);
-    }
 }
