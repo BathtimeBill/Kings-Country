@@ -66,7 +66,8 @@ MonoBehaviour:
   closestUnit: {fileID: 0}
   distanceFromClosestUnit: 0
   targetObject: {fileID: 0}
-  distanceFromTarget: 0
+  distanceToTarget: 0
+  weaponCollider: {fileID: 8943349061234418086}
   SFXPool: {fileID: 334179361621747066}
   debugUnit: {fileID: 7560740265149152950}
 --- !u!114 &-5241974792929539636
@@ -566,9 +567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb6e1964cd2fdd40a9e422f616806f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 4961874759079767109}
   weaponCollider: {fileID: 8943349061234418086}
-  isAttacking: 0
 --- !u!95 &7251786680643342835 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: ebf5aa4f83fdaea4d8a0a999d5849df6,

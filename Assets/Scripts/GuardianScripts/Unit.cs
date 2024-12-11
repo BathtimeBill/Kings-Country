@@ -369,13 +369,11 @@ public class Unit : GameBehaviour
         {
             if(_HorgrExists)
                 _HORGR.AddUnit(this);
-            GameEvents.ReportOnUnitArrivedAtHorgr();
         }
         if (other.CompareTag("Hut"))
         {
             if (_HutExists)
                 _HUT.AddUnit(this);
-            GameEvents.ReportOnUnitArrivedAtHut();
         }
         if(other.CompareTag("Tower"))
         {

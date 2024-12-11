@@ -1,17 +1,16 @@
 using UnityEngine;
 using System.Collections;
-using Unity.IntegerTime;
 
 public class EnemyAnimation : GameBehaviour
 {
-    public Enemy enemy;
-    public Collider weaponCollider;
-    public bool isAttacking;
+    private Enemy enemy;
+    private bool isAttacking;
     private Animator animator;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        enemy = GetComponentInParent<Enemy>();
     }
 
     public void PlayAttackAnimation()
@@ -26,7 +25,6 @@ public class EnemyAnimation : GameBehaviour
     IEnumerator PlayAttackAnimationRoutine()
     {
         animator.SetTrigger("Attack");
-
         print("Starting Attack Animation");
         //Wait for them to enter the Attacking state
         while (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
@@ -38,9 +36,8 @@ public class EnemyAnimation : GameBehaviour
         print("Finished Attack Animation");
         
         isAttacking = false;
-        enemy.ChangeState(EnemyState.Work);
+        enemy.SetState();
     }
-
     public void PlayWalkAnimation(float _speed) => animator.SetFloat("Speed", _speed);
     public void PlayImpactAnimation() => animator.SetTrigger("Impact");
     public void PlayIdleAnimation() => animator.SetTrigger("Idle");
@@ -49,8 +46,8 @@ public class EnemyAnimation : GameBehaviour
     public int RandomCheerAnim(int _count = 3) => Random.Range(1, _count);
 
     #region Animation Events
-    public void EnableWeaponCollider() => weaponCollider.enabled = true;
-    public void DisableWeaponCollider() => weaponCollider.enabled = false;
+    public void EnableWeaponCollider() => enemy.weaponCollider.enabled = true;
+    public void DisableWeaponCollider() => enemy.weaponCollider.enabled = false;
     public void Attack(int _attack) => enemy.Attack(_attack);
     public void Footstep(string _foot) => enemy.Footstep(_foot);
     //Note that the draw sound needs to be in the appropriate array element

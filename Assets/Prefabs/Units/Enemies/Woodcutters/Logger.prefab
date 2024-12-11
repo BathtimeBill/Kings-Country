@@ -97,13 +97,11 @@ MonoBehaviour:
   tickRate: 0.5
   closestUnit: {fileID: 0}
   distanceFromClosestUnit: 0
+  targetObject: {fileID: 0}
+  distanceToTarget: 0
+  weaponCollider: {fileID: 4672646478157511915}
   SFXPool: {fileID: 6818767345326132461}
   debugUnit: {fileID: 4908598993397705506}
-  loggerStoppingDistance: 3
-  hasStopped: 0
-  closestTree: {fileID: 0}
-  distanceFromClosestTree: 0
-  homeTree: {fileID: 0}
 --- !u!114 &5956503994214527152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -876,6 +874,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb6e1964cd2fdd40a9e422f616806f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 2840439865804280862}
   weaponCollider: {fileID: 4672646478157511915}
-  isAttacking: 0

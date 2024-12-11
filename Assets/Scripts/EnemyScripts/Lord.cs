@@ -76,7 +76,7 @@ public class Lord : Enemy
     {
     }
 
-    public override void HandleRelaxState()
+    public override void HandleIdleState()
     {
     }
 

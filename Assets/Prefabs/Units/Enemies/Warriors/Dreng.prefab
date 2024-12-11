@@ -66,10 +66,14 @@ MonoBehaviour:
   tickRate: 0.5
   closestUnit: {fileID: 0}
   distanceFromClosestUnit: 0
+  targetObject: {fileID: 0}
+  distanceToTarget: 0
+  weaponCollider: {fileID: 3511612816396690393}
   SFXPool: {fileID: 765605961431629818}
   debugUnit: {fileID: 7112368417082139174}
+  distanceToTree: 0
   hasArrivedAtHorgr: 0
-  horgrSwitch: 0
+  distanceToHorgr: 0
 --- !u!136 &5842521611548964515
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -453,9 +457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb6e1964cd2fdd40a9e422f616806f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 6921572088926531857}
   weaponCollider: {fileID: 3511612816396690393}
-  isAttacking: 0
 --- !u!4 &1142794783944184821 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fa166808a8995d04e92012d8a662a332,

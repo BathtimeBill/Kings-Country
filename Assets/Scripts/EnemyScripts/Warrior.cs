@@ -5,228 +5,138 @@ public class Warrior : Enemy
 {
     [Header("Horgr")]
     private float distanceFromClosestHorgr;
+    private bool horgrSwitch;
+    public float distanceToTree;
     public bool hasArrivedAtHorgr;
-    public bool horgrSwitch;
+    public float distanceToHorgr;
+    private GameObject horgrTargetPoint;
     
     #region Startup
-    public override void Awake()
-    {
-        base.Awake();
-        state = EnemyState.Attack;
-    }
     public override void Start()
     {
+        if (_HorgrExists)
+        {
+            Vector3 randomHorgrPos = SpawnX.GetSpawnPositionInRadius(_HORGR.transform.position,
+                _HORGR.GetComponent<SphereCollider>().radius);
+            horgrTargetPoint = new GameObject("HorgrTargetPoint");
+            horgrTargetPoint.transform.position = randomHorgrPos;
+        }
         base.Start();
-        StartCoroutine(Tick());
     }
     #endregion
 
     #region AI
-    IEnumerator Tick()
+    
+    public override void SetState()
     {
-        if (_GM.gameState == GameState.Lose)
-            StopAllCoroutines();
-
+        distanceToTree = _HOME ? Vector3.Distance(_HOME.transform.position, transform.position) : 20000;
+        distanceToHorgr = _HorgrExists ? Vector3.Distance(horgrTargetPoint.transform.position, transform.position) : 20000;
         SetClosestUnit();
-
-        if (agent.velocity != Vector3.zero || distanceFromClosestUnit >= 10)
+        
+        if (hasArrivedAtHorgr)
         {
-            animator.SetBool("hasStopped", false);
+            targetObject = transform;
+            ChangeState(EnemyState.DefendSite);
         }
-        if (agent.velocity == Vector3.zero || distanceFromClosestUnit < 10)
+        else if (distanceFromClosestUnit < attackRange && _GuardiansExist)
         {
-            animator.SetBool("hasStopped", true);
+            targetObject = closestUnit;
+            ChangeState(EnemyState.Attack);
         }
+        else if (distanceToHorgr > distanceFromClosestUnit)
+        {
+            targetObject = closestUnit;
+            ChangeState(EnemyState.Work);
+        }
+        else if (distanceToHorgr <= distanceFromClosestUnit && !spawnedFromSite)
+        {
+            targetObject = horgrTargetPoint.transform;
+            ChangeState(EnemyState.ClaimSite);
+        }
+        else
+        {
+            targetObject = _HOME.transform;
+            ChangeState(EnemyState.Work);
+        }
+        
         HandleState();
-        yield return new WaitForSeconds(tickRate);
-        StartCoroutine(Tick());
     }
     
     public override void HandleWorkState()
     {
-        agent.SetDestination(transform.position);
-    }
-
-    public override void HandleRelaxState()
-    {
-    }
-
-    public override void HandleAttackState()
-    {
-        animator.SetBool("hasStoppedHorgr", false);
-        horgrSwitch = false;
-        if (_NoGuardians)
+        /*if (_NoWildlife && _NoGuardians && !_HorgrExists)
         {
-            FindHomeTree();
-            SmoothFocusOnEnemy();
-        }
-        else
-        {
-            FindUnit();
-            if (distanceFromClosestUnit < attackRange)
-            {
-                SmoothFocusOnEnemy();
-            }
-        }
-
-        if (_HorgrExists)
-        {
-            distanceFromClosestHorgr = Vector3.Distance(_HORGR.transform.position, transform.position);
-            if (distanceFromClosestHorgr < distanceFromClosestUnit && !spawnedFromSite)
-            {
-                state = EnemyState.ClaimSite;
-            }
-            if (distanceFromClosestHorgr >= distanceFromClosestUnit)
-            {
-                state = EnemyState.Attack;
-            }
-        }
+            ChangeState(EnemyState.Idle);
+            return;
+        }*/
+        base.HandleWorkState();
     }
 
     public override void HandleClaimState()
     {
-        if (!hasArrivedAtHorgr)
-            agent.SetDestination(_HORGR.transform.position);
+        if(hasArrivedAtHorgr)
+            ChangeState(EnemyState.DefendSite);
+        base.HandleClaimState();
+    }
+    
+    public override void HandleDefendState()
+    {
+        if (_HORGR.HasUnits())
+        {
+            targetObject = closestUnit;
+            ChangeState(EnemyState.Attack);
+        }
         else
         {
-            if (_HorgrExists && _HORGR.HasUnits())
-            {
-                animator.SetBool("hasStoppedHorgr", false);
-                state = EnemyState.Attack;
-                horgrSwitch = false;
-            }
-            else
-            {
-                if (horgrSwitch == false)
-                {
-                    animator.SetBool("hasStoppedHorgr", true);
-                    agent.SetDestination(transform.position);
-                    horgrSwitch = true;
-                    print("Setting Destination");
-                }
-
-            }
+            ChangeState(EnemyState.DefendSite);
         }
     }
-
-    public override void HandleVictoryState()
+    
+    private IEnumerator WaitForHorgr()
     {
-    }
-
-    void FixedUpdate()
-    {
-        switch (state)
-        {
-            case EnemyState.Attack:
-                if (_UM.unitList.Count == 0)
-                {
-                    SmoothFocusOnEnemy();
-                }
-                else
-                {
-                    if (distanceFromClosestUnit < 30)
-                    {
-                        SmoothFocusOnEnemy();
-                    }
-                }
-                break;
-        }   
-    }
-    private void SmoothFocusOnEnemy()
-    {
-        if(closestUnit != null)
-        {
-            if (_UM.unitList.Count == 0)
-            {
-                var targetRotation = Quaternion.LookRotation(_HOME.transform.position - transform.position);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
-            }
-            else
-            {
-                var targetRotation = Quaternion.LookRotation(closestUnit.transform.position - transform.position);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
-            }
-        }
-
+        ChangeState(EnemyState.DefendSite);
+        yield return new WaitForSeconds(0.5f);
+        hasArrivedAtHorgr = true;
     }
     #endregion
 
-    #region Damage
+    #region Triggers
     public override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
         if (!_HorgrExists)
             return;
         
-        if(other.CompareTag("Horgr"))
+        if(other.CompareTag("Horgr") && _HORGR.ContainsEnemy(this) && !spawnedFromSite)
         {
-            if (_HORGR.ContainsEnemy(this))
-                return;
-            
-            if(!spawnedFromSite)
-            {
-                _HORGR.AddEnemy(this);
-                StartCoroutine(WaitForHorgr());
-            }
+            _HORGR.AddEnemy(this);
+            StartCoroutine(WaitForHorgr());
         }
     }
     public override void OnTriggerExit(Collider other)
     {
         base.OnTriggerExit(other);
-
-        if (!_HorgrExists)
-            return;
-        
-        if (other.CompareTag("Horgr"))
+        if (other.CompareTag("Horgr") && !spawnedFromSite)
         {
-            if(spawnedFromSite == false)
-            {
-                _HORGR.RemoveEnemy(this);
-                hasArrivedAtHorgr = false;
-            }
-
+            _HORGR.RemoveEnemy(this);
+            SetState();
+            hasArrivedAtHorgr = false;
         }
     }
+    #endregion
     
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if(other.tag == "Spit")
-    //    {
-    //        TakeDamage(_GM.spitDamage * Time.deltaTime);
-    //    }
-    //}
-
-    IEnumerator WaitForHorgr()
-    {
-        Debug.Log("Horgr coroutine");
-        yield return new WaitForSeconds(0.5f);
-        animator.SetBool("hasStoppedHorgr", true);
-        hasArrivedAtHorgr = true;
-    }
-    private int RandomCheerAnim()
-    {
-        int rnd = Random.Range(1, 3);
-        return rnd;
-    }
+    #region Damage
     public override void TakeDamage(int damage, string _damagedBy)
     {
         base.TakeDamage(damage, _damagedBy);
     }
     public override void Die(Enemy _thisUnit, string _killedBy, DeathID _deathID)
     {
+        Destroy(horgrTargetPoint);
         base.Die(_thisUnit, _killedBy, _deathID);
     }
     #endregion
-
-    public void PlayFootstepSound()
-    {
-        PlaySound(_SM.GetHumanFootstepSound());
-    }
-    public void PlayKnightFootstepSound()
-    {
-        PlaySound(_SM.GetKnightFootstepSound());
-    }
-
+    
     public void FindUnit()
     {
         if (_NoGuardians)
@@ -239,24 +149,5 @@ public class Warrior : Enemy
     public void FindHomeTree()
     {
         agent.SetDestination(_HOME.transform.position);
-    }
-
-    private void OnArrivedAtHorgr()
-    {
-        state = EnemyState.Attack;
-    }
-    public override void Win()
-    {
-        state = EnemyState.Victory;
-        StopCoroutine(Tick());
-    }
-    private void OnEnable()
-    {
-        GameEvents.OnUnitArrivedAtHorgr += OnArrivedAtHorgr;
-    }
-
-    private void OnDisable()
-    {
-        GameEvents.OnUnitArrivedAtHorgr -= OnArrivedAtHorgr;
     }
 }

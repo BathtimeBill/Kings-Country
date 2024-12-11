@@ -23,7 +23,9 @@ public class Enemy : GameBehaviour
     public Transform closestUnit;
     public float distanceFromClosestUnit;
     public Transform targetObject;
-    public float distanceFromTarget;
+    public float distanceToTarget;
+    [Header("Weapons")]
+    public Collider weaponCollider;
     [Header("Audio")]
     public GameObject SFXPool;
     private int soundPoolCurrent;
@@ -105,31 +107,26 @@ public class Enemy : GameBehaviour
         if (_GM.gameState == GameState.Lose)
             StopAllCoroutines();
         
-        SetTargets();
+        SetState();
         
         yield return new WaitForSeconds(tickRate);
         StartCoroutine(Tick());
     }
-    
-    public void SetClosestUnit()
-    {
-        if (_NoGuardians)
-            return;
-        closestUnit = GetClosestUnit();
-        distanceFromClosestUnit = closestUnit == null ? 20000 : Vector3.Distance(closestUnit.transform.position, transform.position);
-    }
+    public virtual void SetState() { }
     
     public void ChangeState(EnemyState _state)
     {
         state = _state;
         healthBar.ChangeUnitState(state.ToString());
-        HandleState();
+        if(state == EnemyState.Attack)
+            DoAttack();
     }
-
-    public virtual void SetTargets() { }
 
     public void HandleState()
     {
+        agent.SetDestination(targetObject.position);
+        distanceToTarget = Vector3.Distance(targetObject.transform.position, transform.position);
+        print("State: " + state + " | Target: " + targetObject.name);
         enemyAnimation.PlayWalkAnimation(agent.velocity.magnitude);
         
         switch (state)
@@ -137,14 +134,17 @@ public class Enemy : GameBehaviour
             case EnemyState.Work:
                 HandleWorkState();
                 break;
-            case EnemyState.Relax:
-                HandleRelaxState();
+            case EnemyState.Idle:
+                HandleIdleState();
                 break;
             case EnemyState.Attack:
                 HandleAttackState();
                 break;
             case EnemyState.ClaimSite:
                 HandleClaimState();
+                break;
+            case EnemyState.DefendSite:
+                HandleDefendState();
                 break;
             case EnemyState.Victory:
                 HandleVictoryState();
@@ -156,39 +156,29 @@ public class Enemy : GameBehaviour
     {
         if (!targetObject)
             return;
-        
-        agent.SetDestination(targetObject.position);
-        distanceFromTarget = Vector3.Distance(targetObject.transform.position, transform.position);
-        if (distanceFromTarget < attackRange)
+
+        if (TargetWithinRange)
         {
             ChangeState(EnemyState.Attack);
-            SmoothFocusOnTarget(targetObject);
         }
     }
 
-    public virtual void HandleRelaxState()
+    public virtual void HandleIdleState()
     {
         StandStill();
-        //enemyAnimation.PlayRelaxAnimation();
     }
-    
     public virtual void HandleAttackState() 
     { 
-        if (distanceFromTarget > attackRange)
-        {
+        if (!TargetWithinRange)
             ChangeState(EnemyState.Work);
-        }
         else
-        {
-            StandStill();
-            SmoothFocusOnTarget(targetObject);
-            enemyAnimation.PlayAttackAnimation();
-        }
+            DoAttack();
     }
+    public virtual void HandleClaimState() { }
 
-    public virtual void HandleClaimState()
+    public virtual void HandleDefendState()
     {
-        
+        StandStill(); 
     }
     public virtual void HandleVictoryState()
     {
@@ -197,9 +187,15 @@ public class Enemy : GameBehaviour
         enemyAnimation.StopAllCoroutines();
         enemyAnimation.PlayVictoryAnimation();
     }
-    
+    //This ensures that we move into the attack animation
+    public void DoAttack()
+    {
+        StandStill();
+        SmoothFocusOnTarget(targetObject);
+        enemyAnimation.PlayAttackAnimation();
+    }
     public void StandStill() => agent.SetDestination(transform.position);
-    
+    public bool TargetWithinRange => distanceToTarget < attackRange;
     public void SmoothFocusOnTarget(Transform _target)
     {
         if (!_target)
@@ -207,9 +203,14 @@ public class Enemy : GameBehaviour
         var targetRotation = Quaternion.LookRotation(_target.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
     }
+    public void SetClosestUnit()
+    {
+        closestUnit = GetClosestUnit();
+        distanceFromClosestUnit = !closestUnit ? 20000 : Vector3.Distance(closestUnit.transform.position, transform.position);
+    }
     private void FixedUpdate()
     {
-        if(state == EnemyState.Attack)
+        if(state == EnemyState.Attack || state == EnemyState.Work || state == EnemyState.ClaimSite)
         {
             SmoothFocusOnTarget(targetObject);
         }

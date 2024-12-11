@@ -12,8 +12,6 @@ public static class GameEvents
     public static event Action<TreeID> OnTreePlaced = null;
     public static event Action<TreeID> OnTreeDestroyed = null;
     public static event Action OnUnitMove = null;
-    public static event Action OnUnitArrivedAtHorgr = null;
-    public static event Action OnUnitArrivedAtHut = null;
     public static event Action OnTreeHit = null;
 
     public static event Action OnFyrePlaced = null;
@@ -133,27 +131,11 @@ public static class GameEvents
             case PerkID.Tree:        OnTreeUpgrade?.Invoke(); break;
         }
     }
-    public static void ReportOnContinueButton()
-    {
-        OnContinueButton?.Invoke();
-    }
+    public static void ReportOnContinueButton() => OnContinueButton?.Invoke();
     public static void ReportOnDayBegin(int _day) => OnDayBegin?.Invoke(_day);
-
     public static void ReportOnDayOver(int _day) => OnDayOver?.Invoke(_day);
+    public static void ReportOnTreeHit() => OnTreeHit?.Invoke();
 
-    public static void ReportOnTreeHit()
-    {
-        OnTreeHit?.Invoke();
-    }
-    
-    public static void ReportOnUnitArrivedAtHorgr()
-    {
-        OnUnitArrivedAtHorgr?.Invoke();
-    }
-    public static void ReportOnUnitArrivedAtHut()
-    {
-        OnUnitArrivedAtHut?.Invoke();
-    }
     public static void ReportOnFertileSoilUpgrade()
     {
         OnFertileSoilUpgrade?.Invoke();
@@ -176,9 +158,7 @@ public static class GameEvents
     public static void ReportOnRunePlaced() => OnRunePlaced?.Invoke();
     public static void ReportOnRuneDestroyed() => OnRuneDestroyed?.Invoke();
     public static void ReportOnGameOver() => OnGameOver?.Invoke();
-
     public static void ReportOnUnitMove() => OnUnitMove?.Invoke();
-
     public static void ReportOnWildlifeValueChanged(int _value) => OnWildlifeValueChange?.Invoke(_value);
     public static void ReportOnWildlifeKilled(GameObject _wildlife) => OnWildlifeKilled?.Invoke(_wildlife);
     public static void ReportOnTreePlaced(TreeID _treeID)=> OnTreePlaced?.Invoke(_treeID);
@@ -197,8 +177,6 @@ public static class GameEvents
     {
         OnLevelStart?.Invoke();
     }
-    
-    
 
     #region Unit Management
     public static event Action<string, string, int> OnCreatureKilled = null;

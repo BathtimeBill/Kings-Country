@@ -206,10 +206,14 @@ MonoBehaviour:
   tickRate: 0.5
   closestUnit: {fileID: 0}
   distanceFromClosestUnit: 0
+  targetObject: {fileID: 0}
+  distanceToTarget: 0
+  weaponCollider: {fileID: 8694437643718295660}
   SFXPool: {fileID: 6762548017972621736}
   debugUnit: {fileID: 2858673251314458797}
+  distanceToTree: 0
   hasArrivedAtHorgr: 0
-  horgrSwitch: 0
+  distanceToHorgr: 0
 --- !u!136 &5842521611548964515
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -563,9 +567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb6e1964cd2fdd40a9e422f616806f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 6921572088926531857}
   weaponCollider: {fileID: 0}
-  isAttacking: 0
 --- !u!114 &6831773827517063397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -837,11 +839,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sword1
       objectReference: {fileID: 0}
-    - target: {fileID: 6890423671845061831, guid: 04305d3c8728bb74183ab4ade67ab342,
-        type: 3}
-      propertyPath: humanID
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 8224450487793042091, guid: 04305d3c8728bb74183ab4ade67ab342,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -892,11 +889,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 89.999
       objectReference: {fileID: 0}
-    - target: {fileID: 8224450487793042091, guid: 04305d3c8728bb74183ab4ade67ab342,
-        type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -905,6 +897,12 @@ PrefabInstance:
 --- !u!4 &242752080254897807 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8224450487793042091, guid: 04305d3c8728bb74183ab4ade67ab342,
+    type: 3}
+  m_PrefabInstance: {fileID: 8177819628830313508}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &8694437643718295660 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 708660975623523400, guid: 04305d3c8728bb74183ab4ade67ab342,
     type: 3}
   m_PrefabInstance: {fileID: 8177819628830313508}
   m_PrefabAsset: {fileID: 0}

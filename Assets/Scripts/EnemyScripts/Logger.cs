@@ -3,60 +3,33 @@ using UnityEngine;
 
 public class Logger : Enemy
 {
-
-    #region Startup
-    public override void Start()
-    {
-        base.Start();
-    }
-    #endregion
-
     #region AI
-    public override void HandleWorkState()
+    public override void SetState()
     {
         SetClosestUnit();
         attackRange = unitData.attackRange;
         if (_GuardiansExist && distanceFromClosestUnit < attackRange)
         {
-            targetObject = closestUnit;
-            print("Targeting Unit");
+            ChangeState(EnemyState.Attack);
+            targetObject = closestUnit.transform;
         }
         else if (_TreesExist)
         {
             targetObject = ObjectX.GetClosest(gameObject, _GM.trees).transform;
-            print("Targeting Tree");
         }
         else
         {
             targetObject = _HOME.transform;
             attackRange *= 2;
-            print("Targeting Home Tree");
         }
-
-        base.HandleWorkState();
+        
+        //agent.SetDestination(targetObject.position);
+        //distanceToTarget = Vector3.Distance(targetObject.transform.position, transform.position);
+        HandleState();
     }
-
-    public override void HandleRelaxState()
-    {
-    }
-
-    public override void HandleAttackState()
-    {
-       base.HandleAttackState();
-    }
-
-    public override void HandleClaimState()
-    {
-    }
-
-    public override void HandleVictoryState()
-    {
-        base.HandleVictoryState();
-    }
-    
     #endregion
 
-    #region Damage
+    #region Triggers
 
     public override void OnTriggerEnter(Collider other)
     {
@@ -69,6 +42,7 @@ public class Logger : Enemy
     
     #endregion
     
+    #region Damage
     public override void TakeDamage(int damage, string _damagedBy)
     {
         base.TakeDamage(damage, _damagedBy);
@@ -78,29 +52,5 @@ public class Logger : Enemy
     {
         base.Die(_thisUnit, _killedBy, _deathID);
     }
-    public override void DropMaegen()
-    {
-        int rnd;
-        if (_TUTORIAL.isTutorial && _TUTORIAL.tutorialStage == 8)
-        {
-            rnd = 1;
-        }
-        else
-        {
-            rnd = Random.Range(1, maxRandomDropChance);
-        }
-        if (rnd == 1)
-        {
-            Instantiate(_SETTINGS.general.maegenPickup, transform.position, transform.rotation);
-        }
-    }
-    //public override void Launch()
-    //{
-    //    base.Launch();
-    //}
-
-    public override void Win()
-    {
-        base.Win();
-    }
+    #endregion
 }

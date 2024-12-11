@@ -170,9 +170,10 @@ public enum PlayMode
 public enum EnemyState
 {
     Work,
-    Relax,
+    Idle,
     Attack,
     ClaimSite,
+    DefendSite,
     Victory,
 }
 public enum UnitState

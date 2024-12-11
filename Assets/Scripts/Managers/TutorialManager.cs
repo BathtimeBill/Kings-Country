@@ -37,7 +37,6 @@ public class TutorialManager : GameBehaviour
     public GameObject inGameContinueButton;
     public GameObject treeButton;
     public GameObject maegenIcon;
-    public int tutorialStage;
     public bool isTutorial;
 
 /*    [HideInInspector] */public bool tutorialComplete;
