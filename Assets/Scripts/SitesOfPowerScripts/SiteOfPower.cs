@@ -18,7 +18,7 @@ public class SiteOfPower : GameBehaviour
     public GameObject playerControlFX;
     public GameObject enemyControlFX;
 
-    public BV.Range spawnRates;
+    private BV.Range spawnRates;
     public float currentClaimTime;
     public SiteState siteState;
     public float currentClaimRate;
@@ -28,6 +28,7 @@ public class SiteOfPower : GameBehaviour
     {
         currentClaimRate = siteData.claimRate;
         ChangeSiteState(SiteState.Claimed);
+        spawnRates = siteData.spawnRate;
         healthBar.AdjustHealthBar(currentClaimTime, siteData.claimTime, GetCaptureColor(siteState));
     }
 

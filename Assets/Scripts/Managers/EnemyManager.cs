@@ -36,8 +36,8 @@ public class EnemyManager : Singleton<EnemyManager>
 
     public void BeginNewDay()
     {
-        if (noAutoSpawning)
-            return;
+        //if (noAutoSpawning)
+        //    return;
         
         currentDaySpawnAmount = spawnAmounts[_currentDay];
         enemies.Clear();
