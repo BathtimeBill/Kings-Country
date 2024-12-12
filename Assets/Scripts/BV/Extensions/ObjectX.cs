@@ -165,6 +165,59 @@ public static class ObjectX
     /// <param name="_this">The object to measure from</param>
     /// <param name="_objectList">The list of objects to check</param>
     /// <returns>The closest object in the object list</returns>
+    static public GameObject GetClosest<T>(GameObject _this, List<T> _objectList) where T : Component
+    {
+        if (_objectList == null || _objectList.Count == 0)
+            return null;
+
+        float closestDistance = Mathf.Infinity;
+        GameObject closest = null;
+
+        foreach (T item in _objectList)
+        {
+            float currentDistance = Vector3.Distance(_this.transform.position, item.transform.position);
+            if (currentDistance < closestDistance)
+            {
+                closestDistance = currentDistance;
+                closest = item.gameObject;
+            }
+        }
+        return closest;
+    }
+    
+
+    /// <summary>
+    /// Gets the closest object from an array of objects
+    /// </summary>
+    /// <param name="_this">The object to measure from</param>
+    /// <param name="_objectList">The array of objects to check</param>
+    /// <returns>The closest object in the object list</returns>
+    static public GameObject GetClosest<T>(GameObject _this, T[] _objectArray) where T : Component
+    {
+        if (_objectArray == null || _objectArray.Length == 0)
+            return null;
+
+        float closestDistance = Mathf.Infinity;
+        GameObject closest = null;
+
+        foreach (T item in _objectArray)
+        {
+            float currentDistance = Vector3.Distance(_this.transform.position, item.transform.position);
+            if (currentDistance < closestDistance)
+            {
+                closestDistance = currentDistance;
+                closest = item.gameObject;
+            }
+        }
+        return closest;
+    }
+    
+    /// <summary>
+    /// Gets the closest object from a list of objects
+    /// </summary>
+    /// <param name="_this">The object to measure from</param>
+    /// <param name="_objectList">The list of objects to check</param>
+    /// <returns>The closest object in the object list</returns>
     static public GameObject GetClosest(GameObject _this, List<GameObject> _objectList)
     {
         if (_objectList == null || _objectList.Count == 0)

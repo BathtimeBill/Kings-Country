@@ -87,7 +87,7 @@ public class SiteOfPower : GameBehaviour
                 if (spawnDelay <= 0)
                 {
                     spawnDelay = Random.Range(spawnRates.min, spawnRates.max);
-                    _EM.SpawnHutEnemy(spawnLocation.transform.position);
+                    _EM.SpawnSiteEnemy(spawnLocation.transform.position);
                 }
                 break;
         }

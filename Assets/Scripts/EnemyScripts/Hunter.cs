@@ -46,24 +46,51 @@ public class Hunter : Enemy
     {
         if (hasArrivedAtHut)
         {
-            targetObject = transform;
-            ChangeState(EnemyState.DefendSite);
+            if (distanceToClosestUnit < attackRange)
+            {
+                targetObject = closestUnit;
+                ChangeState(EnemyState.Attack);
+            }
+            else
+            {
+                targetObject = transform;
+                ChangeState(EnemyState.DefendSite);
+            }
+        }
+        else if (TargetWithinRange)
+        {
+            ChangeState(EnemyState.Attack);
+        }
+        else if (_HutExists)
+        {
+            if (_WildlifeExist && distanceToHut > distanceToWildlife)
+            {
+                targetObject = ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform;
+            }
+            else if(_WildlifeExist && distanceToHut <= distanceToWildlife && !spawnedFromSite)
+            {
+                targetObject = hutTargetPoint.transform;
+            }
+            else
+            {
+                targetObject = hutTargetPoint.transform;
+            }
+            ChangeState(EnemyState.Work);
+        }
+        else if (_WildlifeExist)
+        {
+            targetObject = ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform;
+            ChangeState(EnemyState.Work);
         }
         else if (distanceToClosestUnit < attackRange)
         {
             targetObject = closestUnit;
             ChangeState(EnemyState.Attack);
-            
         }
-        else if (distanceToHut > distanceToWildlife)
+        else
         {
-            targetObject = ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform;
-            ChangeState(EnemyState.Work);
-        }
-        else if (distanceToHut <= distanceToWildlife && !spawnedFromSite)
-        {
-            targetObject = hutTargetPoint.transform;
-            ChangeState(EnemyState.Work);
+            targetObject = transform;
+            ChangeState(EnemyState.Idle);
         }
     }
     
@@ -72,17 +99,14 @@ public class Hunter : Enemy
         if (_NoWildlife && _NoGuardians && !_HutExists)
         {
             ChangeState(EnemyState.Idle);
-            return;
         }
-        base.HandleWorkState();
     }
 
     public override void HandleIdleState()
     {
-        if(_WildlifeExist || _GuardiansExist && !hasArrivedAtHut)
+        enemyAnimation.PlayAttackAnimation(false);
+        if(_WildlifeExist || !hasArrivedAtHut)
             ChangeState(EnemyState.Work);
-        else
-            base.HandleIdleState();
     }
     
     public override void HandleAttackState()

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Enemy : GameBehaviour
 {
@@ -106,23 +107,24 @@ public class Enemy : GameBehaviour
         HandleState();
         HandleMovement();
         
-        print("State: " + state + " | Target: " + targetObject.name);
+        //print("State: " + state + " | Target: " + targetObject.name);
         yield return new WaitForSeconds(tickRate);
         if (_GM.gameState == GameState.Lose)
             HandleVictoryState();
         else
             StartCoroutine(Tick());
     }
-    public virtual void SetState() { }
-
     public virtual void UpdateDistances()
     {
-        SetClosestUnit();
+        closestUnit = GetClosestUnit();
+        distanceToClosestUnit = !closestUnit ? 20000 : Vector3.Distance(closestUnit.transform.position, transform.position);
     }
     public virtual void DetermineState() { }
 
     public void HandleMovement()
     {
+        //if (!targetObject)
+        //    return;
         agent.SetDestination(targetObject.position);
         distanceToTarget = Vector3.Distance(targetObject.transform.position, transform.position);
         bool attacking = agent.velocity == Vector3.zero || CanAttack; 
@@ -362,11 +364,8 @@ public class Enemy : GameBehaviour
         }
 
         if (_UM.unitList == null)
-        {
             return null;
-        }
-        else
-            return trans;
+        return trans;
     }
     
     #region Sound
@@ -394,7 +393,7 @@ public class Enemy : GameBehaviour
     public virtual void Win(){}
     private void OnGameOver()
     {
-        HandleAttackState();
+        HandleVictoryState();
     }
 
     private void OnEnable()

@@ -36,8 +36,8 @@ public class EnemyManager : Singleton<EnemyManager>
 
     public void BeginNewDay()
     {
-        //if (noAutoSpawning)
-        //    return;
+        if (noAutoSpawning)
+            return;
         
         currentDaySpawnAmount = spawnAmounts[_currentDay];
         enemies.Clear();
@@ -47,10 +47,11 @@ public class EnemyManager : Singleton<EnemyManager>
 
     #region Spawning
 
-    private void SpawnEnemy(GameObject _enemy, Vector3 _location)
+    private void SpawnEnemy(GameObject _enemy, Vector3 _location, bool _spawnedFromSite = false)
     {
         //POOL REDO
         GameObject go = Instantiate(_enemy, _location, Quaternion.identity);
+        go.GetComponent<Enemy>().spawnedFromSite = _spawnedFromSite;
         //GameObject go = PoolX.GetFromPool(_enemy, enemyPool);
         //go.transform.localPosition = _location;
         //go.transform.rotation = transform.rotation;
@@ -72,13 +73,13 @@ public class EnemyManager : Singleton<EnemyManager>
             StartCoroutine(SpawnEnemies());
     }
 
-    public void SpawnHutEnemy(Vector3 spawnLocation)
+    public void SpawnSiteEnemy(Vector3 spawnLocation)
     {
         if(!_inDay) 
             return;
 
         int rndHuman = Random.Range(0, enemyIDList.Count);
-        SpawnEnemy(_DATA.GetUnit(enemyIDList[rndHuman]).playModel, spawnLocation);
+        SpawnEnemy(_DATA.GetUnit(enemyIDList[rndHuman]).playModel, spawnLocation, true);
     }
     
     private void SpawnDog()  //CHECK IF VALUES ARE RIGHT

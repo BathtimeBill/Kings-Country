@@ -19,8 +19,7 @@ public class Warrior : Enemy
     {
         if (_HorgrExists)
         {
-            Vector3 randomHorgrPos = SpawnX.GetSpawnPositionInRadius(_HORGR.transform.position,
-                _HORGR.GetComponent<SphereCollider>().radius);
+            Vector3 randomHorgrPos = SpawnX.GetSpawnPositionInRadius(_HORGR.transform.position, _HORGR.GetComponent<SphereCollider>().radius);
             horgrTargetPoint = new GameObject("HorgrTargetPoint");
             horgrTargetPoint.transform.position = randomHorgrPos;
         }
@@ -37,55 +36,53 @@ public class Warrior : Enemy
 
     public override void DetermineState()
     {
-        if (hasArrivedAtHorgr)
+        //First determine the target object...
+        if (_HorgrExists && !spawnedFromSite)
         {
-            if (distanceToClosestUnit < attackRange)
+            if (hasArrivedAtHorgr)
             {
-                targetObject = closestUnit;
-                ChangeState(EnemyState.Attack);
+                targetObject = (distanceToClosestUnit < attackRange) ? closestUnit : transform;
             }
             else
             {
-                targetObject = transform;
-                ChangeState(EnemyState.DefendSite);
+                targetObject = (distanceToHorgr > distanceToClosestUnit) ? closestUnit : horgrTargetPoint.transform;
             }
-        }
-        else if (distanceToClosestUnit < attackRange)
-        {
-            targetObject = closestUnit;
-            ChangeState(EnemyState.Attack);
-        }
-        else if (_HorgrExists && distanceToHorgr > distanceToClosestUnit)
-        {
-            targetObject = closestUnit;
-            ChangeState(EnemyState.Work);
-        }
-        else if (_HorgrExists && distanceToHorgr <= distanceToClosestUnit && !spawnedFromSite)
-        {
-            targetObject = horgrTargetPoint.transform;
-            ChangeState(EnemyState.Work);
         }
         else
         {
-            targetObject = _HOME.transform;
-            ChangeState(EnemyState.Work);
+            targetObject = (distanceToClosestUnit < attackRange) ? closestUnit : _HOME.transform;
         }
+
+        //...then set the state based on our conditions
+        
+        if(hasArrivedAtHorgr)
+            HandleDefendState();
+        else if (TargetWithinRange && targetObject != horgrTargetPoint.transform)
+            HandleAttackState();
+        else
+            HandleWorkState();
     }
     
     public override void HandleWorkState()
     {
-        if (!targetObject)
-            return;
-
-        if (TargetWithinRange)
+        ChangeState(EnemyState.Work);
+        /*if (TargetWithinRange)
             ChangeState(EnemyState.Attack);
+        else if(hasArrivedAtHorgr)
+            ChangeState(EnemyState.DefendSite);
+        else
+            ChangeState(EnemyState.Work);*/
     }
 
     public override void HandleAttackState()
     {
-        enemyAnimation.PlayHoldAnimation(false);
-        if (!TargetWithinRange)
-            ChangeState(EnemyState.Work);
+        //if (!TargetWithinRange)
+        //    ChangeState(EnemyState.Work);
+        //else
+        //{
+            ChangeState(EnemyState.Attack);
+            enemyAnimation.PlayHoldAnimation(false);
+        //}
     }
     
     public override void HandleDefendState()
@@ -93,7 +90,7 @@ public class Warrior : Enemy
         if (_HORGR.HasUnits())
         {
             targetObject = closestUnit;
-            ChangeState(EnemyState.Attack);
+            HandleAttackState();
         }
         else
         {

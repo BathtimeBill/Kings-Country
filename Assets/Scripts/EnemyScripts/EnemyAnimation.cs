@@ -26,7 +26,6 @@ public class EnemyAnimation : GameBehaviour
         print("Finished Attack Animation");
         
         isAttacking = false;
-        enemy.SetState();
     }
     public void PlayWalkAnimation(float _speed) => animator.SetFloat("Speed", _speed);
     public void PlayAttackAnimation(bool _attacking) => animator.SetBool("Attacking", _attacking);
