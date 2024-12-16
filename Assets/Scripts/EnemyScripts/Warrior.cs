@@ -42,47 +42,25 @@ public class Warrior : Enemy
             if (hasArrivedAtHorgr)
             {
                 targetObject = (distanceToClosestUnit < attackRange) ? closestUnit : transform;
+                HandleDefendState();
             }
             else
             {
                 targetObject = (distanceToHorgr > distanceToClosestUnit) ? closestUnit : horgrTargetPoint.transform;
+                HandleWorkState();
             }
         }
         else
         {
             targetObject = (distanceToClosestUnit < attackRange) ? closestUnit : _HOME.transform;
-        }
-
-        //...then set the state based on our conditions
-        
-        if(hasArrivedAtHorgr)
-            HandleDefendState();
-        else if (TargetWithinRange && targetObject != horgrTargetPoint.transform)
-            HandleAttackState();
-        else
             HandleWorkState();
+        }
     }
     
     public override void HandleWorkState()
     {
         ChangeState(EnemyState.Work);
-        /*if (TargetWithinRange)
-            ChangeState(EnemyState.Attack);
-        else if(hasArrivedAtHorgr)
-            ChangeState(EnemyState.DefendSite);
-        else
-            ChangeState(EnemyState.Work);*/
-    }
-
-    public override void HandleAttackState()
-    {
-        //if (!TargetWithinRange)
-        //    ChangeState(EnemyState.Work);
-        //else
-        //{
-            ChangeState(EnemyState.Attack);
-            enemyAnimation.PlayHoldAnimation(false);
-        //}
+        enemyAnimation.PlayHoldAnimation(false);
     }
     
     public override void HandleDefendState()
@@ -90,13 +68,27 @@ public class Warrior : Enemy
         if (_HORGR.HasUnits())
         {
             targetObject = closestUnit;
-            HandleAttackState();
+            HandleTargetState();
         }
         else
         {
             enemyAnimation.PlayHoldAnimation(true);
             StandStill(); 
             ChangeState(EnemyState.DefendSite);
+        }
+    }
+
+    public override void CheckAttackState()
+    {
+        if (_HorgrExists && targetObject == horgrTargetPoint.transform)
+        {
+            canAttack = false;
+            ChangeState(EnemyState.Work);
+        }
+        else
+        {
+            canAttack = distanceToTarget <= stoppingDistance && targetObject != transform;
+            base.CheckAttackState();
         }
     }
     

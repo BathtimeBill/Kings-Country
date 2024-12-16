@@ -7,15 +7,31 @@ public class Logger : Enemy
     {
         if (_GuardiansExist && distanceToClosestUnit < attackRange)
         {
-            ChangeState(EnemyState.Attack);
+            HandleTargetState();
             targetObject = closestUnit.transform;
         }
         else
         {
-            ChangeState(EnemyState.Work);
             targetObject = _TreesExist ? ObjectX.GetClosest(gameObject, _GM.trees).transform : _HOME.transform;
             attackRange = _TreesExist ? unitData.attackRange : unitData.attackRange * 2;
+            HandleWorkState();
         }
+    }
+    
+    public override void HandleWorkState()
+    {
+        ChangeState(EnemyState.Work);
+    }
+
+    public override void HandleTargetState()
+    {
+        ChangeState(EnemyState.Target);
+    }
+    
+    public override void CheckAttackState()
+    {
+        canAttack = distanceToTarget <= stoppingDistance && targetObject != transform;
+        base.CheckAttackState();
     }
     #endregion
 

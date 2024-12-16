@@ -25,6 +25,7 @@ public class Enemy : GameBehaviour
     public float distanceToClosestUnit;
     public Transform targetObject;
     public float distanceToTarget;
+    public bool canAttack;
     [Header("Weapons")]
     public Collider weaponCollider;
     [Header("Audio")]
@@ -33,7 +34,9 @@ public class Enemy : GameBehaviour
     private AudioSource[] soundPool;
     [Header("Debug")] 
     public DebugUnit debugUnit;
+
     private bool invincible = true;
+    private bool initializeHack = false;
     
     #region Getters & Setters
     [HideInInspector] private float attackRangeValue;
@@ -89,7 +92,8 @@ public class Enemy : GameBehaviour
         StartCoroutine(WaitForInvincible());
         GameEvents.ReportOnHumanSpawned(unitID);
         ChangeState(EnemyState.Work);
-        StartCoroutine(Tick());
+        ExecuteAfterSeconds(0.5f, ()=> StartCoroutine(Tick()));
+        
     }
     private IEnumerator WaitForInvincible()
     {
@@ -104,8 +108,8 @@ public class Enemy : GameBehaviour
     {
         UpdateDistances();
         DetermineState();
-        HandleState();
         HandleMovement();
+        CheckAttackState();
         
         //print("State: " + state + " | Target: " + targetObject.name);
         yield return new WaitForSeconds(tickRate);
@@ -123,12 +127,8 @@ public class Enemy : GameBehaviour
 
     public void HandleMovement()
     {
-        //if (!targetObject)
-        //    return;
         agent.SetDestination(targetObject.position);
         distanceToTarget = Vector3.Distance(targetObject.transform.position, transform.position);
-        bool attacking = agent.velocity == Vector3.zero || CanAttack; 
-        enemyAnimation.PlayAttackAnimation(attacking);
         enemyAnimation.PlayWalkAnimation(agent.velocity.magnitude);
     }
     
@@ -137,32 +137,20 @@ public class Enemy : GameBehaviour
         state = _state;
         healthBar.ChangeUnitState(state.ToString());
     }
-
-    public void HandleState()
-    {
-        switch (state)
-        {
-            case EnemyState.Work:
-                HandleWorkState();
-                break;
-            case EnemyState.Idle:
-                HandleIdleState();
-                break;
-            case EnemyState.Attack:
-                HandleAttackState();
-                break;
-            case EnemyState.DefendSite:
-                HandleDefendState();
-                break;
-            case EnemyState.Victory:
-                HandleVictoryState();
-                break;
-        }
-    }
     
     public virtual void HandleWorkState() { }
     public virtual void HandleIdleState() { }
-    public virtual void HandleAttackState() { }
+
+    public virtual void CheckAttackState()
+    {
+        bool attacking = agent.velocity == Vector3.zero || canAttack; 
+        if(attacking) 
+            ChangeState(EnemyState.Attack);
+        else
+            ChangeState(EnemyState.Work);
+        enemyAnimation.PlayAttackAnimation(attacking);
+    }
+    public virtual void HandleTargetState() { }
     public virtual void HandleDefendState() { }
     public void HandleVictoryState()
     {
@@ -172,8 +160,8 @@ public class Enemy : GameBehaviour
         enemyAnimation.PlayVictoryAnimation();
     }
     public void StandStill() => agent.SetDestination(transform.position);
-    public bool TargetWithinRange => distanceToTarget < attackRange;
-    public bool CanAttack => distanceToTarget <= stoppingDistance;
+    public bool TargetWithinAttackRange => distanceToTarget < attackRange;
+    
     public void SmoothFocusOnTarget(Transform _target)
     {
         if (!_target)
@@ -188,7 +176,7 @@ public class Enemy : GameBehaviour
     }
     private void FixedUpdate()
     {
-        if(state == EnemyState.Attack || state == EnemyState.Work)
+        if(state == EnemyState.Attack || state == EnemyState.Work && targetObject != transform)
         {
             SmoothFocusOnTarget(targetObject);
         }

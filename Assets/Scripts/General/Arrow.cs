@@ -9,7 +9,7 @@ public class Arrow : GameBehaviour
     public void Setup(Transform _target)
     {
         target = _target;
-        colliderCentre = _target.GetComponent<Collider>().bounds.center;
+        colliderCentre = !_target.GetComponent<Collider>() ? _target.position : _target.GetComponent<Collider>().bounds.center;
         GetComponent<AudioSource>().Play();
     }
     private void FixedUpdate()

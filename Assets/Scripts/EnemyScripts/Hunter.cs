@@ -44,76 +44,48 @@ public class Hunter : Enemy
 
     public override void DetermineState()
     {
-        if (hasArrivedAtHut)
+        if (_HutExists && !spawnedFromSite)
         {
-            if (distanceToClosestUnit < attackRange)
+            if (hasArrivedAtHut)
             {
-                targetObject = closestUnit;
-                ChangeState(EnemyState.Attack);
+                targetObject = (distanceToClosestUnit < attackRange) ? closestUnit : transform;
+                HandleDefendState();
             }
             else
             {
-                targetObject = transform;
-                ChangeState(EnemyState.DefendSite);
+                if (_WildlifeExist)
+                {
+                    targetObject = (distanceToHut > distanceToWildlife) ? ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform : hutTargetPoint.transform;
+                }
+                else
+                {
+                    targetObject = hutTargetPoint.transform;
+                }
+                HandleWorkState();
             }
-        }
-        else if (TargetWithinRange)
-        {
-            ChangeState(EnemyState.Attack);
-        }
-        else if (_HutExists)
-        {
-            if (_WildlifeExist && distanceToHut > distanceToWildlife)
-            {
-                targetObject = ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform;
-            }
-            else if(_WildlifeExist && distanceToHut <= distanceToWildlife && !spawnedFromSite)
-            {
-                targetObject = hutTargetPoint.transform;
-            }
-            else
-            {
-                targetObject = hutTargetPoint.transform;
-            }
-            ChangeState(EnemyState.Work);
         }
         else if (_WildlifeExist)
         {
             targetObject = ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform;
-            ChangeState(EnemyState.Work);
-        }
-        else if (distanceToClosestUnit < attackRange)
-        {
-            targetObject = closestUnit;
-            ChangeState(EnemyState.Attack);
+            HandleWorkState();
         }
         else
         {
             targetObject = transform;
-            ChangeState(EnemyState.Idle);
+            HandleIdleState();
         }
     }
     
     public override void HandleWorkState()
     {
-        if (_NoWildlife && _NoGuardians && !_HutExists)
-        {
-            ChangeState(EnemyState.Idle);
-        }
+        ChangeState(EnemyState.Work);
+        enemyAnimation.PlayHoldAnimation(false);
     }
 
     public override void HandleIdleState()
     {
+        ChangeState(EnemyState.Idle);
         enemyAnimation.PlayAttackAnimation(false);
-        if(_WildlifeExist || !hasArrivedAtHut)
-            ChangeState(EnemyState.Work);
-    }
-    
-    public override void HandleAttackState()
-    {
-        enemyAnimation.PlayHoldAnimation(false);
-        if (!TargetWithinRange)
-            ChangeState(EnemyState.Work);
     }
 
     public override void HandleDefendState()
@@ -121,13 +93,27 @@ public class Hunter : Enemy
         if (_HUT.HasUnits())
         {
             targetObject = closestUnit;
-            ChangeState(EnemyState.Attack);
+            HandleTargetState();
         }
         else
         {
             enemyAnimation.PlayHoldAnimation(true);
             StandStill(); 
             ChangeState(EnemyState.DefendSite);
+        }
+    }
+
+    public override void CheckAttackState()
+    {
+        if (_HutExists && targetObject == hutTargetPoint.transform || _NoWildlife)
+        {
+            canAttack = false;
+            HandleIdleState();
+        }
+        else
+        {
+            canAttack = distanceToTarget <= attackRange && targetObject != transform;
+            base.CheckAttackState();
         }
     }
 

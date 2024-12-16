@@ -68,7 +68,7 @@ public class Lord : Enemy
         {
             horseAnimator.SetBool("hasStopped", true);
         }
-        HandleState();
+        //HandleState();
         StartCoroutine(Tick());
     }
     
@@ -80,7 +80,7 @@ public class Lord : Enemy
     {
     }
 
-    public override void HandleAttackState()
+    public override void HandleTargetState()
     {
     }
 
