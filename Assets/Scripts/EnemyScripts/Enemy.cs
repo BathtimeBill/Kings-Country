@@ -92,8 +92,9 @@ public class Enemy : GameBehaviour
         StartCoroutine(WaitForInvincible());
         GameEvents.ReportOnHumanSpawned(unitID);
         ChangeState(EnemyState.Work);
-        ExecuteAfterSeconds(0.5f, ()=> StartCoroutine(Tick()));
-        
+        StartCoroutine(Tick());
+        ExecuteAfterSeconds(1f, () => initializeHack = true);
+
     }
     private IEnumerator WaitForInvincible()
     {
@@ -109,7 +110,8 @@ public class Enemy : GameBehaviour
         UpdateDistances();
         DetermineState();
         HandleMovement();
-        CheckAttackState();
+        if(initializeHack)
+            CheckAttackState();
         
         //print("State: " + state + " | Target: " + targetObject.name);
         yield return new WaitForSeconds(tickRate);
@@ -293,7 +295,12 @@ public class Enemy : GameBehaviour
             return;
         
         Vector3 forward = new Vector3(0, 180, 0);
-        GameObject bloodParticle = Instantiate(_DATA.GetUnit(unitID).bloodParticles, transform.position + new Vector3(0, 5, 0), transform.rotation);
+        if (unitData.bloodParticles != null)
+        {
+            GameObject bloodParticle = Instantiate(unitData.bloodParticles, transform.position + new Vector3(0, 5, 0), transform.rotation);
+            Destroy(bloodParticle, 5);
+        }
+
         //GameObject bloodParticle = Instantiate(_DATA.GetUnit(unitID).bloodParticles, transform.position, Quaternion.LookRotation(forward));
         health -= _damage;
         if(healthBar != null) 
@@ -311,6 +318,13 @@ public class Enemy : GameBehaviour
     public virtual void Die(Enemy _enemy, string _killedBy, DeathID _deathID) 
     {
         RemoveFromSites();
+        if (unitData.dieParticles != null)
+        {
+            GameObject dieParticle = Instantiate(unitData.bloodParticles, transform.position + new Vector3(0, 5, 0),
+                transform.rotation);
+            Destroy(dieParticle, 5);
+        }
+
         _EM.RemoveEnemy(_enemy, _killedBy, _deathID, transform.position, transform.rotation);
         if(_deathID == DeathID.Launch)
             DropMaegen();

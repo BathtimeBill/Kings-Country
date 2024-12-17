@@ -29,4 +29,5 @@ public class EnemyData : ScriptableObject
     public GameObject playModel;
     public GameObject ragdollModel;
     public GameObject bloodParticles;
+    public GameObject dieParticles;
 }
