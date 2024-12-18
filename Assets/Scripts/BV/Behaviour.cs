@@ -241,6 +241,11 @@ namespace BV
 		// Misc
 		//
 
+		#region Optimization
+		public bool IsNull<T>(T obj) => ReferenceEquals(obj, null);
+		protected bool NotNull<T>(T obj) => !ReferenceEquals(obj, null);
+		#endregion
+
 		/// <summary>
 		/// Creates an empty GameObject (container) and add this to it.
 		/// In other words, creates a new GameObject level between this and the parent.

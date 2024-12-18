@@ -86,7 +86,7 @@ public class Enemy : GameBehaviour
         stoppingDistance = enemyData.stoppingDistance;
         agent.stoppingDistance = stoppingDistance;
         _SM.PlaySound(enemyData.spawnSound);
-        if(healthBar != null)
+        if(NotNull(healthBar))
             healthBar.AdjustHealthBar(health, maxHealth);
         StartCoroutine(WaitForInvincible());
         GameEvents.ReportOnHumanSpawned(unitID);
@@ -136,7 +136,7 @@ public class Enemy : GameBehaviour
     public void ChangeState(EnemyState _state)
     {
         state = _state;
-        if (healthBar != null)
+        if (NotNull(healthBar))
             healthBar.ChangeUnitState(state.ToString());
     }
     
@@ -294,7 +294,7 @@ public class Enemy : GameBehaviour
         if (invincible)
             return;
         
-        if (enemyData.hitParticles != null)
+        if (NotNull(enemyData.hitParticles))
         {
             GameObject hitParticle = Instantiate(enemyData.hitParticles, transform.position + new Vector3(0, 5, 0), transform.rotation);
             Destroy(hitParticle, 5);
@@ -316,7 +316,7 @@ public class Enemy : GameBehaviour
     public virtual void Die(Enemy _enemy, string _killedBy, DeathID _deathID) 
     {
         RemoveFromSites();
-        if (enemyData.dieParticles != null)
+        if (NotNull(enemyData.dieParticles))
         {
             GameObject dieParticle = Instantiate(enemyData.dieParticles, transform.position + new Vector3(0, 5, 0),
                 transform.rotation);
