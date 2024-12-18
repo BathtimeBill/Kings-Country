@@ -1,4 +1,4 @@
-public class Orcus : Unit
+public class Orcus : Guardian
 {
     public override void Attack(int _attack)
     {

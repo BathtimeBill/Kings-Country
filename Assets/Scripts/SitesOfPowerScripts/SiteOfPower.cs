@@ -14,7 +14,7 @@ public class SiteOfPower : GameBehaviour
     public MapIcon mapIcon;
     
     public List<Enemy> enemies;
-    public List<Unit> units;
+    public List<Guardian> units;
     public GameObject playerControlFX;
     public GameObject enemyControlFX;
 
@@ -37,8 +37,8 @@ public class SiteOfPower : GameBehaviour
         if (siteData.id == SiteID.HomeTree)
             return;
         
-        bool isSpecialEnemy = other.GetComponent<Enemy>() && siteData.siteEnemies.Contains(other.GetComponent<Enemy>().unitID);
-        bool isUnit = other.GetComponent<Unit>() && _DATA.IsCreatureUnit(other.GetComponent<Unit>().unitID.ToString());
+        bool isSpecialEnemy = other.GetComponent<Enemy>() && siteData.siteEnemies.Contains(other.GetComponent<Enemy>().enemyID);
+        bool isUnit = other.GetComponent<Guardian>() && _DATA.IsGuardianUnit(other.GetComponent<Guardian>().unitID.ToString());
 
         if (isSpecialEnemy && siteState != SiteState.Captured)
         {
@@ -101,9 +101,9 @@ public class SiteOfPower : GameBehaviour
         else return Color.white;
     }
     
-    public void AddUnit(Unit _unit) { if (!units.Contains(_unit)) units.Add(_unit); }
-    public void RemoveUnit(Unit _unit) { if (units.Contains(_unit)) units.Remove(_unit); }
-    public bool ContainsUnit(Unit _unit) => units.Contains(_unit);
+    public void AddUnit(Guardian guardian) { if (!units.Contains(guardian)) units.Add(guardian); }
+    public void RemoveUnit(Guardian guardian) { if (units.Contains(guardian)) units.Remove(guardian); }
+    public bool ContainsUnit(Guardian guardian) => units.Contains(guardian);
     public bool HasUnits() => units.Count > 0;
     public void AddEnemy(Enemy _enemy) { if (!enemies.Contains(_enemy)) enemies.Add(_enemy); }
     public void RemoveEnemy(Enemy _enemy) { if (enemies.Contains(_enemy)) enemies.Remove(_enemy); }

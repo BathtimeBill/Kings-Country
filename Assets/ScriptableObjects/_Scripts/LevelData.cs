@@ -24,7 +24,7 @@ public class LevelData : ScriptableObject
     [Space]
     public List<SiteID> availableBuildings;
     public List<ToolID> availableTrees;
-    public List<HumanID> availableHumans;
+    public List<EnemyID> availableHumans;
     [Space]
     public int enemySpawnLocations;
     [BV.EnumList(typeof(DayID))]
@@ -62,31 +62,31 @@ public class LevelData : ScriptableObject
             foreach (KeyValuePair<string, string> item in columnData)
             {
                 //Gets a unit data based off the ID and updates the spawn amounts data
-                if (item.Key.Contains(HumanID.Logger.ToString()))
+                if (item.Key.Contains(EnemyID.Logger.ToString()))
                     sa.logger = int.TryParse(item.Value, out sa.logger) ? sa.logger : 0;
 
-                if (item.Key.Contains(HumanID.Lumberjack.ToString()))
+                if (item.Key.Contains(EnemyID.Lumberjack.ToString()))
                     sa.lumberjack = int.TryParse(item.Value, out sa.lumberjack) ? sa.lumberjack : 0;
 
-                if (item.Key.Contains(HumanID.LogCutter.ToString()))
+                if (item.Key.Contains(EnemyID.LogCutter.ToString()))
                     sa.logcutter = int.TryParse(item.Value, out sa.logcutter) ? sa.logcutter : 0;
 
-                if (item.Key.Contains(HumanID.Wathe.ToString()))
+                if (item.Key.Contains(EnemyID.Wathe.ToString()))
                     sa.wathe = int.TryParse(item.Value, out sa.wathe) ? sa.wathe : 0;
 
-                if (item.Key.Contains(HumanID.Poacher.ToString()))
+                if (item.Key.Contains(EnemyID.Poacher.ToString()))
                     sa.poacher = int.TryParse(item.Value, out sa.poacher) ? sa.poacher : 0;
 
-                if (item.Key.Contains(HumanID.Bjornjeger.ToString()))
+                if (item.Key.Contains(EnemyID.Bjornjeger.ToString()))
                     sa.bjornjeger = int.TryParse(item.Value, out sa.bjornjeger) ? sa.bjornjeger : 0;
 
-                if (item.Key.Contains(HumanID.Dreng.ToString()))
+                if (item.Key.Contains(EnemyID.Dreng.ToString()))
                     sa.dreng = int.TryParse(item.Value, out sa.dreng) ? sa.dreng : 0;
 
-                if (item.Key.Contains(HumanID.Berserkr.ToString()))
+                if (item.Key.Contains(EnemyID.Berserkr.ToString()))
                     sa.berserkr = int.TryParse(item.Value, out sa.berserkr) ? sa.berserkr : 0;
 
-                if (item.Key.Contains(HumanID.Knight.ToString()))
+                if (item.Key.Contains(EnemyID.Knight.ToString()))
                     sa.knight = int.TryParse(item.Value, out sa.knight) ? sa.knight : 0;
             }
             UpdateLevel(sa);

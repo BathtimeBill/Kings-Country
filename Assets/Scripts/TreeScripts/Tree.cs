@@ -49,17 +49,17 @@ public class Tree : GameBehaviour
             return;
 
         var collisionPoint = other.ClosestPoint(transform.position);
-        switch (uwc.humanID)
+        switch (uwc.enemyID)
         {
-            case HumanID.Logger:
-            case HumanID.Lumberjack:
+            case EnemyID.Logger:
+            case EnemyID.Lumberjack:
                 Chop();
                 health -= uwc.Damage;
                 GameObject party = Instantiate(chopParticle, collisionPoint, transform.rotation);
                 Destroy(party, 2f);
                 break;
-            case HumanID.Mine:
-            case HumanID.Dog:
+            case EnemyID.Mine:
+            case EnemyID.Dog:
                 health = 0;
                 break;
         }
@@ -81,9 +81,9 @@ public class Tree : GameBehaviour
         if (!uwc)
             return;
 
-        switch (uwc.humanID)
+        switch (uwc.enemyID)
         {
-            case HumanID.LogCutter:
+            case EnemyID.LogCutter:
                 health -= uwc.Damage;
                 if (health <= 0)
                     Die();

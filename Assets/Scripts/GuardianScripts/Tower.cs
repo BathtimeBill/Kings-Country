@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Tower : GameBehaviour
 {
-    public CreatureID unitType;
+    public GuardianID unitType;
     public Animator animator;
 
     public GameObject firingPoint;
@@ -26,13 +26,13 @@ public class Tower : GameBehaviour
 
     public bool towerUpgrade;
 
-    public Unit parent;
+    public Guardian parent;
     private AudioSource audioSource;
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        parent = gameObject.transform.parent.gameObject.GetComponent<Unit>();
+        parent = gameObject.transform.parent.gameObject.GetComponent<Guardian>();
         StartCoroutine(ShootProjectile());
         _UM.unitList.Add(parent);
         slider.value = CalculateHealth();
@@ -73,11 +73,11 @@ public class Tower : GameBehaviour
             if(_DATA.HasPerk(PerkID.Tower))
             {
 
-                if(unitType == CreatureID.FidhainTower)
+                if(unitType == GuardianID.FidhainTower)
                 {
                     animator.SetTrigger("Spit");
                 }
-                if (unitType == CreatureID.Tower)
+                if (unitType == GuardianID.Tower)
                 {
                     GameObject go = Instantiate(projectile2, firingPoint.transform.position, firingPoint.transform.rotation);
                     go.GetComponent<Rigidbody>().AddForce(firingPoint.transform.forward * projectileSpeed);
@@ -85,11 +85,11 @@ public class Tower : GameBehaviour
             }
             else
             {
-                if (unitType == CreatureID.FidhainTower)
+                if (unitType == GuardianID.FidhainTower)
                 {
                     animator.SetTrigger("Spit");
                 }
-                if (unitType == CreatureID.Tower)
+                if (unitType == GuardianID.Tower)
                 {
                     GameObject go = Instantiate(projectile1, firingPoint.transform.position, firingPoint.transform.rotation);
                     go.GetComponent<Rigidbody>().AddForce(firingPoint.transform.forward * projectileSpeed);
@@ -150,14 +150,14 @@ public class Tower : GameBehaviour
             GameObject go = Instantiate(explosionParticle, transform.position, transform.rotation);
             Destroy(go, 15);
             _UI.CheckPopulousUI();
-            if(unitType == CreatureID.Tower)
+            if(unitType == GuardianID.Tower)
             {
                 //TODO FIX BELOW
                 //UnitSelection.Instance.unitList.Remove(gameObject);
                 Destroy(gameObject);
             }
 
-            if (unitType == CreatureID.FidhainTower)
+            if (unitType == GuardianID.FidhainTower)
             {
                 _UM.unitList.Remove(parent);
                 Destroy(parent);
@@ -166,7 +166,7 @@ public class Tower : GameBehaviour
     }
     private void Setup()
     {
-        if(unitType == CreatureID.Tower)
+        if(unitType == GuardianID.Tower)
         {
             fireRate = 2;
             if (_DATA.HasPerk(PerkID.Tower))
@@ -178,7 +178,7 @@ public class Tower : GameBehaviour
                 maxHealth = _GM.towerHealth;
             }
         }
-        if(unitType == CreatureID.FidhainTower)
+        if(unitType == GuardianID.FidhainTower)
         {
             fireRate = 4;
             if (_DATA.HasPerk(PerkID.Tower))

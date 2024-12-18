@@ -181,12 +181,12 @@ public static class GameEvents
     #region Unit Management
     public static event Action<string, string, int> OnCreatureKilled = null;
     public static event Action<Enemy, string> OnHumanKilled = null;
-    public static event Action<HumanID> OnHumanSpawned = null;
-    public static event Action<CreatureID> OnGuardianSpawned = null;
+    public static event Action<EnemyID> OnHumanSpawned = null;
+    public static event Action<GuardianID> OnGuardianSpawned = null;
     public static void ReportOnGuardianKilled(string _unitID, string _killedBy, int _daysSurvived) => OnCreatureKilled?.Invoke(_unitID, _killedBy, _daysSurvived);
     public static void ReportOnHumanKilled(Enemy _unitID, string _killedBy) => OnHumanKilled?.Invoke(_unitID, _killedBy);
-    public static void ReportOnHumanSpawned(HumanID _ID) => OnHumanSpawned?.Invoke(_ID);
-    public static void ReportOnGuardianSpawned(CreatureID _ID) => OnGuardianSpawned?.Invoke(_ID);
+    public static void ReportOnHumanSpawned(EnemyID _ID) => OnHumanSpawned?.Invoke(_ID);
+    public static void ReportOnGuardianSpawned(GuardianID _ID) => OnGuardianSpawned?.Invoke(_ID);
     #endregion
 
     #region Settings

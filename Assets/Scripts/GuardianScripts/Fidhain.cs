@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Fidhain : Unit
+public class Fidhain : Guardian
 {
     [Header("Fidhain Specific")]
     public ParticleSystem spitParticles;

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using DG.Tweening;
-public class FidhainTower : Unit
+public class FidhainTower : Guardian
 {
     [Header("Fidhain Tower Specific")]
     public GameObject firingPoint;

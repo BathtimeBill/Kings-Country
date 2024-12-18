@@ -19,7 +19,7 @@ public class HomeTree : SiteOfPower
     private void OnTriggerEnter(Collider other)
     {
         UnitWeaponCollider uwc = other.GetComponent<UnitWeaponCollider>();
-        if (uwc == null)
+        if (uwc == null || uwc.unitType == UnitType.Guardian)
             return;
         
         TakeDamage(uwc.Damage, other.transform.position);

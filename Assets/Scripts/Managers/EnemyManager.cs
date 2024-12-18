@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
@@ -9,7 +10,7 @@ public class EnemyManager : Singleton<EnemyManager>
     [ReadOnly] public List<GameObject> spawnPoints;
     [Header("Spawn Cooldown")]
     public BV.Range cooldown;
-    [SerializeField] private List<HumanID> enemyIDList = new List<HumanID>();
+    [SerializeField] private List<EnemyID> enemyIDList = new List<EnemyID>();
     private List<SpawnAmounts> spawnAmounts;
     private SpawnAmounts currentDaySpawnAmount;
     public bool allEnemiesSpawned => enemyIDList.Count == 0;
@@ -18,8 +19,8 @@ public class EnemyManager : Singleton<EnemyManager>
     public GameObject spyNotification;
     private List<GameObject> enemyPool = new List<GameObject>();
     private List<GameObject> ragdollPool = new List<GameObject>();
-    [Header("Testing")]
-    public HumanID testSpawnHuman;
+    [FormerlySerializedAs("testSpawnHuman")] [Header("Testing")]
+    public EnemyID testSpawnEnemy;
     public bool noAutoSpawning = false;
     public void AddSpawnPoint(GameObject spawnPoint) => spawnPoints.Add(spawnPoint);
     public Transform RandomSpawnPoint => ListX.GetRandomItemFromList(spawnPoints).transform; 
@@ -30,8 +31,8 @@ public class EnemyManager : Singleton<EnemyManager>
         spawnAmounts.Clear();
         spawnAmounts = _DATA.currentLevel.spawnAmounts;
         
-        if(_CurrentLevel.availableHumans.Contains(HumanID.Spy))
-            StartCoroutine(SpawnSpy());
+        //if(_CurrentLevel.availableHumans.Contains(EnemyID.Spy))
+         //   StartCoroutine(SpawnSpy());
     }
 
     public void BeginNewDay()
@@ -62,7 +63,7 @@ public class EnemyManager : Singleton<EnemyManager>
         yield return new WaitForEndOfFrame();
         for (int i = 0; i < enemyIDList.Count; i++)
         {
-            SpawnEnemy(_DATA.GetUnit(enemyIDList[i]).playModel, RandomSpawnPoint.position);
+            SpawnEnemy(_DATA.GetEnemy(enemyIDList[i]).playModel, RandomSpawnPoint.position);
             //Wait a random time before spawning in the next enemy so they aren't on top of each other
             yield return new WaitForSeconds(Random.Range(0.3f, 1f));
         }
@@ -79,7 +80,7 @@ public class EnemyManager : Singleton<EnemyManager>
             return;
 
         int rndHuman = Random.Range(0, enemyIDList.Count);
-        SpawnEnemy(_DATA.GetUnit(enemyIDList[rndHuman]).playModel, spawnLocation, true);
+        SpawnEnemy(_DATA.GetEnemy(enemyIDList[rndHuman]).playModel, spawnLocation, true);
     }
     
     private void SpawnDog()  //CHECK IF VALUES ARE RIGHT
@@ -95,7 +96,7 @@ public class EnemyManager : Singleton<EnemyManager>
                 int rndCoin = Random.Range(0, 2);
                 if (rndCoin == 1)
                 {
-                    SpawnEnemy(_DATA.GetUnit(HumanID.Dog).playModel, RandomSpawnPoint.position);
+                    SpawnEnemy(_DATA.GetEnemy(EnemyID.Dog).playModel, RandomSpawnPoint.position);
                 }
             }
         }
@@ -103,7 +104,7 @@ public class EnemyManager : Singleton<EnemyManager>
     
     private void SpawnSpyEnemy(Vector3 spawnLocation)
     {
-        SpawnEnemy(_DATA.GetUnit(HumanID.Spy).playModel, spawnLocation);
+        SpawnEnemy(_DATA.GetEnemy(EnemyID.Spy).playModel, spawnLocation);
     }
     
     private IEnumerator SpawnSpy() //CHECK - Can the spawn intervals be changed to a formula or got from somewhere else?
@@ -202,27 +203,27 @@ public class EnemyManager : Singleton<EnemyManager>
             currentDaySpawnAmount.knight;
     }
 
-    public int GetHumanDayLimit(HumanID _humanID)
+    public int GetHumanDayLimit(EnemyID enemyID)
     {
-        switch(_humanID)
+        switch(enemyID)
         {
-            case HumanID.Logger:
+            case EnemyID.Logger:
                 return currentDaySpawnAmount.logger;
-            case HumanID.Lumberjack:
+            case EnemyID.Lumberjack:
                 return currentDaySpawnAmount.lumberjack;
-            case HumanID.LogCutter:
+            case EnemyID.LogCutter:
                 return currentDaySpawnAmount.logcutter;
-            case HumanID.Wathe:
+            case EnemyID.Wathe:
                 return currentDaySpawnAmount.wathe;
-            case HumanID.Poacher:
+            case EnemyID.Poacher:
                 return currentDaySpawnAmount.poacher;
-            case HumanID.Bjornjeger:
+            case EnemyID.Bjornjeger:
                 return currentDaySpawnAmount.bjornjeger;
-            case HumanID.Dreng:
+            case EnemyID.Dreng:
                 return currentDaySpawnAmount.dreng;
-            case HumanID.Berserkr:
+            case EnemyID.Berserkr:
                 return currentDaySpawnAmount.berserkr;
-            case HumanID.Knight:
+            case EnemyID.Knight:
                 return currentDaySpawnAmount.knight;
             default:
                 return 0;
@@ -258,23 +259,23 @@ public class EnemyManager : Singleton<EnemyManager>
         enemyIDList.Clear();
 
         for (int i = 0; i < currentDaySpawnAmount.logger; i++)
-            enemyIDList.Add(HumanID.Logger);
+            enemyIDList.Add(EnemyID.Logger);
         for (int i = 0; i < currentDaySpawnAmount.lumberjack; i++)
-            enemyIDList.Add(HumanID.Lumberjack);
+            enemyIDList.Add(EnemyID.Lumberjack);
         for (int i = 0; i < currentDaySpawnAmount.logcutter; i++)
-            enemyIDList.Add(HumanID.LogCutter);
+            enemyIDList.Add(EnemyID.LogCutter);
         for (int i = 0; i < currentDaySpawnAmount.wathe; i++)
-            enemyIDList.Add(HumanID.Wathe);
+            enemyIDList.Add(EnemyID.Wathe);
         for (int i = 0; i < currentDaySpawnAmount.poacher; i++)
-            enemyIDList.Add(HumanID.Poacher);
+            enemyIDList.Add(EnemyID.Poacher);
         for (int i = 0; i < currentDaySpawnAmount.bjornjeger; i++)
-            enemyIDList.Add(HumanID.Bjornjeger);
+            enemyIDList.Add(EnemyID.Bjornjeger);
         for (int i = 0; i < currentDaySpawnAmount.dreng; i++)
-            enemyIDList.Add(HumanID.Dreng);
+            enemyIDList.Add(EnemyID.Dreng);
         for (int i = 0; i < currentDaySpawnAmount.berserkr; i++)
-            enemyIDList.Add(HumanID.Berserkr);
+            enemyIDList.Add(EnemyID.Berserkr);
         for (int i = 0; i < currentDaySpawnAmount.knight; i++)
-            enemyIDList.Add(HumanID.Knight);
+            enemyIDList.Add(EnemyID.Knight);
 
         ListX.ShuffleList(enemyIDList);
         currentKillCount = 0;
@@ -308,7 +309,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
     public void SpawnSpecificEnemy()
     {
-        SpawnEnemy(_DATA.GetUnit(testSpawnHuman).playModel, RandomSpawnPoint.position);
+        SpawnEnemy(_DATA.GetEnemy(testSpawnEnemy).playModel, RandomSpawnPoint.position);
     }
 }
 

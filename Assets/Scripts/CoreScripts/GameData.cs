@@ -19,20 +19,20 @@ public class GameData : Singleton<GameData>
 
     #region Creature Units
     [Header("Creature Unit Data")]
-    [BV.EnumList(typeof(CreatureID))]
+    [BV.EnumList(typeof(GuardianID))]
     public List<UnitData> unitData;
-    public UnitData GetUnit(CreatureID _id) => unitData.Find(x => x.id == _id);
-    public bool IsTowerUnit(CreatureID _id) => unitData.Find(x => x.id == _id && x.towerUnit);
-    public bool IsCreatureUnit(string _id) => unitData.Find(x => x.id.ToString() == _id);
+    public UnitData GetUnit(GuardianID _id) => unitData.Find(x => x.id == _id);
+    public bool IsTowerUnit(GuardianID _id) => unitData.Find(x => x.id == _id && x.towerUnit);
+    public bool IsGuardianUnit(string _id) => unitData.Find(x => x.id.ToString() == _id);
     #endregion;
 
     #region Human Units
-    [Header("Human Unit Data")]
-    [BV.EnumList(typeof(HumanID))]
-    public List<EnemyData> humanData;
-    public EnemyData GetUnit(HumanID _id) => humanData.Find(x => x.id == _id);
-    public EnemyType GetUnitType(HumanID _id) => GetUnit(_id).type;
-    public bool IsHumanUnit(string _id) => humanData.Find(x => x.id.ToString() == _id);
+    [Header("Enemy Unit Data")]
+    [BV.EnumList(typeof(EnemyID))]
+    public List<EnemyData> enemyData;
+    public EnemyData GetEnemy(EnemyID _id) => enemyData.Find(x => x.id == _id);
+    public EnemyType GetEnemyType(EnemyID _id) => GetEnemy(_id).type;
+    public bool IsEnemyUnit(string _id) => enemyData.Find(x => x.id.ToString() == _id);
     #endregion;
 
     #region Site Units
@@ -96,7 +96,7 @@ public class GameData : Singleton<GameData>
     public LevelData currentLevel => levelData.Find(x => x.id == _GM.thisLevel);
     public LevelData GetLevel(LevelID _id) => levelData.Find(x => x.id == _id);
     public LevelID currentLevelID => currentLevel.id;
-    public bool LevelContains(LevelID _levelID, HumanID _humanID) => GetLevel(_levelID).availableHumans.Contains(_humanID);
+    public bool LevelContains(LevelID _levelID, EnemyID enemyID) => GetLevel(_levelID).availableHumans.Contains(enemyID);
     public bool LevelContains(LevelID _levelID, SiteID siteID) => GetLevel(_levelID).availableBuildings.Contains(siteID);
     public bool levelAvailable(LevelID _id) => _SAVE.GetLevelSaveData(_id).unlocked && GetLevel(_id).canBePlayed;
 
@@ -139,7 +139,7 @@ public class GameData : Singleton<GameData>
             {
                 // Gets a unit data based off the ID and updates the data
                 if (item.Key.Contains("ID"))
-                    unit.id = EnumX.ToEnum<CreatureID>(item.Value);
+                    unit.id = EnumX.ToEnum<GuardianID>(item.Value);
                 if (item.Key.Contains("Name"))
                     unit.name = item.Value;
                 if (item.Key.Contains("Description"))
@@ -213,7 +213,7 @@ public class GameData : Singleton<GameData>
             {
                 // Gets a unit data based off the ID and updates the data
                 if (item.Key.Contains("ID"))
-                    enemy.id = EnumX.ToEnum<HumanID>(item.Value);
+                    enemy.id = EnumX.ToEnum<EnemyID>(item.Value);
                 if (item.Key.Contains("Name"))
                     enemy.name = item.Value;
                 if (item.Key.Contains("Description"))
@@ -240,7 +240,7 @@ public class GameData : Singleton<GameData>
 
     private void UpdateHumans(EnemyData _enemyData)
     {
-        EnemyData enemy = GetUnit(_enemyData.id);
+        EnemyData enemy = GetEnemy(_enemyData.id);
         enemy.name = _enemyData.name;
         enemy.description = _enemyData.description;
         enemy.health = _enemyData.health;

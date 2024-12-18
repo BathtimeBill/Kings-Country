@@ -13,12 +13,12 @@ public class GuardianAnimation : GameBehaviour
     public float smoothSpeedFactor;
     public float tickInterval;
     public bool isAttacking;
-    private Unit unit;
+    private Guardian guardian;
     void Start()
     {
         animator = GetComponent<Animator>();
         navAgent = GetComponentInParent<NavMeshAgent>();
-        unit = GetComponentInParent<Unit>();
+        guardian = GetComponentInParent<Guardian>();
         StartCoroutine(Tick());
     }
 
@@ -43,7 +43,7 @@ public class GuardianAnimation : GameBehaviour
     {
         currentSpeed = navAgent.velocity.magnitude;
         if(currentSpeed == 0)
-            unit.isMovingCheck = false;
+            guardian.isMovingCheck = false;
         
         yield return new WaitForSeconds(tickInterval);
 
@@ -70,11 +70,11 @@ public class GuardianAnimation : GameBehaviour
     
     #region Animation Events
     //These all come from Animation Events which is why they don't show as having references
-    public void EnableWeaponCollider(int _col)=>unit.attackColliders[_col].enabled = true;
-    public void DisableWeaponCollider(int _col)=>unit.attackColliders[_col].enabled = false;
-    public void Attack(int _attack) => unit.Attack(_attack);
-    public void StopAttack(int _attack) => unit.StopAttack(_attack);
-    public void Footstep(string _foot) => unit.Footstep(_foot);
-    public void PlayParticle() => unit.PlayParticle();
+    public void EnableWeaponCollider(int _col)=>guardian.attackColliders[_col].enabled = true;
+    public void DisableWeaponCollider(int _col)=>guardian.attackColliders[_col].enabled = false;
+    public void Attack(int _attack) => guardian.Attack(_attack);
+    public void StopAttack(int _attack) => guardian.StopAttack(_attack);
+    public void Footstep(string _foot) => guardian.Footstep(_foot);
+    public void PlayParticle() => guardian.PlayParticle();
     #endregion
 }

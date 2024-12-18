@@ -1,4 +1,4 @@
-public class Skessa : Unit
+public class Skessa : Guardian
 {
     public override void Attack(int _attack)
     {

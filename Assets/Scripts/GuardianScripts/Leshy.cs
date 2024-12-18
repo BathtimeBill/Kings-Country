@@ -1,4 +1,4 @@
-public class Leshy : Unit
+public class Leshy : Guardian
 {
     public override void Attack(int _attack)
     {

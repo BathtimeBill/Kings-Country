@@ -105,19 +105,19 @@ public class UnitPanel : GameBehaviour
         switch (_baseID)
         {
             case SiteID.HomeTree:
-                unitButtons[0].SetupButton(_DATA.GetUnit(CreatureID.Satyr));
-                unitButtons[1].SetupButton(_DATA.GetUnit(CreatureID.Orcus));
-                unitButtons[2].SetupButton(_DATA.GetUnit(CreatureID.Leshy));
+                unitButtons[0].SetupButton(_DATA.GetUnit(GuardianID.Satyr));
+                unitButtons[1].SetupButton(_DATA.GetUnit(GuardianID.Orcus));
+                unitButtons[2].SetupButton(_DATA.GetUnit(GuardianID.Leshy));
                 break;
             case SiteID.Hut:
-                unitButtons[0].SetupButton(_DATA.GetUnit(CreatureID.Goblin));
-                unitButtons[1].SetupButton(_DATA.GetUnit(CreatureID.Skessa));
-                unitButtons[2].SetupButton(_DATA.GetUnit(CreatureID.Fidhain));
+                unitButtons[0].SetupButton(_DATA.GetUnit(GuardianID.Goblin));
+                unitButtons[1].SetupButton(_DATA.GetUnit(GuardianID.Skessa));
+                unitButtons[2].SetupButton(_DATA.GetUnit(GuardianID.Fidhain));
                 break;
             case SiteID.Horgr:
-                unitButtons[0].SetupButton(_DATA.GetUnit(CreatureID.Huldra));
-                unitButtons[1].SetupButton(_DATA.GetUnit(CreatureID.Mistcalf));
-                unitButtons[2].SetupButton(_DATA.GetUnit(CreatureID.Unknown));
+                unitButtons[0].SetupButton(_DATA.GetUnit(GuardianID.Huldra));
+                unitButtons[1].SetupButton(_DATA.GetUnit(GuardianID.Mistcalf));
+                unitButtons[2].SetupButton(_DATA.GetUnit(GuardianID.Unknown));
                 break;
         }
         TweenPanel(true);

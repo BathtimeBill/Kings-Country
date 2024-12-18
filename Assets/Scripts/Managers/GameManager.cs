@@ -377,7 +377,7 @@ public class GameManager : Singleton<GameManager>
     }
     private void OnUnitKilled(string _unitID, string _killedBy, int _daysSurvived)
     {
-        if (!_DATA.IsCreatureUnit(_unitID))
+        if (!_DATA.IsGuardianUnit(_unitID))
             return;
 
         if(_UM.unitList.Count == 0)

@@ -54,8 +54,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b869c959d7e2ff42ad634ee441fc716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitID: 3
-  unitData: {fileID: 0}
+  enemyID: 3
+  enemyData: {fileID: 0}
   state: 0
   healthBar: {fileID: 2978091265120698092}
   enemyAnimation: {fileID: 4908095019036410290}
@@ -65,18 +65,16 @@ MonoBehaviour:
   animator: {fileID: 6444677539365136013}
   tickRate: 0.5
   closestUnit: {fileID: 0}
-  distanceFromClosestUnit: 0
-  distanceFromTarget: 0
+  distanceToClosestUnit: 0
+  targetObject: {fileID: 0}
+  distanceToTarget: 0
+  canAttack: 0
+  weaponCollider: {fileID: 0}
   SFXPool: {fileID: 4063893735126406151}
   debugUnit: {fileID: 1979234857468078028}
   arrowObject: {fileID: 3894247749214064697, guid: 14b39ef80723d284f917eee55a8b908a,
     type: 3}
   firingPoint: {fileID: 4745240352517088440}
-  targetObject: {fileID: 0}
-  hutObject: {fileID: 0}
-  distanceFromClosestHut: 0
-  hasArrivedAtHut: 0
-  hutSwitch: 0
 --- !u!114 &3818300508737214484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,6 +287,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
+        type: 3}
+      propertyPath: enemyID
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
         type: 3}
@@ -553,6 +556,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7788880221351800205}
     m_Modifications:
+    - target: {fileID: -3707776372782742846, guid: 14b39ef80723d284f917eee55a8b908a,
+        type: 3}
+      propertyPath: enemyID
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: -3707776372782742846, guid: 14b39ef80723d284f917eee55a8b908a,
         type: 3}
       propertyPath: humanID
@@ -936,9 +944,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb6e1964cd2fdd40a9e422f616806f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 8398835679185586571}
-  weaponCollider: {fileID: 0}
-  isAttacking: 0
 --- !u!114 &6806122847542877608
 MonoBehaviour:
   m_ObjectHideFlags: 0

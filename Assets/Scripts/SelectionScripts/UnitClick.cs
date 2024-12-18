@@ -22,14 +22,14 @@ public class UnitClick : GameBehaviour
             {
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
-                    _UM.ShiftClickSelect(hit.collider.gameObject.GetComponent<Unit>());
+                    _UM.ShiftClickSelect(hit.collider.gameObject.GetComponent<Guardian>());
                 }
                 else
                 {
                     if(_UM.canDoubleClick)
                     {
-                        CreatureID thisUnitType = hit.collider.gameObject.GetComponent<Unit>().unitID;
-                        foreach(Unit unit in _UM.unitList)
+                        GuardianID thisUnitType = hit.collider.gameObject.GetComponent<Guardian>().unitID;
+                        foreach(Guardian unit in _UM.unitList)
                         {
                             if(unit.unitID == thisUnitType)
                             {
@@ -39,7 +39,7 @@ public class UnitClick : GameBehaviour
                     }
                     else
                     {
-                        _UM.ClickSelect(hit.collider.gameObject.GetComponent<Unit>());
+                        _UM.ClickSelect(hit.collider.gameObject.GetComponent<Guardian>());
                     }
                 }
                 _UM.StartCoroutine(_UM.DoubleClick());

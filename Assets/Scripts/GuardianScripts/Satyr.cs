@@ -1,4 +1,4 @@
-public class Satyr : Unit
+public class Satyr : Guardian
 {
     public override void Attack(int _attack)
     {

@@ -86,8 +86,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b869c959d7e2ff42ad634ee441fc716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitID: 4
-  unitData: {fileID: 0}
+  enemyID: 4
+  enemyData: {fileID: 0}
   state: 0
   healthBar: {fileID: 303500025772385491}
   enemyAnimation: {fileID: 1711714047314008340}
@@ -97,17 +97,15 @@ MonoBehaviour:
   animator: {fileID: 8946118099996439898}
   tickRate: 0.5
   closestUnit: {fileID: 0}
-  distanceFromClosestUnit: 0
+  distanceToClosestUnit: 0
+  targetObject: {fileID: 0}
+  distanceToTarget: 0
+  canAttack: 0
+  weaponCollider: {fileID: 0}
   SFXPool: {fileID: 8664890440586990151}
   debugUnit: {fileID: 8593406196910650742}
   arrowObject: {fileID: 2918053157222900181}
   firingPoint: {fileID: 7871779620444222752}
-  closestWildlife: {fileID: 0}
-  distanceFromClosestWildlife: 0
-  destination: {fileID: 0}
-  distanceFromClosestHut: 0
-  hasArrivedAtHorgr: 0
-  hutSwitch: 0
 --- !u!114 &654123418392821617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -548,9 +546,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb6e1964cd2fdd40a9e422f616806f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 4162001372109131617}
-  weaponCollider: {fileID: 0}
-  isAttacking: 0
 --- !u!95 &8946118099996439898
 Animator:
   serializedVersion: 7
@@ -699,6 +694,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
+        type: 3}
+      propertyPath: enemyID
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
         type: 3}

@@ -1,12 +1,13 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class MapIcon : GameBehaviour
 {
     public UnitType unitType;
-    [BV.DrawIf("unitType", UnitType.Guardian)]
-    public CreatureID creatureID;
-    [BV.DrawIf("unitType", UnitType.Human)]
-    public HumanID humanID;
+    [FormerlySerializedAs("creatureID")] [BV.DrawIf("unitType", UnitType.Guardian)]
+    public GuardianID guardianID;
+    [FormerlySerializedAs("humanID")] [BV.DrawIf("unitType", UnitType.Human)]
+    public EnemyID enemyID;
     [BV.DrawIf("unitType", UnitType.Site)]
     public SiteID siteID;
     [BV.DrawIf("unitType", UnitType.Tree)]
@@ -46,13 +47,13 @@ public class MapIcon : GameBehaviour
         switch(unitType)
         {
             case UnitType.Guardian:
-                sprite.sprite = _DATA.GetUnit(creatureID).mapIcon;
-                sprite.color = _COLOUR.GetColour(_DATA.GetUnit(creatureID).id);
+                sprite.sprite = _DATA.GetUnit(guardianID).mapIcon;
+                sprite.color = _COLOUR.GetColour(_DATA.GetUnit(guardianID).id);
                 sprite.transform.localScale = Vector3.one * _SETTINGS.miniMap.creatureIconSize;
                 break;
             case UnitType.Human:
-                sprite.sprite = _DATA.GetUnit(humanID).mapIcon;
-                sprite.color = _COLOUR.GetColour(_DATA.GetUnit(humanID).id);
+                sprite.sprite = _DATA.GetEnemy(enemyID).mapIcon;
+                sprite.color = _COLOUR.GetColour(_DATA.GetEnemy(enemyID).id);
                 sprite.transform.localScale = Vector3.one * _SETTINGS.miniMap.humanIconSize;
                 break;
             case UnitType.Site:

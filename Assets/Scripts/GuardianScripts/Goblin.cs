@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Goblin : Unit
+public class Goblin : Guardian
 {
     [Header("Goblin Specific")] 
     public Transform firingPoint;

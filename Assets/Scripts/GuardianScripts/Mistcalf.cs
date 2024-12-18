@@ -1,4 +1,4 @@
-public class Mistcalf : Unit
+public class Mistcalf : Guardian
 {
     public override void Attack(int _attack)
     {

@@ -33,14 +33,14 @@ public class GameLog : GameBehaviour
     {
         _text.DOFade(1, _TWEENING.logTweenTime).SetEase(_TWEENING.logEase).OnComplete(() => _text.DOFade(0, _TWEENING.logTweenTime).SetEase(_TWEENING.logEase).SetDelay(_TWEENING.logTweenDelay));
     }
-    private void OnHumanSpawned(HumanID _unitID)
+    private void OnHumanSpawned(EnemyID _unitID)
     {
         string str = _unitID.ToString();
         ObjectID id = EnumX.ToEnum<ObjectID>(str);
         string unit = GetName(id);
         ChangeLogLine(unit + " was spawned in ");
     }
-    private void OnOnGuardianSpawned(CreatureID _unitID)
+    private void OnOnGuardianSpawned(GuardianID _unitID)
     {
         string str = _unitID.ToString();
         ObjectID id = EnumX.ToEnum<ObjectID>(str);
@@ -57,7 +57,7 @@ public class GameLog : GameBehaviour
 
     private void OnHumanKilled(Enemy _unitID, string _killedBy)
     {
-        string unit = GetName(EnumX.ToEnum<ObjectID>(_unitID.unitID.ToString()));
+        string unit = GetName(EnumX.ToEnum<ObjectID>(_unitID.enemyID.ToString()));
         string killer = GetName(EnumX.ToEnum<ObjectID>(_killedBy));
         ChangeLogLine(unit + " was killed by " + killer);
     }

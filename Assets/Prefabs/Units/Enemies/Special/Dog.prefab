@@ -23147,8 +23147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9e3e882aea4523489d1322dfed5ab14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitID: 9
-  unitData: {fileID: 0}
+  enemyID: 9
+  enemyData: {fileID: 0}
   state: 0
   healthBar: {fileID: 0}
   enemyAnimation: {fileID: 4105306935798567314}
@@ -23179,8 +23179,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitType: 1
-  creatureID: 0
-  humanID: 9
+  guardianID: 0
+  enemyID: 9
   siteID: 0
   toolID: 0
 --- !u!114 &4105306935798567314
@@ -25060,6 +25060,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
+        type: 3}
+      propertyPath: enemyID
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
         type: 3}

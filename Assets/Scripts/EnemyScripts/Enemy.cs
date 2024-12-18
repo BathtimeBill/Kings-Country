@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Enemy : GameBehaviour
 {
-    public HumanID unitID;
+    public EnemyID enemyID;
     [HideInInspector] public EnemyData enemyData;
     public EnemyState state;
     public HealthBar healthBar;
@@ -69,7 +69,7 @@ public class Enemy : GameBehaviour
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
         soundPool = SFXPool.GetComponents<AudioSource>();
-        enemyData = _DATA.GetUnit(unitID);
+        enemyData = _DATA.GetEnemy(enemyID);
     }
 
     public virtual void Start() { Setup();}
@@ -89,7 +89,7 @@ public class Enemy : GameBehaviour
         if(NotNull(healthBar))
             healthBar.AdjustHealthBar(health, maxHealth);
         StartCoroutine(WaitForInvincible());
-        GameEvents.ReportOnHumanSpawned(unitID);
+        GameEvents.ReportOnHumanSpawned(enemyID);
         ChangeState(EnemyState.Work);
         StartCoroutine(Tick());
         ExecuteAfterSeconds(1f, () => initializeHack = true);
@@ -203,7 +203,7 @@ public class Enemy : GameBehaviour
             switch (uwc.toolID)
             {
                 case ToolID.Fyre:
-                    if (_DATA.GetUnitType(unitID) != EnemyType.Warrior)
+                    if (_DATA.GetEnemyType(enemyID) != EnemyType.Warrior)
                         Die(this, _DATA.GetTool(ToolID.Fyre).id.ToString(), DeathID.Explosion);
                     else
                     {
@@ -212,7 +212,7 @@ public class Enemy : GameBehaviour
                     }
                     break;
                 case ToolID.Stormer:
-                    if (_DATA.GetUnitType(unitID) != EnemyType.Warrior)
+                    if (_DATA.GetEnemyType(enemyID) != EnemyType.Warrior)
                         Die(this, _DATA.GetTool(ToolID.Stormer).id.ToString(), DeathID.Explosion);
                     else
                     {
@@ -225,34 +225,34 @@ public class Enemy : GameBehaviour
 
         if (uwc.unitType == UnitType.Guardian)
         {
-            switch(uwc.creatureID)
+            switch(uwc.guardianID)
             {
-                case CreatureID.Leshy:
-                    if (_DATA.GetUnitType(unitID) == EnemyType.Woodcutter)
-                        Die(this, _DATA.GetUnit(CreatureID.Leshy).id.ToString(), DeathID.Launch);
+                case GuardianID.Leshy:
+                    if (_DATA.GetEnemyType(enemyID) == EnemyType.Woodcutter)
+                        Die(this, _DATA.GetUnit(GuardianID.Leshy).id.ToString(), DeathID.Launch);
 
-                    if (_DATA.GetUnitType(unitID) == EnemyType.Hunter)
+                    if (_DATA.GetEnemyType(enemyID) == EnemyType.Hunter)
                     {
-                        if (unitID != HumanID.Bjornjeger)
-                            Die(this, _DATA.GetUnit(CreatureID.Leshy).id.ToString(), DeathID.Launch);
+                        if (enemyID != EnemyID.Bjornjeger)
+                            Die(this, _DATA.GetUnit(GuardianID.Leshy).id.ToString(), DeathID.Launch);
                         else
-                            TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage, CreatureID.Leshy.ToString());
+                            TakeDamage(_DATA.GetUnit(GuardianID.Leshy).damage, GuardianID.Leshy.ToString());
                     }
 
-                    if (_DATA.GetUnitType(unitID) == EnemyType.Warrior)
-                        TakeDamage(_DATA.GetUnit(CreatureID.Leshy).damage, CreatureID.Leshy.ToString());
+                    if (_DATA.GetEnemyType(enemyID) == EnemyType.Warrior)
+                        TakeDamage(_DATA.GetUnit(GuardianID.Leshy).damage, GuardianID.Leshy.ToString());
                     break;
-                case CreatureID.Satyr:
-                case CreatureID.Orcus:
-                case CreatureID.Huldra:
-                case CreatureID.Skessa:
-                case CreatureID.Goblin:
-                case CreatureID.Mistcalf:
-                case CreatureID.Tower:
-                case CreatureID.FidhainTower:
+                case GuardianID.Satyr:
+                case GuardianID.Orcus:
+                case GuardianID.Huldra:
+                case GuardianID.Skessa:
+                case GuardianID.Goblin:
+                case GuardianID.Mistcalf:
+                case GuardianID.Tower:
+                case GuardianID.FidhainTower:
                     TakeDamage(uwc.Damage, other.GetComponent<UnitWeaponCollider>().UnitID);
                     break;
-                case CreatureID.Fidhain:
+                case GuardianID.Fidhain:
                     agent.speed = speed / 2;
                     TakeDamage(uwc.Damage, other.GetComponent<UnitWeaponCollider>().UnitID);
                     break;
@@ -277,9 +277,9 @@ public class Enemy : GameBehaviour
 
         if (uwc.unitType == UnitType.Guardian)
         {
-            switch (uwc.creatureID)
+            switch (uwc.guardianID)
             {
-                case CreatureID.Fidhain:
+                case GuardianID.Fidhain:
                     agent.speed = speed;
                     break;
             }
@@ -318,6 +318,7 @@ public class Enemy : GameBehaviour
         RemoveFromSites();
         if (NotNull(enemyData.dieParticles))
         {
+            print("JJ");
             GameObject dieParticle = Instantiate(enemyData.dieParticles, transform.position + new Vector3(0, 5, 0),
                 transform.rotation);
             Destroy(dieParticle, 5);
@@ -351,7 +352,7 @@ public class Enemy : GameBehaviour
         float closestDistance = Mathf.Infinity;
         Transform trans = null;
 
-        foreach (Unit unit in _UM.unitList)
+        foreach (Guardian unit in _UM.unitList)
         {
             float currentDistance;
             currentDistance = Vector3.Distance(transform.position, unit.transform.position);

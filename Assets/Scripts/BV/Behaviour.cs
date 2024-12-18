@@ -242,8 +242,16 @@ namespace BV
 		//
 
 		#region Optimization
-		public bool IsNull<T>(T obj) => ReferenceEquals(obj, null);
-		protected bool NotNull<T>(T obj) => !ReferenceEquals(obj, null);
+
+		protected bool IsNull<T>(T obj)
+		{
+			return ReferenceEquals(obj, null) || obj.Equals(null);
+		}
+
+		protected bool NotNull<T>(T obj)
+		{
+			return !IsNull(obj);
+		}	
 		#endregion
 
 		/// <summary>

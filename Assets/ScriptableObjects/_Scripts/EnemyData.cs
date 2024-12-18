@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Enemy Data", menuName = "SSS/Enemy Data", order = 4)]
 public class EnemyData : ScriptableObject
 {
-    public HumanID id;
+    public EnemyID id;
     public EnemyType type;
     public new string name;
     [TextArea(3, 5)]

@@ -1,12 +1,13 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class UnitWeaponCollider : GameBehaviour
 {
     public UnitType unitType;
-    [BV.DrawIf("unitType", UnitType.Guardian)]
-    public CreatureID creatureID;
-    [BV.DrawIf("unitType", UnitType.Human)]
-    public HumanID humanID;
+    [FormerlySerializedAs("creatureID")] [BV.DrawIf("unitType", UnitType.Guardian)]
+    public GuardianID guardianID;
+    [FormerlySerializedAs("humanID")] [BV.DrawIf("unitType", UnitType.Human)]
+    public EnemyID enemyID;
     [BV.DrawIf("unitType", UnitType.Site)]
     public SiteID siteID;
     [BV.DrawIf("unitType", UnitType.Tool)]
@@ -31,12 +32,12 @@ public class UnitWeaponCollider : GameBehaviour
         switch (unitType)
         {
             case UnitType.Guardian:
-                damage = _DATA.GetUnit(creatureID).damage;
-                unitID = _DATA.GetUnit(creatureID).id.ToString();
+                damage = _DATA.GetUnit(guardianID).damage;
+                unitID = _DATA.GetUnit(guardianID).id.ToString();
                 break;
             case UnitType.Human:
-                damage = _DATA.GetUnit(humanID).damage;
-                unitID = _DATA.GetUnit(humanID).id.ToString();
+                damage = _DATA.GetEnemy(enemyID).damage;
+                unitID = _DATA.GetEnemy(enemyID).id.ToString();
                 break;
             case UnitType.Site:
                 damage = _DATA.GetSiteData(siteID).damage;

@@ -88,21 +88,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88cb7abe7e0b73d459bd8a77614d48c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitID: 11
-  unitData: {fileID: 0}
+  enemyID: 11
+  enemyData: {fileID: 0}
+  state: 0
   healthBar: {fileID: 9010193095084242496}
+  enemyAnimation: {fileID: 0}
+  spawnedFromSite: 0
   maxRandomDropChance: 0
   agent: {fileID: 0}
   animator: {fileID: 0}
+  tickRate: 0.5
+  closestUnit: {fileID: 0}
+  distanceToClosestUnit: 0
+  targetObject: {fileID: 0}
+  distanceToTarget: 0
+  canAttack: 0
+  weaponCollider: {fileID: 0}
   SFXPool: {fileID: 8581469367727037160}
   debugUnit: {fileID: 184867089701059852, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
     type: 3}
   horseAnimator: {fileID: 9180876596496797862}
   knightAnimator: {fileID: 5508842140857460853}
-  closestUnit: {fileID: 0}
-  distanceFromClosestUnit: 0
   swingParticle: {fileID: 0}
-  slider: {fileID: 0}
   audioSource: {fileID: 1521953139822443684}
   barkSource: {fileID: 6774624392252931011}
   bloodParticle1: {fileID: 4197850467115213477, guid: 4f3e906bea636e44fa28f67b2439a265,
@@ -121,7 +128,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 81b78991dce14304e967bb79f00ffe96, type: 3}
   - {fileID: 8300000, guid: 8acb7a5a2011a084c826d6f3a3bccca2, type: 3}
   - {fileID: 8300000, guid: 8d6ff828c11bebd41b9d423b58685f2f, type: 3}
-  stoppingDistance: 7
   homeTree: {fileID: 0}
 --- !u!114 &8442540671216680736
 MonoBehaviour:
@@ -1050,8 +1056,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitType: 1
-  creatureID: 0
-  humanID: 12
+  guardianID: 0
+  enemyID: 12
   siteID: 0
   toolID: 0
 --- !u!1001 &8098184201286037860
@@ -1201,6 +1207,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
+        type: 3}
+      propertyPath: enemyID
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
         type: 3}
@@ -1489,8 +1500,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb6e1964cd2fdd40a9e422f616806f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
-  weaponCollider: {fileID: 2866346829772053985}
 --- !u!114 &6482488434287935446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1504,8 +1513,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitType: 1
-  creatureID: 0
-  humanID: 11
+  guardianID: 0
+  enemyID: 11
   siteID: 0
   toolID: 0
 --- !u!4 &8821314866398306675 stripped

@@ -190,7 +190,7 @@ public enum CombatMode
     AttackMove,
     Defend,
 }
-public enum CreatureID
+public enum GuardianID
 {
     Satyr,
     Orcus,
@@ -205,20 +205,12 @@ public enum CreatureID
     Unknown
 }
 
-public enum HumanID
+public enum EnemyID
 {
-    Logger,
-    Lumberjack,
-    LogCutter,
-    Wathe,
-    Poacher,
-    Bjornjeger,
-    Dreng,
-    Berserkr,
-    Knight,
-    Dog,
-    Spy,
-    Lord,
+    Logger, Lumberjack, LogCutter,
+    Wathe, Poacher, Bjornjeger,
+    Dreng, Berserkr, Knight,
+    Dog, Spy, Lord,
     Mine,
     Unknown,
 }

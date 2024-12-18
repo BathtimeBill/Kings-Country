@@ -21,7 +21,7 @@ public class DebugManager : GameBehaviour
             _GM.IncreaseMaegen(6);
         
         if (Input.GetKeyDown(KeyCode.P))
-            _EM.SpawnEnemy(_DATA.GetUnit(HumanID.Dog).playModel, _EM.RandomSpawnPoint.position);
+            _EM.SpawnEnemy(_DATA.GetEnemy(EnemyID.Dog).playModel, _EM.RandomSpawnPoint.position);
 
         if (Input.GetKeyDown(KeyCode.X))
         {

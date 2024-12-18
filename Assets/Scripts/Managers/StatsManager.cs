@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
+
 //using UnityEngine.UIElements;
 public class StatsManager : GameBehaviour
 {
@@ -26,7 +28,7 @@ public class StatsManager : GameBehaviour
     //[BV.EnumList(typeof(CreatureID))]
     public List<CreatureStats> creatureStats;
     public StatsTotal creatureStatsTotal;
-    [BV.EnumList(typeof(HumanID))]
+    [BV.EnumList(typeof(EnemyID))]
     public List<HumanStats> humanStats;
     public StatsTotal humanStatsTotal;
 
@@ -130,18 +132,18 @@ public class StatsManager : GameBehaviour
         int totalDeaths = 0;
         for (int i = 0; i < humanStats.Count; i++)
         {
-            UnitStats us = _SAVE.GetUnitStats(humanStats[i].humanID.ToString());
+            UnitStats us = _SAVE.GetUnitStats(humanStats[i].enemyID.ToString());
             if (us != null)
             {
                 int summons = us.summonCount;
                 totalSummons += summons;
                 humanStats[i].spawnCount.text = summons.ToString();
 
-                int kill = _SAVE.GetCreatureKillCount(humanStats[i].humanID.ToString());
+                int kill = _SAVE.GetCreatureKillCount(humanStats[i].enemyID.ToString());
                 totalKills += kill;
                 humanStats[i].killCount.text = kill.ToString();
 
-                int deaths = _SAVE.GetCreatureDeathCount(humanStats[i].humanID.ToString());
+                int deaths = _SAVE.GetCreatureDeathCount(humanStats[i].enemyID.ToString());
                 totalDeaths += deaths;
                 humanStats[i].deathCount.text = deaths.ToString();
             }
@@ -158,18 +160,18 @@ public class StatsManager : GameBehaviour
         int totalDeaths = 0;
         for (int i = 0; i < creatureStats.Count; i++)
         {
-            UnitStats us = _SAVE.GetUnitStats(creatureStats[i].creatureID.ToString());
+            UnitStats us = _SAVE.GetUnitStats(creatureStats[i].guardianID.ToString());
             if (us != null)
             {
                 int summons = us.summonCount;
                 totalSummons += summons;
                 creatureStats[i].summonCount.text = summons.ToString();
 
-                int kill = _SAVE.GetCreatureKillCount(creatureStats[i].creatureID.ToString());
+                int kill = _SAVE.GetCreatureKillCount(creatureStats[i].guardianID.ToString());
                 totalKills += kill;
                 creatureStats[i].killCount.text = kill.ToString();
 
-                int deaths = _SAVE.GetCreatureDeathCount(creatureStats[i].creatureID.ToString());
+                int deaths = _SAVE.GetCreatureDeathCount(creatureStats[i].guardianID.ToString());
                 totalDeaths += deaths;
                 creatureStats[i].deathCount.text = deaths.ToString();
             }
@@ -189,51 +191,51 @@ public class StatsManager : GameBehaviour
         switch (siteID)
         {
             case SiteID.HomeTree:
-                GetUnitStats(unit1, CreatureID.Satyr);
-                GetUnitStats(unit2, CreatureID.Orcus);
-                GetUnitStats(unit3, CreatureID.Leshy);
+                GetUnitStats(unit1, GuardianID.Satyr);
+                GetUnitStats(unit2, GuardianID.Orcus);
+                GetUnitStats(unit3, GuardianID.Leshy);
                 break;
             case SiteID.Hut:
-                GetUnitStats(unit1, CreatureID.Goblin);
-                GetUnitStats(unit2, CreatureID.Skessa);
-                GetUnitStats(unit3, CreatureID.Fidhain);
+                GetUnitStats(unit1, GuardianID.Goblin);
+                GetUnitStats(unit2, GuardianID.Skessa);
+                GetUnitStats(unit3, GuardianID.Fidhain);
                 break;
             case SiteID.Horgr:
-                GetUnitStats(unit1, CreatureID.Huldra);
-                GetUnitStats(unit2, CreatureID.Mistcalf);
-                GetUnitStats(unit3, CreatureID.Unknown);
+                GetUnitStats(unit1, GuardianID.Huldra);
+                GetUnitStats(unit2, GuardianID.Mistcalf);
+                GetUnitStats(unit3, GuardianID.Unknown);
                 break;
         }
         
     }
 
-    private void GetUnitStats(UnitKillStats _stats, CreatureID _creatureID)
+    private void GetUnitStats(UnitKillStats _stats, GuardianID guardianID)
     {
-        _stats.unitNameText.text = _creatureID.ToString();
-        _stats.unitIcon.sprite = _DATA.GetUnit(_creatureID).icon;
+        _stats.unitNameText.text = guardianID.ToString();
+        _stats.unitIcon.sprite = _DATA.GetUnit(guardianID).icon;
 
-        UnitStats us = _SAVE.GetUnitStats(_creatureID.ToString());
+        UnitStats us = _SAVE.GetUnitStats(guardianID.ToString());
         if (us == null)
         {
             NoStats(_stats);
             return;
         }
 
-        FillUnitStatDetailed(us, HumanID.Logger, _stats, 0);
-        FillUnitStatDetailed(us, HumanID.Lumberjack, _stats, 1);
-        FillUnitStatDetailed(us, HumanID.LogCutter, _stats, 2);
-        FillUnitStatDetailed(us, HumanID.Poacher, _stats, 3);
-        FillUnitStatDetailed(us, HumanID.Wathe, _stats, 4);
-        FillUnitStatDetailed(us, HumanID.Bjornjeger, _stats, 5);
-        FillUnitStatDetailed(us, HumanID.Dreng, _stats, 6);
-        FillUnitStatDetailed(us, HumanID.Berserkr, _stats, 7);
-        FillUnitStatDetailed(us, HumanID.Knight, _stats, 8);
-        FillUnitStatDetailed(us, HumanID.Dog, _stats, 9);
-        FillUnitStatDetailed(us, HumanID.Spy, _stats, 10);
-        FillUnitStatDetailed(us, HumanID.Lord, _stats, 11);
+        FillUnitStatDetailed(us, EnemyID.Logger, _stats, 0);
+        FillUnitStatDetailed(us, EnemyID.Lumberjack, _stats, 1);
+        FillUnitStatDetailed(us, EnemyID.LogCutter, _stats, 2);
+        FillUnitStatDetailed(us, EnemyID.Poacher, _stats, 3);
+        FillUnitStatDetailed(us, EnemyID.Wathe, _stats, 4);
+        FillUnitStatDetailed(us, EnemyID.Bjornjeger, _stats, 5);
+        FillUnitStatDetailed(us, EnemyID.Dreng, _stats, 6);
+        FillUnitStatDetailed(us, EnemyID.Berserkr, _stats, 7);
+        FillUnitStatDetailed(us, EnemyID.Knight, _stats, 8);
+        FillUnitStatDetailed(us, EnemyID.Dog, _stats, 9);
+        FillUnitStatDetailed(us, EnemyID.Spy, _stats, 10);
+        FillUnitStatDetailed(us, EnemyID.Lord, _stats, 11);
     }
 
-    private void FillUnitStatDetailed(UnitStats _us, HumanID _id, UnitKillStats _uks, int _position)
+    private void FillUnitStatDetailed(UnitStats _us, EnemyID _id, UnitKillStats _uks, int _position)
     {
         //int 
         //Kills
@@ -330,7 +332,7 @@ public class TreeStats
 [System.Serializable]
 public class HumanStats
 {
-    public HumanID humanID;
+    [FormerlySerializedAs("humanID")] public EnemyID enemyID;
     public TMP_Text spawnCount;
     public TMP_Text killCount;
     public TMP_Text deathCount;
@@ -339,7 +341,7 @@ public class HumanStats
 [System.Serializable]
 public class CreatureStats
 {
-    public CreatureID creatureID;
+    [FormerlySerializedAs("creatureID")] public GuardianID guardianID;
     public TMP_Text summonCount;
     public TMP_Text killCount;
     public TMP_Text deathCount;

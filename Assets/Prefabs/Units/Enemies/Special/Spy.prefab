@@ -4885,8 +4885,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c05dd937388ad644945ef72b0e80ee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitID: 10
-  unitData: {fileID: 0}
+  enemyID: 10
+  enemyData: {fileID: 0}
   state: 0
   healthBar: {fileID: 0}
   enemyAnimation: {fileID: 2332302395408046503}
@@ -4896,7 +4896,11 @@ MonoBehaviour:
   animator: {fileID: 3148144427849736570}
   tickRate: 0.5
   closestUnit: {fileID: 0}
-  distanceFromClosestUnit: 0
+  distanceToClosestUnit: 0
+  targetObject: {fileID: 0}
+  distanceToTarget: 0
+  canAttack: 0
+  weaponCollider: {fileID: 0}
   SFXPool: {fileID: 6165854847123133826}
   debugUnit: {fileID: 184867089701059852, guid: 2d324fc5d0c0b504da66c9359c5d84a8,
     type: 3}
@@ -5172,8 +5176,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitType: 1
-  creatureID: 0
-  humanID: 11
+  guardianID: 0
+  enemyID: 11
   siteID: 0
   toolID: 0
 --- !u!4 &711838406045539821 stripped
@@ -5471,9 +5475,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb6e1964cd2fdd40a9e422f616806f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
-  weaponCollider: {fileID: 3937694771119346946}
-  isAttacking: 0
 --- !u!114 &8602052069847019727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5865,6 +5866,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
+        type: 3}
+      propertyPath: enemyID
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
         type: 3}

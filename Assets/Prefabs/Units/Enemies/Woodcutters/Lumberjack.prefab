@@ -53,8 +53,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf104de209843464fa6d8bf129028475, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitID: 1
-  unitData: {fileID: 0}
+  enemyID: 1
+  enemyData: {fileID: 0}
   state: 0
   healthBar: {fileID: 365762583002637674}
   enemyAnimation: {fileID: 2058647010561031634}
@@ -64,9 +64,10 @@ MonoBehaviour:
   animator: {fileID: 7251786680643342835}
   tickRate: 0.5
   closestUnit: {fileID: 0}
-  distanceFromClosestUnit: 0
+  distanceToClosestUnit: 0
   targetObject: {fileID: 0}
   distanceToTarget: 0
+  canAttack: 0
   weaponCollider: {fileID: 8943349061234418086}
   SFXPool: {fileID: 334179361621747066}
   debugUnit: {fileID: 7560740265149152950}
@@ -387,8 +388,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitType: 1
-  creatureID: 0
-  humanID: 1
+  guardianID: 0
+  enemyID: 1
   siteID: 0
   toolID: 0
 --- !u!135 &8943349061234418086
@@ -567,7 +568,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb6e1964cd2fdd40a9e422f616806f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponCollider: {fileID: 8943349061234418086}
 --- !u!95 &7251786680643342835 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: ebf5aa4f83fdaea4d8a0a999d5849df6,
@@ -610,6 +610,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
+        type: 3}
+      propertyPath: enemyID
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
         type: 3}

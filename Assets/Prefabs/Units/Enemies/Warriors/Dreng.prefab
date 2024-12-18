@@ -54,8 +54,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f733ac703e650749b182426d3399a8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitID: 6
-  unitData: {fileID: 0}
+  enemyID: 6
+  enemyData: {fileID: 0}
   state: 0
   healthBar: {fileID: 4696482726096280013}
   enemyAnimation: {fileID: 4304869006925063934}
@@ -65,15 +65,13 @@ MonoBehaviour:
   animator: {fileID: 6430059557901584783}
   tickRate: 0.5
   closestUnit: {fileID: 0}
-  distanceFromClosestUnit: 0
+  distanceToClosestUnit: 0
   targetObject: {fileID: 0}
   distanceToTarget: 0
+  canAttack: 0
   weaponCollider: {fileID: 3511612816396690393}
   SFXPool: {fileID: 765605961431629818}
   debugUnit: {fileID: 7112368417082139174}
-  distanceToTree: 0
-  hasArrivedAtHorgr: 0
-  distanceToHorgr: 0
 --- !u!136 &5842521611548964515
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -457,7 +455,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb6e1964cd2fdd40a9e422f616806f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponCollider: {fileID: 3511612816396690393}
 --- !u!4 &1142794783944184821 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fa166808a8995d04e92012d8a662a332,
@@ -751,6 +748,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
         type: 3}
+      propertyPath: enemyID
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
+        type: 3}
       propertyPath: humanID
       value: 6
       objectReference: {fileID: 0}
@@ -918,8 +920,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitType: 1
-  creatureID: 0
-  humanID: 6
+  guardianID: 0
+  enemyID: 6
   siteID: 0
   toolID: 0
 --- !u!4 &6865079274625314073 stripped

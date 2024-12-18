@@ -1,5 +1,5 @@
 using UnityEngine;
-public class Huldra : Unit
+public class Huldra : Guardian
 {
     [Header("Huldra Specific")]
     public GameObject towerUnit;

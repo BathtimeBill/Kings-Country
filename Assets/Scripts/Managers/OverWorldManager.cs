@@ -138,18 +138,18 @@ public class OverWorldManager : GameBehaviour
         buildingLevelIcons.unknownIcon.DOColor(_DATA.LevelContains(_levelData.id, SiteID.Unknown) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
         buildingLevelIcons.unknown2Icon.DOColor(_DATA.LevelContains(_levelData.id, SiteID.Unknown2) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
 
-        humanLevelIcons.loggerIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Logger) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        humanLevelIcons.lumberjackIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Lumberjack) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        humanLevelIcons.logCutterIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.LogCutter) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        humanLevelIcons.watheIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Wathe) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        humanLevelIcons.hunterIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Poacher) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        humanLevelIcons.bjornjegerIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Bjornjeger) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        humanLevelIcons.drengIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Dreng) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        humanLevelIcons.bezerkrIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Berserkr) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        humanLevelIcons.knightIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Knight) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        humanLevelIcons.lordIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Lord) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        humanLevelIcons.dogIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Dog) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
-        humanLevelIcons.spyIcon.DOColor(_DATA.LevelContains(_levelData.id, HumanID.Spy) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        humanLevelIcons.loggerIcon.DOColor(_DATA.LevelContains(_levelData.id, EnemyID.Logger) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        humanLevelIcons.lumberjackIcon.DOColor(_DATA.LevelContains(_levelData.id, EnemyID.Lumberjack) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        humanLevelIcons.logCutterIcon.DOColor(_DATA.LevelContains(_levelData.id, EnemyID.LogCutter) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        humanLevelIcons.watheIcon.DOColor(_DATA.LevelContains(_levelData.id, EnemyID.Wathe) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        humanLevelIcons.hunterIcon.DOColor(_DATA.LevelContains(_levelData.id, EnemyID.Poacher) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        humanLevelIcons.bjornjegerIcon.DOColor(_DATA.LevelContains(_levelData.id, EnemyID.Bjornjeger) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        humanLevelIcons.drengIcon.DOColor(_DATA.LevelContains(_levelData.id, EnemyID.Dreng) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        humanLevelIcons.bezerkrIcon.DOColor(_DATA.LevelContains(_levelData.id, EnemyID.Berserkr) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        humanLevelIcons.knightIcon.DOColor(_DATA.LevelContains(_levelData.id, EnemyID.Knight) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        humanLevelIcons.lordIcon.DOColor(_DATA.LevelContains(_levelData.id, EnemyID.Lord) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        humanLevelIcons.dogIcon.DOColor(_DATA.LevelContains(_levelData.id, EnemyID.Dog) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
+        humanLevelIcons.spyIcon.DOColor(_DATA.LevelContains(_levelData.id, EnemyID.Spy) ? _COLOUR.levelHasColor : _COLOUR.levelHasNotColor, levelIconsTweenTime);
 
         ShowStars(_levelData);
     }

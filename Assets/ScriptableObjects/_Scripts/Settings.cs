@@ -243,8 +243,8 @@ public class Colours
         return oc.color;
     }
 
-    public Color GetColour(CreatureID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
-    public Color GetColour(HumanID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
+    public Color GetColour(GuardianID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
+    public Color GetColour(EnemyID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
     public Color GetColour(ToolID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
     public Color GetColour(SiteID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));
     public Color GetColour(TreeID _id) => GetColour(EnumX.ToEnum<ObjectID>(_id.ToString()));

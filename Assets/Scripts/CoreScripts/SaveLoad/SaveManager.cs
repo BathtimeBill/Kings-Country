@@ -527,8 +527,8 @@ public class SaveManager : BGG.GameData
 
     public void OnHumanKilled(Enemy _enemy, string _creature)
     {
-        FillDeathStat(_enemy.unitID.ToString(), _creature, 0);
-        FillKillStat(_creature, _enemy.unitID.ToString(), 0);
+        FillDeathStat(_enemy.enemyID.ToString(), _creature, 0);
+        FillKillStat(_creature, _enemy.enemyID.ToString(), 0);
     }
 
     private void FillDeathStat(string _unit, string _killer, int _daysSurvived)
@@ -584,7 +584,7 @@ public class SaveManager : BGG.GameData
         //SaveData();
     }
 
-    private void OnOnGuardianSpawned(CreatureID _id)
+    private void OnOnGuardianSpawned(GuardianID _id)
     {
         UnitStats stat = GetUnitStats(_id.ToString());
         if (stat == null)
@@ -597,7 +597,7 @@ public class SaveManager : BGG.GameData
         stat.summonCount += 1;
     }
 
-    private void OnHumanSpawned(HumanID _id)
+    private void OnHumanSpawned(EnemyID _id)
     {
         UnitStats stat = GetUnitStats(_id.ToString());
         if (stat == null)

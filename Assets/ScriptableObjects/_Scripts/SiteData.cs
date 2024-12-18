@@ -10,8 +10,8 @@ public class SiteData : ScriptableObject
     public string description;
 
     public GameObject sitePrefab;
-    public List<CreatureID> siteGuardians;
-    public List<HumanID> siteEnemies;
+    public List<GuardianID> siteGuardians;
+    public List<EnemyID> siteEnemies;
     [Header("Stats")]
     public int health;
     public int damage;

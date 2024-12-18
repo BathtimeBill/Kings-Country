@@ -5,10 +5,10 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Rendering;
 
-public class Unit : GameBehaviour
+public class Guardian : GameBehaviour
 {
     [Header("Unit Type")]
-    public CreatureID unitID;
+    public GuardianID unitID;
     
     [Header("UI")]
     public HealthBar healthBar;
@@ -358,7 +358,7 @@ public class Unit : GameBehaviour
 
         if(other.CompareTag("Heal"))
         {
-            if(unitID != CreatureID.Mistcalf)
+            if(unitID != GuardianID.Mistcalf)
                 IncreaseHealth(100);
         }
         if (other.CompareTag("Maegen"))
@@ -381,7 +381,7 @@ public class Unit : GameBehaviour
         }
         if (other.CompareTag("Rune"))
         {
-            if (unitID != CreatureID.Mistcalf)
+            if (unitID != GuardianID.Mistcalf)
             {
                 healingParticle.SetActive(true);
             }
@@ -398,7 +398,7 @@ public class Unit : GameBehaviour
         if (other.CompareTag("Tower"))
             isTooCloseToTower = false;
         
-        if (unitID != CreatureID.Mistcalf)
+        if (unitID != GuardianID.Mistcalf)
             healingParticle.SetActive(false);
 
     }
@@ -408,7 +408,7 @@ public class Unit : GameBehaviour
         
         if(other.CompareTag("Rune"))
         {
-            if (unitID != CreatureID.Mistcalf)
+            if (unitID != GuardianID.Mistcalf)
             {
                 float healRate = _GM.runeHealRate * Time.deltaTime;
                 if (_DATA.HasPerk(PerkID.Rune))
@@ -421,7 +421,7 @@ public class Unit : GameBehaviour
         if (!other.GetComponent<UnitWeaponCollider>())
             return;
         
-        if (other.GetComponent<UnitWeaponCollider>().humanID == HumanID.LogCutter)
+        if (other.GetComponent<UnitWeaponCollider>().enemyID == EnemyID.LogCutter)
         {
             DecreaseHealth(0.5f * Time.deltaTime);
             if (health < 0)
@@ -438,41 +438,41 @@ public class Unit : GameBehaviour
         if (!uwc)
             return;
 
-        string attacker = _DATA.GetUnit(uwc.humanID).ToString();
-        float damage = _DATA.GetUnit(uwc.humanID).damage;
+        string attacker = _DATA.GetEnemy(uwc.enemyID).ToString();
+        float damage = _DATA.GetEnemy(uwc.enemyID).damage;
 
-        switch (uwc.humanID)
+        switch (uwc.enemyID)
         {
-            case HumanID.Logger:
+            case EnemyID.Logger:
                 TakeDamage(attacker, damage); 
                 break;
-            case HumanID.Lumberjack:
+            case EnemyID.Lumberjack:
                 TakeDamage(attacker, damage);
                 break;
-            case HumanID.Dreng:
-                if (unitID == CreatureID.Leshy) { attacker = "Unknown"; damage = 50; }
+            case EnemyID.Dreng:
+                if (unitID == GuardianID.Leshy) { attacker = "Unknown"; damage = 50; }
                 TakeDamage(attacker, damage);
                 break;
-            case HumanID.Berserkr:
-                if (unitID == CreatureID.Leshy) { attacker = "Unknown"; damage = 65; }
+            case EnemyID.Berserkr:
+                if (unitID == GuardianID.Leshy) { attacker = "Unknown"; damage = 65; }
                 TakeDamage(attacker, damage);
                 break;
-            case HumanID.Wathe:
+            case EnemyID.Wathe:
                 HitByArrow();
-                if (unitID == CreatureID.Skessa) { damage *=3; }
+                if (unitID == GuardianID.Skessa) { damage *=3; }
                 TakeDamage(attacker, damage);
                 break;
-            case HumanID.Poacher:
+            case EnemyID.Poacher:
                 HitByArrow();
-                if (unitID == CreatureID.Skessa) { damage *= 3; }
+                if (unitID == GuardianID.Skessa) { damage *= 3; }
                 TakeDamage(attacker, damage);
                 break;
-            case HumanID.Lord:
+            case EnemyID.Lord:
                 state = UnitState.Attack;
                 HitByArrow();
                 TakeDamage(attacker, damage);
                 break;
-            case HumanID.Dog:
+            case EnemyID.Dog:
                 HitByArrow();
                 TakeDamage(attacker, damage);
                 break;
@@ -530,7 +530,7 @@ public class Unit : GameBehaviour
     
     private void OnContinueButton()
     {
-        if(unitID != CreatureID.Mistcalf)
+        if(unitID != GuardianID.Mistcalf)
         {
             SetHealth(maxHealth);
         }
@@ -591,7 +591,7 @@ public class Unit : GameBehaviour
         if(combatMode != CombatMode.Move || combatMode != CombatMode.AttackMove)
         {
             detectRange = detectRange * 2;
-            if (unitID == CreatureID.Goblin)
+            if (unitID == GuardianID.Goblin)
             {
                 navAgent.speed = unitData.speed;
             }
@@ -603,7 +603,7 @@ public class Unit : GameBehaviour
     {
         if (combatMode != CombatMode.Defend)
         {
-            if (unitID != CreatureID.Goblin)
+            if (unitID != GuardianID.Goblin)
             {
                 detectRange = detectRange / 2;
             }
@@ -624,7 +624,7 @@ public class Unit : GameBehaviour
     #region Input
     private void OnTowerButton()
     {
-        if (unitID != CreatureID.Fidhain || unitID != CreatureID.Fidhain)
+        if (unitID != GuardianID.Fidhain || unitID != GuardianID.Fidhain)
             return;
 
         if (!isSelected)
