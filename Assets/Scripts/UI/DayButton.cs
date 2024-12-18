@@ -18,7 +18,7 @@ public class DayButton : InteractableButton
     {
         base.OnPointerEnter(eventData);
         _SM.PlaySound(_SM.buttonClickSound);
-        if(_buildPhase)
+        if(_BuildPhase)
             dayPanel.PointerEnter(eventData);
     }
 

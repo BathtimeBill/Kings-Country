@@ -15,6 +15,7 @@ public class EnemyData : ScriptableObject
     public float attackRange = 10;
     public float detectRange = 20;
     public float stoppingDistance = 1;
+    public float invincibleTime = 5f;
     [Header("Non Stats")]
     public Sprite icon;
     public Sprite mapIcon;
@@ -28,6 +29,6 @@ public class EnemyData : ScriptableObject
     [Header("Models")]
     public GameObject playModel;
     public GameObject ragdollModel;
-    public GameObject bloodParticles;
+    public GameObject hitParticles;
     public GameObject dieParticles;
 }

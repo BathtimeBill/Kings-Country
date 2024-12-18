@@ -150,7 +150,7 @@ public class LevelEvents : GameBehaviour
 
     private void MineLogic() //CHECK
     {
-        if (_currentLevel.id == LevelID.WormturnRoad && !mineExists)
+        if (_CurrentLevel.id == LevelID.WormturnRoad && !mineExists)
         {
             int currentDay = _GM.currentDay;
             if (currentDay >= 2 && currentDay <= 7)

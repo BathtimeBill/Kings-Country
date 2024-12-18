@@ -522,7 +522,7 @@ public class UIManager : Singleton<UIManager>
     {
         ExecuteNextFrame(() =>
         {
-            if (_gameFinished)
+            if (_GameFinished)
             {
                 return;
             }
@@ -951,6 +951,9 @@ public class UIManager : Singleton<UIManager>
 
     private void OnEnemyUnitKilled(Enemy _unitID, string _killedBy)
     {
+        if (!_InDay)
+            return;
+        
         ExecuteNextFrame(() =>
         {
             enemyProgressText.text = dayProgressMessage + _EM.currentKillCount + "/" + _EM.GetDayTotalEnemyCount();

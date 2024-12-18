@@ -1,12 +1,11 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
-using System.Collections.Generic;
 
 public class Enemy : GameBehaviour
 {
     public HumanID unitID;
-    [HideInInspector] public EnemyData unitData;
+    [HideInInspector] public EnemyData enemyData;
     public EnemyState state;
     public HealthBar healthBar;
     public EnemyAnimation enemyAnimation;
@@ -70,23 +69,23 @@ public class Enemy : GameBehaviour
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
         soundPool = SFXPool.GetComponents<AudioSource>();
-        unitData = _DATA.GetUnit(unitID);
+        enemyData = _DATA.GetUnit(unitID);
     }
 
     public virtual void Start() { Setup();}
 
     public void Setup()
     {
-        maxHealth = unitData.health;
+        maxHealth = enemyData.health;
         health = maxHealth;
-        speed = unitData.speed;
+        speed = enemyData.speed;
         agent.speed = speed;
-        damage = unitData.damage;
-        attackRange = unitData.attackRange;
-        detectRange = unitData.detectRange;
-        stoppingDistance = unitData.stoppingDistance;
+        damage = enemyData.damage;
+        attackRange = enemyData.attackRange;
+        detectRange = enemyData.detectRange;
+        stoppingDistance = enemyData.stoppingDistance;
         agent.stoppingDistance = stoppingDistance;
-        _SM.PlaySound(unitData.spawnSound);
+        _SM.PlaySound(enemyData.spawnSound);
         if(healthBar != null)
             healthBar.AdjustHealthBar(health, maxHealth);
         StartCoroutine(WaitForInvincible());
@@ -99,7 +98,7 @@ public class Enemy : GameBehaviour
     private IEnumerator WaitForInvincible()
     {
         invincible = true;
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(enemyData.invincibleTime);
         invincible = false;
     }
     #endregion
@@ -137,7 +136,8 @@ public class Enemy : GameBehaviour
     public void ChangeState(EnemyState _state)
     {
         state = _state;
-        healthBar.ChangeUnitState(state.ToString());
+        if (healthBar != null)
+            healthBar.ChangeUnitState(state.ToString());
     }
     
     public virtual void HandleWorkState() { }
@@ -294,13 +294,11 @@ public class Enemy : GameBehaviour
         if (invincible)
             return;
         
-        Vector3 forward = new Vector3(0, 180, 0);
-        if (unitData.bloodParticles != null)
+        if (enemyData.hitParticles != null)
         {
-            GameObject bloodParticle = Instantiate(unitData.bloodParticles, transform.position + new Vector3(0, 5, 0), transform.rotation);
-            Destroy(bloodParticle, 5);
+            GameObject hitParticle = Instantiate(enemyData.hitParticles, transform.position + new Vector3(0, 5, 0), transform.rotation);
+            Destroy(hitParticle, 5);
         }
-
         //GameObject bloodParticle = Instantiate(_DATA.GetUnit(unitID).bloodParticles, transform.position, Quaternion.LookRotation(forward));
         health -= _damage;
         if(healthBar != null) 
@@ -311,20 +309,19 @@ public class Enemy : GameBehaviour
         }
         else
         {
-            PlaySound(unitData.hitSounds);
+            PlaySound(enemyData.hitSounds);
         }
     }
 
     public virtual void Die(Enemy _enemy, string _killedBy, DeathID _deathID) 
     {
         RemoveFromSites();
-        if (unitData.dieParticles != null)
+        if (enemyData.dieParticles != null)
         {
-            GameObject dieParticle = Instantiate(unitData.bloodParticles, transform.position + new Vector3(0, 5, 0),
+            GameObject dieParticle = Instantiate(enemyData.dieParticles, transform.position + new Vector3(0, 5, 0),
                 transform.rotation);
             Destroy(dieParticle, 5);
         }
-
         _EM.RemoveEnemy(_enemy, _killedBy, _deathID, transform.position, transform.rotation);
         if(_deathID == DeathID.Launch)
             DropMaegen();
@@ -387,7 +384,7 @@ public class Enemy : GameBehaviour
     #endregion
 
     #region Animation Events
-    public void Footstep(string _foot) => PlaySound(unitData.footstepSounds);
+    public void Footstep(string _foot) => PlaySound(enemyData.footstepSounds);
     public virtual void Attack(int _attack) { }
     
     #endregion

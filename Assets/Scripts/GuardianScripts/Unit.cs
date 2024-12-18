@@ -117,7 +117,7 @@ public class Unit : GameBehaviour
             Setup();
             GameEvents.ReportOnGuardianSpawned(unitID);
             SpawnInMove();
-            startingDay = _currentDay;
+            startingDay = _CurrentDay;
         }
         _UM.unitList.Add(this);
     }
@@ -512,7 +512,7 @@ public class Unit : GameBehaviour
             Destroy(go, 15);
         }
         _UI.CheckPopulousUI();
-        int daysSurvived = _currentDay - startingDay;
+        int daysSurvived = _CurrentDay - startingDay;
         GameEvents.ReportOnGuardianKilled(unitID.ToString(), _attacker, daysSurvived);
         _UM.RemoveGuardian(this, transform.position, transform.rotation);
     }
@@ -656,7 +656,7 @@ public class Unit : GameBehaviour
             GameObject go = Instantiate(unitData.ragdollModel, transform.position, transform.rotation);
             Destroy(go, 15);
             _UI.CheckPopulousUI();
-            int daysSurvived = _currentDay - startingDay;
+            int daysSurvived = _CurrentDay - startingDay;
             GameEvents.ReportOnGuardianKilled(unitID.ToString(), "Unknown", daysSurvived);
             _UM.RemoveSelectedUnit(this);
             GameEvents.ReportOnObjectSelected(null);

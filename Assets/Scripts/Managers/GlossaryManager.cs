@@ -50,7 +50,7 @@ public class GlossaryManager : GameBehaviour
                 glossaryButtons[i].Setup();
         });
 
-        if(_currentLevel.id == LevelID.WormturnRoad)
+        if(_CurrentLevel.id == LevelID.WormturnRoad)
             ExecuteAfterSeconds(1, () => NewGlossaryAvailable(GlossaryID.WitchsHut, "Witch's Hut"));
     }
 
@@ -211,15 +211,15 @@ public class GlossaryManager : GameBehaviour
     {
         ShowGlossaryItem(lastSelectedGlossaryID);
         FadeX.FadeIn(glossaryPanel);
-        if(!_inTutorial)
-            _GM.SetPreviousState(_currentGameState);
+        if(!_InTutorial)
+            _GM.SetPreviousState(_CurrentGameState);
         _GM.ChangeGameState(GameState.Glossary);
     }
 
     public void CloseGlossaryPanel()
     {
         FadeX.FadeOut(glossaryPanel);
-        _GM.ChangeGameState(_previousGameState);
+        _GM.ChangeGameState(_PreviousGameState);
         TweenX.TweenFill(newEntryLabel, _TWEENING.UIButtonTweenTime, _TWEENING.UIButtonTweenEase, 0);
         _TUTORIAL.ClosedGlossary();
     }

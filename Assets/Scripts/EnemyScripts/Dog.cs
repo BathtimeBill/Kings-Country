@@ -5,6 +5,7 @@ public class Dog : Enemy
     #region AI
     public override void DetermineState()
     {
+        attackRange = enemyData.attackRange;
         if (_TreesExist)
         {
             targetObject = ObjectX.GetClosest(gameObject, _GM.trees).transform;
@@ -16,6 +17,7 @@ public class Dog : Enemy
         else
         {
             targetObject = _HOME.transform;
+            attackRange *= 2;
         }
         HandleWorkState();
     }
@@ -27,7 +29,7 @@ public class Dog : Enemy
     
     public override void CheckAttackState()
     {
-        canAttack = distanceToTarget <= stoppingDistance;
+        canAttack = distanceToTarget <= attackRange;
         if (canAttack)
         {
             TakeDamage(10000, "Dog");

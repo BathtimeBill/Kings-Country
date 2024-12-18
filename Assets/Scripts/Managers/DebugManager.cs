@@ -2,10 +2,14 @@ using UnityEngine;
 using UnityEditor;
 public class DebugManager : GameBehaviour
 {
+    public GameObject debugPanel;
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Tilde))
+            debugPanel.SetActive(!debugPanel.activeSelf);
+            
         if (Input.GetKeyDown(KeyCode.O))
-            GameEvents.ReportOnDayOver(_currentDay);
+            GameEvents.ReportOnDayOver(_CurrentDay);
 
         if(Input.GetKeyDown(KeyCode.K))
             StartCoroutine(_EM.KillAllEnemies());
@@ -15,11 +19,14 @@ public class DebugManager : GameBehaviour
 
         if (Input.GetKeyDown(KeyCode.M))
             _GM.IncreaseMaegen(6);
+        
+        if (Input.GetKeyDown(KeyCode.P))
+            _EM.SpawnEnemy(_DATA.GetUnit(HumanID.Dog).playModel, _EM.RandomSpawnPoint.position);
 
         if (Input.GetKeyDown(KeyCode.X))
         {
-            if (FindObjectOfType<ExperienceMeter>())
-                FindObjectOfType<ExperienceMeter>().IncreaseExperience(100);
+            if (FindFirstObjectByType<ExperienceMeter>())
+                FindFirstObjectByType<ExperienceMeter>().IncreaseExperience(100);
         }
         
         if(Input.GetKeyDown(KeyCode.H))

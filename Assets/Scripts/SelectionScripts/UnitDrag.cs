@@ -75,7 +75,7 @@ public class UnitDrag : GameBehaviour
 
     private void OnSelectButtonPressed()
     {
-        if (!_hasInput)
+        if (!_HasInput)
             return;
 
         startPosition = Input.mousePosition;
@@ -83,7 +83,7 @@ public class UnitDrag : GameBehaviour
     }
     private void OnSelectButtonHolding()
     {
-        if (!_hasInput)
+        if (!_HasInput)
             return;
 
         endPosition = Input.mousePosition;
@@ -92,7 +92,7 @@ public class UnitDrag : GameBehaviour
     }
     private void OnSelectButtonReleased()
     {
-        if (!_hasInput)
+        if (!_HasInput)
             return;
 
         SelectUnits();

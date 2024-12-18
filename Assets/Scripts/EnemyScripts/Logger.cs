@@ -13,7 +13,7 @@ public class Logger : Enemy
         else
         {
             targetObject = _TreesExist ? ObjectX.GetClosest(gameObject, _GM.trees).transform : _HOME.transform;
-            attackRange = _TreesExist ? unitData.attackRange : unitData.attackRange * 2;
+            attackRange = _TreesExist ? enemyData.attackRange : enemyData.attackRange * 2;
             HandleWorkState();
         }
     }

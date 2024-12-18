@@ -17,11 +17,12 @@ MonoBehaviour:
   name: Dog
   description: Dog
   health: 100
-  damage: 100
-  speed: 3
-  attackRange: 10
+  damage: 1000
+  speed: 5
+  attackRange: 4
   detectRange: 30
-  stoppingDistance: 1
+  stoppingDistance: 2
+  invincibleTime: 1
   icon: {fileID: 1849421786, guid: b5841c504809ed34b8877f713db8425d, type: 3}
   mapIcon: {fileID: 1849421786, guid: b5841c504809ed34b8877f713db8425d, type: 3}
   voiceSounds: []
@@ -34,8 +35,7 @@ MonoBehaviour:
   spawnSound: {fileID: 0}
   playModel: {fileID: 4669797842556170784, guid: 79fc0bb455ab53842a027aa6d32de58e,
     type: 3}
-  ragdollModel: {fileID: 4669797842556170784, guid: 79fc0bb455ab53842a027aa6d32de58e,
-    type: 3}
-  bloodParticles: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}
+  ragdollModel: {fileID: 0}
+  hitParticles: {fileID: 185874, guid: 0c28e27dfe31ab04584024db97645612, type: 3}
   dieParticles: {fileID: 6667861000600669315, guid: 095ebad0de87f6749a3b705e227cbac6,
     type: 3}

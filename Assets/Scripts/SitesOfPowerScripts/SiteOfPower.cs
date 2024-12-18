@@ -118,7 +118,7 @@ public class SiteOfPower : GameBehaviour
     }
     private void OnSiteSelected(SiteID _ID, bool _selected) => selectionRing.Select(_ID == siteData.id && _selected);
     private void OnHumanKilled(Enemy _enemy, string _killer) => RemoveEnemy(_enemy);
-    private void OnGameStateChanged(GameState _gameState) => healthBar.gameObject.SetActive(_inGame);
+    private void OnGameStateChanged(GameState _gameState) => healthBar.gameObject.SetActive(_InGame);
     private void OnContinueButton() => ChangeSiteState(SiteState.Claimed);
 
     protected virtual void OnEnable()

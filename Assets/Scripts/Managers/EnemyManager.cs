@@ -22,7 +22,7 @@ public class EnemyManager : Singleton<EnemyManager>
     public HumanID testSpawnHuman;
     public bool noAutoSpawning = false;
     public void AddSpawnPoint(GameObject spawnPoint) => spawnPoints.Add(spawnPoint);
-    private Transform RandomSpawnPoint => ListX.GetRandomItemFromList(spawnPoints).transform; 
+    public Transform RandomSpawnPoint => ListX.GetRandomItemFromList(spawnPoints).transform; 
     
     private void Start()
     {
@@ -30,7 +30,7 @@ public class EnemyManager : Singleton<EnemyManager>
         spawnAmounts.Clear();
         spawnAmounts = _DATA.currentLevel.spawnAmounts;
         
-        if(_currentLevel.availableHumans.Contains(HumanID.Spy))
+        if(_CurrentLevel.availableHumans.Contains(HumanID.Spy))
             StartCoroutine(SpawnSpy());
     }
 
@@ -39,7 +39,7 @@ public class EnemyManager : Singleton<EnemyManager>
         if (noAutoSpawning)
             return;
         
-        currentDaySpawnAmount = spawnAmounts[_currentDay];
+        currentDaySpawnAmount = spawnAmounts[_CurrentDay];
         enemies.Clear();
         FillDayEnemyList();
         StartCoroutine(SpawnEnemies());
@@ -47,7 +47,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
     #region Spawning
 
-    private void SpawnEnemy(GameObject _enemy, Vector3 _location, bool _spawnedFromSite = false)
+    public void SpawnEnemy(GameObject _enemy, Vector3 _location, bool _spawnedFromSite = false)
     {
         //POOL REDO
         GameObject go = Instantiate(_enemy, _location, Quaternion.identity);
@@ -69,13 +69,13 @@ public class EnemyManager : Singleton<EnemyManager>
 
         yield return new WaitForSeconds(Random.Range(cooldown.min, cooldown.max));
 
-        if(_agroPhase && _inDay)
+        if(_AgroPhase && _InDay)
             StartCoroutine(SpawnEnemies());
     }
 
     public void SpawnSiteEnemy(Vector3 spawnLocation)
     {
-        if(!_inDay) 
+        if(!_InDay) 
             return;
 
         int rndHuman = Random.Range(0, enemyIDList.Count);
@@ -84,13 +84,13 @@ public class EnemyManager : Singleton<EnemyManager>
     
     private void SpawnDog()  //CHECK IF VALUES ARE RIGHT
     {
-        if (!_inDay)
+        if (!_InDay)
             return;
 
-        for (int day = 1; day <= _currentLevel.days; day++)
+        for (int day = 1; day <= _CurrentLevel.days; day++)
         {
             int requiredTreeCount = (day == 1) ? 5 : (day * 5);
-            if (_currentDay == day && _GM.treeCount > requiredTreeCount)
+            if (_CurrentDay == day && _GM.treeCount > requiredTreeCount)
             {
                 int rndCoin = Random.Range(0, 2);
                 if (rndCoin == 1)
@@ -156,25 +156,30 @@ public class EnemyManager : Singleton<EnemyManager>
     public void RemoveEnemy(Enemy _enemy, string _killedBy, DeathID _deathID, Vector3 _position, Quaternion _rotation)
     {
         //CHECK - May need to reset ragdoll physics when getting object
-        GameObject go = PoolX.GetFromPool(_enemy.unitData.ragdollModel, ragdollPool);
-        go.transform.position = _position;
-        go.transform.rotation = _rotation;
-        Ragdoll ragdoll = go.GetComponent<Ragdoll>();
-        switch (_deathID)
+        //GameObject go = PoolX.GetFromPool(_enemy.unitData.ragdollModel, ragdollPool);
+        //go.transform.position = _position;
+        //go.transform.rotation = _rotation;
+        if (_enemy.enemyData.ragdollModel != null)
         {
-            case DeathID.Regular:
-                ragdoll.Die(ArrayX.GetRandomItemFromArray(_enemy.unitData.dieSounds));
-                ragdoll.Launch(0, 0);
-                break;
-            case DeathID.Explosion:
-                ragdoll.Die(ArrayX.GetRandomItemFromArray(_enemy.unitData.dieSounds), true);
-                ragdoll.Launch(2000, -16000);
-                break;
-            case DeathID.Launch:
-                ragdoll.Die(ArrayX.GetRandomItemFromArray(_enemy.unitData.dieSounds));
-                ragdoll.Launch(20000, -20000);
-                break;
+            GameObject go = Instantiate(_enemy.enemyData.ragdollModel, _position, _rotation);
+            Ragdoll ragdoll = go.GetComponent<Ragdoll>();
+            switch (_deathID)
+            {
+                case DeathID.Regular:
+                    ragdoll.Die(ArrayX.GetRandomItemFromArray(_enemy.enemyData.dieSounds));
+                    ragdoll.Launch(0, 0);
+                    break;
+                case DeathID.Explosion:
+                    ragdoll.Die(ArrayX.GetRandomItemFromArray(_enemy.enemyData.dieSounds), true);
+                    ragdoll.Launch(2000, -16000);
+                    break;
+                case DeathID.Launch:
+                    ragdoll.Die(ArrayX.GetRandomItemFromArray(_enemy.enemyData.dieSounds));
+                    ragdoll.Launch(20000, -20000);
+                    break;
+            }
         }
+
         //POOL REDO
         //_enemy.gameObject.SetActive(false);
         enemies.Remove(_enemy.gameObject);
@@ -238,11 +243,11 @@ public class EnemyManager : Singleton<EnemyManager>
 
     private void CheckEnemiesLeft()
     {
-        if (_EnemiesExist || _agroPhase)
+        if (_EnemiesExist || _AgroPhase)
             return;
 
         StopCoroutine(SpawnEnemies());
-        GameEvents.ReportOnDayOver(_currentDay);
+        GameEvents.ReportOnDayOver(_CurrentDay);
     }
 
     /// <summary>

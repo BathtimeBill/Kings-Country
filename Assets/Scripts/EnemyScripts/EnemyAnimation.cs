@@ -42,6 +42,6 @@ public class EnemyAnimation : GameBehaviour
     public void Attack(int _attack) => enemy.Attack(_attack);
     public void Footstep(string _foot) => enemy.Footstep(_foot);
     //Note that the draw sound needs to be in the appropriate array element
-    public void PlayBowDrawSound() => enemy.PlaySound(enemy.unitData.attackSounds[1]);  
+    public void PlayBowDrawSound() => enemy.PlaySound(enemy.enemyData.attackSounds[1]);  
     #endregion
 }

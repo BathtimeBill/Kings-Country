@@ -126,7 +126,7 @@ public class Hunter : Enemy
     
     public override void Attack(int _attack)
     {
-        if (!_inGame)
+        if (!_InGame)
             return;
 
         //checks if there are any animals in the scene then calculates the distance from the hunter enemy to that animal.
@@ -143,7 +143,7 @@ public class Hunter : Enemy
         ar.SetActive(true);
         ar.GetComponent<Arrow>().Setup(targetObject);
         //DisableAfterTime(arrowObject, 1);
-        PlaySound(unitData.attackSounds[0]);
+        PlaySound(enemyData.attackSounds[0]);
     }
     #endregion
 

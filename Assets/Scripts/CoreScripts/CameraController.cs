@@ -38,7 +38,7 @@ public class CameraController : Singleton<CameraController>
 
     private void Update()
     {
-        if (lockCamera || !_hasInput)
+        if (lockCamera || !_HasInput)
             return;
 
         HandleLerps();

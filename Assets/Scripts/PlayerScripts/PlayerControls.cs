@@ -27,7 +27,7 @@ public class PlayerControls : Singleton<PlayerControls>
     
     private void FixedUpdate()
     {
-        if (_hasInput)
+        if (_HasInput)
             RayCast();
     }
 
@@ -83,7 +83,7 @@ public class PlayerControls : Singleton<PlayerControls>
         {
             if(hitPoint.collider.CompareTag("Home Tree"))
             {
-                if (_GM.playmode == PlayMode.DefaultMode && _inGame)
+                if (_GM.playmode == PlayMode.DefaultMode && _InGame)
                 {
                     _SM.PlaySound(_SM.openMenuSound);
                     GameEvents.ReportOnSiteSelected(SiteID.HomeTree, true);
@@ -168,7 +168,7 @@ public class PlayerControls : Singleton<PlayerControls>
 
     private void OnEscapeButtonPressed()
     {
-        if (_hasInput)
+        if (_HasInput)
         {
             _GM.SetPreviousState(_GM.gameState);
             _GM.ChangeGameState(GameState.Pause);
@@ -176,7 +176,7 @@ public class PlayerControls : Singleton<PlayerControls>
             return;
         }
 
-        if (_isPaused)
+        if (_IsPaused)
         {
             if (_UI.warningPanel == null)
                 _GM.ChangeGameState(_GM.previousState);
@@ -204,7 +204,7 @@ public class PlayerControls : Singleton<PlayerControls>
     
     private void SelectTreeMode(TreeID _treeID)
     {
-        if(!_tutorialComplete || _buildPhase)
+        if(!_TutorialComplete || _BuildPhase)
         {
             _GM.SetPlayMode(PlayMode.TreeMode);
             tools.treeTool.Select(_treeID);

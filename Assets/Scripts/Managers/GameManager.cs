@@ -116,7 +116,7 @@ public class GameManager : Singleton<GameManager>
 
         ExecuteAfterFrames(1, () =>
         {
-            if (!_inTutorial)
+            if (!_InTutorial)
                 WildlifeInstantiate();
         });
 
@@ -162,7 +162,7 @@ public class GameManager : Singleton<GameManager>
         timeSinceAttack += Time.deltaTime;
         timeSinceWildlifeKilled += Time.deltaTime;
 
-        if (_inDay)
+        if (_InDay)
         {
             currentAgroTime += Time.deltaTime;
             _UI.UpdateAgroBar(currentAgroTime, dayAgroTimeLimit);
@@ -494,7 +494,7 @@ public class GameManager : Singleton<GameManager>
     
     IEnumerator SpawnPickups()
     {
-        if(_currentGameState == GameState.Play)
+        if(_CurrentGameState == GameState.Play)
             SpawnPickup();
 
         yield return new WaitForSeconds(Random.Range(20, 50));
@@ -526,7 +526,7 @@ public class GameManager : Singleton<GameManager>
 
     private void OnGameSpeedButton(GameSpeed _gameSpeed)
     {
-        if(_hasInput)
+        if(_HasInput)
             SetGameSpeed(_gameSpeed);
     }
     

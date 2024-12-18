@@ -453,7 +453,7 @@ public class TutorialManager : GameBehaviour
         if (_DATA.currentLevelID != LevelID.Ironwood)
             return;
 
-        if (_currentGameState != GameState.Tutorial)
+        if (_CurrentGameState != GameState.Tutorial)
             return;
 
         if (tutorialComplete)
@@ -470,7 +470,7 @@ public class TutorialManager : GameBehaviour
 
     public void ClosedGlossary()
     {
-        if(_tutorialComplete || currentTutorialID != TutorialID.Glossary)
+        if(_TutorialComplete || currentTutorialID != TutorialID.Glossary)
             return;
 
         HideArrows();
@@ -498,7 +498,7 @@ public class TutorialManager : GameBehaviour
     //Trees
     private void OnTreePlaced(TreeID _treeID)
     {
-        if (tutorialComplete || _currentGameState != GameState.Tutorial)
+        if (tutorialComplete || _CurrentGameState != GameState.Tutorial)
             return;
 
         treeCount++;
