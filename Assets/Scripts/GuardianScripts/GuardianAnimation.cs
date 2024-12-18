@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using DG.Tweening;
 
-public class UnitAnimation : GameBehaviour
+public class GuardianAnimation : GameBehaviour
 {
     Animator animator;
     NavMeshAgent navAgent;

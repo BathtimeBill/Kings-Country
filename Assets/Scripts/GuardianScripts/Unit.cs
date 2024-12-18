@@ -64,7 +64,7 @@ public class Unit : GameBehaviour
     //AI
     private Transform closestEnemy;
     [HideInInspector] public float distanceToClosestEnemy;
-    private UnitAnimation unitAnimation;
+    private GuardianAnimation guardianAnimation;
 
     public Transform ClosestEnemy => closestEnemy;
     [HideInInspector] public UnitData unitData;
@@ -104,7 +104,7 @@ public class Unit : GameBehaviour
 
     public void Awake()
     {
-        unitAnimation = GetComponentInChildren<UnitAnimation>();
+        guardianAnimation = GetComponentInChildren<GuardianAnimation>();
     }
 
     public virtual void Start()
@@ -152,7 +152,7 @@ public class Unit : GameBehaviour
     IEnumerator WaitForIsMovingCheck()
     {
         yield return new WaitForSeconds(0.1f);
-        if(unitAnimation.currentSpeed == 0)
+        if(guardianAnimation.currentSpeed == 0)
         {
             state = UnitState.Idle;
         }    
@@ -253,12 +253,12 @@ public class Unit : GameBehaviour
 
         if (distanceToClosestEnemy >= attackRange && !hitByArrow)
         {
-            unitAnimation.CheckAttack();
+            guardianAnimation.CheckAttack();
             state = UnitState.Focus;
         }
         
         navAgent.SetDestination(closestEnemy.transform.position);
-        unitAnimation.PlayAttack();
+        guardianAnimation.PlayAttack();
         SmoothFocusOnEnemy();
     }
 
