@@ -45,7 +45,7 @@ public class MaegenSprite : GameBehaviour
         {
             Instantiate(plusParticle, transform.position, transform.rotation);
             Instantiate(collectMaegenParticle, transform.position, transform.rotation);
-            _GM.IncreaseMaegen(1);
+            _GAME.IncreaseMaegen(1);
             GameEvents.ReportOnWispDestroy();
             Destroy(gameObject);
         }

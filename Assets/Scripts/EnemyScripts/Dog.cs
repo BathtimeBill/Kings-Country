@@ -8,7 +8,7 @@ public class Dog : Enemy
         attackRange = enemyData.attackRange;
         if (_TreesExist)
         {
-            targetObject = ObjectX.GetClosest(gameObject, _GM.trees).transform;
+            targetObject = ObjectX.GetClosest(gameObject, _GAME.trees).transform;
         }
         else if (_GuardiansExist)
         {

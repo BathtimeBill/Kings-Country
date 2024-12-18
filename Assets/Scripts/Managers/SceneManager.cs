@@ -48,7 +48,7 @@ public class SceneManager : GameBehaviour
 
     public void ResumeScene()
     {
-        _GM.ChangeGameState(_GM.previousState);
+        _GAME.ChangeGameState(_GAME.previousState);
     }
 
     public void LoadTitle()

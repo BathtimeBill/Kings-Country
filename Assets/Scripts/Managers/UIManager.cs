@@ -189,9 +189,9 @@ public class UIManager : Singleton<UIManager>
         fyreTimeLeft = 0;
         stormerTimeLeft = 0;
 
-        fyreTool.SetInteractable(_GM.fyreAvailable);
-        stormerTool.SetInteractable(_GM.stormerAvailable);
-        runeTool.SetInteractable(_GM.runesAvailable);
+        fyreTool.SetInteractable(_GAME.fyreAvailable);
+        stormerTool.SetInteractable(_GAME.stormerAvailable);
+        runeTool.SetInteractable(_GAME.runesAvailable);
 
         formationObject = GameObject.FindGameObjectWithTag("Destination");
 
@@ -423,7 +423,7 @@ public class UIManager : Singleton<UIManager>
 
     public void CheckEldyr()
     {
-        if(_GM.maegen >= 5000 && _GM.wildlifeCount >= 50)
+        if(_GAME.maegen >= 5000 && _GAME.wildlifeCount >= 50)
         {
             eldyrButton.SetActive(true);
             ObjectiveText.SetActive(false);
@@ -436,15 +436,15 @@ public class UIManager : Singleton<UIManager>
     IEnumerator WaitForPopulousCheck()
     {
         yield return new WaitForEndOfFrame();
-        populousText.text = _GM.CheckPopulous().ToString() + "/" + _GM.maxPopulous;
+        populousText.text = _GAME.CheckPopulous().ToString() + "/" + _GAME.maxPopulous;
     }
     public void CheckTreeUI()
     {
-        treesText.text = _GM.trees.Count.ToString() + "/" + _GM.maxTrees;
+        treesText.text = _GAME.trees.Count.ToString() + "/" + _GAME.maxTrees;
     }
     public void CheckWildlifeUI()
     {
-        wildlifeText.text = _GM.wildlifeCount.ToString();
+        wildlifeText.text = _GAME.wildlifeCount.ToString();
     }
 
     public void ResetAgroBar() => agroFill.fillAmount = 0;
@@ -550,13 +550,13 @@ public class UIManager : Singleton<UIManager>
         TweenInPanel(wavePanel);
         _SM.PlaySound(_SM.waveOverSound);
         _SM.PlaySound(_SM.menuDragSound);
-        dayWinTitleText.text = dayMessage + " " + _GM.currentDay.ToString() + " is complete!";
+        dayWinTitleText.text = dayMessage + " " + _GAME.currentDay.ToString() + " is complete!";
 
-        totalTrees = _GM.trees.Count;
+        totalTrees = _GAME.trees.Count;
         totalMaegenDrops = GameObject.FindGameObjectsWithTag("MaegenDrop").Length;
         totalMaegen = totalTrees + totalMaegenDrops + GetTreeBonusTotal();
 
-        penaltyText.text = "+" + _GM.numberOfWildlifeToSpawn.ToString();
+        penaltyText.text = "+" + _GAME.numberOfWildlifeToSpawn.ToString();
         totalTreesText.text = totalTrees.ToString();
         treeBonusText.text = "(+" + GetTreeBonusTotal().ToString() + ")";
         totalMaegenDropsText.text = totalMaegenDrops.ToString();
@@ -629,7 +629,7 @@ public class UIManager : Singleton<UIManager>
     private int GetTreeBonusTotal()
     {
         int treeBonus = 0;
-        foreach (GameObject i in _GM.trees)
+        foreach (GameObject i in _GAME.trees)
         {
             treeBonus = treeBonus + i.GetComponent<Tree>().energyMultiplier;
         }
@@ -643,7 +643,7 @@ public class UIManager : Singleton<UIManager>
         treeTool.SetInteractable(true);
         TweenX.KillTweener(continueTweener); 
         continueButton.transform.localScale = Vector3.one;
-        waveText.text = nightMessage + ": " + (_GM.currentDay + 1) + "/" + _DATA.levelMaxDays;
+        waveText.text = nightMessage + ": " + (_GAME.currentDay + 1) + "/" + _DATA.levelMaxDays;
     }
 
     void ResetPanel(GameObject _panel)
@@ -698,7 +698,7 @@ public class UIManager : Singleton<UIManager>
         _PC.tools.treeTool.Deselect();
         int enemyProgressTotal = _EM.GetDayTotalEnemyCount();
         enemyProgressText.text = dayProgressMessage + "0/" + enemyProgressTotal;
-        waveText.text = dayMessage + ": " + _GM.currentDay.ToString() + "/" + _DATA.levelMaxDays;
+        waveText.text = dayMessage + ": " + _GAME.currentDay.ToString() + "/" + _DATA.levelMaxDays;
         dayTextAnimator.SetTrigger("NewDay");
     }
 
@@ -771,7 +771,7 @@ public class UIManager : Singleton<UIManager>
     //Button Presses from Inspector
     public void ShowResultsPanel()
     {
-        _GM.CalculateScore();
+        _GAME.CalculateScore();
         winPanel.GetComponentInChildren<Button>().interactable = false;
         TweenInPanel(finalScorePanel);
     }
@@ -848,7 +848,7 @@ public class UIManager : Singleton<UIManager>
             }
             else
             {
-                if (_GM.runesAvailable)
+                if (_GAME.runesAvailable)
                 {
                     runeAvailable = true;
                     runeTool.SetInteractable(true);

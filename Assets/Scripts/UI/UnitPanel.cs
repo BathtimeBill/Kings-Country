@@ -40,7 +40,7 @@ public class UnitPanel : GameBehaviour
 
     public void StartCooldowns()
     {
-        cooldownTimeLeft = _GM.treeCooldown;
+        cooldownTimeLeft = _GAME.treeCooldown;
         for (int i = 0; i < unitButtons.Length; i++)
         {
             unitButtons[i].button.interactable = false;
@@ -51,7 +51,7 @@ public class UnitPanel : GameBehaviour
     {
         for (int i = 0; i < unitButtons.Length; i++)
         {
-            unitButtons[i].button.interactable = unitButtons[i].guardianData.cost <= _GM.maegen;
+            unitButtons[i].button.interactable = unitButtons[i].guardianData.cost <= _GAME.maegen;
         }
     }
 

@@ -27,7 +27,7 @@ public class Tree : GameBehaviour
     void Start()
     {
         treeData = _DATA.GetTree(treeID);
-        _GM.trees.Add(gameObject);
+        _GAME.trees.Add(gameObject);
         health = treeData.health;
         StartCoroutine(WaitForDecorSpawn());
         transform.rotation = Quaternion.Euler(0, MathX.RandomInt(0, 359), 0);
@@ -95,10 +95,10 @@ public class Tree : GameBehaviour
     {
         animator.SetTrigger("Chop");
         AudioX.PlayRandomSound(treeData.hitSounds, audioSource);
-        if(_GM.timeSinceAttack >= 30)
+        if(_GAME.timeSinceAttack >= 30)
         {
             Vector3 treeLocation = new Vector3(0, 50, 0);
-            GameObject ws = Instantiate(_GM.warningSprite, transform.position + treeLocation, Quaternion.Euler(90f, 0f, 0f));
+            GameObject ws = Instantiate(_GAME.warningSprite, transform.position + treeLocation, Quaternion.Euler(90f, 0f, 0f));
             Destroy(ws, 5);
         }
         GameEvents.ReportOnTreeHit();
@@ -106,7 +106,7 @@ public class Tree : GameBehaviour
     
     private void Die()
     {
-        _GM.trees.Remove(gameObject);
+        _GAME.trees.Remove(gameObject);
         GameObject fallTree = Instantiate(treeData.fallModel, transform.position, transform.rotation);
         fallTree.transform.localScale = transform.localScale;
         GameEvents.ReportOnTreeDestroy(treeID);
@@ -125,19 +125,19 @@ public class Tree : GameBehaviour
 
         if(runeBuff == false)
         {
-            _GM.maegen++;
+            _GAME.maegen++;
             Instantiate(maegen1, transform.position, Quaternion.Euler(-90f, 0, 0));
         }
         if(runeBuff == true)
         {
             if(_DATA.HasPerk(PerkID.Rune))
             {
-                _GM.maegen += 8;
+                _GAME.maegen += 8;
                 Instantiate(maegen8, transform.position, Quaternion.Euler(-90f, 0, 0));
             }
             else
             {
-                _GM.maegen += 5;
+                _GAME.maegen += 5;
                 Instantiate(maegen5, transform.position, Quaternion.Euler(-90f, 0, 0));
             }
         }

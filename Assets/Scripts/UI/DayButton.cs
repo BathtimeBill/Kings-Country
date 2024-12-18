@@ -11,7 +11,7 @@ public class DayButton : InteractableButton
     #region overrides
     public override void ClickedButton()
     {
-        _GM.BeginNewDay();
+        _GAME.BeginNewDay();
     }
 
     public override void OnPointerEnter(PointerEventData eventData)

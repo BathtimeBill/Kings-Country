@@ -114,7 +114,7 @@ public class Enemy : GameBehaviour
         
         //print("State: " + state + " | Target: " + targetObject.name);
         yield return new WaitForSeconds(tickRate);
-        if (_GM.gameState == GameState.Lose)
+        if (_GAME.gameState == GameState.Lose)
             HandleVictoryState();
         else
             StartCoroutine(Tick());
@@ -352,7 +352,7 @@ public class Enemy : GameBehaviour
         float closestDistance = Mathf.Infinity;
         Transform trans = null;
 
-        foreach (Guardian unit in _UM.unitList)
+        foreach (Guardian unit in _GM.guardianList)
         {
             float currentDistance;
             currentDistance = Vector3.Distance(transform.position, unit.transform.position);
@@ -363,7 +363,7 @@ public class Enemy : GameBehaviour
             }
         }
 
-        if (_UM.unitList == null)
+        if (_GM.guardianList == null)
             return null;
         return trans;
     }

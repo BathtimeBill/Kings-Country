@@ -37,7 +37,7 @@ public class Hunter : Enemy
     #region AI
     public override void UpdateDistances()
     {
-        distanceToWildlife = _WildlifeExist ? Vector3.Distance(ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform.position, transform.position) : 20000;
+        distanceToWildlife = _WildlifeExist ? Vector3.Distance(ObjectX.GetClosest(gameObject, _GAME.currentWildlife).transform.position, transform.position) : 20000;
         distanceToHut = _HutExists ? Vector3.Distance(hutTargetPoint.transform.position, transform.position) : 20000;
         base.UpdateDistances();
     }
@@ -55,7 +55,7 @@ public class Hunter : Enemy
             {
                 if (_WildlifeExist)
                 {
-                    targetObject = (distanceToHut > distanceToWildlife) ? ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform : hutTargetPoint.transform;
+                    targetObject = (distanceToHut > distanceToWildlife) ? ObjectX.GetClosest(gameObject, _GAME.currentWildlife).transform : hutTargetPoint.transform;
                 }
                 else
                 {
@@ -66,7 +66,7 @@ public class Hunter : Enemy
         }
         else if (_WildlifeExist)
         {
-            targetObject = ObjectX.GetClosest(gameObject, _GM.currentWildlife).transform;
+            targetObject = ObjectX.GetClosest(gameObject, _GAME.currentWildlife).transform;
             HandleWorkState();
         }
         else

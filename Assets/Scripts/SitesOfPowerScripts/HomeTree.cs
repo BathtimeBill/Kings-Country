@@ -46,7 +46,7 @@ public class HomeTree : SiteOfPower
 
     private void OnWinfallUpgrade()
     {
-        _GM.maegen += 15;
+        _GAME.maegen += 15;
     }
 
     private void OnHomeTreeUpgrade()

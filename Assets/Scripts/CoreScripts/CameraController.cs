@@ -167,13 +167,13 @@ public class CameraController : Singleton<CameraController>
         switch (_siteID)
         {
             case SiteID.HomeTree:
-                TweenCameraPosition(_GM.homeTree.transform.position, _TWEENING.focusTweenTime);
+                TweenCameraPosition(_GAME.homeTree.transform.position, _TWEENING.focusTweenTime);
                 break;
             case SiteID.Hut:
-                TweenCameraPosition(_GM.hut.transform.position, _TWEENING.focusTweenTime);
+                TweenCameraPosition(_GAME.hut.transform.position, _TWEENING.focusTweenTime);
                 break;
             case SiteID.Horgr:
-                TweenCameraPosition(_GM.horgr.transform.position, _TWEENING.focusTweenTime);
+                TweenCameraPosition(_GAME.horgr.transform.position, _TWEENING.focusTweenTime);
                 break;
             case SiteID.Unknown:
                 break;

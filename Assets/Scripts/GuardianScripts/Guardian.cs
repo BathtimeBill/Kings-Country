@@ -15,7 +15,7 @@ public class Guardian : GameBehaviour
     public NavMeshAgent navAgent;
     public Animator animator;
     [Header("AI")]
-    public UnitState state;
+    public GuardianState state;
     private float spawnInMoveDistance = 12f;
     private GameObject trackTarget;
     private Transform pointer;
@@ -116,7 +116,7 @@ public class Guardian : GameBehaviour
             SpawnInMove();
             startingDay = _CurrentDay;
         }
-        _UM.unitList.Add(this);
+        _GM.guardianList.Add(this);
     }
 
     public virtual void Setup()
@@ -151,7 +151,7 @@ public class Guardian : GameBehaviour
         yield return new WaitForSeconds(0.1f);
         if(guardianAnimation.currentSpeed == 0)
         {
-            state = UnitState.Idle;
+            state = GuardianState.Idle;
         }    
     }
     
@@ -184,19 +184,19 @@ public class Guardian : GameBehaviour
         healthBar.ChangeUnitState(state.ToString());
         switch (state)
         {
-            case UnitState.Idle:
+            case GuardianState.Idle:
                 HandleIdleState();
                 break;
-            case UnitState.Attack:
+            case GuardianState.Attack:
                 HandleAttackState();
                 break;
-            case UnitState.Moving:
+            case GuardianState.Moving:
                 HandleMovingState();
                 break;
-            case UnitState.Track:
+            case GuardianState.Track:
                 HandleTrackState();
                 break;
-            case UnitState.Focus:
+            case GuardianState.Focus:
                 HandleFocusState();
                 break;
         }
@@ -209,7 +209,7 @@ public class Guardian : GameBehaviour
         
         if (distanceToClosestEnemy < detectRange)
         {
-            state = UnitState.Focus;
+            state = GuardianState.Focus;
         }
         else if (combatMode == CombatMode.Defend)
         {
@@ -222,12 +222,12 @@ public class Guardian : GameBehaviour
     {
         if (_NoEnemies)
         {
-            state = UnitState.Idle;
+            state = GuardianState.Idle;
             return;
         }
 
         if (distanceToClosestEnemy < attackRange)
-            state = UnitState.Attack;
+            state = GuardianState.Attack;
         else if (distanceToClosestEnemy < detectRange || hitByArrow)
         {
             navAgent.SetDestination(closestEnemy.transform.position);
@@ -235,7 +235,7 @@ public class Guardian : GameBehaviour
         }
         else if (distanceToClosestEnemy >= detectRange && !hitByArrow)
         {
-            state = UnitState.Moving;
+            state = GuardianState.Moving;
         }
     }
 
@@ -244,14 +244,14 @@ public class Guardian : GameBehaviour
     {
         if (_NoEnemies)
         {
-            state = UnitState.Idle;
+            state = GuardianState.Idle;
             return;
         }
 
         if (distanceToClosestEnemy >= attackRange && !hitByArrow)
         {
             guardianAnimation.CheckAttack();
-            state = UnitState.Focus;
+            state = GuardianState.Focus;
         }
         
         navAgent.SetDestination(closestEnemy.transform.position);
@@ -269,12 +269,12 @@ public class Guardian : GameBehaviour
         
         if (Vector3.Distance(pointer.position, transform.position) <= stoppingDistance)
         {
-            state = UnitState.Idle;
+            state = GuardianState.Idle;
         }
 
         if (combatMode == CombatMode.AttackMove && distanceToClosestEnemy < detectRange)
         {
-            state = UnitState.Focus;
+            state = GuardianState.Focus;
         }
     }
 
@@ -282,12 +282,12 @@ public class Guardian : GameBehaviour
     public virtual void HandleTrackState()
     {
         if(!trackTarget)
-            state = UnitState.Idle;
+            state = GuardianState.Idle;
         else
         {
             navAgent.SetDestination(trackTarget.transform.position);
             if (Vector3.Distance(transform.position, trackTarget.transform.position) <= attackRange)
-                state = UnitState.Attack;
+                state = GuardianState.Attack;
         }
     }
 
@@ -344,7 +344,7 @@ public class Guardian : GameBehaviour
         yield return new WaitForSeconds(1);
         hitByArrow = false;
         detectRange = detectRange / 2;
-        state = UnitState.Moving;
+        state = GuardianState.Moving;
         navAgent.SetDestination(transform.position);
     }
     void SpawnInMove() => navAgent.SetDestination(SpawnX.GetSpawnPositionInRadius(this.transform.position, spawnInMoveDistance));
@@ -360,7 +360,7 @@ public class Guardian : GameBehaviour
         }
         if (other.CompareTag("Maegen"))
         {
-            _GM.maegen += 1;
+            _GAME.maegen += 1;
         }
         if (other.CompareTag("Horgr"))
         {
@@ -407,7 +407,7 @@ public class Guardian : GameBehaviour
         {
             if (guardianID != GuardianID.Mistcalf)
             {
-                float healRate = _GM.runeHealRate * Time.deltaTime;
+                float healRate = _GAME.runeHealRate * Time.deltaTime;
                 if (_DATA.HasPerk(PerkID.Rune))
                 {
                     healRate *= 2;
@@ -465,7 +465,7 @@ public class Guardian : GameBehaviour
                 TakeDamage(attacker, damage);
                 break;
             case EnemyID.Lord:
-                state = UnitState.Attack;
+                state = GuardianState.Attack;
                 HitByArrow();
                 TakeDamage(attacker, damage);
                 break;
@@ -482,15 +482,19 @@ public class Guardian : GameBehaviour
     {
         hitByArrow = true;
         detectRange = detectRange * 2;
-        state = UnitState.Attack;
+        state = GuardianState.Attack;
         StartCoroutine(HitByArrowDelay());
     }
 
     public void TakeDamage(string attacker, float damage)
     {
-        state = UnitState.Attack;
-        GameObject go = Instantiate(hitParticle, transform.position + new Vector3(0, 5, 0), transform.rotation);
-        //go.transform.rotation = Quaternion.Inverse(transform.rotation);
+        state = GuardianState.Attack;
+        if (NotNull(hitParticle))
+        {
+            GameObject go = Instantiate(hitParticle, transform.position + new Vector3(0, 5, 0), transform.rotation);
+            Destroy(go,5);
+        }
+
         DecreaseHealth(damage);
         if (health <= 0)
             Die(attacker);
@@ -499,19 +503,12 @@ public class Guardian : GameBehaviour
     private void Die(string _attacker)
     {
         RemoveFromSites();
-        _UM.Deselect(this);
-        _UM.unitList.Remove(this);
-        bool isColliding = false;
-        if(!isColliding)
-        {
-            GameObject go = Instantiate(guardianData.ragdollModel, transform.position, transform.rotation);
-            isColliding = true;
-            Destroy(go, 15);
-        }
+        _GM.Deselect(this);
+        _GM.guardianList.Remove(this);
         _UI.CheckPopulousUI();
         int daysSurvived = _CurrentDay - startingDay;
         GameEvents.ReportOnGuardianKilled(guardianID.ToString(), _attacker, daysSurvived);
-        _UM.RemoveGuardian(this, transform.position, transform.rotation);
+        _GM.RemoveGuardian(this, transform.position, transform.rotation);
     }
     
     private void RemoveFromSites()
@@ -533,9 +530,7 @@ public class Guardian : GameBehaviour
         }
     }
     
-    public virtual void Attack(int _attack)
-    {
-    }
+    public virtual void Attack(int _attack) { }
     public virtual void StopAttack(int _attack){}
     
     #region Animation Events
@@ -634,8 +629,8 @@ public class Guardian : GameBehaviour
         else
         {
             Tower();
-            _UM.Deselect(this);
-            _UM.unitList.Remove(this);
+            _GM.Deselect(this);
+            _GM.guardianList.Remove(this);
             Destroy(gameObject);
         }
     }
@@ -648,14 +643,14 @@ public class Guardian : GameBehaviour
         {
             if (_HUT != null) _HUT.RemoveUnit(this);
             if (_HORGR != null) _HORGR.RemoveUnit(this);
-            _UM.Deselect(this);
-            _UM.unitList.Remove(this);
+            _GM.Deselect(this);
+            _GM.guardianList.Remove(this);
             GameObject go = Instantiate(guardianData.ragdollModel, transform.position, transform.rotation);
             Destroy(go, 15);
             _UI.CheckPopulousUI();
             int daysSurvived = _CurrentDay - startingDay;
             GameEvents.ReportOnGuardianKilled(guardianID.ToString(), "Unknown", daysSurvived);
-            _UM.RemoveSelectedUnit(this);
+            _GM.RemoveSelectedUnit(this);
             GameEvents.ReportOnObjectSelected(null);
             Destroy(gameObject);
         }
@@ -672,13 +667,13 @@ public class Guardian : GameBehaviour
                 if (_PC.mouseOverEnemy)
                 {
                     trackTarget = _PC.mouseOverEnemy;
-                    state = UnitState.Track;
+                    state = GuardianState.Track;
                     _PC.mouseOverEnemy.GetComponent<OutlineFlash>().BeginFlash();
                     _SM.PlaySound(_SM.targetEnemySound);
                 }
                 else
                 {
-                    state = UnitState.Moving;
+                    state = GuardianState.Moving;
                 }
             }
         }

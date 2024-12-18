@@ -1,13 +1,12 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitManager : Singleton<UnitManager>
+public class GuardianManager : Singleton<GuardianManager>
 {
-    public List<Guardian> unitList = new List<Guardian>();
+    public List<Guardian> guardianList = new List<Guardian>();
     private List<Ragdoll> ragdollList = new List<Ragdoll>();
-    public List<Guardian> unitSelected = new List<Guardian>();
+    public List<Guardian> guardianSelected = new List<Guardian>();
     public bool canDoubleClick = false;
     public float doubleClickTime = 0.3f;
     public GameObject[] destinations;
@@ -30,13 +29,13 @@ public class UnitManager : Singleton<UnitManager>
 
     public void SpawnGuardian(GuardianData _guardianData, Transform _location)
     {
-        if (_GM.maegen < _guardianData.cost)
+        if (_GAME.maegen < _guardianData.cost)
         {
             _UI.SetError(ErrorID.InsufficientMaegen);
             return;
         }
 
-        if (_GM.populous >= _GM.maxPopulous)
+        if (_GAME.populous >= _GAME.maxPopulous)
         {
             _UI.SetError(ErrorID.MaxPopulation);
             return;
@@ -49,20 +48,24 @@ public class UnitManager : Singleton<UnitManager>
         go.transform.position = particles.transform.position = _location.transform.position;
         go.transform.rotation = particles.transform.rotation = transform.rotation;
         
-        _GM.DecreaseMaegen(_guardianData.cost);
+        _GAME.DecreaseMaegen(_guardianData.cost);
         _UI.CheckPopulousUI();
     }
 
     public void RemoveGuardian(Guardian guardian, Vector3 _position, Quaternion _rotation)
     {
         Deselect(guardian);
-        unitList.Remove(guardian);
+        guardianList.Remove(guardian);
         RemoveSelectedUnit(guardian);
         
         //CHECK - May need to reset ragdoll physics when getting object
         //GameObject go = PoolX.GetFromPool(_unit.unitData.ragdollModel, ragdollPool);
-        GameObject go = Instantiate(guardian.guardianData.ragdollModel, _position, _rotation);
-        ragdollList.Add(go.GetComponent<Ragdoll>());
+        if (NotNull(guardian.guardianData.ragdollModel))
+        {
+            GameObject go = Instantiate(guardian.guardianData.ragdollModel, _position, _rotation);
+            Destroy(go, 15);
+            //ragdollList.Add(go.GetComponent<Ragdoll>());
+        }
         //go.transform.position = _position;
         //go.transform.rotation = _rotation;
         
@@ -77,7 +80,7 @@ public class UnitManager : Singleton<UnitManager>
         //{
         //    //ListX.RemoveGameObjectsWithScript(_units, typeof(Unit));
         //}
-        foreach (Guardian unit in unitSelected)
+        foreach (Guardian unit in guardianSelected)
         {
             unit.healthBar.ChangeGroupNumber(_group.ToString());
             GetGroup(_group).Add(unit);
@@ -142,7 +145,7 @@ public class UnitManager : Singleton<UnitManager>
     IEnumerator WaitToCheckIsTower()
     {
         yield return new WaitForEndOfFrame();
-        foreach (Guardian unit in unitSelected)
+        foreach (Guardian unit in guardianSelected)
         {
             if (_DATA.IsTowerUnit(unit.guardianID))
                 _UI.EnableTowerText();
@@ -152,7 +155,7 @@ public class UnitManager : Singleton<UnitManager>
     public void ClickSelect(Guardian guardianToAdd)
     {
         DeselectAll();
-        unitSelected.Add(guardianToAdd);
+        guardianSelected.Add(guardianToAdd);
         guardianToAdd.isSelected = true;
         guardianToAdd.selectionRing.Select(true);
         GameEvents.ReportOnObjectSelected(guardianToAdd.gameObject);
@@ -161,9 +164,9 @@ public class UnitManager : Singleton<UnitManager>
 
     public void ShiftClickSelect(Guardian guardianToAdd)
     {
-        if (!unitSelected.Contains(guardianToAdd))
+        if (!guardianSelected.Contains(guardianToAdd))
         {
-            unitSelected.Add(guardianToAdd);
+            guardianSelected.Add(guardianToAdd);
             guardianToAdd.isSelected = true;
             guardianToAdd.selectionRing.Select(true);
             StartCoroutine(WaitToCheckIsTower());
@@ -171,7 +174,7 @@ public class UnitManager : Singleton<UnitManager>
         else
         {
             guardianToAdd.isSelected = false;
-            unitSelected.Remove(guardianToAdd);
+            guardianSelected.Remove(guardianToAdd);
             guardianToAdd.selectionRing.Select(true);
             StartCoroutine(WaitToCheckIsTower());
         }
@@ -179,7 +182,7 @@ public class UnitManager : Singleton<UnitManager>
 
     public void DoubleClickSelect(Guardian guardianToAdd)
     {
-        unitSelected.Add(guardianToAdd);
+        guardianSelected.Add(guardianToAdd);
         guardianToAdd.isSelected = true;
         guardianToAdd.selectionRing.Select(true);
         StartCoroutine(WaitToCheckIsTower());
@@ -187,9 +190,9 @@ public class UnitManager : Singleton<UnitManager>
 
     public void DragSelect(Guardian guardianToAdd)
     {
-        if (!unitSelected.Contains(guardianToAdd))
+        if (!guardianSelected.Contains(guardianToAdd))
         {
-            unitSelected.Add(guardianToAdd);
+            guardianSelected.Add(guardianToAdd);
             guardianToAdd.isSelected = true;
             guardianToAdd.selectionRing.Select(true);
             StartCoroutine(WaitToCheckIsTower());
@@ -200,13 +203,13 @@ public class UnitManager : Singleton<UnitManager>
     {
         if(_UI.mouseOverCombatOptions == false)
         {
-            foreach (var unit in unitSelected)
+            foreach (var unit in guardianSelected)
             {
                 unit.isSelected = false;
                 unit.selectionRing.Select(false);
                 _UI.DisableTowerText();
             }
-            unitSelected.Clear();
+            guardianSelected.Clear();
         }
         GameEvents.ReportOnObjectSelected(null);
     }
@@ -216,15 +219,15 @@ public class UnitManager : Singleton<UnitManager>
         guardianToDeselect.isSelected = false;
         guardianToDeselect.selectionRing.Select(false);
         _UI.DisableTowerText();
-        unitSelected.Remove(guardianToDeselect);
+        guardianSelected.Remove(guardianToDeselect);
         GameEvents.ReportOnObjectSelected(null);
     }
 
     public void AssignDestination()
     {
-        for (int i = 0; i < unitSelected.Count; i++)
+        for (int i = 0; i < guardianSelected.Count; i++)
         {
-            unitSelected[i].SetDestination(destinations[i].transform);
+            guardianSelected[i].SetDestination(destinations[i].transform);
         }
     }
 
@@ -243,40 +246,40 @@ public class UnitManager : Singleton<UnitManager>
     
     private void OnDeselectButtonPressed()
     {
-        if(unitSelected.Count != 0)
+        if(guardianSelected.Count != 0)
         {
             AssignDestination();
-            if (unitSelected[0].guardianID == GuardianID.Goblin)
+            if (guardianSelected[0].guardianID == GuardianID.Goblin)
             {
                 audioSource.clip = _SM.GetGoblinVocal();
                 audioSource.Play();
             }
-            if (unitSelected[0].guardianID == GuardianID.Leshy)
+            if (guardianSelected[0].guardianID == GuardianID.Leshy)
             {
                 audioSource.clip = _SM.GetLeshyVocal();
                 audioSource.Play();
             }
-            if (unitSelected[0].guardianID == GuardianID.Orcus)
+            if (guardianSelected[0].guardianID == GuardianID.Orcus)
             {
                 audioSource.clip = _SM.GetOrcusVocal();
                 audioSource.Play();
             }
-            if (unitSelected[0].guardianID == GuardianID.Satyr)
+            if (guardianSelected[0].guardianID == GuardianID.Satyr)
             {
                 audioSource.clip = _SM.GetSatyrVocal();
                 audioSource.Play();
             }
-            if (unitSelected[0].guardianID == GuardianID.Skessa)
+            if (guardianSelected[0].guardianID == GuardianID.Skessa)
             {
                 audioSource.clip = _SM.GetSkessaVocal();
                 audioSource.Play();
             }
-            if (unitSelected[0].guardianID == GuardianID.Mistcalf)
+            if (guardianSelected[0].guardianID == GuardianID.Mistcalf)
             {
                 audioSource.clip = _SM.GetGolemVocal();
                 audioSource.Play();
             }
-            if (unitSelected[0].guardianID == GuardianID.Fidhain)
+            if (guardianSelected[0].guardianID == GuardianID.Fidhain)
             {
                 audioSource.clip = _SM.GetFidhainVocal();
                 audioSource.Play();

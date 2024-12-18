@@ -15,10 +15,10 @@ public class DebugManager : GameBehaviour
             StartCoroutine(_EM.KillAllEnemies());
 
         if (Input.GetKeyDown(KeyCode.L))
-            _GM.WildlifeInstantiate();
+            _GAME.WildlifeInstantiate();
 
         if (Input.GetKeyDown(KeyCode.M))
-            _GM.IncreaseMaegen(6);
+            _GAME.IncreaseMaegen(6);
         
         if (Input.GetKeyDown(KeyCode.P))
             _EM.SpawnEnemy(_DATA.GetEnemy(EnemyID.Dog).playModel, _EM.RandomSpawnPoint.position);

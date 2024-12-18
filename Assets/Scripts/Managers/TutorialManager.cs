@@ -370,7 +370,7 @@ public class TutorialManager : GameBehaviour
             gamePanels.treePanel.GetComponent<InGamePanel>().ToggleOnActiveShiny();
 
         if (currentTutorialID == TutorialID.Wildlife)
-            _GM.WildlifeInstantiate(true);
+            _GAME.WildlifeInstantiate(true);
 
         if (currentTutorialID == TutorialID.Glossary)
         {
@@ -423,7 +423,7 @@ public class TutorialManager : GameBehaviour
         if(currentTutorialID == TutorialID.DayNightCycle)
         {
             gamePanels.dayNightPanel.GetComponent<InGamePanel>().ToggleOnActiveShiny();
-            _GM.ChangeGameState(GameState.Build);
+            _GAME.ChangeGameState(GameState.Build);
         }
 
         GetNextTutorial();
@@ -511,7 +511,7 @@ public class TutorialManager : GameBehaviour
             ShowTutorial();
             CheckOffTask(TutorialID.PlantTree);
             _PC.DeselectAllTools();
-            _GM.SetPlayMode(PlayMode.DefaultMode);
+            _GAME.SetPlayMode(PlayMode.DefaultMode);
             FadeX.FadeTo(gamePanels.treePanel, fadeStrength);
         }
     }

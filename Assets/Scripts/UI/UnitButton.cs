@@ -28,7 +28,7 @@ public class UnitButton : InteractableButton
 
     public void Cooldown(float _timeLeft)
     {
-        cooldownFill.fillAmount = MathX.MapTo01(_timeLeft, 0, _GM.treeCooldown);
+        cooldownFill.fillAmount = MathX.MapTo01(_timeLeft, 0, _GAME.treeCooldown);
     }
 
     
@@ -64,7 +64,7 @@ public class UnitButton : InteractableButton
     public override void ClickedButton()
     {
         GameEvents.ReportOnUnitButtonPressed(guardianData);
-        if (_GM.gameState == GameState.Play)
+        if (_GAME.gameState == GameState.Play)
             unitPanel.StartCooldowns();
     }
     public override void OnPointerEnter(PointerEventData eventData)

@@ -60,7 +60,7 @@ public class TreeTool : GameBehaviour
 
     public void Use()
     {
-        if (_GM.trees.Count < _GM.maxTrees)
+        if (_GAME.trees.Count < _GAME.maxTrees)
         {
             if (canPlace)
             {
@@ -69,7 +69,7 @@ public class TreeTool : GameBehaviour
                 treeInstance.transform.localScale = randomSize;
                 treeInstance.GetComponent<Tree>().energyMultiplier = maegenPerDay;
                 GameEvents.ReportOnTreePlaced(TreeID.Tree);
-                _GM.DecreaseMaegen(maegenCost);
+                _GAME.DecreaseMaegen(maegenCost);
             }
             else if (tooFarAway)
             {
@@ -101,11 +101,11 @@ public class TreeTool : GameBehaviour
 
     private void Update()
     {
-        if (_GM.playmode != PlayMode.TreeMode)
+        if (_GAME.playmode != PlayMode.TreeMode)
             return;
 
-        if(_GM.trees.Count != 0)
-            distanceFromTree = Vector3.Distance(ObjectX.GetClosest(gameObject, _GM.trees).transform.position, transform.position);
+        if(_GAME.trees.Count != 0)
+            distanceFromTree = Vector3.Distance(ObjectX.GetClosest(gameObject, _GAME.trees).transform.position, transform.position);
         else
             distanceFromTree = Vector3.Distance(_HOME.transform.position, transform.position);
         
@@ -136,12 +136,12 @@ public class TreeTool : GameBehaviour
 
         if (maegenPerDay <= 3)
         {
-            if (_GM.maegen < requiredMaegen && insufficientMaegen == false)
+            if (_GAME.maegen < requiredMaegen && insufficientMaegen == false)
             {
                 insufficientMaegen = true;
                 canPlace = false;
             }
-            else if (_GM.maegen >= requiredMaegen && insufficientMaegen == true)
+            else if (_GAME.maegen >= requiredMaegen && insufficientMaegen == true)
             {
                 insufficientMaegen = false;
                 canPlace = true;

@@ -46,7 +46,7 @@ public class PlayerControls : Singleton<PlayerControls>
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitPoint)/* && hitPoint.collider.tag == "Ground"*/)
         {
-            switch (_GM.playmode)
+            switch (_GAME.playmode)
             {
                 case PlayMode.TreeMode:
                     tools.treeTool.SetPosition(hitPoint.point);
@@ -83,7 +83,7 @@ public class PlayerControls : Singleton<PlayerControls>
         {
             if(hitPoint.collider.CompareTag("Home Tree"))
             {
-                if (_GM.playmode == PlayMode.DefaultMode && _InGame)
+                if (_GAME.playmode == PlayMode.DefaultMode && _InGame)
                 {
                     _SM.PlaySound(_SM.openMenuSound);
                     GameEvents.ReportOnSiteSelected(SiteID.HomeTree, true);
@@ -132,21 +132,21 @@ public class PlayerControls : Singleton<PlayerControls>
                 tools.treeTool.Use();
                 break;
             case PlayMode.RuneMode:
-                if (_GM.runesAvailable)
+                if (_GAME.runesAvailable)
                 {
                     tools.runeTool.Use();
                     DeslectAllModes();
                 }
                 break;
             case PlayMode.FyreMode:
-                if (_GM.fyreAvailable && _UI.fyreAvailable)
+                if (_GAME.fyreAvailable && _UI.fyreAvailable)
                 {
                     tools.fyreTool.Use();
                     DeslectAllModes();
                 }
                 break;
             case PlayMode.StormerMode:
-                if (_GM.stormerAvailable && _UI.stormerAvailable)
+                if (_GAME.stormerAvailable && _UI.stormerAvailable)
                 {
                     tools.stormerTool.Use();
                     DeslectAllModes();
@@ -170,8 +170,8 @@ public class PlayerControls : Singleton<PlayerControls>
     {
         if (_HasInput)
         {
-            _GM.SetPreviousState(_GM.gameState);
-            _GM.ChangeGameState(GameState.Pause);
+            _GAME.SetPreviousState(_GAME.gameState);
+            _GAME.ChangeGameState(GameState.Pause);
             _UI.TogglePanel(_UI.pausePanel, true);
             return;
         }
@@ -179,7 +179,7 @@ public class PlayerControls : Singleton<PlayerControls>
         if (_IsPaused)
         {
             if (_UI.warningPanel == null)
-                _GM.ChangeGameState(_GM.previousState);
+                _GAME.ChangeGameState(_GAME.previousState);
             else
                 _UI.TurnOffWarningPanel();
         }
@@ -189,12 +189,12 @@ public class PlayerControls : Singleton<PlayerControls>
     {
         if (canGroup)
         {
-            _UM.GroupUnits(_group);
+            _GM.GroupUnits(_group);
             _SM.PlaySound(_SM.controlGroup);
         }
         else
         {
-            _UM.SelectGroup(_group);
+            _GM.SelectGroup(_group);
             _SM.PlaySound(_SM.controlGroupSelect);
         }
     }
@@ -206,32 +206,32 @@ public class PlayerControls : Singleton<PlayerControls>
     {
         if(!_TutorialComplete || _BuildPhase)
         {
-            _GM.SetPlayMode(PlayMode.TreeMode);
+            _GAME.SetPlayMode(PlayMode.TreeMode);
             tools.treeTool.Select(_treeID);
         }
     }
 
     private void SelectRuneMode()
     {
-        _GM.SetPlayMode(PlayMode.RuneMode);
+        _GAME.SetPlayMode(PlayMode.RuneMode);
         tools.runeTool.Select();
     }
 
     private void SelectFyreMode()
     {
-        _GM.SetPlayMode(PlayMode.FyreMode);
+        _GAME.SetPlayMode(PlayMode.FyreMode);
         tools.fyreTool.Select();
     }    
 
     private void SelectStormerMode()
     {
-        _GM.SetPlayMode(PlayMode.StormerMode);
+        _GAME.SetPlayMode(PlayMode.StormerMode);
         tools.stormerTool.Select();
     }
 
     private void DeslectAllModes()
     {
-        _GM.SetPlayMode(PlayMode.DefaultMode);
+        _GAME.SetPlayMode(PlayMode.DefaultMode);
         tools.runeTool.Deselect();
         tools.fyreTool.Deselect();
         tools.stormerTool.Deselect();
@@ -246,15 +246,15 @@ public class PlayerControls : Singleton<PlayerControls>
         switch (_toolID)
         {
             case ToolID.Stormer:
-                if (_GM.playmode != PlayMode.StormerMode)
+                if (_GAME.playmode != PlayMode.StormerMode)
                     SelectStormerMode();
                 break;
             case ToolID.Fyre:
-                if (_GM.playmode != PlayMode.FyreMode)
+                if (_GAME.playmode != PlayMode.FyreMode)
                     SelectFyreMode();
                 break;
             case ToolID.Rune:
-                if (_GM.playmode != PlayMode.RuneMode)
+                if (_GAME.playmode != PlayMode.RuneMode)
                     SelectRuneMode();
                 break;
         }
@@ -264,7 +264,7 @@ public class PlayerControls : Singleton<PlayerControls>
     {
         _SM.PlaySound(_SM.buttonClickSound);
         DeslectAllModes();
-        if (_GM.playmode != PlayMode.TreeMode)
+        if (_GAME.playmode != PlayMode.TreeMode)
             SelectTreeMode(_treeID);
     }
 

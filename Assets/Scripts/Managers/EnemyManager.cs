@@ -91,7 +91,7 @@ public class EnemyManager : Singleton<EnemyManager>
         for (int day = 1; day <= _CurrentLevel.days; day++)
         {
             int requiredTreeCount = (day == 1) ? 5 : (day * 5);
-            if (_CurrentDay == day && _GM.treeCount > requiredTreeCount)
+            if (_CurrentDay == day && _GAME.treeCount > requiredTreeCount)
             {
                 int rndCoin = Random.Range(0, 2);
                 if (rndCoin == 1)
@@ -110,7 +110,7 @@ public class EnemyManager : Singleton<EnemyManager>
     private IEnumerator SpawnSpy() //CHECK - Can the spawn intervals be changed to a formula or got from somewhere else?
     {
         float spySpawnInterval = 1000f;
-        switch (_GM.currentDay)
+        switch (_GAME.currentDay)
         {
             case 0:
                 spySpawnInterval = Random.Range(500, 600);

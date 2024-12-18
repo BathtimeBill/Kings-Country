@@ -22,34 +22,34 @@ public class UnitClick : GameBehaviour
             {
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
-                    _UM.ShiftClickSelect(hit.collider.gameObject.GetComponent<Guardian>());
+                    _GM.ShiftClickSelect(hit.collider.gameObject.GetComponent<Guardian>());
                 }
                 else
                 {
-                    if(_UM.canDoubleClick)
+                    if(_GM.canDoubleClick)
                     {
                         GuardianID thisUnitType = hit.collider.gameObject.GetComponent<Guardian>().guardianID;
-                        foreach(Guardian unit in _UM.unitList)
+                        foreach(Guardian unit in _GM.guardianList)
                         {
                             if(unit.guardianID == thisUnitType)
                             {
-                                _UM.DoubleClickSelect(unit);
+                                _GM.DoubleClickSelect(unit);
                             }
                         }
                     }
                     else
                     {
-                        _UM.ClickSelect(hit.collider.gameObject.GetComponent<Guardian>());
+                        _GM.ClickSelect(hit.collider.gameObject.GetComponent<Guardian>());
                     }
                 }
-                _UM.StartCoroutine(_UM.DoubleClick());
+                _GM.StartCoroutine(_GM.DoubleClick());
             }
             else
             {
                 if (!Input.GetKey(KeyCode.LeftShift))
                 {
                     if(_PC.mouseOverMap == false)
-                    _UM.DeselectAll();
+                    _GM.DeselectAll();
                 }
             }
         }

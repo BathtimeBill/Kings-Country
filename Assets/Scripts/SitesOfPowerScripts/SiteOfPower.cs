@@ -114,7 +114,7 @@ public class SiteOfPower : GameBehaviour
     private void OnUnitButtonPressed(GuardianData _guardianData)
     {
         if(siteData.siteGuardians.Contains(_guardianData.id)) 
-            _UM.SpawnGuardian(_guardianData, spawnLocation.transform);
+            _GM.SpawnGuardian(_guardianData, spawnLocation.transform);
     }
     private void OnSiteSelected(SiteID _ID, bool _selected) => selectionRing.Select(_ID == siteData.id && _selected);
     private void OnHumanKilled(Enemy _enemy, string _killer) => RemoveEnemy(_enemy);

@@ -288,7 +288,7 @@ public class GameManager : Singleton<GameManager>
     //Checks the scene for how many player units are present.
     public int CheckPopulous()
     {
-        populous = _UM.unitList.Count;
+        populous = _GM.guardianList.Count;
         return populous;
     }
 
@@ -380,7 +380,7 @@ public class GameManager : Singleton<GameManager>
         if (!_DATA.IsGuardianUnit(_unitID))
             return;
 
-        if(_UM.unitList.Count == 0)
+        if(_GM.guardianList.Count == 0)
         {
             if(maegen == 0)
             {

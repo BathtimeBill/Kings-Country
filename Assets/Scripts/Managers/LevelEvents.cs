@@ -30,13 +30,13 @@ public class LevelEvents : GameBehaviour
     {
         //LEVEL 1//
 
-        if (_GM.level == LevelNumber.One && _GM.currentDay == 4)
+        if (_GAME.level == LevelNumber.One && _GAME.currentDay == 4)
         {
             GameEvents.ReportOnMineSpawned();
             StartCoroutine(SetGameState(8));
             cam.SetActive(true);
             audioComponent.SetActive(true);
-            _GM.ChangeGameState(GameState.Transitioning);
+            _GAME.ChangeGameState(GameState.Transitioning);
             Instantiate(particle, spawnPointSpawnPoint.transform.position, Quaternion.Euler(-90, 0, 0));
             Instantiate(enemySpawn, spawnPointSpawnPoint.transform.position, spawnPointSpawnPoint.transform.rotation);
             Destroy(obstruction, 6);
@@ -47,7 +47,7 @@ public class LevelEvents : GameBehaviour
 
         //LEVEL 3//
 
-        if (_GM.level == LevelNumber.Three && _GM.currentDay == 3)
+        if (_GAME.level == LevelNumber.Three && _GAME.currentDay == 3)
         {
             int dice3 = Random.Range(1, 6);
             if (dice3 >= 5 && lordHasArrived == false)
@@ -66,7 +66,7 @@ public class LevelEvents : GameBehaviour
             }
             print(dice3.ToString());
         }
-        if (_GM.level == LevelNumber.Three && _GM.currentDay == 4)
+        if (_GAME.level == LevelNumber.Three && _GAME.currentDay == 4)
         {
             int dice3 = Random.Range(1, 6);
             if (dice3 >= 4 && lordHasArrived == false)
@@ -84,7 +84,7 @@ public class LevelEvents : GameBehaviour
                 }
             }
         }
-        if (_GM.level == LevelNumber.Three && _GM.currentDay == 5)
+        if (_GAME.level == LevelNumber.Three && _GAME.currentDay == 5)
         {
             int dice3 = Random.Range(1, 6);
             if (dice3 >= 3 && lordHasArrived == false)
@@ -102,7 +102,7 @@ public class LevelEvents : GameBehaviour
                 }
             }
         }
-        if (_GM.level == LevelNumber.Three && _GM.currentDay == 6)
+        if (_GAME.level == LevelNumber.Three && _GAME.currentDay == 6)
         {
             int dice3 = Random.Range(1, 6);
             if (dice3 >= 2 && lordHasArrived == false)
@@ -120,7 +120,7 @@ public class LevelEvents : GameBehaviour
                 }
             }
         }
-        if (_GM.level == LevelNumber.Three && _GM.currentDay == 7)
+        if (_GAME.level == LevelNumber.Three && _GAME.currentDay == 7)
         {
             int dice3 = Random.Range(1, 6);
             if (dice3 >= 1 && lordHasArrived == false)
@@ -138,7 +138,7 @@ public class LevelEvents : GameBehaviour
                 }
             }
         }
-        if (_GM.level == LevelNumber.Three && _GM.currentDay == 8)
+        if (_GAME.level == LevelNumber.Three && _GAME.currentDay == 8)
         {
             if (mineExists == false)
             {
@@ -152,7 +152,7 @@ public class LevelEvents : GameBehaviour
     {
         if (_CurrentLevel.id == LevelID.WormturnRoad && !mineExists)
         {
-            int currentDay = _GM.currentDay;
+            int currentDay = _GAME.currentDay;
             if (currentDay >= 2 && currentDay <= 7)
             {
                 int[] requiredRolls = { 6, 5, 4, 3, 2, 1 };
@@ -171,7 +171,7 @@ public class LevelEvents : GameBehaviour
         StartCoroutine(SetGameState(14));
         Instantiate(mine, spawnPointSpawnPoints[i].transform.position, Quaternion.Euler(0, 0, 0));
         Instantiate(particle, spawnPointSpawnPoints[i].transform.position, Quaternion.Euler(-90, 0, 0));
-        _GM.ChangeGameState(GameState.Transitioning);
+        _GAME.ChangeGameState(GameState.Transitioning);
     }
     private void SpawnLord()
     {
@@ -179,12 +179,12 @@ public class LevelEvents : GameBehaviour
         int i = Random.Range(0, _EM.spawnPoints.Count);
         StartCoroutine(SetGameState(6));
         Instantiate(lordOswyn, _EM.spawnPoints[i].transform.position, transform.rotation);
-        _GM.ChangeGameState(GameState.Transitioning);
+        _GAME.ChangeGameState(GameState.Transitioning);
     }
     IEnumerator SetGameState(float time)
     {
         yield return new WaitForSeconds(time);
-        _GM.ChangeGameState(GameState.Play);
+        _GAME.ChangeGameState(GameState.Play);
     }
     private void OnEnable()
     {

@@ -58,7 +58,7 @@ public class GameData : Singleton<GameData>
     [BV.EnumList(typeof(ToolID))]
     public List<ToolData> toolData;
     public ToolData GetTool(ToolID _id) => toolData.Find(x => x.id == _id);
-    public bool CanUseTool(ToolID _id) => GetTool(_id).wildlifePrice <= _GM.wildlifeCount && GetTool(_id).maegenPrice <= _GM.maegen;
+    public bool CanUseTool(ToolID _id) => GetTool(_id).wildlifePrice <= _GAME.wildlifeCount && GetTool(_id).maegenPrice <= _GAME.maegen;
     #endregion
 
     #region Wildlife
@@ -93,7 +93,7 @@ public class GameData : Singleton<GameData>
     [Header("Level Data")]
     [BV.EnumList(typeof(LevelID))]
     public List<LevelData> levelData;
-    public LevelData currentLevel => levelData.Find(x => x.id == _GM.thisLevel);
+    public LevelData currentLevel => levelData.Find(x => x.id == _GAME.thisLevel);
     public LevelData GetLevel(LevelID _id) => levelData.Find(x => x.id == _id);
     public LevelID currentLevelID => currentLevel.id;
     public bool LevelContains(LevelID _levelID, EnemyID enemyID) => GetLevel(_levelID).availableHumans.Contains(enemyID);

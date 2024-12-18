@@ -21,8 +21,8 @@ public class RuneTool : Tool
     {
         base.Use();
         GameObject runeInstance = Instantiate(runePrefab, transform.position, transform.rotation);
-        _GM.DecreaseMaegen(_GM.runesMaegenCost[_GM.runesCount]);
-        _GM.AddRune(runeInstance);
+        _GAME.DecreaseMaegen(_GAME.runesMaegenCost[_GAME.runesCount]);
+        _GAME.AddRune(runeInstance);
         GameEvents.ReportOnRunePlaced();
         Deselect();
     }

@@ -6,13 +6,13 @@ using UnityEngine.Rendering;
 
 public class GameBehaviour : BV.Behaviour
 {
-    protected static GameManager _GM { get { return GameManager.instance; } }
+    protected static GameManager _GAME { get { return GameManager.instance; } }
     protected static HomeTree _HOME { get { return GameManager.instance.homeTree; } }
     protected static Horgr _HORGR { get { return GameManager.instance.horgr; } }
     protected static Hut _HUT {get {return GameManager.instance.hut;}}
     protected static MusicManager _MM { get { return MusicManager.instance; } }
     protected static EnemyManager _EM { get { return EnemyManager.instance; } }
-    protected static UnitManager _UM { get { return UnitManager.instance; } }
+    protected static GuardianManager _GM { get { return GuardianManager.instance; } }
     protected static UIManager _UI { get { return UIManager.instance; } }
     protected static PlayerControls _PC { get { return PlayerControls.instance; } }
     protected static CameraController _CAMERA { get { return CameraController.instance; } }
@@ -34,28 +34,28 @@ public class GameBehaviour : BV.Behaviour
     public PlayerSettings _PLAYER => _SAVE.save.playerSettings;
     public Testing _TESTING => _DATA.settings.testing;
 
-    public bool _HasInput => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build || _GM.gameState == GameState.Tutorial;
-    public bool _InGame => _GM.gameState == GameState.Play || _GM.gameState == GameState.Build;
-    public bool _InTutorial => _GM.gameState == GameState.Tutorial;
-    public bool _InDay => _GM.gameState == GameState.Play;
-    public bool _HutExists => _GM.hut != null;
-    public bool _HorgrExists => _GM.horgr != null;
-    public bool _AgroPhase => _GM.agroPhase;
-    public bool _IsPaused => _GM.gameState == GameState.Pause;
-    public bool _GameFinished => _GM.gameState == GameState.Finish;
-    public bool _BuildPhase => _GM.gameState == GameState.Build;
+    public bool _HasInput => _GAME.gameState == GameState.Play || _GAME.gameState == GameState.Build || _GAME.gameState == GameState.Tutorial;
+    public bool _InGame => _GAME.gameState == GameState.Play || _GAME.gameState == GameState.Build;
+    public bool _InTutorial => _GAME.gameState == GameState.Tutorial;
+    public bool _InDay => _GAME.gameState == GameState.Play;
+    public bool _HutExists => _GAME.hut != null;
+    public bool _HorgrExists => _GAME.horgr != null;
+    public bool _AgroPhase => _GAME.agroPhase;
+    public bool _IsPaused => _GAME.gameState == GameState.Pause;
+    public bool _GameFinished => _GAME.gameState == GameState.Finish;
+    public bool _BuildPhase => _GAME.gameState == GameState.Build;
     public bool _TutorialComplete => _TUTORIAL.tutorialComplete;
-    public int _CurrentDay => _GM.currentDay - 1;
-    public LevelData _CurrentLevel => _DATA.GetLevel(_GM.thisLevel);
-    public GameState _CurrentGameState => _GM.gameState;
-    public PlayMode _CurrentPlayMode => _GM.playmode;
-    public GameState _PreviousGameState => _GM.previousState;
-    public bool _NoTrees => _GM.trees.Count == 0;
-    public bool _TreesExist => _GM.trees.Count > 0;
-    public bool _GuardiansExist => _UM.unitList.Count > 0;
-    public bool _NoGuardians => _UM.unitList.Count == 0;
-    public bool _WildlifeExist => _GM.currentWildlife.Count > 0;
-    public bool _NoWildlife => _GM.currentWildlife.Count == 0;
+    public int _CurrentDay => _GAME.currentDay - 1;
+    public LevelData _CurrentLevel => _DATA.GetLevel(_GAME.thisLevel);
+    public GameState _CurrentGameState => _GAME.gameState;
+    public PlayMode _CurrentPlayMode => _GAME.playmode;
+    public GameState _PreviousGameState => _GAME.previousState;
+    public bool _NoTrees => _GAME.trees.Count == 0;
+    public bool _TreesExist => _GAME.trees.Count > 0;
+    public bool _GuardiansExist => _GM.guardianList.Count > 0;
+    public bool _NoGuardians => _GM.guardianList.Count == 0;
+    public bool _WildlifeExist => _GAME.currentWildlife.Count > 0;
+    public bool _NoWildlife => _GAME.currentWildlife.Count == 0;
     public bool _EnemiesExist => _EM.enemies.Count > 0;
     public bool _NoEnemies => _EM.enemies.Count == 0;
     public Transform _Pointer => _PC.targetPointer.transform;
@@ -176,7 +176,7 @@ public enum EnemyState
     DefendSite,
     Victory,
 }
-public enum UnitState
+public enum GuardianState
 {
     Idle,
     Attack,

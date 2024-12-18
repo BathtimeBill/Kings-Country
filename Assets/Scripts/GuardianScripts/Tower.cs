@@ -34,7 +34,7 @@ public class Tower : GameBehaviour
         audioSource = GetComponent<AudioSource>();
         parent = gameObject.transform.parent.gameObject.GetComponent<Guardian>();
         StartCoroutine(ShootProjectile());
-        _UM.unitList.Add(parent);
+        _GM.guardianList.Add(parent);
         slider.value = CalculateHealth();
         Setup();
         Instantiate(spawnParticleEffect, transform.position, transform.rotation);
@@ -159,7 +159,7 @@ public class Tower : GameBehaviour
 
             if (unitType == GuardianID.FidhainTower)
             {
-                _UM.unitList.Remove(parent);
+                _GM.guardianList.Remove(parent);
                 Destroy(parent);
             }
         }
@@ -171,11 +171,11 @@ public class Tower : GameBehaviour
             fireRate = 2;
             if (_DATA.HasPerk(PerkID.Tower))
             {
-                maxHealth = _GM.GetPercentageIncrease(_GM.towerHealth, 0.5f);
+                maxHealth = _GAME.GetPercentageIncrease(_GAME.towerHealth, 0.5f);
             }
             else
             {
-                maxHealth = _GM.towerHealth;
+                maxHealth = _GAME.towerHealth;
             }
         }
         if(unitType == GuardianID.FidhainTower)
@@ -183,11 +183,11 @@ public class Tower : GameBehaviour
             fireRate = 4;
             if (_DATA.HasPerk(PerkID.Tower))
             {
-                maxHealth = _GM.GetPercentageIncrease(_GM.spitTowerHealth, 0.5f);
+                maxHealth = _GAME.GetPercentageIncrease(_GAME.spitTowerHealth, 0.5f);
             }
             else
             {
-                maxHealth = _GM.spitTowerHealth;
+                maxHealth = _GAME.spitTowerHealth;
             }
         }
 

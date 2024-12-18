@@ -19,7 +19,7 @@ public class StartCamera : GameBehaviour
     {
         cam.gameObject.SetActive(true);
         levelTitle.text = _DATA.GetLevel(_levelID).name;
-        switch (_GM.level)
+        switch (_GAME.level)
         {
             case LevelNumber.One:
                 animator.SetTrigger("One");
@@ -39,7 +39,7 @@ public class StartCamera : GameBehaviour
     
     public void BeginGame()
     {
-        _GM.CheckTutorial();
+        _GAME.CheckTutorial();
         gameObject.SetActive(false);
     }
 }
