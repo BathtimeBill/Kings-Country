@@ -1,5 +1,22 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5473775113950351202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7d3e3ac1e440fb41959d45d4f7c5a81, type: 3}
+  m_Name: '[SCPE] SpeedLinesRenderer'
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    executionOrder: 0
+    alwaysEnable: 0
+    cameraTypes: 5
 --- !u!114 &-2816607447781646911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,6 +102,9 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: -2816607447781646911}
   - {fileID: -2796080121801081861}
+  - {fileID: 1245087100843620771}
+  - {fileID: -5473775113950351202}
+  - {fileID: 6263917769900451307}
   m_RendererFeatureMap: c15d41037366e9d8fbfb8388f15332d9
   m_UseNativeRenderPass: 1
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -111,3 +131,39 @@ MonoBehaviour:
   m_DepthTextureFormat: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 0
+--- !u!114 &1245087100843620771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb63c1c7a70fdec43bce754fd048e801, type: 3}
+  m_Name: '[SCPE] EdgeDetectionRenderer'
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    executionOrder: 0
+    alwaysEnable: 0
+    cameraTypes: 5
+    reconstructDepthNormals: 1
+    skipTransparents: 0
+--- !u!114 &6263917769900451307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e145efbf4714542a66f8e60a4ebfc3, type: 3}
+  m_Name: '[SCPE] DangerRenderer'
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    executionOrder: 0
+    alwaysEnable: 0
+    cameraTypes: 5
