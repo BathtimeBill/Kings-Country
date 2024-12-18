@@ -21,7 +21,7 @@ public class GuardianManager : Singleton<GuardianManager>
     [HideInInspector] public List<Guardian> controlGroup08;
     [HideInInspector] public List<Guardian> controlGroup09;
     [HideInInspector] public List<Guardian> controlGroup10;
-    [HideInInspector] public GameObject selectedUnit;
+    [HideInInspector] public Guardian selectedGuardian;
     
     private List<GameObject> guardianPool = new List<GameObject>();
     private List<GameObject> spawnParticlePool = new List<GameObject>();
@@ -95,7 +95,7 @@ public class GuardianManager : Singleton<GuardianManager>
         DeselectAll();
         foreach (Guardian go in GetGroup(_group))
             DragSelect(go);
-        selectedUnit = GetGroup(_group)[0].gameObject;
+        selectedGuardian = GetGroup(_group)[0];
     }
 
     public void RemoveSelectedUnit(Guardian guardian)
@@ -158,7 +158,7 @@ public class GuardianManager : Singleton<GuardianManager>
         guardianSelected.Add(guardianToAdd);
         guardianToAdd.isSelected = true;
         guardianToAdd.selectionRing.Select(true);
-        GameEvents.ReportOnObjectSelected(guardianToAdd.gameObject);
+        GameEvents.ReportOnGuardianSelected(guardianToAdd);
         StartCoroutine(WaitToCheckIsTower());
     }
 
@@ -211,7 +211,7 @@ public class GuardianManager : Singleton<GuardianManager>
             }
             guardianSelected.Clear();
         }
-        GameEvents.ReportOnObjectSelected(null);
+        GameEvents.ReportOnGuardianSelected(null);
     }
 
     public void Deselect(Guardian guardianToDeselect)
@@ -220,7 +220,7 @@ public class GuardianManager : Singleton<GuardianManager>
         guardianToDeselect.selectionRing.Select(false);
         _UI.DisableTowerText();
         guardianSelected.Remove(guardianToDeselect);
-        GameEvents.ReportOnObjectSelected(null);
+        GameEvents.ReportOnGuardianSelected(null);
     }
 
     public void AssignDestination()
@@ -231,17 +231,17 @@ public class GuardianManager : Singleton<GuardianManager>
         }
     }
 
-    private void OnObjectSelected(GameObject _gameObject)
+    private void OnOnGuardianSelected(Guardian _gameObject)
     {
-        selectedUnit = _gameObject;
+        selectedGuardian = _gameObject;
     }
     
     private void OnUnitFocus()
     {
-        if (selectedUnit == null)
+        if (IsNull(selectedGuardian))
             return;
         
-        _CAMERA.TweenCameraPosition(selectedUnit.transform.position, _TWEENING.focusTweenTime);
+        _CAMERA.TweenCameraPosition(selectedGuardian.transform.position, _TWEENING.focusTweenTime);
     }
     
     private void OnDeselectButtonPressed()
@@ -294,19 +294,29 @@ public class GuardianManager : Singleton<GuardianManager>
         ragdollList.Clear();
     }
     
+    private void OnGuardianCamButton()
+    {
+        if (IsNull(selectedGuardian))
+            return;
+        
+        selectedGuardian.ToggleGuardianCam();
+    }
+    
     private void OnEnable()
     {
-        GameEvents.OnObjectSelected += OnObjectSelected;
+        GameEvents.OnGuardianSelected += OnOnGuardianSelected;
         GameEvents.OnDayOver += OnDayOver;
         InputManager.OnUnitFocus += OnUnitFocus;
         InputManager.OnDeselectButtonPressed += OnDeselectButtonPressed;
+        InputManager.OnGuardianCamButton += OnGuardianCamButton;
     }
-    
+
     private void OnDisable()
     {
-        GameEvents.OnObjectSelected -= OnObjectSelected;
+        GameEvents.OnGuardianSelected -= OnOnGuardianSelected;
         GameEvents.OnDayOver -= OnDayOver;
         InputManager.OnUnitFocus -= OnUnitFocus;
         InputManager.OnDeselectButtonPressed -= OnDeselectButtonPressed;
+        InputManager.OnGuardianCamButton -= OnGuardianCamButton;
     }
 }

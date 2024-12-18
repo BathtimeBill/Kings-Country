@@ -296,12 +296,12 @@ public class Enemy : GameBehaviour
         
         if (NotNull(enemyData.hitParticles))
         {
-            GameObject hitParticle = Instantiate(enemyData.hitParticles, transform.position + new Vector3(0, 5, 0), transform.rotation);
+            GameObject hitParticle = Instantiate(enemyData.hitParticles, transform.position + new Vector3(0, 1, 0), transform.rotation);
             Destroy(hitParticle, 5);
         }
         //GameObject bloodParticle = Instantiate(_DATA.GetUnit(unitID).bloodParticles, transform.position, Quaternion.LookRotation(forward));
         health -= _damage;
-        if(healthBar != null) 
+        if(NotNull(healthBar)) 
             healthBar.AdjustHealthBar(health, maxHealth);
         if (health <= 0)
         {
@@ -318,8 +318,7 @@ public class Enemy : GameBehaviour
         RemoveFromSites();
         if (NotNull(enemyData.dieParticles))
         {
-            print("JJ");
-            GameObject dieParticle = Instantiate(enemyData.dieParticles, transform.position + new Vector3(0, 5, 0),
+            GameObject dieParticle = Instantiate(enemyData.dieParticles, transform.position + new Vector3(0, 1, 0),
                 transform.rotation);
             Destroy(dieParticle, 5);
         }

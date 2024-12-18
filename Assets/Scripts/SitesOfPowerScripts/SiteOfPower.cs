@@ -7,7 +7,8 @@ using Random = UnityEngine.Random;
 
 public class SiteOfPower : GameBehaviour
 {
-    public SiteData siteData;
+    public SiteID siteID;
+    [HideInInspector] public SiteData siteData;
     public GameObject spawnLocation;
     public SiteHealthBar healthBar;
     public SelectionRing selectionRing;
@@ -26,6 +27,7 @@ public class SiteOfPower : GameBehaviour
 
     public void Start()
     {
+        siteData = _DATA.GetSiteData(siteID);
         currentClaimRate = siteData.claimRate;
         ChangeSiteState(SiteState.Claimed);
         spawnRates = siteData.spawnRate;
@@ -116,7 +118,18 @@ public class SiteOfPower : GameBehaviour
         if(siteData.siteGuardians.Contains(_guardianData.id)) 
             _GM.SpawnGuardian(_guardianData, spawnLocation.transform);
     }
-    private void OnSiteSelected(SiteID _ID, bool _selected) => selectionRing.Select(_ID == siteData.id && _selected);
+
+    private void OnSiteSelected(SiteID _ID, bool _selected)
+    {
+        //if (!_selected)
+        //    return;
+        
+        if(_ID == siteID && _selected)
+            selectionRing.Select(true);
+        else
+            selectionRing.Select(false);
+            
+    }
     private void OnHumanKilled(Enemy _enemy, string _killer) => RemoveEnemy(_enemy);
     private void OnGameStateChanged(GameState _gameState) => healthBar.gameObject.SetActive(_InGame);
     private void OnContinueButton() => ChangeSiteState(SiteState.Claimed);

@@ -69,7 +69,7 @@ public static class GameEvents
     public static event Action OnGroundClicked = null;
     public static event Action<int> OnMaegenChange = null;
     
-    public static event Action<GameObject> OnObjectSelected = null; 
+    public static event Action<Guardian> OnGuardianSelected = null; 
     
     //Title Events
     public static event Action OnLevelStart = null;
@@ -163,13 +163,13 @@ public static class GameEvents
     public static void ReportOnWildlifeKilled(GameObject _wildlife) => OnWildlifeKilled?.Invoke(_wildlife);
     public static void ReportOnTreePlaced(TreeID _treeID)=> OnTreePlaced?.Invoke(_treeID);
     public static void ReportOnTreeDestroy(TreeID _treeID) => OnTreeDestroyed?.Invoke(_treeID);
-    public static void ReportOnObjectSelected(GameObject _gameobject) => OnObjectSelected?.Invoke(_gameobject);
+    public static void ReportOnGuardianSelected(Guardian _gameobject) => OnGuardianSelected?.Invoke(_gameobject);
     public static void ReportOnMaegenChange(int _amount) => OnMaegenChange?.Invoke(_amount);
 
     public static void ReportOnGroundClicked()
     {
         OnGroundClicked?.Invoke();
-        OnObjectSelected?.Invoke(null);
+        OnGuardianSelected?.Invoke(null);
     }
     
     //Title

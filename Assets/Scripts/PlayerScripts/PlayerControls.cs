@@ -86,29 +86,29 @@ public class PlayerControls : Singleton<PlayerControls>
                 if (_GAME.playmode == PlayMode.DefaultMode && _InGame)
                 {
                     _SM.PlaySound(_SM.openMenuSound);
-                    GameEvents.ReportOnSiteSelected(SiteID.HomeTree, true);
                     GameEvents.ReportOnSiteSelected(SiteID.Hut, false);
                     GameEvents.ReportOnSiteSelected(SiteID.Horgr, false);
-                    GameEvents.ReportOnObjectSelected(hitPoint.collider.gameObject);
+                    GameEvents.ReportOnSiteSelected(SiteID.HomeTree, true); //NOTE the true site must be the last one
+                    GameEvents.ReportOnGuardianSelected(null);
                 }
             }
-            if (hitPoint.collider.CompareTag("Horgr"))
+            else if (hitPoint.collider.CompareTag("Horgr"))
             {
                 _SM.PlaySound(_SM.openMenuSound);
                 GameEvents.ReportOnSiteSelected(SiteID.HomeTree, false);
                 GameEvents.ReportOnSiteSelected(SiteID.Hut, false);
-                GameEvents.ReportOnSiteSelected(SiteID.Horgr, true);
-                GameEvents.ReportOnObjectSelected(hitPoint.collider.gameObject);
+                GameEvents.ReportOnSiteSelected(SiteID.Horgr, true);  //NOTE the true site must be the last one
+                GameEvents.ReportOnGuardianSelected(null);
             }
-            if (hitPoint.collider.CompareTag("Hut"))
+            else if (hitPoint.collider.CompareTag("Hut"))
             {
                 _SM.PlaySound(_SM.openMenuSound);
                 GameEvents.ReportOnSiteSelected(SiteID.HomeTree, false);
-                GameEvents.ReportOnSiteSelected(SiteID.Hut, true);
                 GameEvents.ReportOnSiteSelected(SiteID.Horgr, false);
-                GameEvents.ReportOnObjectSelected(hitPoint.collider.gameObject);
+                GameEvents.ReportOnSiteSelected(SiteID.Hut, true);  //NOTE the true site must be the last one
+                GameEvents.ReportOnGuardianSelected(null);
             }
-            if (hitPoint.collider.gameObject.layer == LayerMask.NameToLayer("Environment"))
+            else if (hitPoint.collider.gameObject.layer == LayerMask.NameToLayer("Environment"))
             {
                 if (_UI.mouseOverUI)
                     return;

@@ -55,7 +55,7 @@ public class InputManager : InputX
     public static event Action<bool> OnShowRangeButton = null;
     public static event Action<GameSpeed> OnGameSpeedButton = null;
     public static event Action OnSetGameButton = null;
-
+    public static event Action OnGuardianCamButton = null;
     public static event Action OnGroup01Selected = null;
     public static event Action OnGroup02Selected = null;
     public static event Action OnGroup03Selected = null;
@@ -128,6 +128,7 @@ public class InputManager : InputX
         actions.FindActionMap("Gameplay").FindAction("ShowRange").performed += ShowRangeButton;
         actions.FindActionMap("Gameplay").FindAction("SpeedGame").performed += SpeedGameButton;
         actions.FindActionMap("Gameplay").FindAction("SetGame").performed += SetGameButton;
+        actions.FindActionMap("Gameplay").FindAction("GuardianCam").performed += GuardianCamButton;
         //Menus
         //menuMoveAction = actions.FindActionMap("Menus").FindAction("MenuMove");
         //actions.FindActionMap("Menus").FindAction("MenuSelect").performed += OnMenuSelect;
@@ -187,8 +188,6 @@ public class InputManager : InputX
             if (GetButtonReleased(ButtonMap.North))
                 OnControlHold?.Invoke(false);
         }
-
-       
     }
 
     public void CursorMovement()
@@ -261,6 +260,10 @@ public class InputManager : InputX
     private void SetGameButton(CallbackContext context)
     {
         if (context.action.WasPressedThisFrame()) OnGameSpeedButton?.Invoke(GameSpeed.Normal);
+    }
+    private void GuardianCamButton(CallbackContext context)
+    {
+        if (context.action.WasPressedThisFrame()) OnGuardianCamButton?.Invoke();
     }
 
 

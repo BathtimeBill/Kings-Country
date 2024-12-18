@@ -15719,8 +15719,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    - target: {fileID: 7719201332470755006, guid: 097cbc6e89e54d44895325a760ffb3e4,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7719201332470755006, guid: 097cbc6e89e54d44895325a760ffb3e4,
+        type: 3}
+      propertyPath: m_ComponentOwner
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7719201332470755006, guid: 097cbc6e89e54d44895325a760ffb3e4, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 1262651730688096603, guid: 097cbc6e89e54d44895325a760ffb3e4, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3655520687689009352, guid: 097cbc6e89e54d44895325a760ffb3e4,
@@ -15731,6 +15743,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 1437982873814057879, guid: 097cbc6e89e54d44895325a760ffb3e4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1626754414}
   m_SourcePrefab: {fileID: 100100000, guid: 097cbc6e89e54d44895325a760ffb3e4, type: 3}
 --- !u!4 &1626754412 stripped
 Transform:
@@ -15738,6 +15754,55 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1626754411}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1626754413 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1437982873814057879, guid: 097cbc6e89e54d44895325a760ffb3e4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1626754411}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1626754414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626754413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Priority:
+    Enabled: 0
+    m_Value: 0
+  OutputChannel: 1
+  StandbyUpdate: 2
+  m_StreamingVersion: 20241001
+  m_LegacyPriority: 0
+  Target:
+    TrackingTarget: {fileID: 0}
+    LookAtTarget: {fileID: 0}
+    CustomLookAtTarget: 0
+  Lens:
+    FieldOfView: 40
+    OrthographicSize: 10
+    NearClipPlane: 0.1
+    FarClipPlane: 5000
+    Dutch: 0
+    ModeOverride: 0
+    PhysicalProperties:
+      GateFit: 2
+      SensorSize: {x: 21.946, y: 16.002}
+      LensShift: {x: 0, y: 0}
+      FocusDistance: 10
+      Iso: 200
+      ShutterSpeed: 0.005
+      Aperture: 16
+      BladeCount: 5
+      Curvature: {x: 2, y: 11}
+      BarrelClipping: 0.25
+      Anamorphism: 0
+  BlendHint: 0
 --- !u!1001 &1635437796
 PrefabInstance:
   m_ObjectHideFlags: 0

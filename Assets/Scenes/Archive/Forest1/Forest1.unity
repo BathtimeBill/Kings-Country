@@ -412,12 +412,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8dff00998e0ec5f4a9e1a8fbde486c86, type: 3}
---- !u!23 &271744594 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 3901708836956976141, guid: 8dff00998e0ec5f4a9e1a8fbde486c86,
-    type: 3}
-  m_PrefabInstance: {fileID: 271744593}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &353141546 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1631794380063239731, guid: cebef197f8fa0f342ad8395ae81377a5,
@@ -1414,14 +1408,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 541887920}
   m_PrefabAsset: {fileID: 0}
---- !u!222 &838420636
-CanvasRenderer:
-  m_ObjectHideFlags: 8
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_CullTransparentMesh: 1
 --- !u!43 &919455024
 Mesh:
   m_ObjectHideFlags: 0
@@ -2491,7 +2477,7 @@ PrefabInstance:
         type: 3}
       propertyPath: treePlacementMeshRenderer
       value: 
-      objectReference: {fileID: 271744594}
+      objectReference: {fileID: 0}
     - target: {fileID: 6680629164101880773, guid: ab74edbfbcc6d0747a050777fd34cecf,
         type: 3}
       propertyPath: beaconPlacementMeshRenderer
@@ -2936,6 +2922,14 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6fe392213d6792d4cbb095e511d71510, type: 3}
+--- !u!222 &1684866625
+CanvasRenderer:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_CullTransparentMesh: 1
 --- !u!114 &1760737232 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1631794380263041805, guid: cebef197f8fa0f342ad8395ae81377a5,
@@ -2988,7 +2982,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_CullTransparentMesh: 1
---- !u!222 &2068616632
+--- !u!222 &2054789206
 CanvasRenderer:
   m_ObjectHideFlags: 8
   m_CorrespondingSourceObject: {fileID: 0}

@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -47,6 +48,8 @@ public class Guardian : GameBehaviour
     public Transform rightHand;
     public Transform leftFoot;
     public Transform rightFoot;
+
+    [Header("Cameras")] public CinemachineCamera guardianCam;
     
     //Stats
     private float health;
@@ -102,6 +105,8 @@ public class Guardian : GameBehaviour
     public void Awake()
     {
         guardianAnimation = GetComponentInChildren<GuardianAnimation>();
+        if(NotNull(guardianCam))
+            guardianCam.enabled = false;
     }
 
     public virtual void Start()
@@ -491,7 +496,7 @@ public class Guardian : GameBehaviour
         state = GuardianState.Attack;
         if (NotNull(hitParticle))
         {
-            GameObject go = Instantiate(hitParticle, transform.position + new Vector3(0, 5, 0), transform.rotation);
+            GameObject go = Instantiate(hitParticle, transform.position + new Vector3(0, 1, 0), transform.rotation);
             Destroy(go,5);
         }
 
@@ -502,9 +507,12 @@ public class Guardian : GameBehaviour
 
     private void Die(string _attacker)
     {
+        if (NotNull(dieParticle))
+        {
+            GameObject go = Instantiate(dieParticle, transform.position + new Vector3(0, 1, 0), transform.rotation);
+            Destroy(go,5);
+        }
         RemoveFromSites();
-        _GM.Deselect(this);
-        _GM.guardianList.Remove(this);
         _UI.CheckPopulousUI();
         int daysSurvived = _CurrentDay - startingDay;
         GameEvents.ReportOnGuardianKilled(guardianID.ToString(), _attacker, daysSurvived);
@@ -610,6 +618,12 @@ public class Guardian : GameBehaviour
         healthBar.ChangeCombatModeIcon(_ICONS.stopIcon);
         SetDestination(transform);
     }
+
+    public void ToggleGuardianCam()
+    {
+        if(NotNull(guardianCam))
+            guardianCam.enabled = !guardianCam.enabled;
+    }
     
     #endregion
     
@@ -651,7 +665,7 @@ public class Guardian : GameBehaviour
             int daysSurvived = _CurrentDay - startingDay;
             GameEvents.ReportOnGuardianKilled(guardianID.ToString(), "Unknown", daysSurvived);
             _GM.RemoveSelectedUnit(this);
-            GameEvents.ReportOnObjectSelected(null);
+            GameEvents.ReportOnGuardianSelected(null);
             Destroy(gameObject);
         }
     }

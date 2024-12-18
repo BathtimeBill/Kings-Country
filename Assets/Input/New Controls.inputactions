@@ -265,6 +265,15 @@
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "GuardianCam",
+                    "type": "Button",
+                    "id": "da516901-378e-4fcd-9b5a-8ccc032913a0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -826,6 +835,17 @@
                     "processors": "",
                     "groups": ";Keyboard",
                     "action": "SetGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4a3da896-daf4-4460-b9ef-acf7e2bef5cf",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "GuardianCam",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

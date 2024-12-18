@@ -1757,11 +1757,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8657634b085e24e4f9e031b5ebffd21e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitList: []
-  unitSelected: []
-  huldraToFind: {fileID: 1071894615449563641, guid: 44ca6f0bd9f15aa41a3af4587a29f754,
-    type: 3}
-  containsHuldra: 0
+  guardianList: []
+  guardianSelected: []
+  canDoubleClick: 0
+  doubleClickTime: 0.3
+  destinations: []
+  audioSource: {fileID: 0}
+  controlGroup01: []
+  controlGroup02: []
+  controlGroup03: []
+  controlGroup04: []
+  controlGroup05: []
+  controlGroup06: []
+  controlGroup07: []
+  controlGroup08: []
+  controlGroup09: []
+  controlGroup10: []
+  selectedUnit: {fileID: 0}
 --- !u!1 &117251895
 GameObject:
   m_ObjectHideFlags: 0
@@ -2396,6 +2408,7 @@ MonoBehaviour:
   previousState: 0
   trees: []
   startCamera: {fileID: 0}
+  gameSpeed: 0
   score: 0
   highScore: 0
   currentDay: 0
@@ -15004,12 +15017,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 558468667}
   m_CullTransparentMesh: 1
---- !u!23 &569239678 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 8581600156400804164, guid: 6d89cebfcdbd211458fada87f759c271,
-    type: 3}
-  m_PrefabInstance: {fileID: 6676472447063505580}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &569249981
 GameObject:
   m_ObjectHideFlags: 0
@@ -15706,12 +15713,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
---- !u!1 &619296197 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6221528518840369559, guid: 8dff00998e0ec5f4a9e1a8fbde486c86,
-    type: 3}
-  m_PrefabInstance: {fileID: 2141114681}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &622105398
 GameObject:
   m_ObjectHideFlags: 0
@@ -17764,17 +17765,22 @@ MonoBehaviour:
   newPosition: {x: 0, y: 0, z: 0}
   newZoom: {x: 0, y: 0, z: 0}
   newRotation: {x: 0, y: 0, z: 0, w: 0}
-  minZ: 5
-  maxZ: 100
-  minY: 5
-  maxY: 100
-  minMovementX: 0
-  maxMovementX: 0
-  minMovementZ: 0
-  maxMovementZ: 0
+  yZoom:
+    min: 0
+    max: 0
+  zZoom:
+    min: 0
+    max: 0
+  xMovement:
+    min: 0
+    max: 0
+  zMovement:
+    min: 0
+    max: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 0
+  siteOffset: {x: 0, y: 0, z: 5}
 --- !u!4 &740920550
 Transform:
   m_ObjectHideFlags: 0
@@ -17808,38 +17814,15 @@ MonoBehaviour:
   mapCam: {fileID: 1703610281}
   targetPointer: {fileID: 2046992755}
   targetPointerGraphics: {fileID: 6085214914684599472}
-  brightYellowMat: {fileID: 0}
-  invisibleMat: {fileID: 0}
   mouseOverEnemy: {fileID: 0}
-  mouseOverEnemyBool: 0
   uILayer:
     serializedVersion: 2
     m_Bits: 0
-  canPressEscape: 0
-  treeTooClose: 0
-  treePlacement: {fileID: 619296197}
-  cantPlace: {fileID: 1780922290638167285, guid: 07a7a4f3efb452446ba67dca42d21e2b,
-    type: 3}
-  treePrefab: {fileID: 7876691224444295265, guid: 44ee7abcedbdb6a41938b24cdcd6dde2,
-    type: 3}
-  minScale: 0.7
-  maxScale: 1.3
-  treePlacementMeshRenderer: {fileID: 745285328}
-  errorAnimator: {fileID: 592351905}
-  audioSource: {fileID: 740920552}
-  worldAudioSource: {fileID: 0}
-  runePlacement: {fileID: 1672983207}
-  runePlacementMeshRenderer: {fileID: 1672983209}
-  runePrefab: {fileID: 7466654204364562629, guid: 9fb2656994466b64faea4c337df28f36,
-    type: 3}
-  beaconPlacement: {fileID: 1705018661}
-  beaconPlacementMeshRenderer: {fileID: 569239678}
-  beaconPrefab: {fileID: 8170180008439288906, guid: b989a7b99fc50b4489c1f8397113fbca,
-    type: 3}
-  explosion: {fileID: 0}
-  explosion2: {fileID: 0}
-  stormerPlacement: {fileID: 972839985}
-  stormerPlacementMeshRenderer: {fileID: 1418745607}
+  tools:
+    treeTool: {fileID: 0}
+    fyreTool: {fileID: 0}
+    stormerTool: {fileID: 0}
+    runeTool: {fileID: 0}
   canGroup: 0
   mouseOverMap: 0
   cursorTextureNormal: {fileID: 0}
@@ -17974,12 +17957,6 @@ MonoBehaviour:
   drySpeed: 40
   audioSource: {fileID: 5108260780212591674, guid: cb949f27f6356ce44969fc7509cc114c,
     type: 3}
---- !u!23 &745285328 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 3901708836956976141, guid: 8dff00998e0ec5f4a9e1a8fbde486c86,
-    type: 3}
-  m_PrefabInstance: {fileID: 2141114681}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &747660710
 GameObject:
   m_ObjectHideFlags: 0
@@ -28831,7 +28808,6 @@ MonoBehaviour:
   inGameContinueButton: {fileID: 0}
   treeButton: {fileID: 0}
   maegenIcon: {fileID: 0}
-  tutorialStage: 0
   isTutorial: 0
   tutorialComplete: 0
 --- !u!82 &1319533912
@@ -31856,8 +31832,11 @@ MonoBehaviour:
   cooldown:
     min: 0
     max: 0
+  enemyIDList: 
   currentKillCount: 0
   spyNotification: {fileID: 0}
+  testSpawnEnemy: 0
+  noAutoSpawning: 0
 --- !u!114 &1477172097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37573,18 +37552,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1670219352}
   m_CullTransparentMesh: 1
---- !u!1 &1672983207 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7466654204364562629, guid: e32c36184534e524db25e5e725e38285,
-    type: 3}
-  m_PrefabInstance: {fileID: 1547136377}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &1672983209 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 8979647694007697680, guid: e32c36184534e524db25e5e725e38285,
-    type: 3}
-  m_PrefabInstance: {fileID: 1547136377}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1683547755
 GameObject:
   m_ObjectHideFlags: 0
@@ -38178,12 +38145,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraWithoutFog: {fileID: 1703610281}
---- !u!1 &1705018661 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8906978239372945406, guid: 6d89cebfcdbd211458fada87f759c271,
-    type: 3}
-  m_PrefabInstance: {fileID: 6676472447063505580}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1711622672
 GameObject:
   m_ObjectHideFlags: 0

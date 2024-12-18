@@ -4908,6 +4908,7 @@ MonoBehaviour:
   previousState: 0
   trees: []
   startCamera: {fileID: 124407172}
+  gameSpeed: 0
   score: 0
   highScore: 0
   currentDay: 0
@@ -27359,17 +27360,10 @@ MonoBehaviour:
   zMovement:
     min: -250
     max: 250
-  minZ: -121.5
-  maxZ: -25.5
-  minY: 4.2
-  maxY: 100.2
-  minMovementX: -250
-  maxMovementX: 250
-  minMovementZ: -250
-  maxMovementZ: 250
   groundLayer:
     serializedVersion: 2
     m_Bits: 0
+  siteOffset: {x: 0, y: 0, z: 5}
 --- !u!4 &740920550
 Transform:
   m_ObjectHideFlags: 0
@@ -27403,41 +27397,15 @@ MonoBehaviour:
   mapCam: {fileID: 1703610281}
   targetPointer: {fileID: 6085214914684599474}
   targetPointerGraphics: {fileID: 6085214914684599472}
-  brightYellowMat: {fileID: 0}
-  invisibleMat: {fileID: 0}
   mouseOverEnemy: {fileID: 0}
-  mouseOverEnemyBool: 0
   uILayer:
     serializedVersion: 2
     m_Bits: 0
-  canPressEscape: 0
-  treeTooClose: 0
-  treePlacement: {fileID: 2141114685}
-  cantPlace: {fileID: 1780922290638167285, guid: 07a7a4f3efb452446ba67dca42d21e2b,
-    type: 3}
-  treePrefab: {fileID: 7876691224444295265, guid: 44ee7abcedbdb6a41938b24cdcd6dde2,
-    type: 3}
-  minScale: 0.7
-  maxScale: 1.3
-  treePlacementMeshRenderer: {fileID: 2141114682}
-  errorAnimator: {fileID: 1521093384}
-  audioSource: {fileID: 740920552}
-  worldAudioSource: {fileID: 0}
-  runePlacement: {fileID: 1547136378}
-  runePlacementMeshRenderer: {fileID: 1121575565768426348, guid: dd58123e0bde82e499d83030344dcaa2,
-    type: 3}
-  runePrefab: {fileID: 7466654204364562629, guid: 9fb2656994466b64faea4c337df28f36,
-    type: 3}
-  beaconPlacement: {fileID: 6676472447063505583}
-  beaconPlacementMeshRenderer: {fileID: 6676472447063505581}
-  beaconPrefab: {fileID: 8170180008439288906, guid: b989a7b99fc50b4489c1f8397113fbca,
-    type: 3}
-  explosion: {fileID: 6667861000600669315, guid: 3f1ae47e6e4408f4c974aa2c636c6d1a,
-    type: 3}
-  explosion2: {fileID: 6667861000600669315, guid: cf9a543e082189a43bd4a93d792c90f1,
-    type: 3}
-  stormerPlacement: {fileID: 972839985}
-  stormerPlacementMeshRenderer: {fileID: 1418745607}
+  tools:
+    treeTool: {fileID: 0}
+    fyreTool: {fileID: 0}
+    stormerTool: {fileID: 0}
+    runeTool: {fileID: 0}
   canGroup: 0
   mouseOverMap: 0
   cursorTextureNormal: {fileID: 2800000, guid: 8f505cd2868e15e43a26f47a723a1327, type: 3}
@@ -30702,7 +30670,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2141114683}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 100000, guid: e022880a2c3ac6647ab7b2aadb945d82, type: 3}
       propertyPath: m_Name
@@ -30894,12 +30862,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e022880a2c3ac6647ab7b2aadb945d82, type: 3}
---- !u!4 &894809138 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400000, guid: e022880a2c3ac6647ab7b2aadb945d82,
-    type: 3}
-  m_PrefabInstance: {fileID: 894809137}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &898442487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53739,12 +53701,6 @@ MonoBehaviour:
   m_IgnoreFromBuild: 0
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
---- !u!95 &1521093384 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 3237383852840307521, guid: c8a465780fb9b2f4686a1ec851c1a4f7,
-    type: 3}
-  m_PrefabInstance: {fileID: 1190588418}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1523478996
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54432,12 +54388,6 @@ PrefabInstance:
       addedObject: {fileID: 2692913682861317132}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e32c36184534e524db25e5e725e38285, type: 3}
---- !u!1 &1547136378 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7466654204364562629, guid: e32c36184534e524db25e5e725e38285,
-    type: 3}
-  m_PrefabInstance: {fileID: 1547136377}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1547136379 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7842230250055662207, guid: e32c36184534e524db25e5e725e38285,
@@ -77930,34 +77880,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 8006518891446544197, guid: 8dff00998e0ec5f4a9e1a8fbde486c86,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 894809138}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8dff00998e0ec5f4a9e1a8fbde486c86, type: 3}
---- !u!23 &2141114682 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 3901708836956976141, guid: 8dff00998e0ec5f4a9e1a8fbde486c86,
-    type: 3}
-  m_PrefabInstance: {fileID: 2141114681}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2141114683 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8006518891446544197, guid: 8dff00998e0ec5f4a9e1a8fbde486c86,
-    type: 3}
-  m_PrefabInstance: {fileID: 2141114681}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2141114684 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 76827636292133887, guid: 8dff00998e0ec5f4a9e1a8fbde486c86,
-    type: 3}
-  m_PrefabInstance: {fileID: 2141114681}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2141114685 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6221528518840369559, guid: 8dff00998e0ec5f4a9e1a8fbde486c86,
     type: 3}
   m_PrefabInstance: {fileID: 2141114681}
   m_PrefabAsset: {fileID: 0}
@@ -83962,21 +83890,9 @@ PrefabInstance:
       addedObject: {fileID: 8290771810376923776}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6d89cebfcdbd211458fada87f759c271, type: 3}
---- !u!23 &6676472447063505581 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 8581600156400804164, guid: 6d89cebfcdbd211458fada87f759c271,
-    type: 3}
-  m_PrefabInstance: {fileID: 6676472447063505580}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6676472447063505582 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8906978239372945407, guid: 6d89cebfcdbd211458fada87f759c271,
-    type: 3}
-  m_PrefabInstance: {fileID: 6676472447063505580}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6676472447063505583 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8906978239372945406, guid: 6d89cebfcdbd211458fada87f759c271,
     type: 3}
   m_PrefabInstance: {fileID: 6676472447063505580}
   m_PrefabAsset: {fileID: 0}
@@ -104315,3 +104231,4 @@ SceneRoots:
   - {fileID: 1281016036}
   - {fileID: 717703724}
   - {fileID: 2010386196}
+  - {fileID: 894809137}
