@@ -16,7 +16,8 @@ public class Arrow : GameBehaviour
     {
         if(!target)
         {
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
+            Destroy(gameObject, 1);
         }
         else
         {

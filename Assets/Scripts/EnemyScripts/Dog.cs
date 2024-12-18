@@ -27,7 +27,7 @@ public class Dog : Enemy
         ChangeState(EnemyState.Work);
     }
     
-    public override void CheckAttackState()
+    public override void HandleAttackState()
     {
         canAttack = distanceToTarget <= attackRange;
         if (canAttack)

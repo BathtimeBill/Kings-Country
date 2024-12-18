@@ -78,13 +78,13 @@ public class Hunter : Enemy
     
     public override void HandleWorkState()
     {
-        ChangeState(EnemyState.Work);
+        base.HandleWorkState();
         enemyAnimation.PlayHoldAnimation(false);
     }
 
     public override void HandleIdleState()
     {
-        ChangeState(EnemyState.Idle);
+        base.HandleIdleState();
         enemyAnimation.PlayAttackAnimation(false);
     }
 
@@ -93,17 +93,16 @@ public class Hunter : Enemy
         if (_HUT.HasUnits())
         {
             targetObject = closestUnit;
-            HandleTargetState();
+            HandleAttackState();
         }
         else
         {
             enemyAnimation.PlayHoldAnimation(true);
-            StandStill(); 
-            ChangeState(EnemyState.DefendSite);
+            base.HandleDefendState();
         }
     }
 
-    public override void CheckAttackState()
+    public override void HandleAttackState()
     {
         if (_HutExists && targetObject == hutTargetPoint.transform || _NoWildlife)
         {
@@ -113,14 +112,14 @@ public class Hunter : Enemy
         else
         {
             canAttack = distanceToTarget <= attackRange && targetObject != transform;
-            base.CheckAttackState();
+            base.HandleAttackState();
         }
     }
 
     private IEnumerator WaitForHut()
     {
         yield return new WaitForSeconds(1f);
-        ChangeState(EnemyState.DefendSite);
+        base.HandleDefendState();
         hasArrivedAtHut = true;
     }
     

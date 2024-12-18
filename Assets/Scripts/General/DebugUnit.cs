@@ -14,6 +14,13 @@ public class DebugUnit : MonoBehaviour
         attackRange.transform.localScale = new Vector3(_attack*2, _attack*2, _attack*2);
         stopRange.transform.localScale = new Vector3(_stop*2, _stop*2, _stop*2);
     }
+    public void AdjustRange(float _attack, float _stop)
+    {
+        ToggleObjects();
+        detectRange.transform.localScale = Vector3.zero;
+        attackRange.transform.localScale = new Vector3(_attack*2, _attack*2, _attack*2);
+        stopRange.transform.localScale = new Vector3(_stop*2, _stop*2, _stop*2);
+    }
 
     private void OnShowRangeButton(bool _show)
     {

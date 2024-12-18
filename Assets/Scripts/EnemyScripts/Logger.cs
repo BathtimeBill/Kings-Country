@@ -7,8 +7,8 @@ public class Logger : Enemy
     {
         if (_GuardiansExist && distanceToClosestUnit < attackRange)
         {
-            HandleTargetState();
             targetObject = closestUnit.transform;
+            HandleAttackState();
         }
         else
         {
@@ -18,20 +18,10 @@ public class Logger : Enemy
         }
     }
     
-    public override void HandleWorkState()
-    {
-        ChangeState(EnemyState.Work);
-    }
-
-    public override void HandleTargetState()
-    {
-        ChangeState(EnemyState.Target);
-    }
-    
-    public override void CheckAttackState()
+    public override void HandleAttackState()
     {
         canAttack = distanceToTarget <= stoppingDistance && targetObject != transform;
-        base.CheckAttackState();
+        base.HandleAttackState();
     }
     #endregion
 

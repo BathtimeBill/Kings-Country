@@ -13,7 +13,6 @@ public class EnemyData : ScriptableObject
     public int damage;
     public float speed;
     public float attackRange = 10;
-    public float detectRange = 20;
     public float stoppingDistance = 1;
     public float invincibleTime = 5f;
     [Header("Non Stats")]

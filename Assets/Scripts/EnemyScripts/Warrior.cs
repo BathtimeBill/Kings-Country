@@ -59,7 +59,7 @@ public class Warrior : Enemy
     
     public override void HandleWorkState()
     {
-        ChangeState(EnemyState.Work);
+        base.HandleWorkState();
         enemyAnimation.PlayHoldAnimation(false);
     }
     
@@ -68,17 +68,16 @@ public class Warrior : Enemy
         if (_HORGR.HasUnits())
         {
             targetObject = closestUnit;
-            HandleTargetState();
+            HandleAttackState();
         }
         else
         {
             enemyAnimation.PlayHoldAnimation(true);
-            StandStill(); 
-            ChangeState(EnemyState.DefendSite);
+            base.HandleDefendState();
         }
     }
 
-    public override void CheckAttackState()
+    public override void HandleAttackState()
     {
         if (_HorgrExists && targetObject == horgrTargetPoint.transform)
         {
@@ -88,14 +87,14 @@ public class Warrior : Enemy
         else
         {
             canAttack = distanceToTarget <= stoppingDistance && targetObject != transform;
-            base.CheckAttackState();
+            base.HandleAttackState();
         }
     }
     
     private IEnumerator WaitForHorgr()
     {
         yield return new WaitForSeconds(1f);
-        ChangeState(EnemyState.DefendSite);
+        base.HandleDefendState();
         hasArrivedAtHorgr = true;
     }
     #endregion

@@ -72,18 +72,10 @@ public class Lord : Enemy
         StartCoroutine(Tick());
     }
     
-    public override void HandleWorkState()
-    {
-    }
+    public override void HandleWorkState() { }
 
-    public override void HandleIdleState()
-    {
-    }
-
-    public override void HandleTargetState()
-    {
-    }
-
+    public override void HandleIdleState() { }
+    
     IEnumerator Bark()
     {
         yield return new WaitForSeconds(Random.Range(5, 20));

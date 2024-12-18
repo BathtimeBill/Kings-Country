@@ -44,12 +44,6 @@ public class Enemy : GameBehaviour
         get { return attackRangeValue; }
         set {attackRangeValue = value; UpdateDebug(); }
     }
-    private float detectRangeValue;
-    public float detectRange
-    {
-        get { return detectRangeValue; }
-        set {detectRangeValue = value; UpdateDebug(); }
-    }
     private float stoppingDistanceValue;
     public float stoppingDistance
     {
@@ -60,7 +54,7 @@ public class Enemy : GameBehaviour
     {
         if (!debugUnit)
             return;
-        debugUnit.AdjustRange(detectRange, attackRange, stoppingDistance);
+        debugUnit.AdjustRange(attackRange, stoppingDistance);
     }
     #endregion
     
@@ -82,7 +76,6 @@ public class Enemy : GameBehaviour
         agent.speed = speed;
         damage = enemyData.damage;
         attackRange = enemyData.attackRange;
-        detectRange = enemyData.detectRange;
         stoppingDistance = enemyData.stoppingDistance;
         agent.stoppingDistance = stoppingDistance;
         _SM.PlaySound(enemyData.spawnSound);
@@ -110,7 +103,7 @@ public class Enemy : GameBehaviour
         DetermineState();
         HandleMovement();
         if(initializeHack)
-            CheckAttackState();
+            HandleAttackState();
         
         //print("State: " + state + " | Target: " + targetObject.name);
         yield return new WaitForSeconds(tickRate);
@@ -139,11 +132,20 @@ public class Enemy : GameBehaviour
         if (NotNull(healthBar))
             healthBar.ChangeUnitState(state.ToString());
     }
-    
-    public virtual void HandleWorkState() { }
+
+    public virtual void HandleWorkState()
+    {
+        ChangeState(EnemyState.Work);
+    }
     public virtual void HandleIdleState() { }
 
-    public virtual void CheckAttackState()
+    public virtual void HandleDefendState()
+    {
+        StandStill(); 
+        ChangeState(EnemyState.DefendSite);
+    }
+
+    public virtual void HandleAttackState()
     {
         bool attacking = agent.velocity == Vector3.zero || canAttack; 
         if(attacking) 
@@ -152,8 +154,6 @@ public class Enemy : GameBehaviour
             ChangeState(EnemyState.Work);
         enemyAnimation.PlayAttackAnimation(attacking);
     }
-    public virtual void HandleTargetState() { }
-    public virtual void HandleDefendState() { }
     public void HandleVictoryState()
     {
         ChangeState(EnemyState.Victory);
