@@ -16,7 +16,7 @@ public class Fidhain : Guardian
         spitParticles.Play();
         spitCollider.enabled = true;
         
-        PlaySound(unitData.attackSounds);
+        PlaySound(guardianData.attackSounds);
         ParticlesX.PlayParticles(attackParticles, rightHand.transform.position);
     }
 
@@ -34,7 +34,7 @@ public class Fidhain : Guardian
 
     public override void HandleMovingState()
     {
-        stoppingDistance = unitData.stoppingDistance;
+        stoppingDistance = guardianData.stoppingDistance;
         base.HandleMovingState();
     }
 

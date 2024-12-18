@@ -20,7 +20,7 @@ public class Goblin : Guardian
         if (_NoEnemies)
             return;
         
-        if(distanceToClosestEnemy < unitData.attackRange)
+        if(distanceToClosestEnemy < guardianData.attackRange)
         {
             arrowObject.transform.position = firingPoint.position;
             firingPoint.transform.LookAt(ClosestEnemy);
@@ -37,7 +37,7 @@ public class Goblin : Guardian
     }
     public override void HandleMovingState()
     {
-        stoppingDistance = unitData.stoppingDistance;
+        stoppingDistance = guardianData.stoppingDistance;
         base.HandleMovingState();
     }
 }

@@ -6,7 +6,7 @@ public class Orcus : Guardian
         if (_NoEnemies)
             return;
 
-        PlaySound(unitData.attackSounds);
+        PlaySound(guardianData.attackSounds);
         ParticlesX.PlayParticles(attackParticles, rightHand.transform.position);
     }
 }

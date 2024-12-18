@@ -55,7 +55,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79e8e775a97fe8f4ea24e98df8bc434b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitID: 2
+  guardianID: 2
   healthBar: {fileID: 7900061855571342255}
   selectionRing: {fileID: 4788850790811092500}
   navAgent: {fileID: 1071894615449563646}
@@ -79,7 +79,7 @@ MonoBehaviour:
   leftFoot: {fileID: 2663353375449779871}
   rightFoot: {fileID: 873558822490830546}
   distanceToClosestEnemy: 0
-  unitData: {fileID: 0}
+  guardianData: {fileID: 0}
 --- !u!114 &4627191716601214914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,8 +268,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitType: 0
-  creatureID: 2
-  humanID: 0
+  guardianID: 2
+  enemyID: 0
   siteID: 0
   toolID: 0
 --- !u!1 &7769725486292069885
@@ -570,9 +570,7 @@ MonoBehaviour:
   smoothedSpeed: 0
   smoothSpeedFactor: 10
   tickInterval: 0.1
-  closestUnit: {fileID: 0}
-  distanceFromClosestUnit: 0
-  isCloseToEnemy: 0
+  isAttacking: 0
 --- !u!114 &5077084854646571197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -676,8 +674,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitType: 0
-  creatureID: 2
-  humanID: 0
+  guardianID: 2
+  enemyID: 0
   siteID: 0
   toolID: 0
 --- !u!1001 &844875491641150354
@@ -1223,6 +1221,11 @@ PrefabInstance:
     - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
         type: 3}
       propertyPath: creatureID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
+        type: 3}
+      propertyPath: guardianID
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5089558307582172242, guid: f295c990c53d4e94482a107a8edc74f4,

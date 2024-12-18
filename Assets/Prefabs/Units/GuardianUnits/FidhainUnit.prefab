@@ -55,7 +55,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 135a8e1af1fb34f469f4e739ad2b211f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitID: 7
+  guardianID: 7
   healthBar: {fileID: 4201208773319462762}
   selectionRing: {fileID: 2780662245486063909}
   navAgent: {fileID: 1071894615449563646}
@@ -77,11 +77,12 @@ MonoBehaviour:
   leftFoot: {fileID: 5820523168138250307}
   rightFoot: {fileID: 8660147402628608014}
   distanceToClosestEnemy: 0
-  unitData: {fileID: 0}
+  guardianData: {fileID: 0}
   spitParticles: {fileID: 1986597658949700764}
   spitCollider: {fileID: 5900068976047832006}
   towerUnit: {fileID: 4132771805544830452, guid: d6268017c80ef0a40bc92011d9cbc466,
     type: 3}
+  rangeMultiplier: 10
 --- !u!114 &4000738797075006814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -509,8 +510,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitType: 0
-  creatureID: 7
-  humanID: 0
+  guardianID: 7
+  enemyID: 0
   siteID: 0
   toolID: 0
 --- !u!198 &1986597658949700764 stripped
@@ -625,6 +626,11 @@ PrefabInstance:
     - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
         type: 3}
       propertyPath: creatureID
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
+        type: 3}
+      propertyPath: guardianID
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5089558307582172242, guid: f295c990c53d4e94482a107a8edc74f4,
@@ -2106,13 +2112,8 @@ MonoBehaviour:
   currentSpeed: 0
   smoothedSpeed: 0
   smoothSpeedFactor: 0
-  oldPosition: {x: 0, y: 0, z: 0}
   tickInterval: 0.1
-  attackSpeed: 0
-  closestUnit: {fileID: 0}
-  distanceFromClosestUnit: 0
-  isCloseToEnemy: 0
-  fadeOut: 0
+  isAttacking: 0
 --- !u!114 &5466909769474834915
 MonoBehaviour:
   m_ObjectHideFlags: 0

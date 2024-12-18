@@ -65,7 +65,7 @@ public static class GameEvents
     public static event Action OnPerkButtonPressed = null;
     public static event Action<TreeID> OnTreeButtonPressed = null;
     public static event Action<ToolID> OnToolButtonPressed = null;
-    public static event Action<UnitData> OnUnitButtonPressed = null;
+    public static event Action<GuardianData> OnUnitButtonPressed = null;
     public static event Action OnGroundClicked = null;
     public static event Action<int> OnMaegenChange = null;
     
@@ -79,7 +79,7 @@ public static class GameEvents
     public static void ReportOnPerkButtonPressed() => OnPerkButtonPressed?.Invoke();
     public static void ReportOnTreeButtonPressed(TreeID _treeID) => OnTreeButtonPressed?.Invoke(_treeID);
     public static void ReportOnToolButtonPressed(ToolID _toolID) => OnToolButtonPressed?.Invoke(_toolID);
-    public static void ReportOnUnitButtonPressed(UnitData _unit) => OnUnitButtonPressed?.Invoke(_unit);
+    public static void ReportOnUnitButtonPressed(GuardianData _guardian) => OnUnitButtonPressed?.Invoke(_guardian);
     public static void ReportOnSpySpawned() => OnSpySpawned?.Invoke();
     public static void ReportOnMineSpawned() => OnMineSpawned?.Invoke();
     public static void ReportOnLordSpawned() => OnLordSpawned?.Invoke();

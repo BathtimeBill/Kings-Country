@@ -9,12 +9,12 @@ public class Leshy : Guardian
         //_attack = 0 : Hand Attack, 1 : Foot Stomp
         if (_attack == 1)
         {
-            PlaySound(unitData.attackSounds);
+            PlaySound(guardianData.attackSounds);
             ParticlesX.PlayParticles(attackParticles, rightFoot.transform.position);
         }
         else
         {
-            PlaySound(unitData.attackSounds);
+            PlaySound(guardianData.attackSounds);
             ParticlesX.PlayParticles(attackParticles, leftHand.transform.position);
         }
     }

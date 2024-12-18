@@ -9,12 +9,12 @@ public class Skessa : Guardian
         //_attack = 0 : Right Hand Attack, 1 : Left Hand Attack
         if (_attack == 1)
         {
-            PlaySound(unitData.attackSounds);
+            PlaySound(guardianData.attackSounds);
             ParticlesX.PlayParticles(attackParticles, rightFoot.transform.position);
         }
         else
         {
-            PlaySound(unitData.attackSounds);
+            PlaySound(guardianData.attackSounds);
             ParticlesX.PlayParticles(attackParticles, leftHand.transform.position);
         }
     }

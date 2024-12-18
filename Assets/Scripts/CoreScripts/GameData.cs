@@ -17,13 +17,13 @@ public class GameData : Singleton<GameData>
         //    availablePerks.Remove(PerkID.Tower);
     }
 
-    #region Creature Units
-    [Header("Creature Unit Data")]
+    #region Guardian Units
+    [Header("Guardian Unit Data")]
     [BV.EnumList(typeof(GuardianID))]
-    public List<UnitData> unitData;
-    public UnitData GetUnit(GuardianID _id) => unitData.Find(x => x.id == _id);
-    public bool IsTowerUnit(GuardianID _id) => unitData.Find(x => x.id == _id && x.towerUnit);
-    public bool IsGuardianUnit(string _id) => unitData.Find(x => x.id.ToString() == _id);
+    public List<GuardianData> guardianData;
+    public GuardianData GetUnit(GuardianID _id) => guardianData.Find(x => x.id == _id);
+    public bool IsTowerUnit(GuardianID _id) => guardianData.Find(x => x.id == _id && x.towerUnit);
+    public bool IsGuardianUnit(string _id) => guardianData.Find(x => x.id.ToString() == _id);
     #endregion;
 
     #region Human Units
@@ -115,7 +115,7 @@ public class GameData : Singleton<GameData>
     public void LoadUnitDataFromFile()
     {
         string[,] grid = CSVReader.GetCSVGrid("/Assets/_Balancing/" + creatureDataSheet.name + ".csv");
-        UnitData unit = new UnitData();
+        GuardianData guardian = new GuardianData();
         List<string> keys = new List<string>();
 
         //First create a list for holding our key values
@@ -139,48 +139,48 @@ public class GameData : Singleton<GameData>
             {
                 // Gets a unit data based off the ID and updates the data
                 if (item.Key.Contains("ID"))
-                    unit.id = EnumX.ToEnum<GuardianID>(item.Value);
+                    guardian.id = EnumX.ToEnum<GuardianID>(item.Value);
                 if (item.Key.Contains("Name"))
-                    unit.name = item.Value;
+                    guardian.name = item.Value;
                 if (item.Key.Contains("Description"))
-                    unit.description = item.Value;
+                    guardian.description = item.Value;
                 if (item.Key.Contains("Health"))
                 {
                     int temp = int.TryParse(item.Value, out temp) ? temp : 100;
-                    unit.health = temp;
+                    guardian.health = temp;
                 }
                 if (item.Key.Contains("Damage"))
                 {
                     int temp = int.TryParse(item.Value, out temp) ? temp : 20;
-                    unit.damage = temp;
+                    guardian.damage = temp;
                 }
                 if (item.Key.Contains("Speed"))
                 {
                     int temp = int.TryParse(item.Value, out temp) ? temp : 10;
-                    unit.speed = temp;
+                    guardian.speed = temp;
                 }
                 if (item.Key.Contains("Cost"))
                 {
                     int temp = int.TryParse(item.Value, out temp) ? temp : 5;
-                    unit.cost = temp;
+                    guardian.cost = temp;
                 }
             }
-            UpdateUnit(unit);
+            UpdateUnit(guardian);
         }
     }
 
-    private void UpdateUnit(UnitData _unitData)
+    private void UpdateUnit(GuardianData _guardianData)
     {
-        UnitData unit = GetUnit(_unitData.id);
-        unit.name = _unitData.name;
-        unit.description = _unitData.description;
-        unit.health = _unitData.health;
-        unit.damage = _unitData.damage;
-        unit.speed = _unitData.speed;
-        unit.cost = _unitData.cost;
+        GuardianData guardian = GetUnit(_guardianData.id);
+        guardian.name = _guardianData.name;
+        guardian.description = _guardianData.description;
+        guardian.health = _guardianData.health;
+        guardian.damage = _guardianData.damage;
+        guardian.speed = _guardianData.speed;
+        guardian.cost = _guardianData.cost;
 
         //flag the object as "dirty" in the editor so it will be saved
-        EditorUtility.SetDirty(unit);
+        EditorUtility.SetDirty(guardian);
 
         // Prompt the editor database to save dirty assets, committing your changes to disk.
         AssetDatabase.SaveAssets();

@@ -1,14 +1,11 @@
-using System;
-using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Rendering;
 
 public class Guardian : GameBehaviour
 {
-    [Header("Unit Type")]
-    public GuardianID unitID;
+    [Header("Guardian ID")]
+    public GuardianID guardianID;
     
     [Header("UI")]
     public HealthBar healthBar;
@@ -67,12 +64,12 @@ public class Guardian : GameBehaviour
     private GuardianAnimation guardianAnimation;
 
     public Transform ClosestEnemy => closestEnemy;
-    [HideInInspector] public UnitData unitData;
+    [HideInInspector] public GuardianData guardianData;
     
     //Misc
     private int startingDay;
-    private GameObject hitParticle => _DATA.GetUnit(unitID).hitParticles;
-    private GameObject dieParticle => _DATA.GetUnit(unitID).dieParticles;
+    private GameObject hitParticle => _DATA.GetUnit(guardianID).hitParticles;
+    private GameObject dieParticle => _DATA.GetUnit(guardianID).dieParticles;
     
     #region Getters & Setters
     [HideInInspector] private float attackRangeValue;
@@ -109,13 +106,13 @@ public class Guardian : GameBehaviour
 
     public virtual void Start()
     {
-        unitData = _DATA.GetUnit(unitID);
+        guardianData = _DATA.GetUnit(guardianID);
         if(!isFirstPerson)
         {
             soundPool = SFXPool.GetComponents<AudioSource>();
             pointer = _Pointer;
             Setup();
-            GameEvents.ReportOnGuardianSpawned(unitID);
+            GameEvents.ReportOnGuardianSpawned(guardianID);
             SpawnInMove();
             startingDay = _CurrentDay;
         }
@@ -125,21 +122,21 @@ public class Guardian : GameBehaviour
     public virtual void Setup()
     {
         //Health
-        maxHealth = unitData.health;
+        maxHealth = guardianData.health;
         if (_DATA.HasPerk(PerkID.BarkSkin))
             maxHealth = MathX.GetPercentageIncrease(maxHealth, _DATA.GetPerk(PerkID.BarkSkin).increaseValue);
         SetHealth(maxHealth);
 
         //Speed
-        unitSpeed = unitData.speed;
+        unitSpeed = guardianData.speed;
         if (_DATA.HasPerk(PerkID.FlyFoot))
             unitSpeed = MathX.GetPercentageIncrease(unitSpeed, _DATA.GetPerk(PerkID.FlyFoot).increaseValue);
         navAgent.speed = unitSpeed;
 
         //Detection
-        attackRange = unitData.attackRange;
-        detectRange = unitData.detectRange;
-        stoppingDistance = unitData.stoppingDistance;
+        attackRange = guardianData.attackRange;
+        detectRange = guardianData.detectRange;
+        stoppingDistance = guardianData.stoppingDistance;
         navAgent.stoppingDistance = stoppingDistance;
 
         //Other
@@ -358,7 +355,7 @@ public class Guardian : GameBehaviour
 
         if(other.CompareTag("Heal"))
         {
-            if(unitID != GuardianID.Mistcalf)
+            if(guardianID != GuardianID.Mistcalf)
                 IncreaseHealth(100);
         }
         if (other.CompareTag("Maegen"))
@@ -381,7 +378,7 @@ public class Guardian : GameBehaviour
         }
         if (other.CompareTag("Rune"))
         {
-            if (unitID != GuardianID.Mistcalf)
+            if (guardianID != GuardianID.Mistcalf)
             {
                 healingParticle.SetActive(true);
             }
@@ -398,7 +395,7 @@ public class Guardian : GameBehaviour
         if (other.CompareTag("Tower"))
             isTooCloseToTower = false;
         
-        if (unitID != GuardianID.Mistcalf)
+        if (guardianID != GuardianID.Mistcalf)
             healingParticle.SetActive(false);
 
     }
@@ -408,7 +405,7 @@ public class Guardian : GameBehaviour
         
         if(other.CompareTag("Rune"))
         {
-            if (unitID != GuardianID.Mistcalf)
+            if (guardianID != GuardianID.Mistcalf)
             {
                 float healRate = _GM.runeHealRate * Time.deltaTime;
                 if (_DATA.HasPerk(PerkID.Rune))
@@ -450,21 +447,21 @@ public class Guardian : GameBehaviour
                 TakeDamage(attacker, damage);
                 break;
             case EnemyID.Dreng:
-                if (unitID == GuardianID.Leshy) { attacker = "Unknown"; damage = 50; }
+                if (guardianID == GuardianID.Leshy) { attacker = "Unknown"; damage = 50; }
                 TakeDamage(attacker, damage);
                 break;
             case EnemyID.Berserkr:
-                if (unitID == GuardianID.Leshy) { attacker = "Unknown"; damage = 65; }
+                if (guardianID == GuardianID.Leshy) { attacker = "Unknown"; damage = 65; }
                 TakeDamage(attacker, damage);
                 break;
             case EnemyID.Wathe:
                 HitByArrow();
-                if (unitID == GuardianID.Skessa) { damage *=3; }
+                if (guardianID == GuardianID.Skessa) { damage *=3; }
                 TakeDamage(attacker, damage);
                 break;
             case EnemyID.Poacher:
                 HitByArrow();
-                if (unitID == GuardianID.Skessa) { damage *= 3; }
+                if (guardianID == GuardianID.Skessa) { damage *= 3; }
                 TakeDamage(attacker, damage);
                 break;
             case EnemyID.Lord:
@@ -507,13 +504,13 @@ public class Guardian : GameBehaviour
         bool isColliding = false;
         if(!isColliding)
         {
-            GameObject go = Instantiate(unitData.ragdollModel, transform.position, transform.rotation);
+            GameObject go = Instantiate(guardianData.ragdollModel, transform.position, transform.rotation);
             isColliding = true;
             Destroy(go, 15);
         }
         _UI.CheckPopulousUI();
         int daysSurvived = _CurrentDay - startingDay;
-        GameEvents.ReportOnGuardianKilled(unitID.ToString(), _attacker, daysSurvived);
+        GameEvents.ReportOnGuardianKilled(guardianID.ToString(), _attacker, daysSurvived);
         _UM.RemoveGuardian(this, transform.position, transform.rotation);
     }
     
@@ -530,7 +527,7 @@ public class Guardian : GameBehaviour
     
     private void OnContinueButton()
     {
-        if(unitID != GuardianID.Mistcalf)
+        if(guardianID != GuardianID.Mistcalf)
         {
             SetHealth(maxHealth);
         }
@@ -545,7 +542,7 @@ public class Guardian : GameBehaviour
 
     public void Footstep(string _foot)
     {
-        PlaySound(unitData.footstepSounds);
+        PlaySound(guardianData.footstepSounds);
 
         if (_foot == "Left")
             ParticlesX.PlayParticles(footstepLeftParticles, leftFoot.position);
@@ -591,9 +588,9 @@ public class Guardian : GameBehaviour
         if(combatMode != CombatMode.Move || combatMode != CombatMode.AttackMove)
         {
             detectRange = detectRange * 2;
-            if (unitID == GuardianID.Goblin)
+            if (guardianID == GuardianID.Goblin)
             {
-                navAgent.speed = unitData.speed;
+                navAgent.speed = guardianData.speed;
             }
         }
         combatMode = CombatMode.Move;
@@ -603,7 +600,7 @@ public class Guardian : GameBehaviour
     {
         if (combatMode != CombatMode.Defend)
         {
-            if (unitID != GuardianID.Goblin)
+            if (guardianID != GuardianID.Goblin)
             {
                 detectRange = detectRange / 2;
             }
@@ -624,7 +621,7 @@ public class Guardian : GameBehaviour
     #region Input
     private void OnTowerButton()
     {
-        if (unitID != GuardianID.Fidhain || unitID != GuardianID.Fidhain)
+        if (guardianID != GuardianID.Fidhain || guardianID != GuardianID.Fidhain)
             return;
 
         if (!isSelected)
@@ -653,11 +650,11 @@ public class Guardian : GameBehaviour
             if (_HORGR != null) _HORGR.RemoveUnit(this);
             _UM.Deselect(this);
             _UM.unitList.Remove(this);
-            GameObject go = Instantiate(unitData.ragdollModel, transform.position, transform.rotation);
+            GameObject go = Instantiate(guardianData.ragdollModel, transform.position, transform.rotation);
             Destroy(go, 15);
             _UI.CheckPopulousUI();
             int daysSurvived = _CurrentDay - startingDay;
-            GameEvents.ReportOnGuardianKilled(unitID.ToString(), "Unknown", daysSurvived);
+            GameEvents.ReportOnGuardianKilled(guardianID.ToString(), "Unknown", daysSurvived);
             _UM.RemoveSelectedUnit(this);
             GameEvents.ReportOnObjectSelected(null);
             Destroy(gameObject);

@@ -28,10 +28,10 @@ public class UnitClick : GameBehaviour
                 {
                     if(_UM.canDoubleClick)
                     {
-                        GuardianID thisUnitType = hit.collider.gameObject.GetComponent<Guardian>().unitID;
+                        GuardianID thisUnitType = hit.collider.gameObject.GetComponent<Guardian>().guardianID;
                         foreach(Guardian unit in _UM.unitList)
                         {
-                            if(unit.unitID == thisUnitType)
+                            if(unit.guardianID == thisUnitType)
                             {
                                 _UM.DoubleClickSelect(unit);
                             }

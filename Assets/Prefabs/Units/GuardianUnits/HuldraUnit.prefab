@@ -87,7 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eea96b2d3c622f540842c8fe4dfeeffa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitID: 3
+  guardianID: 3
   healthBar: {fileID: 1320173341924649366}
   selectionRing: {fileID: 5255852666219688572}
   navAgent: {fileID: 1071894615449563646}
@@ -109,7 +109,7 @@ MonoBehaviour:
   leftFoot: {fileID: 6166074591469077870}
   rightFoot: {fileID: 6166074591469073484}
   distanceToClosestEnemy: 0
-  unitData: {fileID: 0}
+  guardianData: {fileID: 0}
   towerUnit: {fileID: 4132771805544830452, guid: 16c7e39dcc4b95e4bb37944b196f29d9,
     type: 3}
 --- !u!136 &1071894615449563640
@@ -929,6 +929,11 @@ PrefabInstance:
     - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
         type: 3}
       propertyPath: creatureID
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
+        type: 3}
+      propertyPath: guardianID
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5089558307582172242, guid: f295c990c53d4e94482a107a8edc74f4,

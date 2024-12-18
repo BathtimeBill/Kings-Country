@@ -28,9 +28,9 @@ public class UnitManager : Singleton<UnitManager>
     private List<GameObject> spawnParticlePool = new List<GameObject>();
     private List<GameObject> ragdollPool = new List<GameObject>();
 
-    public void SpawnGuardian(UnitData _unitData, Transform _location)
+    public void SpawnGuardian(GuardianData _guardianData, Transform _location)
     {
-        if (_GM.maegen < _unitData.cost)
+        if (_GM.maegen < _guardianData.cost)
         {
             _UI.SetError(ErrorID.InsufficientMaegen);
             return;
@@ -42,14 +42,14 @@ public class UnitManager : Singleton<UnitManager>
             return;
         }
 
-        UnitData guardian = _unitData;
+        GuardianData guardian = _guardianData;
         //GameObject go = PoolX.GetFromPool(_DATA.GetUnit(guardian.id).playModel, guardianPool);
         GameObject go = Instantiate(_DATA.GetUnit(guardian.id).playModel, _location.position, _location.rotation);
         GameObject particles = PoolX.GetFromPool(_DATA.GetUnit(guardian.id).spawnParticles, spawnParticlePool);
         go.transform.position = particles.transform.position = _location.transform.position;
         go.transform.rotation = particles.transform.rotation = transform.rotation;
         
-        _GM.DecreaseMaegen(_unitData.cost);
+        _GM.DecreaseMaegen(_guardianData.cost);
         _UI.CheckPopulousUI();
     }
 
@@ -61,7 +61,7 @@ public class UnitManager : Singleton<UnitManager>
         
         //CHECK - May need to reset ragdoll physics when getting object
         //GameObject go = PoolX.GetFromPool(_unit.unitData.ragdollModel, ragdollPool);
-        GameObject go = Instantiate(guardian.unitData.ragdollModel, _position, _rotation);
+        GameObject go = Instantiate(guardian.guardianData.ragdollModel, _position, _rotation);
         ragdollList.Add(go.GetComponent<Ragdoll>());
         //go.transform.position = _position;
         //go.transform.rotation = _rotation;
@@ -144,7 +144,7 @@ public class UnitManager : Singleton<UnitManager>
         yield return new WaitForEndOfFrame();
         foreach (Guardian unit in unitSelected)
         {
-            if (_DATA.IsTowerUnit(unit.unitID))
+            if (_DATA.IsTowerUnit(unit.guardianID))
                 _UI.EnableTowerText();
         }
     }
@@ -246,37 +246,37 @@ public class UnitManager : Singleton<UnitManager>
         if(unitSelected.Count != 0)
         {
             AssignDestination();
-            if (unitSelected[0].unitID == GuardianID.Goblin)
+            if (unitSelected[0].guardianID == GuardianID.Goblin)
             {
                 audioSource.clip = _SM.GetGoblinVocal();
                 audioSource.Play();
             }
-            if (unitSelected[0].unitID == GuardianID.Leshy)
+            if (unitSelected[0].guardianID == GuardianID.Leshy)
             {
                 audioSource.clip = _SM.GetLeshyVocal();
                 audioSource.Play();
             }
-            if (unitSelected[0].unitID == GuardianID.Orcus)
+            if (unitSelected[0].guardianID == GuardianID.Orcus)
             {
                 audioSource.clip = _SM.GetOrcusVocal();
                 audioSource.Play();
             }
-            if (unitSelected[0].unitID == GuardianID.Satyr)
+            if (unitSelected[0].guardianID == GuardianID.Satyr)
             {
                 audioSource.clip = _SM.GetSatyrVocal();
                 audioSource.Play();
             }
-            if (unitSelected[0].unitID == GuardianID.Skessa)
+            if (unitSelected[0].guardianID == GuardianID.Skessa)
             {
                 audioSource.clip = _SM.GetSkessaVocal();
                 audioSource.Play();
             }
-            if (unitSelected[0].unitID == GuardianID.Mistcalf)
+            if (unitSelected[0].guardianID == GuardianID.Mistcalf)
             {
                 audioSource.clip = _SM.GetGolemVocal();
                 audioSource.Play();
             }
-            if (unitSelected[0].unitID == GuardianID.Fidhain)
+            if (unitSelected[0].guardianID == GuardianID.Fidhain)
             {
                 audioSource.clip = _SM.GetFidhainVocal();
                 audioSource.Play();

@@ -525,7 +525,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9437505c9f32e04bb6743725fc06577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitID: 9
+  guardianID: 9
   healthBar: {fileID: 6450550966492755563}
   selectionRing: {fileID: 1631489328005026833}
   navAgent: {fileID: 3703737846647253701}
@@ -541,14 +541,13 @@ MonoBehaviour:
   isMovingCheck: 0
   isFirstPerson: 0
   SFXPool: {fileID: 8924622453733130184}
-  soundPoolCurrent: 0
-  soundPool: []
+  debugUnit: {fileID: 0}
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
   leftFoot: {fileID: 0}
   rightFoot: {fileID: 0}
   distanceToClosestEnemy: 0
-  unitData: {fileID: 0}
+  guardianData: {fileID: 0}
   firingPoint: {fileID: 785847293}
   projectiles:
   - {fileID: 9176226858031152269}
@@ -1467,6 +1466,11 @@ PrefabInstance:
     - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
         type: 3}
       propertyPath: creatureID
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498389897186712144, guid: f295c990c53d4e94482a107a8edc74f4,
+        type: 3}
+      propertyPath: guardianID
       value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5089558307582172242, guid: f295c990c53d4e94482a107a8edc74f4,

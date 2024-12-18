@@ -517,7 +517,7 @@ public class TutorialManager : GameBehaviour
     }
 
     //Summon Creatures
-    private void OnUnitButtonPressed(UnitData _unitData)
+    private void OnUnitButtonPressed(GuardianData _guardianData)
     {
         if (tutorialComplete || currentTutorialID != TutorialID.Guardians)
             return;

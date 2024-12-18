@@ -4,10 +4,11 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using UnityEngine.Serialization;
 
 public class UnitButton : InteractableButton
 {
-    public UnitData unitData;
+    [FormerlySerializedAs("unitData")] public GuardianData guardianData;
     public Image cooldownFill;
     public TMP_Text title;
     public TMP_Text cost;
@@ -45,8 +46,8 @@ public class UnitButton : InteractableButton
 
     private void OnMaegenChange(int _amount)
     {
-        button.interactable = unitData.cost <= _amount;
-        cost.color = unitData.cost > _amount ? Color.red : Color.white;
+        button.interactable = guardianData.cost <= _amount;
+        cost.color = guardianData.cost > _amount ? Color.red : Color.white;
     }
 
     private void OnEnable()
@@ -62,7 +63,7 @@ public class UnitButton : InteractableButton
     #region overrides
     public override void ClickedButton()
     {
-        GameEvents.ReportOnUnitButtonPressed(unitData);
+        GameEvents.ReportOnUnitButtonPressed(guardianData);
         if (_GM.gameState == GameState.Play)
             unitPanel.StartCooldowns();
     }
@@ -77,16 +78,16 @@ public class UnitButton : InteractableButton
     }
     #endregion
 
-    public void SetupButton(UnitData _unitData)
+    public void SetupButton(GuardianData _guardianData)
     {
-        unitData = _unitData;
-        icon.sprite = unitData.icon;
-        title.text = unitData.name;
-        cost.text = unitData.cost.ToString();
+        guardianData = _guardianData;
+        icon.sprite = guardianData.icon;
+        title.text = guardianData.name;
+        cost.text = guardianData.cost.ToString();
 
         if (tooltip != null)
         {
-            tooltip.SetValues(unitData.name, unitData.description);
+            tooltip.SetValues(guardianData.name, guardianData.description);
         }
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "New Guardian Data", menuName = "SSS/Guardian Data", order = 3)]
-public class UnitData : ScriptableObject
+public class GuardianData : ScriptableObject
 {
     public GuardianID id;
     public SiteID home;

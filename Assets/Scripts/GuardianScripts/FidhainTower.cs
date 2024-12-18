@@ -22,10 +22,10 @@ public class FidhainTower : Guardian
     IEnumerator ShootProjectile()
     {
         yield return new WaitForSeconds(fireRate);
-        if (distanceToClosestEnemy < unitData.detectRange)
+        if (distanceToClosestEnemy < guardianData.detectRange)
         {
             animator.SetTrigger("Spit");
-            PlaySound(unitData.attackSounds);
+            PlaySound(guardianData.attackSounds);
             currentProjectile = ArrayX.IncrementCounter(currentProjectile, projectiles);
             projectiles[currentProjectile].transform.position = firingPoint.transform.position;
             projectiles[currentProjectile].GetComponent<Rigidbody>().AddForce(firingPoint.transform.forward * projectileSpeed);

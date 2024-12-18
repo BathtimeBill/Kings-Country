@@ -70,9 +70,9 @@ public class UpgradePanel : GameBehaviour
     [Header("Stats")]
 
     [Header("Units")]
-    public List<UnitData> currentUnits;
-    private UnitData activeUnit;
-    public GuardianID ActiveUnit => activeUnit.id;
+    public List<GuardianData> currentUnits;
+    private GuardianData activeGuardian;
+    public GuardianID ActiveUnit => activeGuardian.id;
 
     private ToolData activeTool;
     public ToolID ActiveTool => activeTool.id;
@@ -141,15 +141,15 @@ public class UpgradePanel : GameBehaviour
 
     public void ChangeUpgrade(GuardianID _unitID)
     {
-        activeUnit = _DATA.GetUnit(_unitID);
-        icon.sprite =  activeUnit.icon;
-        mapIcon.sprite =  activeUnit.mapIcon;
-        nameText.text = activeUnit.name;
-        descriptionText.text = activeUnit.description;
-        currentStat1 = activeUnit.cost;
-        currentStat2 = activeUnit.damage;
-        currentStat3 = activeUnit.health;
-        currentStat4 = activeUnit.speed;
+        activeGuardian = _DATA.GetUnit(_unitID);
+        icon.sprite =  activeGuardian.icon;
+        mapIcon.sprite =  activeGuardian.mapIcon;
+        nameText.text = activeGuardian.name;
+        descriptionText.text = activeGuardian.description;
+        currentStat1 = activeGuardian.cost;
+        currentStat2 = activeGuardian.damage;
+        currentStat3 = activeGuardian.health;
+        currentStat4 = activeGuardian.speed;
 
         stat1Icon.sprite = _ICONS.maegenIcon;
         stat2Icon.sprite = _ICONS.damageIcon;
@@ -241,7 +241,7 @@ public class UpgradePanel : GameBehaviour
 
     public void ShowStatsUpgrade()
     {
-        if (activeUnit == null) return;
+        if (activeGuardian == null) return;
         
         ToggleChangeIcons(true);
 
