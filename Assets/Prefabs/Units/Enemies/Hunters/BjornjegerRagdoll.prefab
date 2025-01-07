@@ -147,7 +147,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1001 &328893473037171134
+--- !u!1001 &1521910749135390105
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -160,36 +160,44 @@ PrefabInstance:
       value: FlowingMetal
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
+      propertyPath: m_LocalScale.x
+      value: 1.136629
+      objectReference: {fileID: 0}
+    - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1366289
+      objectReference: {fileID: 0}
+    - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.1366292
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.022
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.102
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.261
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9985978
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.02000188
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.046507314
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 0.015473238
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -208,11 +216,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
---- !u!4 &328893473037333356 stripped
+--- !u!4 &1521910749135818571 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5,
     type: 3}
-  m_PrefabInstance: {fileID: 328893473037171134}
+  m_PrefabInstance: {fileID: 1521910749135390105}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5713659208632809357
 PrefabInstance:
@@ -457,7 +465,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6515712193588681746, guid: 5cfaaaf4858eeab4ca133369e60cb549,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 328893473037333356}
+      addedObject: {fileID: 1521910749135818571}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1082271958561512970, guid: 5cfaaaf4858eeab4ca133369e60cb549,
         type: 3}
@@ -962,21 +970,21 @@ CharacterJoint:
   m_ConnectedAnchor: {x: 0, y: 0, z: 0}
   m_SwingAxis: {x: 1, y: 0, z: 0}
   m_TwistLimitSpring:
-    spring: 0
-    damper: 0
+    spring: 0.2
+    damper: 0.1
   m_LowTwistLimit:
-    limit: -70
+    limit: -45
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
-    limit: 10
+    limit: 45
     bounciness: 0
     contactDistance: 0
   m_SwingLimitSpring:
-    spring: 0
-    damper: 0
+    spring: 75
+    damper: 0.2
   m_Swing1Limit:
-    limit: 50
+    limit: 75
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
@@ -1590,23 +1598,23 @@ CharacterJoint:
   m_Axis: {x: 0, y: -1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: 0, y: 0, z: 0}
-  m_SwingAxis: {x: 0, y: 0, z: -1}
+  m_SwingAxis: {x: 1, y: 0, z: 0}
   m_TwistLimitSpring:
-    spring: 0
-    damper: 0
+    spring: 0.2
+    damper: 0.1
   m_LowTwistLimit:
-    limit: -70
+    limit: -45
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
-    limit: 10
+    limit: 45
     bounciness: 0
     contactDistance: 0
   m_SwingLimitSpring:
-    spring: 0
-    damper: 0
+    spring: 75
+    damper: 0.2
   m_Swing1Limit:
-    limit: 50
+    limit: 75
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:

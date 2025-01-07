@@ -172,11 +172,11 @@ public class EnemyManager : Singleton<EnemyManager>
                     break;
                 case DeathID.Explosion:
                     ragdoll.Die(ArrayX.GetRandomItemFromArray(_enemy.enemyData.dieSounds), true);
-                    ragdoll.Launch(2000, -16000);
+                    ragdoll.Launch(10000, -16000);
                     break;
                 case DeathID.Launch:
                     ragdoll.Die(ArrayX.GetRandomItemFromArray(_enemy.enemyData.dieSounds));
-                    ragdoll.Launch(20000, -20000);
+                    ragdoll.Launch(6000, -10000);
                     break;
             }
         }

@@ -162,36 +162,48 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.74316
+      objectReference: {fileID: 0}
+    - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.74316
+      objectReference: {fileID: 0}
+    - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.74316
+      objectReference: {fileID: 0}
+    - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.052
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.296
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.98496354
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.1727624
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 2.4937653e-13
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 1.0124835e-12
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 19.897
       objectReference: {fileID: 0}
     - target: {fileID: 428754, guid: 3c80850cb2edc524c921b5f5c21593d5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -735,10 +747,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.5140384
-  m_Height: 5.0467944
+  m_Radius: 0.23
+  m_Height: 1.08
   m_Direction: 1
-  m_Center: {x: 0, y: 2.5233972, z: 0}
+  m_Center: {x: 0, y: 0.81, z: 0}
 --- !u!144 &7178983455763983124
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -837,10 +849,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.3107612
-  m_Height: 5.243045
+  m_Radius: 0.17
+  m_Height: 1.32
   m_Direction: 1
-  m_Center: {x: 0, y: 2.6215224, z: 0}
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!144 &7700057169500554991
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -939,8 +951,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.5071397, y: 2.20751, z: 2.3071547}
-  m_Center: {x: -0.00000071525574, y: 1.1037551, z: 0.035568118}
+  m_Size: {x: 0.79, y: 1.03, z: 0.54}
+  m_Center: {x: 0, y: 0.32, z: 0}
 --- !u!144 &6689131457493293596
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1039,10 +1051,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.96780795
-  m_Height: 4.83904
+  m_Radius: 0.11
+  m_Height: 0.99
   m_Direction: 1
-  m_Center: {x: 0, y: 2.41952, z: 0}
+  m_Center: {x: 0, y: 0.65, z: 0}
 --- !u!144 &1371236118075343866
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1141,10 +1153,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.68656003
-  m_Height: 2.7462401
+  m_Radius: 0.11
+  m_Height: 0.69
   m_Direction: 1
-  m_Center: {x: 0, y: 1.3731201, z: 0}
+  m_Center: {x: 0, y: 0.41, z: 0}
 --- !u!144 &7782017950588869240
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1243,8 +1255,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.8767849
-  m_Center: {x: 0, y: 1.2, z: 0.57}
+  m_Radius: 0.29
+  m_Center: {x: 0, y: 0.34, z: 0.16}
 --- !u!144 &550031023703469073
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1343,8 +1355,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.5071397, y: 2.398306, z: 2.2949603}
-  m_Center: {x: 0.00013387203, y: 0.7099999, z: 0.23396522}
+  m_Size: {x: 0.81, y: 0.54, z: 0.51}
+  m_Center: {x: 0.00013387203, y: -0.11, z: -0.08}
 --- !u!4 &6378457463491362936 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 14e06c6bf80d91a47832ee00d219a5eb,
@@ -1403,10 +1415,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.6865513
-  m_Height: 2.746205
+  m_Radius: 0.11
+  m_Height: 0.69
   m_Direction: 1
-  m_Center: {x: 0, y: 1.3731025, z: 0}
+  m_Center: {x: 0, y: 0.41, z: 0}
 --- !u!144 &8231838272664295825
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1505,10 +1517,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.9634571
-  m_Height: 4.8172855
+  m_Radius: 0.11
+  m_Height: 0.99
   m_Direction: 1
-  m_Center: {x: 0, y: 2.4086428, z: 0}
+  m_Center: {x: 0, y: 0.65, z: 0}
 --- !u!144 &8624875914738666614
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1627,10 +1639,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.5157616
-  m_Height: 5.0525384
+  m_Radius: 0.23
+  m_Height: 1.08
   m_Direction: 1
-  m_Center: {x: 0, y: 2.5262692, z: 0}
+  m_Center: {x: 0, y: 0.81, z: 0}
 --- !u!144 &3082443636647574614
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1729,10 +1741,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.3104093
-  m_Height: 5.241637
+  m_Radius: 0.17
+  m_Height: 1.32
   m_Direction: 1
-  m_Center: {x: 0, y: 2.6208186, z: 0}
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!144 &1393384772716768278
 CharacterJoint:
   m_ObjectHideFlags: 0
