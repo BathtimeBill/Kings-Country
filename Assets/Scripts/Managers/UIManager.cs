@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.Serialization;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -38,12 +39,7 @@ public class UIManager : Singleton<UIManager>
     public TMP_Text unitPanelMaegenText;
     public GameObject combatOptionsPanel;
     public bool mouseOverCombatOptions;
-    public GameObject menuPanel;
-    public GameObject homeTreePanel;
-    public GameObject homeTreeUnitPanel;
-    public GameObject homeTreeUpgradePanel;
-    public GameObject horgrPanel;
-    public GameObject hutPanel;
+    
 
     [Header("Pause")]
     public CanvasGroup inGameCanvas;
@@ -55,31 +51,28 @@ public class UIManager : Singleton<UIManager>
     public GameObject warningPanel; //Used for escape pausing. Auto set.
     public GameObject unitsPanel;
     
-    public GameObject eldyrButton;
-    public GameObject ObjectiveText;
-
     public GameObject transformText;
 
     public AudioSource audioSource;
     public AudioSource warningAudioSource;
     public GameObject deathCameraRotator;
 
-    [Header("Tools")]
-    public ToolButton fyreTool;
-    public int fyreCost;
-    public float fyreTimeLeft;
-    public bool fyreAvailable;
+    [Header("Tools")] 
+    public List<ToolButton> toolButtons;
+    public ToolButton tool1Button;
+    public float tool1TimeLeft;
+    public bool tool1Available;
+    public ToolButton tool2Button;
+    public float tool2TimeLeft;
+    public bool tool2Available;
+    public ToolButton tool3Button;
+    public float tool3TimeLeft;
+    public bool tool3Available;
 
-    public ToolButton stormerTool;
-    public int stormerCost;
-    public float stormerTimeLeft;
-    public bool stormerAvailable;
-
-    public ToolButton runeTool;
-    public float runeTimeLeft;
-    public bool runeAvailable;
-
-    public ToolButton treeTool;
+    [Header("Trees")]
+    public TreeButton tree1Button;
+    public TreeButton tree2Button;
+    public TreeButton tree3Button;
     public CanvasGroup treePercentageModifier;
     public TMP_Text treePercentageText;
     public TMP_Text treeResultText;
@@ -89,7 +82,6 @@ public class UIManager : Singleton<UIManager>
     public TMP_Text dayWinTitleText;
     public Animator dayTextAnimator;
     public DayButton dayNightButton;
-    public Button treetoolButton;
 
     [Header("Day End Stats")]
     public CanvasGroup waveResultsPanel;
@@ -119,19 +111,8 @@ public class UIManager : Singleton<UIManager>
     public PerkButton upgradeButton1;
     public PerkButton upgradeButton2;
 
-    [Header("Current Perk Panel")]
-    public GameObject barkSkin;
-    public GameObject flyFoot;
-    public GameObject power;
-    public GameObject tower;
-    public GameObject rune;
-    public GameObject fyre;
-    public GameObject stormer;
-    public GameObject tree;
-    public GameObject fertile;
-    public GameObject populous;
-    public GameObject windfall;
-    public GameObject homeTree;
+    [Header("Current Perk Panel")] 
+    public List<GameObject> inGamePerks;
 
     [Header("Mouse Over UI")]
     public bool mouseOverUI;
@@ -186,12 +167,12 @@ public class UIManager : Singleton<UIManager>
         CheckWildlifeUI();
         CheckPopulousUI();
         ResetAgroBar();
-        fyreTimeLeft = 0;
-        stormerTimeLeft = 0;
+        tool1TimeLeft = 0;
+        tool2TimeLeft = 0;
 
-        fyreTool.SetInteractable(_GAME.fyreAvailable);
-        stormerTool.SetInteractable(_GAME.stormerAvailable);
-        runeTool.SetInteractable(_GAME.runesAvailable);
+        tool1Button.SetInteractable(_GAME.fyreAvailable);
+        tool2Button.SetInteractable(_GAME.stormerAvailable);
+        tool3Button.SetInteractable(_GAME.runesAvailable);
 
         formationObject = GameObject.FindGameObjectWithTag("Destination");
 
@@ -199,7 +180,7 @@ public class UIManager : Singleton<UIManager>
         ResetPanel(winPanel);
         ResetPanel(finalScorePanel);
         ResetPanel(gameOverPanel);
-        TurnOffIcons();
+        ObjectX.ToggleObjects(inGamePerks, false);
         waveText.text = nightMessage;
 
         treePercentageModifier.alpha = 0f;
@@ -210,34 +191,14 @@ public class UIManager : Singleton<UIManager>
 
         _SETTINGS.colours.ChangePanelColour(_SAVE.GetPanelColour(), _SAVE);
     }
-
-    public void StartLevel()
-    {
-
-    }
-
-    private void TurnOffIcons()
-    {
-        barkSkin.SetActive(false);
-        flyFoot.SetActive(false);
-        power.SetActive(false);
-        tower.SetActive(false);
-        rune.SetActive(false);
-        fyre.SetActive(false);
-        stormer.SetActive(false);
-        tree.SetActive(false);
-        fertile.SetActive(false);
-        populous.SetActive(false);
-        windfall.SetActive(false);
-        homeTree.SetActive(false);
-    }
-
-
+    
     void Update()
     {
         FyreCheck();
         StormerCheck();
         RuneCheck();
+        //ToolCheck(tool1Button);
+        //toolButtons[0].ToolCheck();
     }
 
     public void UpdateMaegenText(int _oldValue, int _newValue)
@@ -354,41 +315,6 @@ public class UIManager : Singleton<UIManager>
         //_GM.gameState = GameState.Pause;
     }    
 
-    public void OpenUpgradeMenu()
-    {
-        Debug.Log("OpeningUpgradeMenu");
-        homeTreeUpgradePanel.SetActive(true);
-        homeTreeUnitPanel.SetActive(false);
-        audioSource.clip = _SM.buttonClickSound;
-        audioSource.Play();
-    }
-    public void OpenUnitMenu()
-    {
-        homeTreeUnitPanel.SetActive(true);
-        homeTreeUpgradePanel.SetActive(false);
-        audioSource.clip = _SM.buttonClickSound;
-        audioSource.Play();
-    }
-
-    public void CloseHomeTreeMenu()
-    {
-        homeTreePanel.SetActive(false);
-        audioSource.clip = _SM.closeMenuSound;
-        audioSource.Play();
-    }
-    public void CloseHorgrMenu()
-    {
-        horgrPanel.SetActive(false);
-        audioSource.clip = _SM.closeMenuSound;
-        audioSource.Play();
-    }
-    public void CloseHutMenu()
-    {
-        hutPanel.SetActive(false);
-        audioSource.clip = _SM.closeMenuSound;
-        audioSource.Play();
-    }
-
     public void SetBuildingToggleShiny(bool _shine)
     {
         for(int i=0;i<buildingToggles.Length;i++)
@@ -415,20 +341,7 @@ public class UIManager : Singleton<UIManager>
     {
         warningPanel = _warningPanel;
     }
-
-    public void CheckWave()
-    {
-        
-    }
-
-    public void CheckEldyr()
-    {
-        if(_GAME.maegen >= 5000 && _GAME.wildlifeCount >= 50)
-        {
-            eldyrButton.SetActive(true);
-            ObjectiveText.SetActive(false);
-        }
-    }
+    
     public void CheckPopulousUI()
     {
         StartCoroutine(WaitForPopulousCheck());
@@ -611,21 +524,6 @@ public class UIManager : Singleton<UIManager>
         });
     }
 
-    private void TweenUpgradeIcon(GameObject _icon)
-    {
-        upgradeButton1.SetInteractable(false);
-        upgradeButton2.SetInteractable(false);
-        _icon.GetComponentInChildren<Image>().color = _SETTINGS.colours.highlightedColor;
-        _icon.transform.localScale = Vector3.one * 3;
-        _icon.transform.SetAsLastSibling();
-        _icon.SetActive(true);
-        _icon.transform.DOScale(Vector3.one, 1).SetLoops(3).SetUpdate(true).OnComplete(() =>
-        _icon.GetComponentInChildren<Image>().DOColor(_SETTINGS.colours.upgradeIconsColor, 0.5f).SetUpdate(true));
-        continueButton.interactable = true;
-        TweenX.KillTweener(continueTweener);
-        continueTweener = continueButton.transform.DOScale(Vector3.one * buttonPulseScale, buttonPulseSpeed).SetUpdate(true).SetLoops(-1).SetDelay(3);
-    }
-
     private int GetTreeBonusTotal()
     {
         int treeBonus = 0;
@@ -640,7 +538,7 @@ public class UIManager : Singleton<UIManager>
     public void OnContinueButton()
     {
         TweenOutPanel(wavePanel);
-        treeTool.SetInteractable(true);
+        tree1Button.SetInteractable(true);
         TweenX.KillTweener(continueTweener); 
         continueButton.transform.localScale = Vector3.one;
         waveText.text = nightMessage + ": " + (_GAME.currentDay + 1) + "/" + _DATA.levelMaxDays;
@@ -702,71 +600,7 @@ public class UIManager : Singleton<UIManager>
         dayTextAnimator.SetTrigger("NewDay");
     }
 
-    public void OnPerkSelected(PerkID perkID)
-    {
-        switch (perkID)
-        {
-            case PerkID.BarkSkin: 
-                barkSkin.SetActive(true);
-                TweenUpgradeIcon(barkSkin);
-                break;
-            case PerkID.FlyFoot: 
-                flyFoot.SetActive(true);
-                TweenUpgradeIcon(flyFoot);
-                break;
-            case PerkID.Tower: 
-                tower.SetActive(true);
-                TweenUpgradeIcon(tower);
-                break;
-            case PerkID.Power: 
-                power.SetActive(true);
-                TweenUpgradeIcon(power);
-                break;
-            case PerkID.Rune:
-                rune.SetActive(true);
-                TweenUpgradeIcon(rune);
-                break;
-            case PerkID.Fyre:
-                fyre.SetActive(true);
-                TweenUpgradeIcon(fyre);
-                break;
-            case PerkID.Stormer:
-                stormer.SetActive(true);
-                TweenUpgradeIcon(stormer);
-                break;
-            case PerkID.Tree:
-                tree.SetActive(true);
-                TweenUpgradeIcon(tree);
-                break;
-            case PerkID.Fertile:
-                fertile.SetActive(true);
-                TweenUpgradeIcon(fertile);
-                break;
-            case PerkID.Populous:
-                populous.SetActive(true);
-                TweenUpgradeIcon(populous);
-                break;
-            case PerkID.Winfall:
-                windfall.SetActive(true);
-                TweenUpgradeIcon(windfall);
-                break;
-            case PerkID.HomeTree:
-                homeTree.SetActive(true);
-                TweenUpgradeIcon(homeTree);
-                break;
-        }
-        _SM.PlaySound(_SM.upgradeSound);
-    }
     
-    private void OnJustStragglers()
-    {
-        //collectMaegenButton.SetActive(true);
-    }
-    public void CollectMaegen()
-    {
-        //GameEvents.ReportOnCollectMaegenButton();
-       // collectMaegenButton.SetActive(false);
-    }
 
     //Button Presses from Inspector
     public void ShowResultsPanel()
@@ -781,77 +615,101 @@ public class UIManager : Singleton<UIManager>
     }
 
     #region Tools
+    public void OnToolUsed()
+    {
+        tool1TimeLeft = _DATA.GetTool(tool1Button.toolID).cooldownTime;
+        tool1Button.SetInteractable(false);
+        tool1Available = false;
+    }
+
+    private void ToolCheck(ToolButton _toolButton)
+    {
+        if (!_toolButton.toolAvailable)
+        {
+            if (tool1TimeLeft >= 0)
+            {
+                tool1TimeLeft -= Time.deltaTime;
+                tool1Button.CooldownFill(MathX.MapTo01(tool1TimeLeft, 0, _DATA.GetTool(tool1Button.toolID).cooldownTime));
+            }
+            else
+            {
+                tool1Available = _DATA.CanUseTool(tool1Button.toolID);
+                tool1Button.SetInteractable(_DATA.CanUseTool(tool1Button.toolID));
+            }
+        }
+    }
+    
     public void OnFyrePlaced()
     {
-        fyreTimeLeft = _DATA.GetTool(ToolID.Fyre).cooldownTime;
-        fyreTool.SetInteractable(false);
-        fyreAvailable = false;
+        tool1TimeLeft = _DATA.GetTool(tool1Button.toolID).cooldownTime;
+        tool1Button.SetInteractable(false);
+        tool1Available = false;
     }
 
     private void FyreCheck()
     {
-        if (!fyreAvailable)
+        if (!tool1Available)
         {
-            if (fyreTimeLeft >= 0)
+            if (tool1TimeLeft >= 0)
             {
-                fyreTimeLeft -= Time.deltaTime;
-                fyreTool.CooldownFill(MathX.MapTo01(fyreTimeLeft, 0, _DATA.GetTool(ToolID.Fyre).cooldownTime));
+                tool1TimeLeft -= Time.deltaTime;
+                tool1Button.CooldownFill(MathX.MapTo01(tool1TimeLeft, 0, _DATA.GetTool(tool1Button.toolID).cooldownTime));
             }
             else
             {
-                fyreAvailable = _DATA.CanUseTool(ToolID.Fyre);
-                fyreTool.SetInteractable(_DATA.CanUseTool(ToolID.Fyre));
+                tool1Available = _DATA.CanUseTool(tool1Button.toolID);
+                tool1Button.SetInteractable(_DATA.CanUseTool(tool1Button.toolID));
             }
         }
     }
 
     public void OnStormerPlaced()
     {
-        stormerTimeLeft = _DATA.GetTool(ToolID.Stormer).cooldownTime;
-        stormerTool.SetInteractable(false);
-        stormerAvailable = false;
+        tool2TimeLeft = _DATA.GetTool(ToolID.Stormer).cooldownTime;
+        tool2Button.SetInteractable(false);
+        tool2Available = false;
     }
 
     private void StormerCheck()
     {
-        if (!stormerAvailable)
+        if (!tool2Available)
         {
-            if (stormerTimeLeft >= 0)
+            if (tool2TimeLeft >= 0)
             {
-                stormerTimeLeft -= Time.deltaTime;
-                stormerTool.CooldownFill(MathX.MapTo01(stormerTimeLeft, 0, _DATA.GetTool(ToolID.Stormer).cooldownTime));
+                tool2TimeLeft -= Time.deltaTime;
+                tool2Button.CooldownFill(MathX.MapTo01(tool2TimeLeft, 0, _DATA.GetTool(ToolID.Stormer).cooldownTime));
             }
             else
             {
-                stormerAvailable = _DATA.CanUseTool(ToolID.Stormer);
-                stormerTool.SetInteractable(_DATA.CanUseTool(ToolID.Stormer));
+                tool2Available = _DATA.CanUseTool(ToolID.Stormer);
+                tool2Button.SetInteractable(_DATA.CanUseTool(ToolID.Stormer));
             }
         }
     }
 
     public void OnRunePlaced()
     {
-        runeTimeLeft = _DATA.GetTool(ToolID.Rune).cooldownTime;
-        runeTool.SetInteractable(false);
-        runeAvailable = false;
+        tool3TimeLeft = _DATA.GetTool(ToolID.Rune).cooldownTime;
+        tool3Button.SetInteractable(false);
+        tool3Available = false;
         //print(_GM.runesCount + " = " + _GM.runesMaegenCost.Length);
     }
 
     private void RuneCheck()
     {
-        if (!runeAvailable)
+        if (!tool3Available)
         {
-            if (runeTimeLeft >= 0)
+            if (tool3TimeLeft >= 0)
             {
-                runeTimeLeft -= Time.deltaTime;
-                runeTool.CooldownFill(MathX.MapTo01(runeTimeLeft, 0, _DATA.GetTool(ToolID.Rune).cooldownTime));
+                tool3TimeLeft -= Time.deltaTime;
+                tool3Button.CooldownFill(MathX.MapTo01(tool3TimeLeft, 0, _DATA.GetTool(ToolID.Rune).cooldownTime));
             }
             else
             {
                 if (_GAME.runesAvailable)
                 {
-                    runeAvailable = true;
-                    runeTool.SetInteractable(true);
+                    tool3Available = true;
+                    tool3Button.SetInteractable(true);
                 }
             }
         }
@@ -979,6 +837,28 @@ public class UIManager : Singleton<UIManager>
         //    interactableButtons.buttons[currentButton].SetInteractable(true);
         //}
     }
+    
+    private void OnPerkSelected(PerkID perkID)
+    {
+        upgradeButton1.SetInteractable(false);
+        upgradeButton2.SetInteractable(false);
+        
+        PerkData pd = _DATA.GetPerk(perkID);
+        GameObject po = ObjectX.GetNextInactive(inGamePerks);
+        po.GetComponent<Tooltip>().title = pd.name;
+        po.GetComponent<Tooltip>().message = pd.description;
+        po.GetComponentInChildren<Image>(true).sprite = pd.icon;
+        po.GetComponentInChildren<Image>(true).color = _SETTINGS.colours.highlightedColor;
+        po.transform.localScale = Vector3.one * 3;
+        po.transform.SetAsLastSibling();
+        po.SetActive(true);
+        po.transform.DOScale(Vector3.one, 1).SetLoops(3).SetUpdate(true).OnComplete(() =>
+            po.GetComponentInChildren<Image>().DOColor(_SETTINGS.colours.upgradeIconsColor, 0.5f).SetUpdate(true));
+        continueButton.interactable = true;
+        TweenX.KillTweener(continueTweener);
+        continueTweener = continueButton.transform.DOScale(Vector3.one * buttonPulseScale, buttonPulseSpeed).SetUpdate(true).SetLoops(-1).SetDelay(3);
+        _SM.PlaySound(_SM.upgradeSound);
+    }
 
     private void OnEnable()
     {
@@ -990,13 +870,12 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnRunePlaced += OnRunePlaced;
         GameEvents.OnDayOver += OnDayOver;
         GameEvents.OnContinueButton += OnContinueButton;
-        GameEvents.OnJustStragglers += OnJustStragglers;
 
-        GameEvents.OnPerkSelected += OnPerkSelected;
 
         GameEvents.OnWildlifeValueChange += OnWildlifeValueChange;
         GameEvents.OnCombatSelected += OnCombatSelected;
         GameEvents.OnHumanKilled += OnEnemyUnitKilled;
+        GameEvents.OnPerkSelected += OnPerkSelected;
 
         InputManager.OnCycleTool += OnCycleTool;
     }
@@ -1013,13 +892,12 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnRunePlaced -= OnRunePlaced;
         GameEvents.OnDayOver -= OnDayOver;
         GameEvents.OnContinueButton -= OnContinueButton;
-        GameEvents.OnJustStragglers -= OnJustStragglers;
 
-        GameEvents.OnPerkSelected -= OnPerkSelected;
 
         GameEvents.OnWildlifeValueChange -= OnWildlifeValueChange ;
         GameEvents.OnCombatSelected -= OnCombatSelected;
         GameEvents.OnHumanKilled -= OnEnemyUnitKilled;
+        GameEvents.OnPerkSelected -= OnPerkSelected;
 
         InputManager.OnCycleTool -= OnCycleTool;
     }

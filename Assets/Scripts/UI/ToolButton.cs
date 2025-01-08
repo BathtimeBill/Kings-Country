@@ -10,11 +10,37 @@ public class ToolButton : InteractableButton
     public Image cooldownFill;
     public TMP_Text meagenPrice;
     public ToolPanel toolPanel;
-
+    public float timeLeft;
+    public bool toolAvailable => timeLeft <=0 && _DATA.CanUseTool(toolID);
     public override void Start()
     {
         base.Start();
         CooldownFill(0);
+    }
+    
+    public void ToolCheck()
+    {
+        if (toolAvailable)
+        {
+            SetInteractable(toolAvailable);
+        }
+        else
+        {
+            timeLeft -= Time.deltaTime;
+            CooldownFill(MathX.MapTo01(timeLeft, 0, _DATA.GetTool(toolID).cooldownTime));
+        }
+        /*if (!toolAvailable)
+        {
+            if (timeLeft >= 0)
+            {
+                timeLeft -= Time.deltaTime;
+                CooldownFill(MathX.MapTo01(timeLeft, 0, _DATA.GetTool(toolID).cooldownTime));
+            }
+            else
+            {
+                SetInteractable(_DATA.CanUseTool(toolID));
+            }
+        }*/
     }
 
     public void CooldownFill(float _timeRemaining)
@@ -26,6 +52,12 @@ public class ToolButton : InteractableButton
     public override void ClickedButton()
     {
         GameEvents.ReportOnToolButtonPressed(toolID);
+        /*if (toolAvailable)
+        {
+            timeLeft = _DATA.GetTool(toolID).cooldownTime;
+            SetInteractable(toolAvailable);
+            GameEvents.ReportOnToolButtonPressed(toolID);
+        }*/
     }
     
     public override void OnPointerEnter(PointerEventData eventData)

@@ -1,67 +1,30 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Tooltip : GameBehaviour
+public class Tooltip : GameBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public string title;
     public string message;
-
+    public UIPivotPosition pivotPosition;
     public void SetValues(string _title, string _message)
     {
         title = _title;
         message = _message;
     }
-
-    private void OnMouseEnter()
+    
+    public void OnPointerEnter(PointerEventData data)
     {
         StartCoroutine(TooltipDelay());
     }
-    private void OnMouseExit()
-    {
-        _Tool.HideTooltip();
-    }
-
-    public void OnButtonHover()
-    {
-        _Tool.SetAndShowTooltip(message, title);
-    }
-    public void OnButtonHoverTop()
-    {
-        StartCoroutine(TooltipDelayTop());
-    }
-    public void OnButtonHoverPopulous()
-    {
-        _Tool.SetAndShowPopulousTooltip();
-    }
-    public void OnButtonExit()
+    public void OnPointerExit(PointerEventData data)
     {
         _Tool.HideTooltip();
         StopAllCoroutines();
-    }
-    public void OnButtonExitTop()
-    {
-        _Tool.HideTooltipTop();
-        StopAllCoroutines();
-    }
-    public void OnButtonDelay()
-    {
-        StartCoroutine(TooltipDelay());
     }
     IEnumerator TooltipDelay()
     {
-        yield return new WaitForSeconds(1);
-        _Tool.SetAndShowTooltip(message, title);
-    }
-    IEnumerator TooltipDelayTop()
-    {
-        yield return new WaitForSeconds(0.8f);
-        _Tool.SetAndShowTooltipTop(message, title);
-    }
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Tab))
-        {
-            _Tool.HideTooltip();
-        }    
+        yield return new WaitForSeconds(_Tool.tooltipDelay);
+        _Tool.SetAndShowTooltip(message, title, pivotPosition);
     }
 }

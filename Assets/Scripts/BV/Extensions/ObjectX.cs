@@ -108,7 +108,36 @@ public static class ObjectX
             temp.a = 0;
             gos[i].GetComponent<Renderer>().material.color = temp;
         }
-            
+    }
+    
+    /// <summary>
+    /// Gets the next object in a list that is inactive. If all are active will return the last item.
+    /// </summary>
+    /// <param name="_list">The list of objects to go through</param>
+    /// <returns>The next available inactive object</returns>
+    static public GameObject GetNextInactive(List<GameObject> _list)
+    {
+        for (int i = 0; i < _list.Count; i++)
+        {
+            if (!_list[i].activeInHierarchy)
+                return _list[i];
+        }
+        return _list[_list.Count - 1];
+    }
+    
+    /// <summary>
+    /// Gets the next object in a list that is inactive. If all are active will return the last item.
+    /// </summary>
+    /// <param name="_array">The list of objects to go through</param>
+    /// <returns>The next available inactive object</returns>
+    static public GameObject GetNextInactive(GameObject[] _array)
+    {
+        for (int i = 0; i < _array.Length; i++)
+        {
+            if (!_array[i].activeInHierarchy)
+                return _array[i];
+        }
+        return _array[_array.Length - 1];
     }
 
     //

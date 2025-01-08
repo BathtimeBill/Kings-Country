@@ -24,18 +24,15 @@ public class UnitPanel : GameBehaviour
     public float showPos = 30f;
     public float hidePos = -316f;
     private Tweener panelTweener;
+    private RectTransform rectTransform;
 
     private void Start()
     {
+        rectTransform = myRectTransform;
         homeTreeButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(SiteID.HomeTree));
         hutButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(SiteID.Hut));
         horgrButton.SetActive(_DATA.currentLevel.availableBuildings.Contains(SiteID.Horgr));
-        //homeTreeButton.GetComponent<UnityEngine.UI.Toggle>().isOn = true;
-        //TODO hacky workaround. Revisit 
-        ExecuteAfterFrames(1, ()=>
-        {
-            ShowUnitPanel(false);
-        });
+        ShowUnitPanel(false);
     }
 
     public void StartCooldowns()
@@ -127,13 +124,13 @@ public class UnitPanel : GameBehaviour
     void TweenPanel(bool _show)
     {
         TweenX.KillTweener(panelTweener);
-        panelTweener = transform.DOMoveY(_show ? showPos : hidePos, _TWEENING.UITweenTime).SetEase(_TWEENING.UITweenEase).SetUpdate(true);
+        panelTweener = rectTransform.DOAnchorPosY(_show ? showPos : hidePos, _TWEENING.UITweenTime).SetEase(_TWEENING.UITweenEase).SetUpdate(true);
         maegenTotal.DOFade(_show ? 1 : 0, _TWEENING.UITweenTime);
     }
 
     public void ShowUnitPanel(bool _show)
     {
-        transform.position = new Vector3(transform.position.x, _show ? showPos : hidePos, transform.position.z);
+        rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, _show ? showPos : hidePos);
         maegenTotal.alpha = _show ? 1 : 0;
     }
 

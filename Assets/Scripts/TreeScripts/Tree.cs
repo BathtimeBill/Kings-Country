@@ -121,8 +121,6 @@ public class Tree : GameBehaviour
     }
     IEnumerator AddMaegen()
     {
-        _UI.CheckEldyr();
-
         if(runeBuff == false)
         {
             _GAME.maegen++;

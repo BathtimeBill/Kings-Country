@@ -139,14 +139,14 @@ public class PlayerControls : Singleton<PlayerControls>
                 }
                 break;
             case PlayMode.FyreMode:
-                if (_GAME.fyreAvailable && _UI.fyreAvailable)
+                if (_GAME.fyreAvailable && _UI.tool1Available)
                 {
                     tools.fyreTool.Use();
                     DeslectAllModes();
                 }
                 break;
             case PlayMode.StormerMode:
-                if (_GAME.stormerAvailable && _UI.stormerAvailable)
+                if (_GAME.stormerAvailable && _UI.tool2Available)
                 {
                     tools.stormerTool.Use();
                     DeslectAllModes();

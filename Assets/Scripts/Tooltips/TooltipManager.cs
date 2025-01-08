@@ -1,70 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 
 public class TooltipManager : Singleton<TooltipManager>
 {
-    public TextMeshProUGUI textComponent;
-    public TextMeshProUGUI titleComponent;
     public GameObject tooltipBox;
-    public GameObject tooltipBoxTop;
-    public TextMeshProUGUI textComponentTop;
-    public TextMeshProUGUI titleComponentTop;
-    public Image levelImage;
-
+    private RectTransform rectTransform;
+    public TMP_Text textComponent;
+    public TMP_Text titleComponent;
+    private Vector3 offset;
+    public Camera UICamera;
+    public float tooltipDelay = 0.6f;
+    private bool showing = false;
     void Start()
     {
         Cursor.visible = true;
         tooltipBox.SetActive(false);
-        tooltipBoxTop.SetActive(false);
-
+        rectTransform = tooltipBox.GetComponent<RectTransform>();
     }
 
-    void Update()
+    void LateUpdate()
     {
-        tooltipBox.transform.position = Input.mousePosition;
-        tooltipBoxTop.transform.position = Input.mousePosition;
+        if (!showing)
+            return;
+        
+        offset = Input.mousePosition;
+        offset.z = 1f; //distance of the plane from the camera
+        tooltipBox.transform.position = UICamera.ScreenToWorldPoint(offset);
     }
 
-    public void SetAndShowTooltip(string message, string title)
+    public void SetAndShowTooltip(string message, string title, UIPivotPosition pivotPosition)
     {
-        tooltipBox.SetActive(true);
+        showing = true;
         textComponent.text = message;
         titleComponent.text = title;
-    }
-    public void SetAndShowTooltipTop(string message, string title)
-    {
-        tooltipBoxTop.SetActive(true);
-        textComponentTop.text = message;
-        titleComponentTop.text = title;
-    }
-    public void SetLevelImage(Sprite sprite)
-    {
-        levelImage.sprite = sprite;
-    }
-
-    public void SetAndShowPopulousTooltip()
-    {
+        rectTransform.pivot = UIX.SetPivotPoints(pivotPosition);
         tooltipBox.SetActive(true);
-        if(_DATA.HasPerk(PerkID.Populous) == false)
-        {
-            textComponent.text = "This increases the population cap by +5. Cost is 1200 Maegen.";
-            titleComponent.text = "Populous Upgrade";
-        }
     }
-
     public void HideTooltip()
     {
+        showing = false;
         tooltipBox.SetActive(false);
-        textComponent.text = string.Empty;
-        titleComponent.text = string.Empty;
-    }
-    public void HideTooltipTop()
-    {
-        tooltipBoxTop.SetActive(false);
-        textComponentTop.text = string.Empty;
-        titleComponentTop.text = string.Empty;
     }
 }
