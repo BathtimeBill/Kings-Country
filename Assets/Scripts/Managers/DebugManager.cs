@@ -5,7 +5,7 @@ public class DebugManager : GameBehaviour
     public GameObject debugPanel;
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Tilde))
+        if(Input.GetKeyDown(KeyCode.Backslash))
             debugPanel.SetActive(!debugPanel.activeSelf);
             
         if (Input.GetKeyDown(KeyCode.O))
@@ -31,6 +31,13 @@ public class DebugManager : GameBehaviour
         
         if(Input.GetKeyDown(KeyCode.H))
             _EM.SpawnSpecificEnemy();
+
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            GameObject go = GameObject.FindFirstObjectByType<Enemy>().gameObject;
+            go.GetComponent<Enemy>().Die(go.GetComponent<Enemy>(), GuardianID.Orcus.ToString(), DeathID.Launch);
+        }
+            
     }
 
     public void ShowLevelColliders(bool _show)

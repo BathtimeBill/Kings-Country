@@ -156,35 +156,10 @@ public class EnemyManager : Singleton<EnemyManager>
     
     public void RemoveEnemy(Enemy _enemy, string _killedBy, DeathID _deathID, Vector3 _position, Quaternion _rotation)
     {
-        //CHECK - May need to reset ragdoll physics when getting object
-        //GameObject go = PoolX.GetFromPool(_enemy.unitData.ragdollModel, ragdollPool);
-        //go.transform.position = _position;
-        //go.transform.rotation = _rotation;
-        if (_enemy.enemyData.ragdollModel != null)
-        {
-            GameObject go = Instantiate(_enemy.enemyData.ragdollModel, _position, _rotation);
-            Ragdoll ragdoll = go.GetComponent<Ragdoll>();
-            switch (_deathID)
-            {
-                case DeathID.Regular:
-                    ragdoll.Die(ArrayX.GetRandomItemFromArray(_enemy.enemyData.dieSounds));
-                    ragdoll.Launch(0, 0);
-                    break;
-                case DeathID.Explosion:
-                    ragdoll.Die(ArrayX.GetRandomItemFromArray(_enemy.enemyData.dieSounds), true);
-                    ragdoll.Launch(10000, -16000);
-                    break;
-                case DeathID.Launch:
-                    ragdoll.Die(ArrayX.GetRandomItemFromArray(_enemy.enemyData.dieSounds));
-                    ragdoll.Launch(6000, -10000);
-                    break;
-            }
-        }
-
-        //POOL REDO
-        //_enemy.gameObject.SetActive(false);
         enemies.Remove(_enemy.gameObject);
-        Destroy(_enemy.gameObject);
+        currentKillCount += 1;
+        CheckEnemiesLeft(_enemy);
+        Destroy(_enemy.gameObject, 20);
         if(!noAutoSpawning)
             GameEvents.ReportOnHumanKilled(_enemy, _killedBy);
     }
@@ -232,25 +207,36 @@ public class EnemyManager : Singleton<EnemyManager>
 
     public IEnumerator KillAllEnemies()
     {
-        //int enemyCount = enemies.Count;
-        for(int i=0; i< enemies.Count; i++)
+        if (_EnemiesExist)
         {
-            if (enemies[i].GetComponent<Enemy>() != null)
-                enemies[i].GetComponent<Enemy>().Die(enemies[i].GetComponent<Enemy>(), "MassKilling", DeathID.Regular);
-            yield return new WaitForEndOfFrame();
+            //Enemy lastEnemy = enemies[enemies.Count - 1].GetComponent<Enemy>();
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                if (NotNull(enemies[i].GetComponent<Enemy>()))
+                    enemies[i].GetComponent<Enemy>()
+                        .Die(enemies[i].GetComponent<Enemy>(), "Unknown", DeathID.Regular);
+                yield return new WaitForEndOfFrame();
+            }
+            //CheckEnemiesLeft(lastEnemy);
         }
-        CheckEnemiesLeft();
     }
 
-    private void CheckEnemiesLeft()
+    private void CheckEnemiesLeft(Enemy _last)
     {
         if (_EnemiesExist || _AgroPhase)
             return;
 
         StopCoroutine(SpawnEnemies());
-        GameEvents.ReportOnDayOver(_CurrentDay);
+        
+        _CAMERA.KillCam(_last.transform, _last.GetComponent<Ragdoll>().ragdollSource);
+        ExecuteAfterSeconds(_SETTINGS.cameraSettings.killCamDuration, () =>
+        {
+            _CAMERA.killCamera.gameObject.SetActive(false);
+            if(!_SETTINGS.testing.noDayOver)
+                GameEvents.ReportOnDayOver(_CurrentDay);
+        });
     }
-
+    
     /// <summary>
     /// Fills a list of HumanID's with those in this day then shuffles the list
     /// </summary>
@@ -286,24 +272,13 @@ public class EnemyManager : Singleton<EnemyManager>
         SpawnDog();
     }
 
-    private void OnEnemyUnitKilled(Enemy _enemy, string _killedBy)
-    {
-        //print(_enemy.unitID + " was killed");
-        enemies.Remove(_enemy.gameObject);
-        CheckEnemiesLeft();
-        currentKillCount += 1;
-    }
-
-
     private void OnEnable()
     {
-        GameEvents.OnHumanKilled += OnEnemyUnitKilled;
         GameEvents.OnDayBegin += OnDayBegin;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnHumanKilled -= OnEnemyUnitKilled;
         GameEvents.OnDayBegin += OnDayBegin;
     }
 

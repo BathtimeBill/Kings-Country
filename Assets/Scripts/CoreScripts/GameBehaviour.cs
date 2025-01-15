@@ -158,6 +158,7 @@ public enum GameState
     Tutorial,
     Transitioning,
     Lose,
+    KillCam,
 }
 public enum PlayMode
 {

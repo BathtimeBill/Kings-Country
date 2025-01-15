@@ -15,8 +15,8 @@ public class Settings : ScriptableObject
     [Header("Debug Testing - Turn all off for release")]
     public Testing testing;
 
-    [Header("Camera Shakes")]
-    public CameraShake cameraShake;
+    [Header("Camera")]
+    public CameraSettings cameraSettings;
 
     [Header("Tween Stuff")]
     public Tweening tweening;
@@ -305,8 +305,11 @@ public class Colours
 }
 
 [System.Serializable]
-public class CameraShake
+public class CameraSettings
 {
+    public float killCamSpeed = 0.2f;
+    public float killCamDuration = 3f;
+    [Header("Camera Shake")]
     public float shakeDuration = 1.5f;
     public int shakeVibrato = 10;
     public float shakeRandomness = 90f;
@@ -428,6 +431,7 @@ public class Testing
 {
     public bool unlockAvailableLevels;
     public bool skipIntro;
+    public bool noDayOver = false;
     public bool allGlossaryUnlocked = false;
     [Tooltip("Will override the save data values")]
     public bool overrideTutorial;

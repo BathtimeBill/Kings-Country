@@ -47,7 +47,7 @@ public class StormerTool : Tool
         //base.Use();
         StartCoroutine(StartStormer());
         GameEvents.ReportOnStormerPlaced();
-        _CAMERA.CameraShake(_SETTINGS.cameraShake.stormerShakeIntensity);
+        _CAMERA.CameraShake(_SETTINGS.cameraSettings.stormerShakeIntensity);
     }
     
     private IEnumerator StartStormer()

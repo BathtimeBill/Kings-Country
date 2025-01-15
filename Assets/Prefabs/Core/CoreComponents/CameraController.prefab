@@ -123,7 +123,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 174923a7f5ab0bf458794652d5d2f28f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraTransform: {fileID: 2783843226903077388}
+  zoomCamera: {fileID: 0}
+  translateCamera: {fileID: 0}
+  killCamera: {fileID: 0}
   movementModifier: 1
   normalSpeed: 1
   fastSpeed: 2.6
@@ -431,7 +433,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowDebugText: 0
   ShowCameraFrustum: 1
-  IgnoreTimeScale: 0
+  IgnoreTimeScale: 1
   WorldUpOverride: {fileID: 0}
   ChannelMask: -1
   UpdateMethod: 2

@@ -20,7 +20,7 @@ public class FyreTool : Tool
     {
         base.Use();
         Instantiate(_DATA.HasPerk(PerkID.Fyre) ? explosion2 : explosion, selectObjects.transform.position, selectObjects.transform.rotation);
-        _CAMERA.CameraShake(_SETTINGS.cameraShake.fyreShakeIntensity);
+        _CAMERA.CameraShake(_SETTINGS.cameraSettings.fyreShakeIntensity);
         GameEvents.ReportOnFyrePlaced();
         Deselect();
     }

@@ -215,6 +215,10 @@ public class GameManager : Singleton<GameManager>
             case GameState.Lose:
                 Time.timeScale = 1;
                 break;
+            case GameState.KillCam:
+                Time.timeScale = _SETTINGS.cameraSettings.killCamSpeed;
+                Time.fixedDeltaTime = 0.02f * Time.timeScale;
+                break;
         }
         GameEvents.ReportOnGameStateChanged(gameState);
     }

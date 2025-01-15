@@ -182,6 +182,8 @@ public class Enemy : GameBehaviour
         {
             SmoothFocusOnTarget(targetObject);
         }
+        if(Input.GetKeyDown(KeyCode.N))
+            Die(this, GuardianID.Orcus.ToString(), DeathID.Launch);
     }
     #endregion
     
@@ -316,12 +318,35 @@ public class Enemy : GameBehaviour
     public virtual void Die(Enemy _enemy, string _killedBy, DeathID _deathID) 
     {
         RemoveFromSites();
+        StopAllCoroutines();
+        agent.enabled = false;
+        animator.enabled = false;
+        ComponentX.Disable<Outline>(gameObject);
+        
         if (NotNull(enemyData.dieParticles))
         {
             GameObject dieParticle = Instantiate(enemyData.dieParticles, transform.position + new Vector3(0, 1, 0),
                 transform.rotation);
             Destroy(dieParticle, 5);
         }
+        
+        Ragdoll ragdoll = GetComponent<Ragdoll>();
+        switch (_deathID)
+        {
+            case DeathID.Regular:
+                ragdoll.Die(ArrayX.GetRandomItemFromArray(_enemy.enemyData.dieSounds));
+                ragdoll.Launch(0, 0);
+                break;
+            case DeathID.Explosion:
+                ragdoll.Die(ArrayX.GetRandomItemFromArray(_enemy.enemyData.dieSounds), true);
+                ragdoll.Launch(10000, -16000);
+                break;
+            case DeathID.Launch:
+                ragdoll.Die(ArrayX.GetRandomItemFromArray(_enemy.enemyData.dieSounds));
+                ragdoll.Launch(6000, -10000);
+                break;
+        }
+        
         _EM.RemoveEnemy(_enemy, _killedBy, _deathID, transform.position, transform.rotation);
         if(_deathID == DeathID.Launch)
             DropMaegen();

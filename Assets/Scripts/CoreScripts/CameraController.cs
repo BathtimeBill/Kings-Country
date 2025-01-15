@@ -1,10 +1,17 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
+using Unity.Cinemachine;
+using UnityEngine.Serialization;
 
 public class CameraController : Singleton<CameraController>
 {
-    public Transform cameraTransform;
+    [Header("Cameras")]
+    public Transform zoomCamera;
+    public Transform translateCamera;
+    public CinemachineCamera killCamera;
+    
+    [Header("Movement")]
     [ReadOnly] public float movementModifier = 1;  //Maybe remove. Need to get consistent speeds
     public float normalSpeed;
     public float fastSpeed;
@@ -36,9 +43,9 @@ public class CameraController : Singleton<CameraController>
 
     private void Start()
     {
-        startPos = newPosition = transform.position;
-        startRot = newRotation = transform.rotation;
-        startZoom = newZoom = cameraTransform.localPosition;
+        startPos = newPosition = translateCamera.transform.position;
+        startRot = newRotation = translateCamera.transform.rotation;
+        startZoom = newZoom = zoomCamera.localPosition;
         movementModifier = normalSpeed;
     }
 
@@ -55,16 +62,16 @@ public class CameraController : Singleton<CameraController>
     private void HandleLerps()
     {
         //Panning
-        transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * translateSmoothing);
+        translateCamera.transform.position = Vector3.Lerp(translateCamera.transform.position, newPosition, Time.deltaTime * translateSmoothing);
         //Rotating
-        transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * rotateSpeed);
+        translateCamera.transform.rotation = Quaternion.Lerp(translateCamera.transform.rotation, newRotation, Time.deltaTime * rotateSpeed);
         //Zooming
-        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * zoomSpeed);
+        zoomCamera.localPosition = Vector3.Lerp(zoomCamera.localPosition, newZoom, Time.deltaTime * zoomSpeed);
     }
     
     private void HandleCameraHeight()
     {
-        if (Physics.Raycast(cameraTransform.transform.position, Vector3.down, out RaycastHit hit, yZoom.max,
+        if (Physics.Raycast(zoomCamera.transform.position, Vector3.down, out RaycastHit hit, yZoom.max,
                 groundLayer))
         {
             // Clamp height between zoomMin and zoomMax
@@ -81,7 +88,7 @@ public class CameraController : Singleton<CameraController>
     private void HandleCameraHeight2()
     {
         //TODO When change to cinemachine, fix so no go though objects
-        if(Physics.Raycast(cameraTransform.transform.position, Vector3.down, out RaycastHit hit, yZoom.max, groundLayer))
+        if(Physics.Raycast(zoomCamera.transform.position, Vector3.down, out RaycastHit hit, yZoom.max, groundLayer))
         {
             // Clamp height between zoomMin and zoomMax
             float height = Mathf.Clamp(hit.distance, yZoom.min, yZoom.max);
@@ -104,7 +111,8 @@ public class CameraController : Singleton<CameraController>
         {
             if (newZoom.y != yZoom.min || newZoom.y != yZoom.max)
                 newZoom += (_zoom * _PLAYER.zoomSpeed) * zoomAmount;
-            _TUTORIAL.CheckCameraTutorial(TutorialID.CameraZoom);
+            if(!_TutorialComplete)
+                _TUTORIAL.CheckCameraTutorial(TutorialID.CameraZoom);
         }
     }
 
@@ -125,13 +133,13 @@ public class CameraController : Singleton<CameraController>
         //print("posX: " + posX + " | posY: " + posY + " | mouseX: " + mouseX + " | mouseY: " + mouseY);
 
         if (posY > 0 || (_SAVE.GetCameraEdgeScrolling && mouseY > Screen.height - edgeScrollThreshold))
-            newPosition += transform.forward * _PLAYER.movementSpeed * movementModifier * translateSpeed;
+            newPosition += translateCamera.transform.forward * _PLAYER.movementSpeed * movementModifier * translateSpeed;
         if (posY < 0 || (_SAVE.GetCameraEdgeScrolling && mouseY < edgeScrollThreshold))
-            newPosition -= transform.forward * _PLAYER.movementSpeed * movementModifier * translateSpeed;
+            newPosition -= translateCamera.transform.forward * _PLAYER.movementSpeed * movementModifier * translateSpeed;
         if (posX > 0 || (_SAVE.GetCameraEdgeScrolling && mouseX > Screen.width - edgeScrollThreshold))
-            newPosition += transform.right * _PLAYER.movementSpeed * movementModifier * translateSpeed;
+            newPosition += translateCamera.transform.right * _PLAYER.movementSpeed * movementModifier * translateSpeed;
         if (posX < 0 || (_SAVE.GetCameraEdgeScrolling && mouseX < edgeScrollThreshold))
-            newPosition -= transform.right * _PLAYER.movementSpeed * movementModifier * translateSpeed;
+            newPosition -= translateCamera.transform.right * _PLAYER.movementSpeed * movementModifier * translateSpeed;
 
         _TUTORIAL.CheckCameraTutorial(TutorialID.CameraMove);
     }
@@ -163,7 +171,7 @@ public class CameraController : Singleton<CameraController>
 
     public void CameraShake(float _shakeIntensity)
     {
-        transform.DOShakeRotation(1.5f, new Vector3(_shakeIntensity, _shakeIntensity, _shakeIntensity), _SETTINGS.cameraShake.shakeVibrato, _SETTINGS.cameraShake.shakeRandomness, true);
+        translateCamera.transform.DOShakeRotation(1.5f, new Vector3(_shakeIntensity, _shakeIntensity, _shakeIntensity), _SETTINGS.cameraSettings.shakeVibrato, _SETTINGS.cameraSettings.shakeRandomness, true);
     }
 
     public void ResetCameraToStart(bool _reset)
@@ -176,9 +184,9 @@ public class CameraController : Singleton<CameraController>
         newPosition = startPos;
         newRotation = startRot;
         newZoom = startZoom;
-        transform.DOLocalMove(newPosition, resetTime).SetEase(Ease.OutSine);
-        transform.DOLocalRotateQuaternion(newRotation, resetTime).SetEase(Ease.OutSine);
-        cameraTransform.DOLocalMove(newZoom, resetTime).SetEase(Ease.OutSine);
+        translateCamera.transform.DOLocalMove(newPosition, resetTime).SetEase(Ease.OutSine);
+        translateCamera.transform.DOLocalRotateQuaternion(newRotation, resetTime).SetEase(Ease.OutSine);
+        zoomCamera.DOLocalMove(newZoom, resetTime).SetEase(Ease.OutSine);
         //ExecuteAfterSeconds(resetTime + 0.1f, () => lockCamera = false);
     }
 
@@ -186,11 +194,24 @@ public class CameraController : Singleton<CameraController>
     {
         newPosition = _position;
         newZoom = startZoom;
-        transform.DOLocalMove(_position - siteOffset, _speed).SetEase(Ease.OutSine);
-        cameraTransform.DOLocalMove(newZoom, _speed).SetEase(Ease.OutSine);
+        translateCamera.transform.DOLocalMove(_position - siteOffset, _speed).SetEase(Ease.OutSine);
+        zoomCamera.DOLocalMove(newZoom, _speed).SetEase(Ease.OutSine);
     }
 
     public void LockCamera(bool _lock) => lockCamera = _lock;
+
+    public void KillCam(Transform _position, GameObject _killed)
+    {
+        _GAME.ChangeGameState(GameState.KillCam);
+        killCamera.transform.position = _position.transform.position + new Vector3(0, 1, -2);
+        killCamera.Follow = _killed.transform;
+        killCamera.gameObject.SetActive(true);
+        ExecuteAfterSeconds(_SETTINGS.cameraSettings.killCamDuration, () =>
+        {
+            killCamera.gameObject.SetActive(false);
+            GameEvents.ReportOnDayOver(_CurrentDay);
+        });
+    }
 
     private void OnSiteSelected(SiteID _siteID, bool _active)
     {
