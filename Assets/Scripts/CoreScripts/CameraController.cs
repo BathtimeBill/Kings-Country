@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using DG.Tweening;
 
@@ -7,7 +8,12 @@ public class CameraController : Singleton<CameraController>
     [ReadOnly] public float movementModifier = 1;  //Maybe remove. Need to get consistent speeds
     public float normalSpeed;
     public float fastSpeed;
-    public float movementTime;
+    public float translateSpeed = 1f;
+    public float rotateSpeed = 5f;
+    public float zoomSpeed = 5f;
+    public BV.Range heightSpeedModifier;
+    public AnimationCurve speedCurve = AnimationCurve.Linear(0f,0.5f,1f,5f);
+    [ReadOnly] public float translateSmoothing;
     public float edgeScrollThreshold = 20f;
 
     public Vector3 zoomAmount;
@@ -36,23 +42,57 @@ public class CameraController : Singleton<CameraController>
         movementModifier = normalSpeed;
     }
 
-    private void Update()
+   private void Update()
     {
         if (lockCamera || !_HasInput)
             return;
 
         HandleLerps();
         HandleMouseInput();
+        HandleCameraHeight();
     }
-
-    void HandleLerps()
+    
+    private void HandleLerps()
     {
         //Panning
-        transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime);
+        transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * translateSmoothing);
         //Rotating
-        transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * movementTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * rotateSpeed);
         //Zooming
-        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
+        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * zoomSpeed);
+    }
+    
+    private void HandleCameraHeight()
+    {
+        if (Physics.Raycast(cameraTransform.transform.position, Vector3.down, out RaycastHit hit, yZoom.max,
+                groundLayer))
+        {
+            // Clamp height between zoomMin and zoomMax
+            float height = Mathf.Clamp(hit.distance, yZoom.min, yZoom.max + 1); 
+            // Normalize the height to a value between 0 and 1
+            float t = (height - yZoom.min) / (yZoom.max - yZoom.min);
+            // Evaluate the curve at the normalized height
+            translateSpeed = speedCurve.Evaluate(t);
+            float smooth = (speedCurve.Evaluate(speedCurve.keys[speedCurve.keys.Length - 1].value) - translateSpeed);
+            translateSmoothing = MathX.Map(smooth, speedCurve.keys[0].value, speedCurve.keys[speedCurve.keys.Length - 1].value, heightSpeedModifier.min, heightSpeedModifier.max);
+        }
+    }
+
+    private void HandleCameraHeight2()
+    {
+        //TODO When change to cinemachine, fix so no go though objects
+        if(Physics.Raycast(cameraTransform.transform.position, Vector3.down, out RaycastHit hit, yZoom.max, groundLayer))
+        {
+            // Clamp height between zoomMin and zoomMax
+            float height = Mathf.Clamp(hit.distance, yZoom.min, yZoom.max);
+            // Calculate the logarithmic factor
+            float logMin = Mathf.Log(yZoom.min);
+            float logMax = Mathf.Log(yZoom.max);
+            float logHeight = Mathf.Log(height);
+            // Inverse logarithmically scale translateSpeed
+            float t = (logHeight - logMin) / (logMax - logMin);
+            translateSpeed = Mathf.Lerp(heightSpeedModifier.min, heightSpeedModifier.max, t);
+        }
     }
 
     private void OnCameraZoom(float _zoom)
@@ -62,13 +102,6 @@ public class CameraController : Singleton<CameraController>
 
         if (_zoom != 0)
         {
-            //TODO When change to cinemachine, fix so no go though objects
-            //RaycastHit hit;
-            //if(Physics.Raycast(cameraTransform.transform.position, Vector3.down, out hit, minY, groundLayer))
-            //{
-            //    return;
-            //}
-
             if (newZoom.y != yZoom.min || newZoom.y != yZoom.max)
                 newZoom += (_zoom * _PLAYER.zoomSpeed) * zoomAmount;
             _TUTORIAL.CheckCameraTutorial(TutorialID.CameraZoom);
@@ -92,13 +125,13 @@ public class CameraController : Singleton<CameraController>
         //print("posX: " + posX + " | posY: " + posY + " | mouseX: " + mouseX + " | mouseY: " + mouseY);
 
         if (posY > 0 || (_SAVE.GetCameraEdgeScrolling && mouseY > Screen.height - edgeScrollThreshold))
-            newPosition += transform.forward * _PLAYER.movementSpeed * movementModifier;
+            newPosition += transform.forward * _PLAYER.movementSpeed * movementModifier * translateSpeed;
         if (posY < 0 || (_SAVE.GetCameraEdgeScrolling && mouseY < edgeScrollThreshold))
-            newPosition -= transform.forward * _PLAYER.movementSpeed * movementModifier;
+            newPosition -= transform.forward * _PLAYER.movementSpeed * movementModifier * translateSpeed;
         if (posX > 0 || (_SAVE.GetCameraEdgeScrolling && mouseX > Screen.width - edgeScrollThreshold))
-            newPosition += transform.right * _PLAYER.movementSpeed * movementModifier;
+            newPosition += transform.right * _PLAYER.movementSpeed * movementModifier * translateSpeed;
         if (posX < 0 || (_SAVE.GetCameraEdgeScrolling && mouseX < edgeScrollThreshold))
-            newPosition -= transform.right * _PLAYER.movementSpeed * movementModifier;
+            newPosition -= transform.right * _PLAYER.movementSpeed * movementModifier * translateSpeed;
 
         _TUTORIAL.CheckCameraTutorial(TutorialID.CameraMove);
     }

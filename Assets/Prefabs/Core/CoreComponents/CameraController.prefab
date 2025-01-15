@@ -127,7 +127,37 @@ MonoBehaviour:
   movementModifier: 1
   normalSpeed: 1
   fastSpeed: 2.6
-  movementTime: 5
+  translateSpeed: 1
+  rotateSpeed: 3
+  zoomSpeed: 5
+  heightSpeedModifier:
+    min: 0.1
+    max: 4
+  speedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9920044
+      value: 4.9781494
+      inSlope: 10.575796
+      outSlope: 10.575796
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.09180174
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  translateSmoothing: 0
   edgeScrollThreshold: 20
   zoomAmount: {x: 0, y: -3, z: 3}
   newPosition: {x: 0, y: 0, z: 0}
@@ -135,7 +165,7 @@ MonoBehaviour:
   newRotation: {x: 0, y: 0, z: 0, w: 0}
   yZoom:
     min: 4
-    max: 40
+    max: 75
   zZoom:
     min: -40
     max: -4
